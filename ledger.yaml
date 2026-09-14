@@ -1,114 +1,150 @@
 playbook_version: "0.1"
+
 current_milestone: M02
-current_attempt: 1
+current_attempt: 2
+
 last_accepted_milestone: M01
+
 accepted_milestones:
   - M01
+
 milestone_status:
   M01: ACCEPTED
+  M02: SUBMITTED
+
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
+
 working_name: FlyBench
 demo_name: Catch the Fly
+
 repository_url: null
 last_accepted_code_commit: 58c42226442e6a57b97779833d92f759e31e3d81
+
 tooling:
   python: "3.12.3"
   uv: "0.12.13"
   node: null
   npm: null
   os: "WSL2/Linux x86_64"
-source_lock_digest: 2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c
-dataset_release: "MaleCNS v1.0"
-source_files:
-  - role: curated_annotations
-    filename: body-annotations-male-cns-v1.0-minconf-0.5.feather
-    url: https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
-    observed_sha256: 2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2
-    observed_bytes: 14483314
-    upstream_sha256: null
-    hash_provenance: locally_observed_not_upstream_published
-  - role: aggregate_neurotransmitters
-    filename: body-neurotransmitters-male-cns-v1.0.feather
-    url: https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather
-    observed_sha256: 95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621
-    observed_bytes: 43282834
-    upstream_sha256: null
-    hash_provenance: locally_observed_not_upstream_published
-  - role: connection_weights
-    filename: connectome-weights-male-cns-v1.0-minconf-0.5.feather
-    url: https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/connectome-weights-male-cns-v1.0-minconf-0.5.feather
-    observed_sha256: e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1
-    observed_bytes: 1051241946
-    upstream_sha256: null
-    hash_provenance: locally_observed_not_upstream_published
+
+# M02 has not yet been accepted.
+source_lock_digest: null
+dataset_release: null
+source_files: []
+
 full_graph:
   digest: null
   N: null
   E: null
   contacts: null
   audit_path: null
+
 live_graph:
   digest: null
   N: null
   E: null
   contacts: null
   selection: null
+
 ports:
   mapping_digest: null
   input_body_ids: []
   output_body_ids: []
+
 profiles:
   model: null
   encoder: null
   decoder: null
   environment: null
   deployed_backend: null
+
 calibration:
   panel_digest: null
   search_digest: null
   frozen_commit: null
+
 clocks:
   neural_dt_ms: null
   control_interval_ms: null
   ordering_version: null
+
 reexecution:
   envelope: null
   sample_digest: null
   result: UNMEASURED
+
 measurements:
   full_graph: UNMEASURED
   live_profile: UNMEASURED
   session_memory: UNMEASURED
   recorder_overhead: UNMEASURED
   host_capacity: UNMEASURED
+
 host:
   hardware: null
   budget: null
   admitted_slots: null
   deployed_image_digest: null
+
 alpha_full_graph_optimization_passes_used: 0
+
 gates: {}
+
 reviews:
   - milestone: M01
     attempt: 1
     code_sha: 58c42226442e6a57b97779833d92f759e31e3d81
     zip_sha256: 8fb1287880bfd1c88b0b2872738e35d1650f43005cedc50a343766a06dd65928
     verdict: ACCEPTED
-    evidence_inspected_or_rerun: null
-    limitations: null
+    evidence_inspected_or_rerun:
+      - "Independent: pytest tests/test_scaffold.py tests/test_review_tools.py — 9 passed."
+      - "Independent: authoritative architecture SHA-256 verified."
+      - "Independent: review manifest inventory 40/40 hashes and sizes verified."
+      - "Independent: git_diff.patch reconstructed from the Git empty tree; all 15 tracked files matched the submitted snapshot."
+      - "Inspected: run_acceptance.py, review_bundle.py, acceptance.json, AGENTS.md, pyproject.toml, uv.lock, CI workflow and captured command evidence."
+    limitations:
+      - "Original WSL uv sync and clean-working-tree execution were captured-only; reviewer had no direct access to the operator WSL checkout/.git."
+
+  - milestone: M02
+    attempt: 1
+    code_sha: d5f04474afde93d60b9024f96650be536c4def89
+    zip_sha256: 95cdf2120179fbdb659fb1cf697c78257f4636321fca0286ae821bec45ec9170
+    verdict: CHANGES_REQUIRED
+    evidence_inspected_or_rerun:
+      - "Independent: review manifest inventory 58/58 hashes and sizes verified."
+      - "Independent: authoritative architecture SHA-256 verified."
+      - "Independent: source-lock SHA-256 verified as 2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c."
+      - "Independent: M02 git_diff.patch applied to accepted M01 snapshot and reproduced all 20 current repository files byte-for-byte."
+      - "Independent: M01 regression tests — 10 passed."
+      - "Inspected: source downloader, source lock, source reports, schema evidence, partial/corrupt-cache tests, large-files inventory and manual source receipt."
+      - "Web-verified: current official MaleCNS page identifies the selected v1.0 source files and weights as the full connection graph."
+      - "Captured-only: M02 source-fetch tests — 7 passed."
+      - "Captured-only: independent sha256sum of the three omitted bulk source files agrees with source lock/report."
+    limitations:
+      - "Bulk Feather files are intentionally absent from review ZIP, so source-byte SHA-256 values were not independently recomputed by reviewer."
+      - "Reviewer environment lacks pyarrow, so tests/test_source_fetch.py was inspected but not independently rerun."
+    finding:
+      - "Submission ledger did not preserve the latest reviewer-approved M01 evidence and prematurely promoted unaccepted M02 source identities into the authoritative ledger."
+
 decisions: []
+
 biological_risks: []
 technical_risks: []
 launch_blockers: []
+
 manual_actions_pending: []
+
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
   alpha: NOT_PUBLISHED
+
 v02:
   optimization: NOT_STARTED
   protocol_digest: null
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
+
 deferred_scope: architecture_section_17
-next_action: "Complete M02 official source acquisition and submit it for external review; do not begin M03."
+
+next_action: "Repair M02 ledger provenance only and submit attempt 2; do not begin M03."
