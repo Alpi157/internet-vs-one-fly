@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestones": {
+    "M01": {
+      "title": "Repository, tooling, invariants and review harness",
+      "commands": [
+        {
+          "name": "locked-development-environment",
+          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["pyproject.toml", "uv.lock"],
+          "timeout_seconds": 180
+        },
+        {
+          "name": "architecture-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["docs/architecture.md"],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "m01-offline-tests",
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["tests/test_scaffold.py", "tests/test_review_tools.py"],
+          "timeout_seconds": 180
+        },
+        {
+          "name": "clean-committed-code-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [".git"],
+          "timeout_seconds": 30
+        }
+      ]
+    }
+  }
+}

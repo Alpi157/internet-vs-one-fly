@@ -1,0 +1,34 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+
+# Generated local evidence and review submissions
+evidence/
+reviews/
+
+# Data belongs to later, explicit acquisition milestones
+data/
+
+# Frontend dependencies belong to M08
+node_modules/
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Editor and OS noise
+.DS_Store
+*.swp

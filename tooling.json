@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-09-14T11:58:31Z",
+  "repository": "/home/alpi/Projects/FlyBench",
+  "commands": {
+    "git": {
+      "argv": ["git", "--version"],
+      "executable": "/usr/bin/git",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "git version 2.43.0\n",
+      "stderr": "",
+      "normalized_version": "2.43.0"
+    },
+    "python": {
+      "argv": ["python3", "--version"],
+      "executable": "/usr/bin/python3",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "Python 3.12.3\n",
+      "stderr": "",
+      "normalized_version": "3.12.3"
+    },
+    "uv": {
+      "argv": ["uv", "--version"],
+      "executable": "/home/alpi/.local/bin/uv",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "uv 0.12.13 (x86_64-unknown-linux-gnu)\n",
+      "stderr": "",
+      "normalized_version": "0.12.13"
+    },
+    "node": {
+      "argv": ["node", "--version"],
+      "executable": null,
+      "available": false,
+      "exit_status": 127,
+      "stdout": "",
+      "stderr": "node: command not found\n",
+      "normalized_version": null
+    },
+    "npm": {
+      "argv": ["npm", "--version"],
+      "executable": null,
+      "available": false,
+      "exit_status": 127,
+      "stdout": "",
+      "stderr": "npm: command not found\n",
+      "normalized_version": null
+    },
+    "uname": {
+      "argv": ["uname", "-a"],
+      "executable": "/usr/bin/uname",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "Linux afaf 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": "",
+      "normalized_version": "WSL2/Linux x86_64; kernel 6.18.33.2-microsoft-standard-WSL2"
+    }
+  }
+}

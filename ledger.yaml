@@ -1,0 +1,84 @@
+playbook_version: "0.1"
+current_milestone: M01
+current_attempt: 1
+last_accepted_milestone: null
+accepted_milestones: []
+milestone_status: {}
+architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
+working_name: FlyBench
+demo_name: Catch the Fly
+repository_url: null
+last_accepted_code_commit: null
+tooling:
+  python: "3.12.3"
+  uv: "0.12.13"
+  node: null
+  npm: null
+  os: "WSL2/Linux x86_64"
+source_lock_digest: null
+dataset_release: null
+source_files: []
+full_graph:
+  digest: null
+  N: null
+  E: null
+  contacts: null
+  audit_path: null
+live_graph:
+  digest: null
+  N: null
+  E: null
+  contacts: null
+  selection: null
+ports:
+  mapping_digest: null
+  input_body_ids: []
+  output_body_ids: []
+profiles:
+  model: null
+  encoder: null
+  decoder: null
+  environment: null
+  deployed_backend: null
+calibration:
+  panel_digest: null
+  search_digest: null
+  frozen_commit: null
+clocks:
+  neural_dt_ms: null
+  control_interval_ms: null
+  ordering_version: null
+reexecution:
+  envelope: null
+  sample_digest: null
+  result: UNMEASURED
+measurements:
+  full_graph: UNMEASURED
+  live_profile: UNMEASURED
+  session_memory: UNMEASURED
+  recorder_overhead: UNMEASURED
+  host_capacity: UNMEASURED
+host:
+  hardware: null
+  budget: null
+  admitted_slots: null
+  deployed_image_digest: null
+alpha_full_graph_optimization_passes_used: 0
+gates: {}
+reviews: []
+decisions: []
+biological_risks: []
+technical_risks: []
+launch_blockers: []
+manual_actions_pending: []
+publication:
+  repository: NOT_PUBLISHED
+  beta: NOT_PUBLISHED
+  alpha: NOT_PUBLISHED
+v02:
+  optimization: NOT_STARTED
+  protocol_digest: null
+  experiment: NOT_STARTED
+  reproduction: NOT_STARTED
+deferred_scope: architecture_section_17
+next_action: "Begin M01; do not implement later milestones in the same task."

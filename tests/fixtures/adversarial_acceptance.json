@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "milestones": {
+    "FAILING_SUBPROCESS": {
+      "title": "Controlled failing subprocess fixture",
+      "commands": [
+        {
+          "name": "prints-pass-but-fails",
+          "argv": [
+            "python",
+            "-c",
+            "import sys; print('PASS text is not evidence'); print('FLYBENCH_CONTROLLED_FAILURE', file=sys.stderr); raise SystemExit(23)"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 30
+        }
+      ]
+    },
+    "MISSING_COMMAND": {
+      "title": "Definitely missing executable fixture",
+      "commands": [
+        {
+          "name": "missing-required-executable",
+          "argv": ["flybench-definitely-missing-executable-m01"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 30
+        }
+      ]
+    },
+    "MISSING_PATH": {
+      "title": "Definitely missing required path fixture",
+      "commands": [
+        {
+          "name": "missing-required-path",
+          "argv": ["python", "-c", "print('must not run')"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["definitely-not-present-m01.fixture"],
+          "timeout_seconds": 30
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+name: M01 offline checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.13"
+          enable-cache: true
+      - name: Install locked M01 environment
+        run: uv sync --extra dev --locked
+      - name: Run offline M01 tests
+        run: uv run pytest -q tests/test_scaffold.py tests/test_review_tools.py
