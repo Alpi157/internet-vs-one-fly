@@ -121,15 +121,38 @@ def render_review(
     architecture_sha: str,
     reports: list[tuple[str, dict[str, Any]]],
     tooling: dict[str, Any] | None,
+    manual_source_review_present: bool,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
+    if milestone == "M02":
+        objective = (
+            "Acquire, validate, and pin the exact official MaleCNS v1.0 source bytes needed "
+            "by the architecture without compiling a graph."
+        )
+        assumptions = [
+            "The source set is exactly the three official M02 Feather files.",
+            "Upstream SHA-256 values remain null because none was observed on the official page; recorded SHA-256 values are locally observed byte identities.",
+            "Bulk source bytes are deliberately excluded and described in large-files.json.",
+            "No graph cardinality, biological mapping, or later-milestone result is claimed.",
+        ]
+    else:
+        objective = (
+            "Establish the M01 reproducible Python workspace, repository invariants, offline "
+            "checks, acceptance runner, and bounded review-bundle mechanism."
+        )
+        assumptions = [
+            "Python 3.12 is the supported M01 development runtime.",
+            "Node and npm are not M01 prerequisites and were not installed.",
+            "Generated evidence and review archives are ignored repository outputs.",
+            "M01 contains no scientific model, biological mapping, runtime, or later-milestone implementation.",
+        ]
     lines = [
         f"# {milestone} review submission (attempt {attempt})",
         "",
         "## Objective",
         "",
-        "Establish the M01 reproducible Python workspace, repository invariants, offline checks, acceptance runner, and bounded review-bundle mechanism.",
+        objective,
         "",
         "## Summary",
         "",
@@ -137,10 +160,7 @@ def render_review(
         "",
         "## Assumptions and decisions",
         "",
-        "- Python 3.12 is the supported M01 development runtime.",
-        "- Node and npm are not M01 prerequisites and were not installed.",
-        "- Generated evidence and review archives are ignored repository outputs.",
-        "- M01 contains no scientific model, biological mapping, runtime, or later-milestone implementation.",
+        *[f"- {assumption}" for assumption in assumptions],
         "",
         "## Identities",
         "",
@@ -198,19 +218,27 @@ def render_review(
             )
     else:
         lines.append("- No tooling.json receipt was available.")
+    if milestone == "M02":
+        lines.append(
+            "- `evidence/M02/manual-source-review.txt`: "
+            + ("present (operator-supplied)." if manual_source_review_present else "absent; manual review remains pending.")
+        )
 
+    lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
+    if milestone == "M02" and not manual_source_review_present:
+        lines.append("- The operator's manual source-origin receipt is absent.")
     lines.extend(
         [
-            "",
-            "## Unresolved issues",
-            "",
-            "- The external reviewer has not issued a verdict.",
-            "- Scientific and product capabilities remain intentionally unimplemented until later milestones.",
+            "- Scientific and product capabilities assigned to later milestones remain intentionally unimplemented.",
             "",
             "## Review limitations",
             "",
             "- Captured output proves what this submission reports running; it is not independent reviewer reproduction.",
-            "- This archive covers M01 infrastructure only and contains no scientific-result evidence.",
+            (
+                "- This archive covers source identity and acquisition only; it contains no graph-compilation or biological-result evidence."
+                if milestone == "M02"
+                else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+            ),
             "",
         ]
     )
@@ -281,6 +309,56 @@ def add_base(entries: dict[str, bytes], root: Path, base: str, submitted: str) -
         entries["base/README.txt"] = b"No changed or deleted small file required a prior-version copy.\n"
 
 
+def m02_large_source_inventory(
+    root: Path, submitted: str, evidence_root: Path
+) -> list[dict[str, Any]]:
+    try:
+        lock_bytes = commit_blob(root, submitted, "profiles/source-lock.json")
+        lock = json.loads(lock_bytes)
+        report = json.loads((evidence_root / "source-report.json").read_text(encoding="utf-8"))
+    except (BundleError, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M02 source lock/report is missing or invalid: {exc}") from exc
+    lock_digest = sha256(lock_bytes)
+    if report.get("status") != "PASS" or report.get("source_lock_sha256") != lock_digest:
+        raise BundleError("M02 source report does not pass or does not identify the committed source lock")
+    locked_by_role = {source.get("role"): source for source in lock.get("files", [])}
+    report_by_role = {source.get("role"): source for source in report.get("sources", [])}
+    if len(locked_by_role) != 3 or set(locked_by_role) != set(report_by_role):
+        raise BundleError("M02 source lock/report roles do not identify the same three files")
+
+    result: list[dict[str, Any]] = []
+    for role in sorted(locked_by_role):
+        locked = locked_by_role[role]
+        observed = report_by_role[role]
+        if (
+            observed.get("validation") != "PASS"
+            or observed.get("exact_observed_bytes") != locked.get("observed_bytes")
+            or observed.get("observed_sha256") != locked.get("observed_sha256")
+            or observed.get("official_url") != locked.get("official_url")
+            or observed.get("filename") != locked.get("filename")
+        ):
+            raise BundleError(f"M02 lock/report identity mismatch for role {role!r}")
+        feather = observed.get("feather", {})
+        result.append(
+            {
+                "path": f"data/raw/{locked['filename']}",
+                "reason": "official MaleCNS bulk source excluded from the review ZIP",
+                "official_url": locked["official_url"],
+                "release": lock["dataset"]["release"],
+                "role": role,
+                "bytes": locked["observed_bytes"],
+                "sha256": locked["observed_sha256"],
+                "hash_provenance": locked["observed_sha256_provenance"],
+                "upstream_sha256": locked.get("upstream_sha256"),
+                "format": feather.get("format"),
+                "schema_fields": feather.get("fields"),
+                "schema_role_validation": feather.get("role_validation"),
+                "acquisition_command": report.get("command"),
+            }
+        )
+    return result
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -331,6 +409,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     add_base(entries, root, base, submitted)
     evidence_root = root / "evidence" / milestone
     add_evidence(entries, evidence_root, omitted)
+    if milestone == "M02":
+        omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
 
     large_files = {
         "schema_version": 1,
@@ -339,7 +419,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         "statement": (
             "No legitimate large files were omitted."
             if not omitted
-            else "The listed files were omitted for the stated bounded-review reason."
+            else "The listed files were omitted for the stated bounded-review reason; identities come from the committed lock and captured report."
         ),
     }
     entries["large-files.json"] = json_bytes(large_files)
@@ -350,7 +430,14 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     except (BundleError, UnicodeDecodeError, json.JSONDecodeError):
         tooling_value = None
     entries["REVIEW.md"] = render_review(
-        milestone, attempt, base, submitted, architecture_sha, reports, tooling_value
+        milestone,
+        attempt,
+        base,
+        submitted,
+        architecture_sha,
+        reports,
+        tooling_value,
+        (evidence_root / "manual-source-review.txt").is_file(),
     )
 
     manifest = {
@@ -375,7 +462,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             bundle.writestr(info, entries[path])
     value = archive.getvalue()
     if len(value) >= MAX_ARCHIVE_BYTES:
-        raise BundleError(f"review bundle is {len(value)} bytes, exceeding the 15 MiB M01 limit")
+        raise BundleError(f"review bundle is {len(value)} bytes, exceeding the 15 MiB review limit")
     return value
 
 

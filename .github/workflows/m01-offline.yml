@@ -18,5 +18,5 @@ jobs:
           enable-cache: true
       - name: Install locked M01 environment
         run: uv sync --extra dev --locked
-      - name: Run offline M01 tests
-        run: uv run pytest -q tests/test_scaffold.py tests/test_review_tools.py
+      - name: Run small offline tests
+        run: uv run pytest -q tests/test_scaffold.py tests/test_review_tools.py tests/test_source_fetch.py

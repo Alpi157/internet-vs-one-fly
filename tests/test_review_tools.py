@@ -196,3 +196,97 @@ def test_bundle_exclusions_inventory_hashes_and_clean_identity(tmp_path: Path) -
     assert dirty.returncode != 0
     assert "dirty code tree" in dirty.stderr
     assert not dirty_output.exists()
+
+
+def test_m02_bundle_uses_bounded_report_for_large_source_inventory(tmp_path: Path) -> None:
+    repo = tmp_path / "m02-fixture-repo"
+    base = make_fixture_repository(repo)
+    lock_files = []
+    report_sources = []
+    roles = ("curated_annotations", "aggregate_neurotransmitters", "connection_weights")
+    for index, role in enumerate(roles, start=1):
+        filename = f"official-{role}.feather"
+        digest = hashlib.sha256(f"fixture-{role}".encode()).hexdigest()
+        size = index * 100
+        url = f"https://example.invalid/{filename}"
+        lock_files.append(
+            {
+                "role": role,
+                "filename": filename,
+                "official_url": url,
+                "observed_bytes": size,
+                "observed_sha256": digest,
+                "observed_sha256_provenance": "locally observed fixture",
+                "upstream_sha256": None,
+            }
+        )
+        report_sources.append(
+            {
+                "role": role,
+                "filename": filename,
+                "official_url": url,
+                "exact_observed_bytes": size,
+                "observed_sha256": digest,
+                "validation": "PASS",
+                "feather": {
+                    "format": "Apache Arrow Feather V2 / Arrow IPC file",
+                    "fields": [{"name": "fixture", "type": "int64"}],
+                    "role_validation": "PASS",
+                },
+            }
+        )
+    lock = {
+        "schema_version": 1,
+        "dataset": {"name": "MaleCNS", "release": "MaleCNS v1.0"},
+        "files": lock_files,
+    }
+    (repo / "profiles").mkdir()
+    lock_path = repo / "profiles" / "source-lock.json"
+    lock_path.write_text(json.dumps(lock, sort_keys=True) + "\n")
+    git(repo, "add", "profiles/source-lock.json")
+    git(repo, "commit", "-q", "-m", "resolved M02 fixture lock")
+
+    evidence = repo / "evidence" / "M02"
+    evidence.mkdir(parents=True, exist_ok=True)
+    report = {
+        "status": "PASS",
+        "source_lock_sha256": hashlib.sha256(lock_path.read_bytes()).hexdigest(),
+        "command": ["flybench", "data", "fetch"],
+        "sources": report_sources,
+    }
+    (evidence / "source-report.json").write_text(json.dumps(report))
+    (evidence / "manual-source-review.txt").write_text("operator-supplied fixture receipt\n")
+
+    output = tmp_path / "m02-review.zip"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(BUNDLER),
+            "--milestone",
+            "M02",
+            "--attempt",
+            "1",
+            "--base",
+            base,
+            "--out",
+            str(output),
+        ],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    with zipfile.ZipFile(output) as archive:
+        large_files = json.loads(archive.read("large-files.json"))
+        source_entries = [
+            item for item in large_files["omitted"] if item["reason"].startswith("official MaleCNS")
+        ]
+        assert len(source_entries) == 3
+        assert {item["sha256"] for item in source_entries} == {
+            source["observed_sha256"] for source in lock_files
+        }
+        assert all(item["schema_role_validation"] == "PASS" for item in source_entries)
+        assert not any(name.startswith("repo/data/raw/") for name in archive.namelist())
+        assert "evidence/manual-source-review.txt" in archive.namelist()
+        assert b"present (operator-supplied)" in archive.read("REVIEW.md")

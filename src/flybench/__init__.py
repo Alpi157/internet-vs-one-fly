@@ -1,6 +1,3 @@
-"""FlyBench package scaffold.
-
-M01 intentionally contains repository and review infrastructure only.
-"""
+"""FlyBench: reproducible Catch the Fly experiments."""
 
 __version__ = "0.0.0"

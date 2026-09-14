@@ -26,21 +26,25 @@ def test_architecture_identity() -> None:
     )
 
 
-def test_initial_ledger_is_parseable_and_unmeasured() -> None:
+def test_ledger_records_accepted_m01_and_keeps_science_unmeasured() -> None:
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
     assert ledger["playbook_version"] == "0.1"
-    assert ledger["current_milestone"] == "M01"
+    assert ledger["current_milestone"] == "M02"
     assert ledger["current_attempt"] == 1
-    assert ledger["last_accepted_milestone"] is None
-    assert ledger["accepted_milestones"] == []
-    assert ledger["milestone_status"] == {}
+    assert ledger["last_accepted_milestone"] == "M01"
+    assert ledger["accepted_milestones"] == ["M01"]
+    assert ledger["milestone_status"] == {"M01": "ACCEPTED"}
     assert ledger["architecture_sha256"] == ARCHITECTURE_SHA256
     assert ledger["repository_url"] is None
-    assert ledger["last_accepted_code_commit"] is None
+    assert ledger["last_accepted_code_commit"] == "58c42226442e6a57b97779833d92f759e31e3d81"
 
-    assert ledger["source_lock_digest"] is None
-    assert ledger["dataset_release"] is None
-    assert ledger["source_files"] == []
+    source_lock = ROOT / "profiles" / "source-lock.json"
+    assert ledger["source_lock_digest"] == hashlib.sha256(source_lock.read_bytes()).hexdigest()
+    assert ledger["dataset_release"] == "MaleCNS v1.0"
+    assert len(ledger["source_files"]) == 3
+    assert all(source["observed_bytes"] > 0 for source in ledger["source_files"])
+    assert all(len(source["observed_sha256"]) == 64 for source in ledger["source_files"])
+    assert all(source["upstream_sha256"] is None for source in ledger["source_files"])
     for graph_name in ("full_graph", "live_graph"):
         assert ledger[graph_name]["digest"] is None
         assert ledger[graph_name]["N"] is None
@@ -82,20 +86,30 @@ def test_required_m01_paths_and_registry() -> None:
         "ledger.yaml",
         "tooling.json",
         "docs/architecture.md",
+        "docs/data-attribution.md",
+        "profiles/source-lock.json",
         "src/flybench/__init__.py",
+        "src/flybench/cli.py",
+        "src/flybench/data.py",
         "tools/acceptance.json",
         "tools/run_acceptance.py",
         "tools/review_bundle.py",
         "tests/test_scaffold.py",
         "tests/test_review_tools.py",
+        "tests/test_source_fetch.py",
         ".github/workflows/m01-offline.yml",
     ]
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert set(registry["milestones"]) == {"M01"}
-    commands = registry["milestones"]["M01"]["commands"]
-    assert commands
-    assert all(command["required"] is True for command in commands)
-    assert all(command["argv"] for command in commands)
-    assert not any("run_acceptance.py" in argument for command in commands for argument in command["argv"])
+    assert set(registry["milestones"]) == {"M01", "M02"}
+    for milestone in registry["milestones"].values():
+        commands = milestone["commands"]
+        assert commands
+        assert all(command["required"] is True for command in commands)
+        assert all(command["argv"] for command in commands)
+        assert not any(
+            "run_acceptance.py" in argument
+            for command in commands
+            for argument in command["argv"]
+        )
