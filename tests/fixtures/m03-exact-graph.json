@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "accepted_annotation_rows": [
+    {"bodyId": 10, "superclass": "fixture_neuron", "status": "Traced", "statusLabel": "Reviewed"},
+    {"bodyId": 20, "superclass": "fixture_neuron", "status": "Traced", "statusLabel": "Reviewed"},
+    {"bodyId": 40, "superclass": "fixture_neuron", "status": "Traced", "statusLabel": "Reviewed"},
+    {"bodyId": 99, "superclass": "fixture_neuron", "status": "Traced", "statusLabel": "Reviewed"}
+  ],
+  "transmitter_rows": [
+    {"body": 10, "total_nt_predictions": 10, "predicted_nt_confidence": 0.9, "predicted_nt": "acetylcholine", "ground_truth": null, "consensus_nt": "acetylcholine"},
+    {"body": 20, "total_nt_predictions": 10, "predicted_nt_confidence": 0.8, "predicted_nt": "gaba", "ground_truth": null, "consensus_nt": "gaba"},
+    {"body": 40, "total_nt_predictions": 10, "predicted_nt_confidence": 0.5, "predicted_nt": "unclear", "ground_truth": null, "consensus_nt": "unclear"},
+    {"body": 99, "total_nt_predictions": 10, "predicted_nt_confidence": 0.7, "predicted_nt": "histamine", "ground_truth": null, "consensus_nt": "histamine"}
+  ],
+  "connection_rows": [
+    {"body_pre": 10, "body_post": 20, "weight": 1},
+    {"body_pre": 20, "body_post": 20, "weight": 4},
+    {"body_pre": 20, "body_post": 40, "weight": 3},
+    {"body_pre": 40, "body_post": 10, "weight": 2},
+    {"body_pre": 40, "body_post": 10, "weight": 5}
+  ],
+  "expected": {
+    "ids": [10, 20, 40, 99],
+    "offsets": [0, 1, 3, 4, 4],
+    "targets": [1, 1, 2, 0],
+    "counts": [1, 4, 3, 7],
+    "weights": [1.0, -4.0, -3.0, 0.0],
+    "N": 4,
+    "source_accepted_E": 4,
+    "executable_nonzero_E": 3,
+    "contacts": 15,
+    "disabled_contact_mass": 7,
+    "isolated_accepted_neurons": 1
+  }
+}

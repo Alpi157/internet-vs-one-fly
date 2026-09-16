@@ -104,7 +104,10 @@ def test_ledger_lifecycle_consistency() -> None:
         ).hexdigest()
         assert ledger["dataset_release"] == "MaleCNS v1.0"
         assert len(ledger["source_files"]) == 3
-        assert all(source["observed_bytes"] > 0 for source in ledger["source_files"])
+        assert all(
+            source.get("bytes", source.get("observed_bytes", 0)) > 0
+            for source in ledger["source_files"]
+        )
         assert all(
             len(source["observed_sha256"]) == 64
             for source in ledger["source_files"]
@@ -141,22 +144,27 @@ def test_required_m01_paths_and_registry() -> None:
         "tooling.json",
         "docs/architecture.md",
         "docs/data-attribution.md",
+        "docs/graph-format.md",
         "profiles/source-lock.json",
+        "profiles/accepted-neurons.json",
+        "profiles/compile-transform-v1.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
+        "src/flybench/graph.py",
         "tools/acceptance.json",
         "tools/run_acceptance.py",
         "tools/review_bundle.py",
         "tests/test_scaffold.py",
         "tests/test_review_tools.py",
         "tests/test_source_fetch.py",
+        "tests/test_graph_compile.py",
         ".github/workflows/m01-offline.yml",
     ]
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert set(registry["milestones"]) == {"M01", "M02"}
+    assert {"M01", "M02", "M03"} <= set(registry["milestones"])
     for milestone in registry["milestones"].values():
         commands = milestone["commands"]
         assert commands

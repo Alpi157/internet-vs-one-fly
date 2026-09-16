@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.accepted-neurons.malecns-v1.0.v1",
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "annotation_source_role": "curated_annotations",
+  "selection": {
+    "biological_id_field": "bodyId",
+    "accepted_when": {
+      "field": "superclass",
+      "operator": "not_null"
+    },
+    "rule": "Accept each unique valid bodyId whose curated annotation row has a non-null superclass. The superclass field is the source's neuronal class taxonomy; status and statusLabel are recorded for audit but are not selection fields.",
+    "relevant_source_fields": [
+      "bodyId",
+      "superclass",
+      "status",
+      "statusLabel"
+    ],
+    "invalid_id_policy": "error",
+    "duplicate_id_policy": "deduplicate_after_rule_and_account"
+  },
+  "exclusion_rule": "Exclude annotation rows with null superclass. Never add a node merely because its segment ID occurs in the connection table.",
+  "ordering_rule": "Sort accepted biological body IDs numerically as exact uint64 values; dense runtime index is the zero-based sorted position.",
+  "source_semantics": {
+    "classification": "SOURCE DATA",
+    "basis": "The pinned annotation table calls the field superclass and the MaleCNS authors' graph-count workflow identifies neuronal endpoints through annotation superclass membership.",
+    "reference": "https://github.com/flyconnectome/2025malecns/blob/main/supplemental_data/quantify-neuron-connections.ipynb",
+    "tbc_policy": "Retain non-null *_tbc superclass values; uncertainty remains explicit in the source label and is not converted to a different class."
+  },
+  "compile_transform": {
+    "path": "compile-transform-v1.json",
+    "profile_id": "flybench.fast-current-compile.v1"
+  }
+}

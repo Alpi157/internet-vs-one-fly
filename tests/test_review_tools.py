@@ -290,3 +290,132 @@ def test_m02_bundle_uses_bounded_report_for_large_source_inventory(tmp_path: Pat
         assert not any(name.startswith("repo/data/raw/") for name in archive.namelist())
         assert "evidence/manual-source-review.txt" in archive.namelist()
         assert b"present (operator-supplied)" in archive.read("REVIEW.md")
+
+
+def test_m03_bundle_inventories_omitted_arrays_with_semantic_identity(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "m03-fixture-repo"
+    base = make_fixture_repository(repo)
+    with (repo / ".gitignore").open("a", encoding="utf-8") as stream:
+        stream.write("data/compiled/\n")
+    (repo / "m03-marker.txt").write_text("deterministic graph compiler fixture\n")
+    (repo / "src" / "flybench" / "graph.py").write_text("COMPILER = 'fixture'\n")
+    git(repo, "add", ".gitignore", "m03-marker.txt", "src/flybench/graph.py")
+    git(repo, "commit", "-q", "-m", "M03 fixture candidate")
+    submitted = git(repo, "rev-parse", "HEAD").stdout.strip()
+
+    graph_dir = repo / "data" / "compiled" / "full"
+    graph_dir.mkdir(parents=True)
+    array_path = graph_dir / "ids.npy"
+    array_path.write_bytes(b"bounded-fixture-array")
+    array_digest = hashlib.sha256(array_path.read_bytes()).hexdigest()
+    graph_digest = "1" * 64
+    raw_dir = repo / "data" / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    source_files = []
+    for index, role in enumerate(
+        ("curated_annotations", "aggregate_neurotransmitters", "connection_weights"),
+        start=1,
+    ):
+        source_path = raw_dir / f"{role}.fixture"
+        source_path.write_bytes(f"source-{index}".encode())
+        source_files.append(
+            {
+                "role": role,
+                "filename": source_path.name,
+                "bytes": source_path.stat().st_size,
+                "observed_sha256": hashlib.sha256(source_path.read_bytes()).hexdigest(),
+                "upstream_sha256": None,
+            }
+        )
+    evidence = repo / "evidence" / "M03"
+    evidence.mkdir(parents=True, exist_ok=True)
+    audit = {
+        "status": "PASS",
+        "compiler": {
+            "code_git_sha": submitted,
+            "module_sha256": hashlib.sha256(
+                (repo / "src" / "flybench" / "graph.py").read_bytes()
+            ).hexdigest(),
+        },
+        "semantic_graph_digest": graph_digest,
+        "graph": {
+            "N": 1,
+            "source_accepted_E": 0,
+            "executable_nonzero_E": 0,
+            "represented_source_contacts": 0,
+            "disabled_zero_weight_contact_mass": 0,
+            "isolated_accepted_neurons": 1,
+        },
+        "source_lock": {"sha256": "2" * 64, "source_files": source_files},
+        "selection_profile": {"sha256": "3" * 64, "semantic_sha256": "4" * 64},
+        "compile_transform_profile": {"sha256": "5" * 64},
+        "build_resource": {"command": ["flybench", "data", "compile"]},
+        "arrays": {
+            "ids": {
+                "filename": "ids.npy",
+                "bytes": array_path.stat().st_size,
+                "sha256": array_digest,
+                "dtype": "uint64",
+                "shape": [1],
+            }
+        },
+    }
+    (evidence / "full-audit.json").write_text(json.dumps(audit))
+    determinism = {
+        "status": "PASS",
+        "first_semantic_graph_digest": graph_digest,
+        "second_semantic_graph_digest": graph_digest,
+    }
+    (evidence / "determinism.json").write_text(json.dumps(determinism))
+    synthetic = evidence / "synthetic"
+    synthetic.mkdir()
+    (synthetic / "synthetic-result.json").write_text(json.dumps({"status": "PASS"}))
+    (evidence / "command-results.json").write_text(
+        json.dumps(
+            {
+                "status": "PASS",
+                "submitted_code_sha": submitted,
+                "commands": [],
+            }
+        )
+    )
+
+    output = tmp_path / "m03-review.zip"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(BUNDLER),
+            "--milestone",
+            "M03",
+            "--attempt",
+            "1",
+            "--base",
+            base,
+            "--out",
+            str(output),
+        ],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    with zipfile.ZipFile(output) as archive:
+        names = set(archive.namelist())
+        assert "data/compiled/full/ids.npy" not in names
+        assert "evidence/full-audit.json" in names
+        large_files = json.loads(archive.read("large-files.json"))
+        entry = next(
+            item
+            for item in large_files["omitted"]
+            if item["path"] == "data/compiled/full/ids.npy"
+        )
+        assert entry["sha256"] == array_digest
+        assert entry["bytes"] == array_path.stat().st_size
+        assert entry["dtype"] == "uint64"
+        assert entry["shape"] == [1]
+        assert entry["graph_semantic_digest"] == graph_digest
+        assert entry["generation_command"] == ["flybench", "data", "compile"]
+        assert graph_digest.encode() in archive.read("REVIEW.md")

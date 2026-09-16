@@ -54,6 +54,16 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def sha256_file(path: Path) -> tuple[int, str]:
+    digest = hashlib.sha256()
+    size = 0
+    with path.open("rb") as stream:
+        while chunk := stream.read(8 * 1024 * 1024):
+            size += len(chunk)
+            digest.update(chunk)
+    return size, digest.hexdigest()
+
+
 def exclusion_reason(path: PurePosixPath) -> str | None:
     parts_lower = tuple(part.lower() for part in path.parts)
     name = path.name.lower()
@@ -122,6 +132,8 @@ def render_review(
     reports: list[tuple[str, dict[str, Any]]],
     tooling: dict[str, Any] | None,
     manual_source_review_present: bool,
+    m03_audit: dict[str, Any] | None,
+    m03_determinism: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -135,6 +147,18 @@ def render_review(
             "Upstream SHA-256 values remain null because none was observed on the official page; recorded SHA-256 values are locally observed byte identities.",
             "Bulk source bytes are deliberately excluded and described in large-files.json.",
             "No graph cardinality, biological mapping, or later-milestone result is claimed.",
+        ]
+    elif milestone == "M03":
+        objective = (
+            "Compile the pinned MaleCNS v1.0 neuron-level sources into a deterministic, "
+            "auditable, source-major sparse graph without implementing neural dynamics."
+        )
+        assumptions = [
+            "Accepted nodes are exact uint64 body IDs with non-null curated superclass, sorted numerically; raw edge endpoints never create nodes.",
+            "Raw uint64 contact counts remain separate from provisional float32 executable weights.",
+            "Transmitter labels and confidences are source data; effective signs, unit gain, and no-normalization are explicit MODEL ASSUMPTIONS.",
+            "Unknown, missing, unsupported, and modulatory signaling contributes zero fast-current weight rather than being silently made excitatory.",
+            "Full arrays and pinned source bytes are omitted from this bounded ZIP and identified in large-files.json; the exact synthetic graph is included.",
         ]
     else:
         objective = (
@@ -194,6 +218,19 @@ def render_review(
             )
     else:
         lines.append("- Primary acceptance results were not captured.")
+    if milestone == "M03" and m03_audit:
+        graph = m03_audit.get("graph", {})
+        lines.extend(
+            [
+                f"- Full graph semantic digest: `{m03_audit.get('semantic_graph_digest')}`.",
+                f"- Accepted N: `{graph.get('N')}`; source accepted E: `{graph.get('source_accepted_E')}`; executable nonzero E: `{graph.get('executable_nonzero_E')}`.",
+                f"- Represented contacts: `{graph.get('represented_source_contacts')}`; disabled contact mass: `{graph.get('disabled_zero_weight_contact_mass')}`; isolated accepted neurons: `{graph.get('isolated_accepted_neurons')}`.",
+            ]
+        )
+    if milestone == "M03" and m03_determinism:
+        lines.append(
+            f"- Independent repeat-build comparison: `{m03_determinism.get('status')}`; first `{m03_determinism.get('first_semantic_graph_digest')}`, repeat `{m03_determinism.get('second_semantic_graph_digest')}`."
+        )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -237,7 +274,11 @@ def render_review(
             (
                 "- This archive covers source identity and acquisition only; it contains no graph-compilation or biological-result evidence."
                 if milestone == "M02"
-                else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                else (
+                    "- Full generated arrays are omitted for bounded review; exact hashes, dtypes, shapes, sizes, generation identities, audit results, and a directly inspectable synthetic graph are included."
+                    if milestone == "M03"
+                    else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                )
             ),
             "",
         ]
@@ -359,6 +400,114 @@ def m02_large_source_inventory(
     return result
 
 
+def m03_large_graph_inventory(
+    root: Path, submitted: str, evidence_root: Path
+) -> list[dict[str, Any]]:
+    audit_path = evidence_root / "full-audit.json"
+    try:
+        audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M03 full audit is missing or invalid: {exc}") from exc
+    if audit.get("status") != "PASS":
+        raise BundleError("M03 full audit does not report PASS")
+    compiler = audit.get("compiler", {})
+    if compiler.get("code_git_sha") != submitted:
+        raise BundleError("M03 full audit was not generated from the submitted commit")
+    expected_module_sha = sha256(
+        commit_blob(root, submitted, "src/flybench/graph.py")
+    )
+    if compiler.get("module_sha256") != expected_module_sha:
+        raise BundleError("M03 full audit compiler module differs from submitted code")
+    graph_digest = audit.get("semantic_graph_digest")
+    arrays = audit.get("arrays")
+    if not isinstance(graph_digest, str) or not isinstance(arrays, dict) or not arrays:
+        raise BundleError("M03 full audit lacks semantic graph or array identities")
+    try:
+        determinism = json.loads(
+            (evidence_root / "determinism.json").read_text(encoding="utf-8")
+        )
+        synthetic = json.loads(
+            (evidence_root / "synthetic" / "synthetic-result.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        acceptance = json.loads(
+            (evidence_root / "command-results.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M03 determinism/synthetic/acceptance evidence is missing: {exc}") from exc
+    if (
+        determinism.get("status") != "PASS"
+        or determinism.get("first_semantic_graph_digest") != graph_digest
+        or determinism.get("second_semantic_graph_digest") != graph_digest
+    ):
+        raise BundleError("M03 repeat-build evidence does not match the audited graph")
+    if synthetic.get("status") != "PASS":
+        raise BundleError("M03 exact synthetic evidence does not report PASS")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M03 acceptance evidence does not pass for the submitted commit")
+    source_lock = audit.get("source_lock", {})
+    selection = audit.get("selection_profile", {})
+    transform = audit.get("compile_transform_profile", {})
+    generation_command = audit.get("build_resource", {}).get("command")
+    result: list[dict[str, Any]] = []
+    source_files = source_lock.get("source_files")
+    if not isinstance(source_files, list) or len(source_files) != 3:
+        raise BundleError("M03 full audit lacks the three pinned source identities")
+    for entry in sorted(source_files, key=lambda value: value.get("role", "")):
+        filename = entry.get("filename")
+        if not isinstance(filename, str) or Path(filename).name != filename:
+            raise BundleError("M03 full audit contains an unsafe source filename")
+        path = root / "data" / "raw" / filename
+        if not path.is_file():
+            raise BundleError(f"audited M03 source is missing: {path}")
+        size, digest = sha256_file(path)
+        if size != entry.get("bytes") or digest != entry.get("observed_sha256"):
+            raise BundleError(f"M03 source differs from full audit: {filename}")
+        result.append(
+            {
+                "path": f"data/raw/{filename}",
+                "reason": "official MaleCNS bulk source excluded from bounded review ZIP",
+                "role": entry.get("role"),
+                "bytes": size,
+                "sha256": digest,
+                "upstream_sha256": entry.get("upstream_sha256"),
+                "source_lock_sha256": source_lock.get("sha256"),
+                "generation_command": generation_command,
+            }
+        )
+    for name, entry in sorted(arrays.items()):
+        if not isinstance(entry, dict):
+            raise BundleError(f"invalid M03 array audit entry {name!r}")
+        filename = entry.get("filename")
+        if not isinstance(filename, str) or Path(filename).name != filename:
+            raise BundleError(f"unsafe M03 array filename for {name!r}")
+        path = root / "data" / "compiled" / "full" / filename
+        if not path.is_file():
+            raise BundleError(f"audited M03 array is missing: {path}")
+        size, digest = sha256_file(path)
+        if size != entry.get("bytes") or digest != entry.get("sha256"):
+            raise BundleError(f"M03 array differs from full audit: {filename}")
+        result.append(
+            {
+                "path": f"data/compiled/full/{filename}",
+                "reason": "full generated graph array omitted from bounded review ZIP",
+                "array_name": name,
+                "bytes": size,
+                "sha256": digest,
+                "dtype": entry.get("dtype"),
+                "shape": entry.get("shape"),
+                "graph_semantic_digest": graph_digest,
+                "generation_command": generation_command,
+                "source_lock_sha256": source_lock.get("sha256"),
+                "selection_profile_sha256": selection.get("sha256"),
+                "selection_semantic_sha256": selection.get("semantic_sha256"),
+                "compile_transform_profile_sha256": transform.get("sha256"),
+            }
+        )
+    return result
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -411,6 +560,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     add_evidence(entries, evidence_root, omitted)
     if milestone == "M02":
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
+    if milestone == "M03":
+        omitted.extend(m03_large_graph_inventory(root, submitted, evidence_root))
 
     large_files = {
         "schema_version": 1,
@@ -419,7 +570,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         "statement": (
             "No legitimate large files were omitted."
             if not omitted
-            else "The listed files were omitted for the stated bounded-review reason; identities come from the committed lock and captured report."
+            else "The listed files were omitted for the stated bounded-review reason; identities come from committed configuration and captured evidence."
         ),
     }
     entries["large-files.json"] = json_bytes(large_files)
@@ -429,6 +580,16 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         tooling_value = json.loads(commit_blob(root, submitted, "tooling.json").decode("utf-8"))
     except (BundleError, UnicodeDecodeError, json.JSONDecodeError):
         tooling_value = None
+    try:
+        m03_audit = json.loads((evidence_root / "full-audit.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m03_audit = None
+    try:
+        m03_determinism = json.loads(
+            (evidence_root / "determinism.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m03_determinism = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -438,6 +599,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         reports,
         tooling_value,
         (evidence_root / "manual-source-review.txt").is_file(),
+        m03_audit,
+        m03_determinism,
     )
 
     manifest = {
