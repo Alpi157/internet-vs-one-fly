@@ -1,7 +1,7 @@
 playbook_version: '0.1'
-current_milestone: M07
+current_milestone: M08
 current_attempt: 1
-last_accepted_milestone: M06
+last_accepted_milestone: M07
 accepted_milestones:
 - M01
 - M02
@@ -9,6 +9,7 @@ accepted_milestones:
 - M04
 - M05
 - M06
+- M07
 milestone_status:
   M01: ACCEPTED
   M02: ACCEPTED
@@ -16,12 +17,13 @@ milestone_status:
   M04: ACCEPTED
   M05: ACCEPTED
   M06: ACCEPTED
-  M07: SUBMITTED
+  M07: ACCEPTED
+  M08: NOT_STARTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
-repository_url: null
-last_accepted_code_commit: ab8e88ff00db5a72e10a5769b232fb10f689c815
+repository_url: https://github.com/Alpi157/internet-vs-one-fly
+last_accepted_code_commit: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5
 tooling:
   python: 3.12.3
   uv: 0.12.13
@@ -64,11 +66,19 @@ live_graph:
   E: 20607
   contacts: 79112
   selection:
-    profile_id: flybench.escape-circuit.malecns-v1.0.v1
-    profile_sha256: 29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b
+    decision: DISCLOSED_CIRCUIT
+    profile_id: flybench.live-candidate.v0.1
+    profile_sha256: df1f06266c4fb2274ae32a269b538104567c7fc79369b9a88a761ae47fd0cd88
+    graph_profile_id: flybench.escape-circuit.malecns-v1.0.v1
+    graph_profile_sha256: 29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b
     scope: ports-only induced circuit
-    status: M04 circuit identity accepted; M06 G-BIO controller accepted; live backend/performance
-      selection remains pending M07.
+    backend: kernel
+    kernel_id: flybench.numba-serial-active-source.v1
+    kernel_source_sha256: 5b1db14f97974dd377a3cbd66ecaca5f0b307c309001c7f2620ab5bcd2c12723
+    measurement_hardware_identity_sha256: 2517515001def1613a9dbb46595704428e320cb2b9e201dbabdbb7839f3b7c05
+    measurement_evidence_sha256: 469aeecb217ff7ff8d149346a310b98bdadbd9008a941513786e4377a658e79f
+    status: M07 accepted serving candidate; production-host feasibility remains provisional
+      until M15.
 ports:
   mapping_digest: 6652462228ddf9af863fae95608fd6cacb44fbd86fd12d0799ec65d8dabcef3d
   input_body_ids:
@@ -405,8 +415,122 @@ reexecution:
   sample_digest: null
   result: UNMEASURED
 measurements:
-  full_graph: UNMEASURED
-  live_profile: UNMEASURED
+  full_graph:
+    status: MEASURED_M07_PROVISIONAL
+    graph_digest: 429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0
+    backend: kernel
+    hardware_identity_sha256: 2517515001def1613a9dbb46595704428e320cb2b9e201dbabdbb7839f3b7c05
+    workloads:
+      quiet:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 8.029405
+        p95_ms: 8.577462
+        p99_ms: 11.444600819999975
+        max_ms: 14.664734
+        mean_ms: 8.156719306666666
+        intervals_gt_7_ms: 300
+        intervals_gt_10_ms: 4
+        wall_seconds_per_simulated_second:
+        - 0.819961509
+        - 0.818232291
+        - 0.812240703
+      nominal:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 8.5165995
+        p95_ms: 9.19605755
+        p99_ms: 12.64999659999998
+        max_ms: 15.4606
+        mean_ms: 8.542192973333332
+        intervals_gt_7_ms: 300
+        intervals_gt_10_ms: 4
+        wall_seconds_per_simulated_second:
+        - 0.896652571
+        - 0.843234314
+        - 0.826942529
+      sustained:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 9.9854205
+        p95_ms: 11.54881155
+        p99_ms: 13.085748719999975
+        max_ms: 18.101057
+        mean_ms: 10.220291853333334
+        intervals_gt_7_ms: 300
+        intervals_gt_10_ms: 148
+        wall_seconds_per_simulated_second:
+        - 1.126155386
+        - 1.009830065
+        - 0.933420827
+    evidence_path: evidence/M07/full-performance.json
+    interpretation: Failed PROVISIONAL_FULL latency/deadline conditions on the M07
+      WSL2 development machine; no full-graph authority carryover required or run.
+  live_profile:
+    status: MEASURED_M07_PROVISIONAL
+    selection: DISCLOSED_CIRCUIT
+    graph_digest: 53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5
+    backend: kernel
+    hardware_identity_sha256: 2517515001def1613a9dbb46595704428e320cb2b9e201dbabdbb7839f3b7c05
+    workloads:
+      quiet:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 0.162473
+        p95_ms: 0.24149855
+        p99_ms: 0.3090927999999999
+        max_ms: 0.435438
+        mean_ms: 0.17693444
+        intervals_gt_7_ms: 0
+        intervals_gt_10_ms: 0
+        wall_seconds_per_simulated_second:
+        - 0.018432474
+        - 0.017618518
+        - 0.017525627
+      nominal:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 0.1655225
+        p95_ms: 0.25246150000000006
+        p99_ms: 0.31234180999999994
+        max_ms: 0.322346
+        mean_ms: 0.18098713333333333
+        intervals_gt_7_ms: 0
+        intervals_gt_10_ms: 0
+        wall_seconds_per_simulated_second:
+        - 0.017938964
+        - 0.018923423
+        - 0.018069697
+      sustained:
+        repeat_count: 3
+        complete_repeat_count: 3
+        timeout_repeat_count: 0
+        error_repeat_count: 0
+        p50_ms: 0.1849085
+        p95_ms: 0.2474785
+        p99_ms: 0.3194056099999998
+        max_ms: 0.348376
+        mean_ms: 0.19675727333333334
+        intervals_gt_7_ms: 0
+        intervals_gt_10_ms: 0
+        wall_seconds_per_simulated_second:
+        - 0.019969821
+        - 0.019686976
+        - 0.01984239
+    kernel_parity_status: PASS
+    circuit_gbio_preservation_status: PASS
+    evidence_path: evidence/M07/circuit-performance.json
+    provisional_until_m15: true
   session_memory: UNMEASURED
   recorder_overhead: UNMEASURED
   host_capacity: UNMEASURED
@@ -507,6 +631,38 @@ gates:
     - Introducing hidden threat access in the decoder or ambient movement.
     - Treating the G-BIO result as natural-fly validation, biological causality, wiring
       superiority or whole-CNS locomotion.
+  G-FULL:
+    decision: PASS
+    selection: DISCLOSED_CIRCUIT
+    selected_backend: kernel
+    supporting_review: M07-a01
+    code_sha: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5
+    review_zip_sha256: e1c2679bb43104e03972bb3616119437ab26d39c338e2392acd05fed1663133b
+    live_candidate_profile_sha256: df1f06266c4fb2274ae32a269b538104567c7fc79369b9a88a761ae47fd0cd88
+    measurement_evidence_sha256: 469aeecb217ff7ff8d149346a310b98bdadbd9008a941513786e4377a658e79f
+    measurement_hardware_identity_sha256: 2517515001def1613a9dbb46595704428e320cb2b9e201dbabdb7839f3b7c05
+    kernel_source_sha256: 5b1db14f97974dd377a3cbd66ecaca5f0b307c309001c7f2620ab5bcd2c12723
+    kernel_parity_status: PASS
+    optimization_passes_used: 0
+    full_authority_carryover_status: NOT_RUN_COMPUTATIONALLY_INELIGIBLE
+    conditions:
+    - The serving candidate is the disclosed accepted 313-neuron circuit, not the
+      166700-neuron full graph.
+    - The deterministic Numba kernel must retain accepted M05/M06 numerical/controller
+      parity.
+    - Circuit p99 control completion stayed <=7 ms and measured intervals >10 ms stayed
+      zero for quiet, nominal and sustained M07 workloads on the measurement CPU.
+    - Full graph failed the predeclared PROVISIONAL_FULL latency/deadline conditions;
+      its audit remains valid but it is not the M07 live candidate.
+    - M07 measurements are provisional on the WSL2 development machine; production-host
+      and multi-worker feasibility remain M15 responsibilities.
+    invalidating_changes:
+    - Changing graph, ports, ModelSpec, selected M06 controller parameters, neural
+      timestep/control interval, encoder/decoder/environment semantics, or kernel
+      numerical semantics.
+    - Serving the full graph without a later accepted performance/authority decision.
+    - Enabling unsafe fastmath, nondeterministic accumulation, hidden edge pruning,
+      or an unreviewed backend.
 reviews:
 - milestone: M01
   attempt: 1
@@ -890,6 +1046,57 @@ reviews:
     whole-CNS locomotion.
   - The selected setting has stronger static-size activity than looming activity;
     M06 supports input dependence/authority, not biological looming selectivity.
+- milestone: M07
+  attempt: 1
+  code_sha: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5
+  zip_sha256: e1c2679bb43104e03972bb3616119437ab26d39c338e2392acd05fed1663133b
+  verdict: ACCEPTED
+  evidence_inspected_or_rerun:
+  - 'Independent: review ZIP SHA-256 verified.'
+  - 'Independent: review-manifest inventory 136/136 hashed entries verified for exact
+    hashes and byte sizes; review-manifest.json is the sole intentionally unhashed
+    entry.'
+  - 'Independent: M07 git_diff.patch applied to the accepted M06-a02 repository snapshot
+    and reproduced every submitted repo snapshot file byte-for-byte.'
+  - 'Independent: submitted ledger matched the reviewer-supplied M07-start ledger
+    except the permitted M07 NOT_STARTED -> SUBMITTED transition and next_action update.'
+  - 'Independent: tests/test_kernel_parity.py + tests/test_probe_limits.py — 27 passed
+    in reviewer runtime.'
+  - 'Independent: wider no-pyarrow reviewer subset — 86 passed; the only 2 failures
+    were Git-history provenance checks requiring the intentionally omitted .git directory.'
+  - 'Independent: tools/check_m07_evidence.py passed after staging the exact compact
+    circuit and full manifest bytes included in the review bundle.'
+  - 'Independent: all 1800 raw interval timing rows were regrouped and p50/p95/p99/max/mean,
+    >7 ms counts, >10 ms counts and deadline-miss fractions recomputed exactly; all
+    values match circuit-performance.json and full-performance.json.'
+  - 'Independent: raw timing inventory contains exactly 18 COMPLETE repeat groups
+    (2 graphs x 3 workloads x 3 repeats), each with interval indices 0..99 and no
+    TIMEOUT/ERROR.'
+  - 'Independent: measurement-evidence digest recomputed as 469aeecb217ff7ff8d149346a310b98bdadbd9008a941513786e4377a658e79f
+    and live-candidate profile bytes match the committed profile.'
+  - 'Independent: M07 omitted-full-array inventory matches the previously accepted
+    M03 full-audit array hashes, dtypes, shapes and byte sizes.'
+  - 'Inspected: serial Numba active-source kernel, exact M05 event/refractory/delay
+    semantics, Runner backend boundary, read-only graph handling, full-graph identity
+    loader, circuit end-to-end reference/kernel parity, timeout worker termination/cleanup,
+    memory accounting, workload definitions and G-FULL decision code.'
+  - 'Captured-only: supported Python 3.12 cumulative M01-M07 suite — 114 passed; M07
+    acceptance registry — 6/6 PASS; clean submitted Git identity.'
+  - 'Captured-only: full-graph performance execution and full graph array-byte verification
+    because full M03 arrays are intentionally omitted from the bounded M07 review
+    ZIP.'
+  limitations:
+  - Reviewer runtime used Python 3.13 / Numba 0.65.1 rather than the declared Python
+    3.12.3 / Numba 0.61.2 measurement environment; supported-environment tests are
+    captured evidence.
+  - Raw MaleCNS sources and full M03 graph arrays are intentionally omitted, so full
+    performance could not be re-executed independently in the reviewer container.
+  - M07 measurements were made on the WSL2 development machine, not the eventual production
+    host; final host/multi-worker capacity remains M15.
+  - Full-graph authority carryover was intentionally not run because the full graph
+    already failed every workload's PROVISIONAL_FULL p99/deadline condition.
+  - The multiprocessing tests emit non-failing fork deprecation warnings; no runtime
+    failure was observed.
 decisions:
 - id: D-M06-PROTOCOL-01
   issue: Frozen M06 protocol execution 1 failed before evidence serialization because
@@ -928,9 +1135,8 @@ biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- 'M07: run parity and bounded circuit/full-graph performance probes on the current
-  representative CPU and preserve exact hardware/runtime receipts; if this is not
-  the eventual host, keep full-graph live feasibility provisional until M15.'
+- Operator requested a hold after M07 acceptance. Do not begin M08 until the operator
+  explicitly resumes the implementation sequence.
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -941,4 +1147,5 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Await external review of M07 attempt 1; do not begin M08.
+next_action: HOLD after M07 acceptance. Public repository created at https://github.com/Alpi157/internet-vs-one-fly;
+  do not begin M08 until explicitly authorized.
