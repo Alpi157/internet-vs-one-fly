@@ -12,7 +12,7 @@ milestone_status:
   M02: ACCEPTED
   M03: ACCEPTED
   M04: ACCEPTED
-  M05: NOT_STARTED
+  M05: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
