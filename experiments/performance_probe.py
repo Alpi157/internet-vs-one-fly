@@ -582,6 +582,7 @@ def _graph_performance(
         "schema_version": 1,
         "graph": graph,
         "backend": "kernel",
+        "probe_profile_sha256": sha256_file(ROOT / "profiles/full-probe.json"),
         "status": "COMPLETE" if all(
             value["complete_repeat_count"] == 3
             and value["timeout_repeat_count"] == 0
@@ -973,7 +974,21 @@ def main() -> int:
         "full_conditions": full_checks,
         "full_authority_carryover_status": full_authority["status"],
         "failed_full_graph_conditions": full_failed
-        + ([] if authority_pass else ["full_authority_carryover_pass"]),
+        + (
+            ["full_authority_carryover_pass"]
+            if full_otherwise_qualifies and not authority_pass
+            else []
+        ),
+        "failed_full_graph_condition_details": {
+            workload: {
+                "p99_ns": full_performance["workloads"][workload]["metrics"]["p99_ns"],
+                "count_interval_gt_7_ms": full_performance["workloads"][workload]["metrics"]["count_interval_gt_7_ms"],
+                "count_interval_gt_10_ms": full_performance["workloads"][workload]["metrics"]["count_interval_gt_10_ms"],
+                "timeout_repeat_count": full_performance["workloads"][workload]["timeout_repeat_count"],
+                "error_repeat_count": full_performance["workloads"][workload]["error_repeat_count"],
+            }
+            for workload in ("quiet", "nominal", "sustained")
+        },
         "reasons": (
             ["Every predeclared full-graph computational, memory, parity, and authority condition passed on the measurement CPU."]
             if selection == "PROVISIONAL_FULL"
@@ -1040,6 +1055,7 @@ def main() -> int:
         "measured_hardware_identity_sha256": hardware["hardware_identity_sha256"],
         "measurement_evidence_sha256": measurement_digest,
         "measurement_evidence_manifest": evidence_manifest,
+        "probe_profile_sha256": sha256_file(ROOT / "profiles/full-probe.json"),
         "optimization_passes_used": 0,
         "provisional_until_m15": True,
         "external_milestone_acceptance": "PENDING",

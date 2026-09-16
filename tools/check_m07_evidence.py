@@ -112,6 +112,11 @@ def main() -> int:
         performance: dict[str, dict[str, Any]] = {}
         for graph, filename in (("circuit", "circuit-performance.json"), ("full", "full-performance.json")):
             report = documents[filename]
+            require(
+                report["probe_profile_sha256"]
+                == sha256_file(root / "profiles/full-probe.json"),
+                f"{graph} probe profile mismatch",
+            )
             performance[graph] = report
             for workload in ("quiet", "nominal", "sustained"):
                 workload_report = report["workloads"][workload]
@@ -171,6 +176,7 @@ def main() -> int:
         require(candidate["controller_profile_sha256"] == EXPECTED["controller"], "candidate controller mismatch")
         require(candidate["runtime_model_spec_sha256"] == EXPECTED["runtime_model"], "candidate ModelSpec mismatch")
         require(candidate["implementation"]["kernel_source_sha256"] == sha256_file(root / "src/flybench/kernel.py"), "candidate kernel source mismatch")
+        require(candidate["probe_profile_sha256"] == sha256_file(root / "profiles/full-probe.json"), "candidate probe profile mismatch")
         require(candidate["optimization_passes_used"] == optimization["optimization_passes_used"], "candidate optimization count mismatch")
         require(candidate["provisional_until_m15"] is True, "M15 provisional condition missing")
         require(candidate["external_milestone_acceptance"] == "PENDING", "candidate claims acceptance")
