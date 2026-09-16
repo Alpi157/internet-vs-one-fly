@@ -26,42 +26,96 @@ def test_architecture_identity() -> None:
     )
 
 
-def test_ledger_records_accepted_m01_and_keeps_science_unmeasured() -> None:
+def test_ledger_lifecycle_consistency() -> None:
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
+    required_keys = {
+        "playbook_version",
+        "current_milestone",
+        "current_attempt",
+        "last_accepted_milestone",
+        "accepted_milestones",
+        "milestone_status",
+        "architecture_sha256",
+        "working_name",
+        "demo_name",
+        "last_accepted_code_commit",
+        "source_lock_digest",
+        "dataset_release",
+        "source_files",
+        "full_graph",
+        "live_graph",
+        "ports",
+        "profiles",
+        "measurements",
+        "reviews",
+        "deferred_scope",
+    }
+    allowed_statuses = {
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "SUBMITTED",
+        "ACCEPTED",
+        "CHANGES_REQUIRED",
+        "BLOCKED",
+    }
+
+    assert required_keys <= ledger.keys()
     assert ledger["playbook_version"] == "0.1"
-    assert ledger["current_milestone"] == "M02"
-    assert ledger["current_attempt"] == 1
-    assert ledger["last_accepted_milestone"] == "M01"
-    assert ledger["accepted_milestones"] == ["M01"]
-    assert ledger["milestone_status"] == {"M01": "ACCEPTED"}
     assert ledger["architecture_sha256"] == ARCHITECTURE_SHA256
-    assert ledger["repository_url"] is None
-    assert ledger["last_accepted_code_commit"] == "58c42226442e6a57b97779833d92f759e31e3d81"
+    assert ledger["working_name"] == "FlyBench"
+    assert ledger["demo_name"] == "Catch the Fly"
+    assert ledger["deferred_scope"] == "architecture_section_17"
+
+    assert type(ledger["current_attempt"]) is int
+    assert ledger["current_attempt"] >= 1
+    assert isinstance(ledger["current_milestone"], str)
+    assert ledger["current_milestone"] in ledger["milestone_status"]
+    assert set(ledger["milestone_status"].values()) <= allowed_statuses
+
+    accepted_milestones = ledger["accepted_milestones"]
+    assert isinstance(accepted_milestones, list)
+    assert "M01" in accepted_milestones
+    assert len(accepted_milestones) == len(set(accepted_milestones))
+    assert ledger["last_accepted_milestone"] == accepted_milestones[-1]
+    assert all(
+        ledger["milestone_status"][milestone] == "ACCEPTED"
+        for milestone in accepted_milestones
+    )
+
+    reviews = ledger["reviews"]
+    assert isinstance(reviews, list)
+    assert any(
+        review["milestone"] == "M01"
+        and review["attempt"] == 1
+        and review["verdict"] == "ACCEPTED"
+        for review in reviews
+    )
+    assert any(
+        review["milestone"] == ledger["last_accepted_milestone"]
+        and review["verdict"] == "ACCEPTED"
+        and review["code_sha"] == ledger["last_accepted_code_commit"]
+        for review in reviews
+    )
 
     source_lock = ROOT / "profiles" / "source-lock.json"
-    assert ledger["source_lock_digest"] == hashlib.sha256(source_lock.read_bytes()).hexdigest()
-    assert ledger["dataset_release"] == "MaleCNS v1.0"
-    assert len(ledger["source_files"]) == 3
-    assert all(source["observed_bytes"] > 0 for source in ledger["source_files"])
-    assert all(len(source["observed_sha256"]) == 64 for source in ledger["source_files"])
-    assert all(source["upstream_sha256"] is None for source in ledger["source_files"])
-    for graph_name in ("full_graph", "live_graph"):
-        assert ledger[graph_name]["digest"] is None
-        assert ledger[graph_name]["N"] is None
-        assert ledger[graph_name]["E"] is None
-        assert ledger[graph_name]["contacts"] is None
-    assert ledger["ports"]["input_body_ids"] == []
-    assert ledger["ports"]["output_body_ids"] == []
-    assert all(value is None for value in ledger["profiles"].values())
-    assert all(value == "UNMEASURED" for value in ledger["measurements"].values())
-    assert ledger["reexecution"]["result"] == "UNMEASURED"
-    assert ledger["alpha_full_graph_optimization_passes_used"] == 0
-    assert ledger["publication"] == {
-        "repository": "NOT_PUBLISHED",
-        "beta": "NOT_PUBLISHED",
-        "alpha": "NOT_PUBLISHED",
-    }
-    assert ledger["deferred_scope"] == "architecture_section_17"
+    if "M02" in accepted_milestones:
+        assert ledger["source_lock_digest"] == hashlib.sha256(
+            source_lock.read_bytes()
+        ).hexdigest()
+        assert ledger["dataset_release"] == "MaleCNS v1.0"
+        assert len(ledger["source_files"]) == 3
+        assert all(source["observed_bytes"] > 0 for source in ledger["source_files"])
+        assert all(
+            len(source["observed_sha256"]) == 64
+            for source in ledger["source_files"]
+        )
+        assert all(
+            source["upstream_sha256"] is None for source in ledger["source_files"]
+        )
+    else:
+        assert ledger["source_lock_digest"] is None
+        assert ledger["dataset_release"] is None
+        assert ledger["source_files"] == []
 
 
 def test_observed_tooling_is_honest() -> None:

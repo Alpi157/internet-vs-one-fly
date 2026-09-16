@@ -1,7 +1,7 @@
 playbook_version: "0.1"
 
 current_milestone: M02
-current_attempt: 2
+current_attempt: 3
 
 last_accepted_milestone: M01
 
@@ -126,6 +126,28 @@ reviews:
     finding:
       - "Submission ledger did not preserve the latest reviewer-approved M01 evidence and prematurely promoted unaccepted M02 source identities into the authoritative ledger."
 
+  - milestone: M02
+    attempt: 2
+    code_sha: 4c03df33e8cd060d50399530a00830dc19209c2f
+    zip_sha256: e12704937ce98d51426bae9e48fb55e03516f38588d2a66dd53f370e8f2257cf
+    verdict: CHANGES_REQUIRED
+    evidence_inspected_or_rerun:
+      - "Independent: review ZIP SHA-256 verified."
+      - "Independent: review manifest inventory 49/49 hashes and sizes verified."
+      - "Independent: source-lock SHA-256 verified as 2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c."
+      - "Independent: M02 attempt-1 and attempt-2 repo snapshots compared; ledger.yaml was the only tracked file changed."
+      - "Independent: attempt-2 ledger matched the reviewer-supplied ledger semantically except for the explicitly permitted M02 status transition from CHANGES_REQUIRED to SUBMITTED."
+      - "Independent: tests/test_review_tools.py — 5 passed."
+      - "Independent: combined scaffold/review regression run produced 1 failed, 9 passed because tests/test_scaffold.py still requires current_attempt == 1."
+      - "Inspected: GitHub Actions small offline workflow runs tests/test_scaffold.py, so the stale assertion makes current CI fail."
+      - "Captured-only: M02 source-fetch tests — 7 passed."
+      - "Captured-only: all three official source files were verified and reused without redownload."
+    limitations:
+      - "Bulk Feather source bytes remain intentionally absent from the review ZIP, so their hashes were not independently recomputed."
+      - "Reviewer runtime does not contain pyarrow; tests/test_source_fetch.py was not independently rerun in attempt 2."
+    finding:
+      - "tests/test_scaffold.py encodes transient M02 attempt-1/accepted-source ledger values. After the required reviewer-ledger repair it rejects the legitimate attempt-2 ledger, and the committed GitHub Actions workflow therefore fails."
+
 decisions: []
 
 biological_risks: []
@@ -147,4 +169,4 @@ v02:
 
 deferred_scope: architecture_section_17
 
-next_action: "Repair M02 ledger provenance only and submit attempt 2; do not begin M03."
+next_action: "Repair the stale scaffold ledger assertions and submit M02 attempt 3; do not begin M03."
