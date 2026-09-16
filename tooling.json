@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_at_utc": "2026-09-14T11:58:31Z",
+  "observed_at_utc": "2026-09-16T12:05:59Z",
   "repository": "/home/alpi/Projects/FlyBench",
   "commands": {
     "git": {
@@ -32,21 +32,21 @@
     },
     "node": {
       "argv": ["node", "--version"],
-      "executable": null,
-      "available": false,
-      "exit_status": 127,
-      "stdout": "",
-      "stderr": "node: command not found\n",
-      "normalized_version": null
+      "executable": "/home/alpi/.nvm/versions/node/v24.21.0/bin/node",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "v24.21.0\n",
+      "stderr": "",
+      "normalized_version": "24.21.0"
     },
     "npm": {
       "argv": ["npm", "--version"],
-      "executable": null,
-      "available": false,
-      "exit_status": 127,
-      "stdout": "",
-      "stderr": "npm: command not found\n",
-      "normalized_version": null
+      "executable": "/home/alpi/.nvm/versions/node/v24.21.0/bin/npm",
+      "available": true,
+      "exit_status": 0,
+      "stdout": "11.19.0\n",
+      "stderr": "",
+      "normalized_version": "11.19.0"
     },
     "uname": {
       "argv": ["uname", "-a"],

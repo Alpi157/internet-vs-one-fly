@@ -149,6 +149,9 @@ def render_review(
     m07_candidate: dict[str, Any] | None,
     m07_circuit_performance: dict[str, Any] | None,
     m07_full_performance: dict[str, Any] | None,
+    m08_decision: dict[str, Any] | None,
+    m08_identity: dict[str, Any] | None,
+    m08_smoke: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -223,6 +226,18 @@ def render_review(
             "The 7 ms value is provisional headroom and 10 ms is the control deadline; all measured activity and edge work accompany timings.",
             "The selected live candidate and all host feasibility remain provisional until external M07 review and final M15 host-capacity work.",
         ]
+    elif milestone == "M08":
+        objective = (
+            "Build the first local playable Catch the Fly loop around the accepted Runner, "
+            "then evaluate its mechanics through bounded automation and operator-supplied human evidence."
+        )
+        assumptions = [
+            "The accepted 313-neuron circuit, deterministic Numba kernel, ModelSpec, controller, encoder, decoder, environment, clock, and Runner order remain unchanged.",
+            "Strike coordinates affect only the M08 geometric collision rule; the neural input remains the accepted non-directional scalar looming schedule and the decoder receives no threat geometry.",
+            "Walking, takeoff, strike timing, radius, cooldown, attempt count, and round horizon are provisional game mechanics, not physiology or biomechanics.",
+            "The audited 166,700-neuron graph is not executed by the live game and is not presented as the live neuron count.",
+            "The human receipts are usability and restricted-host smoke evidence; they are not biological validation, retention evidence, or external milestone acceptance.",
+        ]
     else:
         objective = (
             "Establish the M01 reproducible Python workspace, repository invariants, offline "
@@ -254,6 +269,13 @@ def render_review(
         f"- Architecture SHA-256: `{architecture_sha}`",
         f"- Base identity: `{base}`",
         f"- Submitted code SHA: `{submitted}`",
+        *(
+            [
+                "- Last accepted product implementation SHA before M08: `c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5`."
+            ]
+            if milestone == "M08"
+            else []
+        ),
         "",
         "## Commands actually captured",
         "",
@@ -393,6 +415,26 @@ def render_review(
                 lines.append(
                     f"- {graph_name} `{workload}`: complete repeats `{result.get('complete_repeat_count')}`; timeouts `{result.get('timeout_repeat_count')}`; p99 ns `{metrics.get('p99_ns')}`; >10 ms `{metrics.get('count_interval_gt_10_ms')}`."
                 )
+    if milestone == "M08" and m08_decision:
+        lines.extend(
+            [
+                f"- G-GAME proposed outcome: `{m08_decision.get('proposed_outcome')}`; external milestone acceptance remains `{m08_decision.get('external_milestone_acceptance')}`.",
+                f"- Human-evaluation candidate product SHA: `{m08_decision.get('candidate_product_sha')}`.",
+                f"- Final M08 submission SHA: `{submitted}`.",
+            ]
+        )
+    if milestone == "M08" and m08_identity:
+        graph = m08_identity.get("graph", {})
+        lines.extend(
+            [
+                f"- Live profile SHA-256: `{m08_identity.get('live_profile_sha256')}`; GameSpec SHA-256: `{m08_identity.get('game_spec_sha256')}`.",
+                f"- Executed live scope: N `{graph.get('N')}`, E `{graph.get('E')}`, represented contacts `{graph.get('represented_contacts')}`, backend `{m08_identity.get('backend', {}).get('name')}`.",
+            ]
+        )
+    if milestone == "M08" and m08_smoke:
+        lines.append(
+            f"- Bounded loopback server smoke: `{m08_smoke.get('status')}`; clean termination `{m08_smoke.get('server_terminated_cleanly')}`; bind `{m08_smoke.get('bind_host')}`."
+        )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -452,6 +494,15 @@ def render_review(
                 else "absent; manual authority review remains pending."
             )
         )
+    if milestone == "M08":
+        lines.extend(
+            [
+                "- `evidence/M08/manual/playtests.json`: present and schema/hash checked with at least three anonymized unfamiliar-player entries.",
+                "- `evidence/M08/manual/host-smoke.json`: present and schema/hash checked as operator-supplied restricted-host evidence.",
+                "- `evidence/M08/manual/manual-game-review.txt`: present, non-placeholder, and bound to the candidate product SHA.",
+                "- Gameplay screenshot and short actual-execution clip: present and included subject to the bundle size bound.",
+            ]
+        )
 
     lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
     if milestone == "M02" and not manual_source_review_present:
@@ -493,7 +544,11 @@ def render_review(
                                 else (
                                     "- This archive contains the M07 kernel, frozen parity/probe profiles, raw bounded timing evidence, memory/hardware receipts, and G-FULL candidate decision. Full graph arrays remain omitted with exact identities."
                                     if milestone == "M07"
-                                    else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                    else (
+                                        "- This archive contains the M08 local game/server/frontend implementation, exact lockfiles, automated evidence, operator receipts, bounded media, and compact accepted circuit. Raw MaleCNS and full 166,700-neuron arrays remain excluded."
+                                        if milestone == "M08"
+                                        else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                    )
                                 )
                             )
                         )
@@ -1275,6 +1330,158 @@ def m07_material(
     return omitted
 
 
+def m08_material(
+    root: Path,
+    submitted: str,
+    evidence_root: Path,
+    entries: dict[str, bytes],
+) -> list[dict[str, Any]]:
+    """Validate M08 receipts/identities and include only the accepted compact circuit."""
+
+    checker = subprocess.run(
+        [
+            sys.executable,
+            str(root / "tools" / "check_m08_evidence.py"),
+            "--out",
+            str(evidence_root),
+            "--phase",
+            "final",
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if checker.returncode:
+        raise BundleError(f"M08 evidence validation failed: {checker.stdout}{checker.stderr}")
+    required: dict[str, dict[str, Any]] = {}
+    for name in (
+        "identity-check.json",
+        "local-server-smoke.json",
+        "headless-server-parity.json",
+        "decision.json",
+        "command-results.json",
+        "candidate.json",
+    ):
+        try:
+            required[name] = json.loads(
+                (evidence_root / name).read_text(encoding="utf-8")
+            )
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M08 {name} is missing or invalid: {exc}") from exc
+    decision = required["decision.json"]
+    identity = required["identity-check.json"]
+    smoke = required["local-server-smoke.json"]
+    parity = required["headless-server-parity.json"]
+    acceptance = required["command-results.json"]
+    candidate = decision.get("candidate_product_sha")
+    if (
+        decision.get("gate") != "G-GAME"
+        or decision.get("proposed_outcome") != "PASS_CANDIDATE"
+        or decision.get("external_milestone_acceptance") != "PENDING"
+        or candidate != required["candidate.json"].get("candidate_product_sha")
+    ):
+        raise BundleError("M08 G-GAME candidate decision is incomplete")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M08 acceptance evidence does not pass for the submitted SHA")
+    if smoke.get("status") != "PASS" or smoke.get("bind_host") != "127.0.0.1":
+        raise BundleError("M08 bounded loopback smoke does not pass")
+    if parity.get("status") != "PASS" or not all(parity.get("comparisons", {}).values()):
+        raise BundleError("M08 direct-session/server-adapter parity does not pass")
+    if not isinstance(candidate, str) or not re.fullmatch(r"[0-9a-f]{40}", candidate):
+        raise BundleError("M08 candidate product SHA is invalid")
+    git(root, "merge-base", "--is-ancestor", candidate, submitted)
+    changed_after_human = str(
+        git(root, "diff", "--name-only", candidate, submitted, "--")
+    ).splitlines()
+    if set(changed_after_human) - {"ledger.yaml"}:
+        raise BundleError(
+            "M08 product/config/test files changed after human evaluation: "
+            + ", ".join(changed_after_human)
+        )
+    ledger = commit_blob(root, submitted, "ledger.yaml").decode("utf-8")
+    for required_text in (
+        "last_accepted_milestone: M07",
+        "last_accepted_code_commit: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5",
+        "M08: SUBMITTED",
+        "Do not begin M09",
+    ):
+        if required_text not in ledger:
+            raise BundleError(f"M08 submitted ledger is missing: {required_text}")
+    try:
+        committed_live = commit_blob(root, submitted, "profiles/live.json")
+        committed_game = commit_blob(root, submitted, "profiles/game-v0.1.json")
+    except BundleError as exc:
+        raise BundleError(f"committed M08 profile is unavailable: {exc}") from exc
+    if committed_live != (evidence_root / "live-profile.json").read_bytes():
+        raise BundleError("M08 live-profile evidence differs from committed bytes")
+    if committed_game != (evidence_root / "game-spec.json").read_bytes():
+        raise BundleError("M08 GameSpec evidence differs from committed bytes")
+    if (
+        identity.get("status") != "PASS"
+        or identity.get("graph", {}).get("N") != 313
+        or identity.get("graph", {}).get("E") != 20607
+        or identity.get("graph", {}).get("represented_contacts") != 79112
+        or identity.get("backend", {}).get("name") != "kernel"
+        or identity.get("identities", {}).get("m07_live_candidate_sha256")
+        != "df1f06266c4fb2274ae32a269b538104567c7fc79369b9a88a761ae47fd0cd88"
+        or identity.get("identities", {}).get("controller_sha256")
+        != "0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817"
+    ):
+        raise BundleError("M08 live graph/kernel/controller identities are inconsistent")
+
+    for path in (
+        evidence_root / "manual" / "manual-game-review.txt",
+        evidence_root / "manual" / "host-smoke.json",
+    ):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if re.search(r"-----BEGIN [A-Z ]*PRIVATE KEY-----|password\s*=|token\s*=", text, re.I):
+            raise BundleError(f"M08 operator receipt appears to contain secret material: {path.name}")
+
+    circuit_dir = root / "data" / "compiled" / "escape"
+    full_dir = root / "data" / "compiled" / "full"
+    try:
+        circuit_manifest = json.loads((circuit_dir / "manifest.json").read_text())
+        full_manifest = json.loads((full_dir / "manifest.json").read_text())
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M08 compiled graph manifest unavailable: {exc}") from exc
+    if circuit_manifest.get("semantic_digest", {}).get("value") != (
+        "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+    ):
+        raise BundleError("M08 compact circuit identity differs from accepted M04")
+    if full_manifest.get("semantic_digest", {}).get("value") != (
+        "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0"
+    ):
+        raise BundleError("M08 full graph manifest identity differs from accepted M03")
+    for path in sorted(circuit_dir.iterdir()):
+        if not path.is_file() or path.is_symlink():
+            continue
+        data = path.read_bytes()
+        if len(data) > MAX_INCLUDED_FILE_BYTES:
+            raise BundleError(f"M08 compact circuit artifact is too large: {path.name}")
+        entries[f"data/compiled/escape/{path.name}"] = data
+
+    omitted: list[dict[str, Any]] = []
+    for name, item in sorted(full_manifest.get("arrays", {}).items()):
+        path = full_dir / item["filename"]
+        size, digest = sha256_file(path)
+        if size != item.get("bytes") or digest != item.get("sha256"):
+            raise BundleError(f"M08 full graph array differs from accepted manifest: {name}")
+        omitted.append(
+            {
+                "path": f"data/compiled/full/{item['filename']}",
+                "reason": "accepted M03 full graph array is not executed by M08 and is omitted from the bounded review ZIP",
+                "array_name": name,
+                "bytes": size,
+                "sha256": digest,
+                "dtype": item.get("dtype"),
+                "shape": item.get("shape"),
+                "graph_semantic_digest": full_manifest["semantic_digest"]["value"],
+            }
+        )
+    return omitted
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -1289,6 +1496,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     else:
         base = str(git(root, "rev-parse", "--verify", f"{base_arg}^{{commit}}")).strip()
         diff_base = base
+    if milestone == "M08" and base != "eca1ea5cae5a4805708d4994395e8e5755212b9d":
+        raise BundleError("M08 review base must be the reviewer-approved M07 bookkeeping SHA")
 
     architecture_path = root / "docs" / "architecture.md"
     if not architecture_path.is_file():
@@ -1337,6 +1546,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m06_material(root, submitted, evidence_root, entries)
     if milestone == "M07":
         omitted.extend(m07_material(root, submitted, evidence_root, entries))
+    if milestone == "M08":
+        omitted.extend(m08_material(root, submitted, evidence_root, entries))
 
     large_files = {
         "schema_version": 1,
@@ -1455,6 +1666,24 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m07_full_performance = None
+    try:
+        m08_decision = json.loads(
+            (evidence_root / "decision.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m08_decision = None
+    try:
+        m08_identity = json.loads(
+            (evidence_root / "identity-check.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m08_identity = None
+    try:
+        m08_smoke = json.loads(
+            (evidence_root / "local-server-smoke.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m08_smoke = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -1481,6 +1710,9 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m07_candidate,
         m07_circuit_performance,
         m07_full_performance,
+        m08_decision,
+        m08_identity,
+        m08_smoke,
     )
 
     manifest = {

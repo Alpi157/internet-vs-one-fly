@@ -18,7 +18,7 @@ milestone_status:
   M05: ACCEPTED
   M06: ACCEPTED
   M07: ACCEPTED
-  M08: NOT_STARTED
+  M08: IN_PROGRESS
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -27,8 +27,8 @@ last_accepted_code_commit: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5
 tooling:
   python: 3.12.3
   uv: 0.12.13
-  node: null
-  npm: null
+  node: 24.21.0
+  npm: 11.19.0
   os: WSL2/Linux x86_64
 source_lock_digest: 2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c
 dataset_release: MaleCNS v1.0
@@ -1135,8 +1135,7 @@ biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- Operator requested a hold after M07 acceptance. Do not begin M08 until the operator
-  explicitly resumes the implementation sequence.
+- 'M08 human gate: operator local browser check, three anonymized unfamiliar-player playtests, restricted external-host smoke, gameplay screenshot, short gameplay clip, and operator-authored receipts are required before submission.'
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -1147,5 +1146,5 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: HOLD after M07 acceptance. Public repository created at https://github.com/Alpi157/internet-vs-one-fly;
-  do not begin M08 until explicitly authorized.
+next_action: Complete the exact M08 candidate automated checks, commit the candidate,
+  then stop for operator human evaluation. Do not begin M09.

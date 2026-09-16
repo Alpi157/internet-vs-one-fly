@@ -123,14 +123,23 @@ def test_ledger_lifecycle_consistency() -> None:
 
 def test_observed_tooling_is_honest() -> None:
     tooling = json.loads((ROOT / "tooling.json").read_text(encoding="utf-8"))
+    ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
     commands = tooling["commands"]
     assert commands["git"]["normalized_version"] == "2.43.0"
     assert commands["python"]["normalized_version"] == "3.12.3"
     assert commands["uv"]["normalized_version"] == "0.12.13"
-    for missing in ("node", "npm"):
-        assert commands[missing]["available"] is False
-        assert commands[missing]["exit_status"] != 0
-        assert commands[missing]["normalized_version"] is None
+    if ledger["current_milestone"] == "M08":
+        assert commands["node"]["available"] is True
+        assert commands["node"]["exit_status"] == 0
+        assert commands["node"]["normalized_version"] == "24.21.0"
+        assert commands["npm"]["available"] is True
+        assert commands["npm"]["exit_status"] == 0
+        assert commands["npm"]["normalized_version"] == "11.19.0"
+    else:
+        for missing in ("node", "npm"):
+            assert commands[missing]["available"] is False
+            assert commands[missing]["exit_status"] != 0
+            assert commands[missing]["normalized_version"] is None
     assert "WSL2" in commands["uname"]["normalized_version"]
     assert "x86_64" in commands["uname"]["normalized_version"]
 

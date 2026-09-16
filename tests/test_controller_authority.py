@@ -375,17 +375,24 @@ def test_protocol_files_match_recorded_calibration_commit_after_execution() -> N
     if not controller.is_file():
         pytest.skip("calibration has not yet produced a selected controller")
     commit = json.loads(controller.read_text())["calibration_protocol_commit"]
-    # M07 is explicitly authorized to add a backend boundary to Runner and to
-    # extend acceptance/review tooling. All other frozen M06 scientific protocol
-    # bytes remain fixed at the calibration commit.
+    # M07 was explicitly authorized to add a backend boundary to Runner and to
+    # extend acceptance/review tooling. M08 may add its CLI command and extend
+    # those same test/review registries. All frozen M06 scientific protocol bytes
+    # remain fixed at the calibration commit.
     m07_authorized_evolution = {
         "src/flybench/runner.py",
         "tools/acceptance.json",
         "tools/review_bundle.py",
         "tests/test_controller_authority.py",
     }
+    m08_authorized_evolution = m07_authorized_evolution | {"src/flybench/cli.py"}
     ledger = (ROOT / "ledger.yaml").read_text(encoding="utf-8")
-    allowed = m07_authorized_evolution if "current_milestone: M07" in ledger else set()
+    if "current_milestone: M08" in ledger:
+        allowed = m08_authorized_evolution
+    elif "current_milestone: M07" in ledger:
+        allowed = m07_authorized_evolution
+    else:
+        allowed = set()
     for relative in PROTOCOL_PATHS:
         if relative in allowed:
             continue

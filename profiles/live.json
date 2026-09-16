@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.local-live.v0.1",
+  "classification": "M08 RESOLVED LOCAL-LIVE PROFILE — candidate for external review",
+  "graph": {
+    "path": "data/compiled/escape",
+    "semantic_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+    "N": 313,
+    "E": 20607,
+    "represented_contacts": 79112,
+    "profile_path": "profiles/escape-circuit.json",
+    "profile_sha256": "29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b"
+  },
+  "m07_live_candidate": {
+    "path": "profiles/live-candidate-v0.1.json",
+    "sha256": "df1f06266c4fb2274ae32a269b538104567c7fc79369b9a88a761ae47fd0cd88"
+  },
+  "backend": {
+    "name": "kernel",
+    "kernel_id": "flybench.numba-serial-active-source.v1",
+    "source_path": "src/flybench/kernel.py",
+    "source_sha256": "5b1db14f97974dd377a3cbd66ecaca5f0b307c309001c7f2620ab5bcd2c12723",
+    "serial": true,
+    "parallel": false,
+    "fastmath": false
+  },
+  "model": {
+    "profile_path": "profiles/model-v0.1.json",
+    "numerical_criteria_path": "profiles/numerical-criteria-v0.1.json",
+    "runtime_model_spec_sha256": "8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc",
+    "runtime_synaptic_scale": 0.001,
+    "seed": 20260916
+  },
+  "controller": {
+    "path": "profiles/controller-v0.1.json",
+    "sha256": "0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817",
+    "peak_sensory_external_drive": 4.0
+  },
+  "encoder": {
+    "path": "profiles/encoder-runtime-v0.1.json",
+    "sha256": "7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7"
+  },
+  "decoder": {
+    "path": "profiles/decoder-runtime-v0.1.json",
+    "sha256": "7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f"
+  },
+  "environment": {
+    "path": "profiles/environment-v0.1.json",
+    "sha256": "9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7",
+    "seed": 20260917
+  },
+  "clock": {
+    "neural_dt_ms": 0.5,
+    "control_interval_ms": 10,
+    "neural_steps_per_control_interval": 20,
+    "ordering_identity": "flybench.neural-order.v1"
+  },
+  "game": {
+    "path": "profiles/game-v0.1.json",
+    "sha256": "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7"
+  },
+  "claim_scope": "modeled DNp01-dependent escape onset in the declared simplified circuit/controller",
+  "model_notice": "Live model: 313-neuron MaleCNS-derived circuit. The neural model controls escape onset; walking and takeoff mechanics are simplified. The stimulus is feature-level/scalar, not reconstructed raw vision.",
+  "limitations": [
+    "The model receives a simplified scalar looming signal. Strike direction is not reconstructed from fly vision.",
+    "M06 established modeled input dependence and DNp01 command authority, not biological looming selectivity.",
+    "The selected static-size control generated substantially more DNp01 activity than the selected looming trial.",
+    "This is not a biologically validated looming detector, natural fly escape, whole-CNS locomotion, or causal evidence in a living fly.",
+    "The live game executes the disclosed 313-neuron circuit; the audited 166,700-neuron graph is not the live game graph."
+  ]
+}

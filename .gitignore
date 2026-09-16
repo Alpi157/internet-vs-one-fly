@@ -9,6 +9,9 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+*.tsbuildinfo
+apps/web/vite.config.js
+apps/web/vite.config.d.ts
 
 # Generated local evidence and review submissions
 evidence/

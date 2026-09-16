@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import threading
+import webbrowser
 from pathlib import Path
 
 from flybench.bench import run_bench
@@ -45,6 +47,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     bench.add_argument("profile", type=Path)
     bench.add_argument("--out", required=True, type=Path)
+    demo = commands.add_parser(
+        "demo", help="Run the M08 Catch the Fly demo on the loopback interface"
+    )
+    demo.add_argument("--profile", required=True, type=Path)
+    demo.add_argument("--port", type=int, default=8000)
+    demo.add_argument("--no-browser", action="store_true")
     return parser
 
 
@@ -148,6 +156,37 @@ def main(argv: list[str] | None = None) -> int:
         except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
             print(f"M06 bench failed: {type(exc).__name__}: {exc}", file=sys.stderr)
             return 1
+    if args.command == "demo":
+        if not 1 <= args.port <= 65535:
+            print("M08 demo failed: port must be between 1 and 65535", file=sys.stderr)
+            return 1
+        try:
+            import uvicorn
+
+            from flybench.game import build_live_session, load_live_profile
+            from flybench.server import create_app
+
+            resolved = load_live_profile(args.profile)
+            frontend = resolved.root / "apps" / "web" / "dist"
+            if not (frontend / "index.html").is_file():
+                raise FileNotFoundError(
+                    "built frontend is missing; run: npm --prefix apps/web run build"
+                )
+            # Fail before binding if the compact accepted graph is absent or invalid,
+            # and warm the exact scored kernel signature once.
+            preflight = build_live_session(resolved)
+            preflight.advance_interval()
+            app = create_app(resolved.path, frontend)
+        except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
+            print(f"M08 demo failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return 1
+        url = f"http://127.0.0.1:{args.port}/"
+        print(f"FlyBench M08 local demo: {url}", flush=True)
+        print("Bound to loopback only. Press Ctrl+C to stop.", flush=True)
+        if not args.no_browser:
+            threading.Timer(0.5, webbrowser.open, args=(url,)).start()
+        uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="info")
+        return 0
     parser.error("unsupported command")
     return 2
 
