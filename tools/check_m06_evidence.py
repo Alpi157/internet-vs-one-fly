@@ -127,6 +127,22 @@ def main(argv: list[str] | None = None) -> int:
 
         protocol_commit = provenance["calibration_protocol_commit"]
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        require(provenance["protocol_execution"] == 2, "valid protocol execution number mismatch")
+        require(provenance["repair_decision_id"] == "D-M06-PROTOCOL-01", "repair decision identity mismatch")
+        require(
+            provenance["superseded_failed_protocol_commit"]
+            == "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f",
+            "superseded protocol commit mismatch",
+        )
+        require(
+            provenance["superseded_execution"]["status"] == "INVALID_NOT_RECORDED",
+            "failed execution status was not preserved",
+        )
+        require(
+            provenance["superseded_execution"]["evidence_sha256"]
+            == sha256_file(evidence / "protocol-defect.json"),
+            "preserved protocol-defect evidence changed",
+        )
         require(controller["calibration_protocol_commit"] == protocol_commit, "controller protocol commit mismatch")
         require(decision["calibration_protocol_commit"] == protocol_commit, "decision protocol commit mismatch")
         require(provenance["measurement_code_commit"] == head, "evidence was not rerun at submitted code")

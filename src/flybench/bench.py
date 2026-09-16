@@ -49,6 +49,8 @@ ACCEPTED_MAPPING_DIGEST = (
 ACCEPTED_REFERENCE_CODE_SHA256 = (
     "ce53a63c8f22256ad1aed36088734f2132cf8c4b1f70fd8a06365f1593587783"
 )
+REPAIR_DECISION_ID = "D-M06-PROTOCOL-01"
+SUPERSEDED_FAILED_PROTOCOL_COMMIT = "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
 NORMAL_SCENARIOS = (
     "no-threat",
     "standard looming",
@@ -56,6 +58,7 @@ NORMAL_SCENARIOS = (
     "receding",
 )
 PROTOCOL_PATHS = (
+    "decisions/D-M06-PROTOCOL-01.json",
     "src/flybench/authority.py",
     "src/flybench/bench.py",
     "src/flybench/catch.py",
@@ -408,6 +411,15 @@ def _protocol_provenance() -> dict[str, Any]:
         "protocol_files_unchanged": unchanged,
         "measurement_worktree_clean_at_start": clean,
         "protocol_files": files,
+        "protocol_execution": 2,
+        "repair_decision_id": REPAIR_DECISION_ID,
+        "superseded_failed_protocol_commit": SUPERSEDED_FAILED_PROTOCOL_COMMIT,
+        "superseded_execution": {
+            "protocol_execution": 1,
+            "status": "INVALID_NOT_RECORDED",
+            "evidence_path": "evidence/M06/protocol-defect.json",
+            "evidence_sha256": "435ac8098641caa0146eeec7ce71a0496dffe62fee66552ad687be852eeba1c9"
+        },
         "status": "PASS",
     }
 
@@ -492,7 +504,7 @@ def _controller_profile(
             "trial_duration_ms": 800.0,
             "stimulus_window_ms": [200.0, 600.0],
             "modeled_impact_ms": 600.0,
-            "output_clamp": false,
+            "output_clamp": False,
             "pathway_intervention": null,
         },
         "external_milestone_acceptance": "PENDING",

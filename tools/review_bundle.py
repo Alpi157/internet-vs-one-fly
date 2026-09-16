@@ -1013,8 +1013,21 @@ def m06_material(
         or provenance.get("protocol_files_unchanged") is not True
         or provenance.get("measurement_worktree_clean_at_start") is not True
         or decision.get("calibration_protocol_commit") != protocol_commit
+        or provenance.get("protocol_execution") != 2
+        or provenance.get("repair_decision_id") != "D-M06-PROTOCOL-01"
+        or provenance.get("superseded_failed_protocol_commit")
+        != "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
+        or provenance.get("superseded_execution", {}).get("status")
+        != "INVALID_NOT_RECORDED"
     ):
         raise BundleError("M06 calibration protocol provenance is incomplete")
+    defect_path = evidence_root / "protocol-defect.json"
+    if (
+        not defect_path.is_file()
+        or sha256_file(defect_path)[1]
+        != provenance.get("superseded_execution", {}).get("evidence_sha256")
+    ):
+        raise BundleError("M06 failed protocol execution evidence was not preserved")
     for item in provenance.get("protocol_files", []):
         path = item.get("path")
         if not isinstance(path, str):
