@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-M06-PROTOCOL-02",
+  "milestone": "M06",
+  "external_review_attempt": 1,
+  "classification": "OPERATOR-AUTHORIZED BOUNDED PROTOCOL REPAIR",
+  "original_failed_protocol_commit": "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f",
+  "intermediate_mechanical_repair_commit": "d0ac081bacb476d557608746eabca7141ee49e4e",
+  "intermediate_commit_calibration_execution": "NONE",
+  "failed_protocol_execution": {
+    "number": 1,
+    "status": "INVALID_NOT_RECORDED",
+    "evidence_path": "evidence/M06/protocol-defect.json",
+    "evidence_sha256": "435ac8098641caa0146eeec7ce71a0496dffe62fee66552ad687be852eeba1c9"
+  },
+  "authorized_code_change": {
+    "path": "src/flybench/bench.py",
+    "recorded_line": 508,
+    "from": "null",
+    "to": "None",
+    "scope": "the recorded pathway_intervention default expression only"
+  },
+  "scientific_semantics_change_authorized": false,
+  "valid_rerun_protocol_execution": 2,
+  "attempt_numbering": "M06 external review attempt remains 1",
+  "required_recorded_decisions": [
+    "D-M06-PROTOCOL-01",
+    "D-M06-PROTOCOL-02"
+  ],
+  "preservation_requirements": [
+    "preserve evidence/M06/protocol-defect.json unchanged",
+    "preserve original and intermediate commits in Git history",
+    "do not reuse or reconstruct failed in-memory scientific results",
+    "commit the final bounded repair before complete rerun",
+    "do not begin M07"
+  ]
+}

@@ -49,8 +49,9 @@ ACCEPTED_MAPPING_DIGEST = (
 ACCEPTED_REFERENCE_CODE_SHA256 = (
     "ce53a63c8f22256ad1aed36088734f2132cf8c4b1f70fd8a06365f1593587783"
 )
-REPAIR_DECISION_ID = "D-M06-PROTOCOL-01"
+REPAIR_DECISION_IDS = ("D-M06-PROTOCOL-01", "D-M06-PROTOCOL-02")
 SUPERSEDED_FAILED_PROTOCOL_COMMIT = "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
+INTERMEDIATE_REPAIR_COMMIT = "d0ac081bacb476d557608746eabca7141ee49e4e"
 NORMAL_SCENARIOS = (
     "no-threat",
     "standard looming",
@@ -59,6 +60,7 @@ NORMAL_SCENARIOS = (
 )
 PROTOCOL_PATHS = (
     "decisions/D-M06-PROTOCOL-01.json",
+    "decisions/D-M06-PROTOCOL-02.json",
     "src/flybench/authority.py",
     "src/flybench/bench.py",
     "src/flybench/catch.py",
@@ -412,8 +414,10 @@ def _protocol_provenance() -> dict[str, Any]:
         "measurement_worktree_clean_at_start": clean,
         "protocol_files": files,
         "protocol_execution": 2,
-        "repair_decision_id": REPAIR_DECISION_ID,
+        "repair_decision_ids": list(REPAIR_DECISION_IDS),
         "superseded_failed_protocol_commit": SUPERSEDED_FAILED_PROTOCOL_COMMIT,
+        "intermediate_mechanical_repair_commit": INTERMEDIATE_REPAIR_COMMIT,
+        "intermediate_commit_calibration_execution": "NONE",
         "superseded_execution": {
             "protocol_execution": 1,
             "status": "INVALID_NOT_RECORDED",
@@ -505,7 +509,7 @@ def _controller_profile(
             "stimulus_window_ms": [200.0, 600.0],
             "modeled_impact_ms": 600.0,
             "output_clamp": False,
-            "pathway_intervention": null,
+            "pathway_intervention": None,
         },
         "external_milestone_acceptance": "PENDING",
     }

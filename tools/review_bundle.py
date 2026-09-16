@@ -1014,11 +1014,15 @@ def m06_material(
         or provenance.get("measurement_worktree_clean_at_start") is not True
         or decision.get("calibration_protocol_commit") != protocol_commit
         or provenance.get("protocol_execution") != 2
-        or provenance.get("repair_decision_id") != "D-M06-PROTOCOL-01"
+        or provenance.get("repair_decision_ids")
+        != ["D-M06-PROTOCOL-01", "D-M06-PROTOCOL-02"]
         or provenance.get("superseded_failed_protocol_commit")
         != "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
         or provenance.get("superseded_execution", {}).get("status")
         != "INVALID_NOT_RECORDED"
+        or provenance.get("intermediate_mechanical_repair_commit")
+        != "d0ac081bacb476d557608746eabca7141ee49e4e"
+        or provenance.get("intermediate_commit_calibration_execution") != "NONE"
     ):
         raise BundleError("M06 calibration protocol provenance is incomplete")
     defect_path = evidence_root / "protocol-defect.json"

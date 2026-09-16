@@ -128,7 +128,11 @@ def main(argv: list[str] | None = None) -> int:
         protocol_commit = provenance["calibration_protocol_commit"]
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
         require(provenance["protocol_execution"] == 2, "valid protocol execution number mismatch")
-        require(provenance["repair_decision_id"] == "D-M06-PROTOCOL-01", "repair decision identity mismatch")
+        require(
+            provenance["repair_decision_ids"]
+            == ["D-M06-PROTOCOL-01", "D-M06-PROTOCOL-02"],
+            "repair decision identities mismatch",
+        )
         require(
             provenance["superseded_failed_protocol_commit"]
             == "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f",
@@ -137,6 +141,15 @@ def main(argv: list[str] | None = None) -> int:
         require(
             provenance["superseded_execution"]["status"] == "INVALID_NOT_RECORDED",
             "failed execution status was not preserved",
+        )
+        require(
+            provenance["intermediate_mechanical_repair_commit"]
+            == "d0ac081bacb476d557608746eabca7141ee49e4e",
+            "intermediate repair commit mismatch",
+        )
+        require(
+            provenance["intermediate_commit_calibration_execution"] == "NONE",
+            "intermediate commit execution status mismatch",
         )
         require(
             provenance["superseded_execution"]["evidence_sha256"]
