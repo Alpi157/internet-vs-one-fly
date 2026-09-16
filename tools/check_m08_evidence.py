@@ -49,6 +49,23 @@ def validate_automated(evidence: Path) -> dict[str, Any]:
         raise ValueError("captured live-profile.json does not match profiles/live.json")
     if sha256_file(evidence / "game-spec.json") != resolved.game_spec_sha256:
         raise ValueError("captured game-spec.json does not match the committed GameSpec")
+    pre_repair_path = evidence / "pre-repair" / "operator-usability-finding.json"
+    pre_repair = load_json(pre_repair_path)
+    provenance = json.loads(
+        (ROOT / resolved.value["game"]["path"]).read_text(encoding="utf-8")
+    ).get("provenance", {})
+    if (
+        pre_repair.get("status") != "REPAIR_REQUIRED"
+        or pre_repair.get("candidate_product_sha")
+        != "2a68de03f713409f7525c02629d894828debfd32"
+        or pre_repair.get("gate_scope", {}).get(
+            "required_unfamiliar_player_playtests_satisfied"
+        )
+        != 0
+        or provenance.get("pre_repair_evidence_sha256")
+        != sha256_file(pre_repair_path)
+    ):
+        raise ValueError("M08 pre-repair operator evidence is missing or reinterpreted")
     for name in (
         "local-game-tests.json",
         "local-server-smoke.json",

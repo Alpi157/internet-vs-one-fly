@@ -8,6 +8,7 @@ export type StrikeState = {
   impact_tick: number;
   phase: "wind-up" | "approach";
   progress: number;
+  strike_radius: number;
 };
 
 export type ImpactState = {

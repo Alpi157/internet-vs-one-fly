@@ -57,6 +57,7 @@ const state = (locked: { x: number; y: number } | null = null): GameState => ({
         impact_tick: 64,
         phase: "wind-up",
         progress: 0,
+        strike_radius: 0.55,
       }
     : null,
   cooldown_remaining_ms: 0,
@@ -136,6 +137,31 @@ describe("M08 local game input and disclosure", () => {
     act(() => socket.disconnect());
     expect(screen.getByRole("alert").textContent).toContain("Disconnected");
     expect(screen.getByRole("status").textContent).toContain("disconnected");
+  });
+
+  it("renders mutually coherent state through disconnect and reconnect", () => {
+    const first = connectedApp();
+    expect(screen.getByText("Authoritative server connected")).not.toBeNull();
+    expect(screen.queryByRole("alert")).toBeNull();
+
+    act(() => first.disconnect());
+    expect(screen.queryByText("Authoritative server connected")).toBeNull();
+    expect(screen.getByRole("alert").textContent).toContain("Disconnected");
+
+    fireEvent.click(screen.getByRole("button", { name: "Reconnect" }));
+    const second = FakeWebSocket.instances.at(-1)!;
+    expect(second).not.toBe(first);
+    act(() => second.open());
+    act(() => first.disconnect());
+    expect(screen.getByText("Authoritative server connected")).not.toBeNull();
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.queryByText("Disconnected from the authoritative game server.")).toBeNull();
+  });
+
+  it("discloses the server-configured locked collision radius", () => {
+    const socket = connectedApp();
+    act(() => socket.message(state({ x: 2, y: -3 })));
+    expect(screen.getByTestId("locked-readout").textContent).toContain("radius 0.55");
   });
 
   it("discloses the actual live model without a full-graph live claim", () => {

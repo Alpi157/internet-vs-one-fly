@@ -46,6 +46,12 @@ def public_profile(resolved: ResolvedLiveProfile) -> dict[str, object]:
             "environment_sha256": value["environment"]["sha256"],
         },
         "clock": value["clock"],
+        "game": {
+            "profile_id": resolved.game_spec.profile_id,
+            "strike_radius": resolved.game_spec.strike_radius,
+            "attack_wind_up_ms": resolved.game_spec.attack_wind_up_ms,
+            "impact_offset_ms": resolved.game_spec.impact_offset_ms,
+        },
         "claim_scope": value["claim_scope"],
         "model_notice": value["model_notice"],
         "limitations": value["limitations"],

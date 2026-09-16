@@ -1410,13 +1410,33 @@ def m08_material(
             raise BundleError(f"M08 submitted ledger is missing: {required_text}")
     try:
         committed_live = commit_blob(root, submitted, "profiles/live.json")
-        committed_game = commit_blob(root, submitted, "profiles/game-v0.1.json")
+        game_profile_path = identity.get("game_spec_path")
+        if game_profile_path != "profiles/game-v0.2.json":
+            raise BundleError("M08 evidence does not select the bounded v0.2 GameSpec")
+        committed_game = commit_blob(root, submitted, game_profile_path)
+        starting_game = commit_blob(root, submitted, "profiles/game-v0.1.json")
     except BundleError as exc:
         raise BundleError(f"committed M08 profile is unavailable: {exc}") from exc
     if committed_live != (evidence_root / "live-profile.json").read_bytes():
         raise BundleError("M08 live-profile evidence differs from committed bytes")
     if committed_game != (evidence_root / "game-spec.json").read_bytes():
         raise BundleError("M08 GameSpec evidence differs from committed bytes")
+    if sha256(starting_game) != "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7":
+        raise BundleError("M08 historical starting GameSpec identity was not preserved")
+    game_value = json.loads(committed_game)
+    pre_repair_path = evidence_root / "pre-repair" / "operator-usability-finding.json"
+    try:
+        pre_repair = json.loads(pre_repair_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M08 pre-repair operator evidence is missing: {exc}") from exc
+    if (
+        pre_repair.get("status") != "REPAIR_REQUIRED"
+        or pre_repair.get("candidate_product_sha")
+        != "2a68de03f713409f7525c02629d894828debfd32"
+        or game_value.get("provenance", {}).get("pre_repair_evidence_sha256")
+        != sha256(pre_repair_path.read_bytes())
+    ):
+        raise BundleError("M08 pre-repair finding was not preserved as repair-required evidence")
     if (
         identity.get("status") != "PASS"
         or identity.get("graph", {}).get("N") != 313

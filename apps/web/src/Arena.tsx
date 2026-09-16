@@ -77,15 +77,35 @@ export function Arena({ game, disabled, onAim, onAttack }: ArenaProps) {
 
     if (game?.strike) {
       const locked = screenPoint(game.strike.locked_target);
-      const radius = 28 + game.strike.progress * 88;
+      const collisionRadiusX =
+        game.strike.strike_radius * (WIDTH / (ARENA_MAX - ARENA_MIN));
+      const collisionRadiusY =
+        game.strike.strike_radius * (HEIGHT / (ARENA_MAX - ARENA_MIN));
+      const shadowScale = 1.15 + game.strike.progress * 3.2;
       context.fillStyle = `rgba(111, 26, 17, ${0.1 + game.strike.progress * 0.22})`;
       context.beginPath();
-      context.arc(locked.x, locked.y, radius, 0, Math.PI * 2);
+      context.ellipse(
+        locked.x,
+        locked.y,
+        collisionRadiusX * shadowScale,
+        collisionRadiusY * shadowScale,
+        0,
+        0,
+        Math.PI * 2,
+      );
       context.fill();
       context.strokeStyle = "#7f2117";
       context.lineWidth = 4;
       context.beginPath();
-      context.arc(locked.x, locked.y, 45, 0, Math.PI * 2);
+      context.ellipse(
+        locked.x,
+        locked.y,
+        collisionRadiusX,
+        collisionRadiusY,
+        0,
+        0,
+        Math.PI * 2,
+      );
       context.stroke();
       context.fillStyle = "#7f2117";
       context.font = "700 15px system-ui";
@@ -95,10 +115,22 @@ export function Arena({ game, disabled, onAim, onAttack }: ArenaProps) {
 
     if (game?.last_impact && !game.strike) {
       const impact = screenPoint(game.last_impact.locked_target);
+      const impactRadiusX =
+        game.last_impact.strike_radius * (WIDTH / (ARENA_MAX - ARENA_MIN));
+      const impactRadiusY =
+        game.last_impact.strike_radius * (HEIGHT / (ARENA_MAX - ARENA_MIN));
       context.strokeStyle = game.last_impact.outcome === "caught" ? "#184f2c" : "#952c1f";
       context.lineWidth = 5;
       context.beginPath();
-      context.arc(impact.x, impact.y, 45, 0, Math.PI * 2);
+      context.ellipse(
+        impact.x,
+        impact.y,
+        impactRadiusX,
+        impactRadiusY,
+        0,
+        0,
+        Math.PI * 2,
+      );
       context.stroke();
     }
 
@@ -160,7 +192,7 @@ export function Arena({ game, disabled, onAim, onAttack }: ArenaProps) {
       </span>
       <span className="locked-readout" data-testid="locked-readout">
         {game?.strike
-          ? `Locked strike ${game.strike.locked_target.x.toFixed(2)}, ${game.strike.locked_target.y.toFixed(2)}`
+          ? `Locked strike ${game.strike.locked_target.x.toFixed(2)}, ${game.strike.locked_target.y.toFixed(2)} · radius ${game.strike.strike_radius.toFixed(2)}`
           : "No strike locked"}
       </span>
     </div>

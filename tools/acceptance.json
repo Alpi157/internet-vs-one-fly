@@ -872,7 +872,7 @@
           "argv": ["python", "-m", "pytest", "-q", "tests/test_local_game.py"],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/game.py", "src/flybench/server.py", "tests/test_local_game.py", "profiles/live.json", "profiles/game-v0.1.json"],
+          "required_paths": ["src/flybench/game.py", "src/flybench/server.py", "tests/test_local_game.py", "profiles/live.json", "profiles/game-v0.1.json", "profiles/game-v0.2.json"],
           "timeout_seconds": 300
         },
         {

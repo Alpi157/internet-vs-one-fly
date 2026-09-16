@@ -29,6 +29,9 @@ h1 { margin: 0; font: 700 clamp(2.4rem, 6vw, 5.5rem)/0.94 ui-sans-serif, system-
 .connection.connected span { background: #30814b; box-shadow: 0 0 0 4px rgba(48,129,75,.12); }
 .connection.error span, .connection.disconnected span { background: #a53327; }
 .failure { margin-bottom: 14px; padding: 11px 14px; border: 1px solid #c98477; border-radius: 10px; background: #fff0ec; color: #7e261c; }
+.failure { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.failure button { border: 1px solid #a84e40; border-radius: 999px; padding: 5px 10px; background: #fff8f5; color: #7e261c; cursor: pointer; }
+.action-failure { margin-bottom: 14px; padding: 10px 14px; border: 1px solid #c89f5b; border-radius: 10px; background: #fff8df; color: #684b19; }
 .game-grid { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 14px; }
 .arena-shell { position: relative; overflow: hidden; border: 1px solid #394936; border-radius: 18px; box-shadow: 0 20px 55px rgba(34,48,30,.15); background: #b7d68f; }
 canvas { display: block; width: 100%; aspect-ratio: 900 / 580; cursor: crosshair; touch-action: none; }

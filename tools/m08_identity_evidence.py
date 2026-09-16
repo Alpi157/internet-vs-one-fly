@@ -43,6 +43,13 @@ def main(argv: list[str] | None = None) -> int:
         "actual_graph_counts": state["model"]
         == {"N": 313, "E": 20607, "represented_contacts": 79112},
         "actual_backend_kernel": state["backend"] == "kernel",
+        "game_spec_v02": resolved.game_spec.profile_id
+        == "flybench.catch-game.v0.2",
+        "strike_radius_point_55": resolved.game_spec.strike_radius == 0.55,
+        "historical_game_spec_preserved": sha256_file(
+            resolved.root / "profiles/game-v0.1.json"
+        )
+        == "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7",
     }
     report = {
         "schema_version": 1,

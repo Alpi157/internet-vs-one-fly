@@ -92,6 +92,7 @@ async def websocket_smoke(port: int) -> dict[str, Any]:
             "attack_ack": attack_ack,
             "later_aim_ack": later_aim_ack,
             "locked_target_after_later_aim": locked_state["strike"]["locked_target"],
+            "locked_strike_radius": locked_state["strike"]["strike_radius"],
             "impact": impact_state["last_impact"],
             "authoritative_final_tick": impact_state["server_tick"],
         }
@@ -169,8 +170,20 @@ def main(argv: list[str] | None = None) -> int:
             "live_E_20607": profile_value.get("graph", {}).get("E") == 20607,
             "live_contacts_79112": profile_value.get("graph", {}).get("represented_contacts") == 79112,
             "kernel_backend": profile_value.get("backend", {}).get("name") == "kernel",
+            "game_spec_v02": profile_value.get("game", {}).get("profile_id")
+            == "flybench.catch-game.v0.2",
+            "profile_strike_radius_point_55": profile_value.get("game", {}).get(
+                "strike_radius"
+            )
+            == 0.55,
             "locked_target_immutable": websocket["locked_target_after_later_aim"]
             == {"x": 10.0, "y": 10.0},
+            "locked_strike_radius_point_55": websocket["locked_strike_radius"]
+            == 0.55,
+            "impact_strike_radius_point_55": websocket["impact"].get(
+                "strike_radius"
+            )
+            == 0.55,
             "impact_reached": websocket["impact"].get("outcome") in {"caught", "missed"},
         }
         if not all(checks.values()):

@@ -10,7 +10,8 @@ export default function App() {
   const sequence = useRef(0);
   const [game, setGame] = useState<GameState | null>(null);
   const [connection, setConnection] = useState<ConnectionState>("connecting");
-  const [failure, setFailure] = useState<string | null>(null);
+  const [connectionFailure, setConnectionFailure] = useState<string | null>(null);
+  const [actionFailure, setActionFailure] = useState<string | null>(null);
   const [connectionKey, setConnectionKey] = useState(0);
 
   useEffect(() => {
@@ -18,30 +19,45 @@ export default function App() {
     const next = new WebSocket(`${scheme}://${window.location.host}/ws/demo`);
     socket.current = next;
     setConnection("connecting");
-    setFailure(null);
-    next.onopen = () => setConnection("connected");
+    setConnectionFailure(null);
+    setActionFailure(null);
+    const isCurrent = () => socket.current === next;
+    next.onopen = () => {
+      if (!isCurrent()) return;
+      setConnection("connected");
+      setConnectionFailure(null);
+    };
     next.onmessage = (event) => {
+      if (!isCurrent()) return;
       let message: ServerMessage;
       try {
         message = JSON.parse(String(event.data)) as ServerMessage;
       } catch {
         setConnection("error");
-        setFailure("The server sent an unreadable message.");
+        setConnectionFailure("The server sent an unreadable message.");
         return;
       }
       if (message.type === "state") setGame(message);
       if (message.type === "error") {
-        setFailure(message.message);
-        if (message.code === "local_session_busy") setConnection("error");
+        if (message.code === "local_session_busy") {
+          setConnection("error");
+          setConnectionFailure(message.message);
+        } else {
+          setActionFailure(message.message);
+        }
       }
     };
     next.onerror = () => {
+      if (!isCurrent()) return;
       setConnection("error");
-      setFailure("Connection failed. The local FlyBench server may have stopped.");
+      setConnectionFailure("Connection failed. The local FlyBench server may have stopped.");
     };
     next.onclose = () => {
+      if (!isCurrent()) return;
       setConnection((current) => (current === "error" ? current : "disconnected"));
-      setFailure((current) => current ?? "Disconnected from the authoritative game server.");
+      setConnectionFailure(
+        (current) => current ?? "Disconnected from the authoritative game server.",
+      );
     };
     return () => {
       next.close();
@@ -79,9 +95,23 @@ export default function App() {
         </div>
       </header>
 
-      {failure && (
+      {connection !== "connected" && connectionFailure && (
         <div className="failure" role="alert">
-          {failure}
+          <span>{connectionFailure}</span>
+          <button
+            onClick={() => {
+              setGame(null);
+              setConnectionKey((value) => value + 1);
+            }}
+          >
+            Reconnect
+          </button>
+        </div>
+      )}
+
+      {connection === "connected" && actionFailure && (
+        <div className="action-failure" role="status">
+          {actionFailure}
         </div>
       )}
 

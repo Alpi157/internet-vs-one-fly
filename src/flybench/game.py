@@ -50,8 +50,11 @@ ACCEPTED_ENVIRONMENT_SHA256 = (
 ACCEPTED_N = 313
 ACCEPTED_E = 20607
 ACCEPTED_CONTACTS = 79112
-ACCEPTED_GAME_SPEC_SHA256 = (
+M08_STARTING_GAME_SPEC_SHA256 = (
     "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7"
+)
+ACCEPTED_GAME_SPEC_SHA256 = (
+    "4d28775a7c69f063d7aab0cee44d6f8b1c4eaa72687644f96a59c65ae7220a25"
 )
 
 
@@ -93,7 +96,10 @@ class GameSpec:
     presentation_intervals: int
 
     def __post_init__(self) -> None:
-        if self.profile_id != "flybench.catch-game.v0.1":
+        if self.profile_id not in {
+            "flybench.catch-game.v0.1",
+            "flybench.catch-game.v0.2",
+        }:
             raise ValueError("unsupported GameSpec identity")
         if not self.classification.startswith("PROVISIONAL GAME MECHANICS"):
             raise ValueError("GameSpec classification must remain explicitly provisional")
@@ -173,6 +179,23 @@ def load_game_spec(path: Path) -> GameSpec:
         raise ValueError("the first attack must be immediately available")
     if stimulus.get("direction_or_bearing") is not False:
         raise ValueError("direction or bearing must not enter the scalar stimulus")
+    if value.get("profile_id") == "flybench.catch-game.v0.2":
+        provenance = value.get("provenance", {})
+        if (
+            provenance.get("previous_game_spec_path") != "profiles/game-v0.1.json"
+            or provenance.get("previous_game_spec_sha256")
+            != M08_STARTING_GAME_SPEC_SHA256
+            or provenance.get("bounded_change")
+            != {
+                "field": "attack.strike_radius",
+                "previous": 1.0,
+                "current": 0.55,
+                "units": "abstract arena units",
+            }
+            or provenance.get("scientific_runtime_changes") is not False
+            or provenance.get("automatic_win_rate_tuning") is not False
+        ):
+            raise ValueError("M08 GameSpec revision provenance is incomplete")
     return GameSpec(
         profile_id=value["profile_id"],
         classification=value["classification"],
@@ -509,6 +532,7 @@ class GameSession:
             "impact_tick": strike.impact_tick,
             "phase": phase,
             "progress": progress,
+            "strike_radius": self.spec.strike_radius,
         }
 
     def snapshot(self) -> dict[str, Any]:

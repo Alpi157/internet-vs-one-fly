@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 from dataclasses import replace
 import hashlib
+import json
 import math
 from pathlib import Path
 
@@ -28,6 +29,7 @@ from flybench.game import (
     build_live_session,
     load_game_spec,
     load_live_profile,
+    M08_STARTING_GAME_SPEC_SHA256,
     sha256_file,
 )
 from flybench.model import load_candidate_model_spec
@@ -37,7 +39,7 @@ from flybench.runner import ACCEPTED_CIRCUIT_DIGEST, GraphBundle, Runner
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "profiles/live.json"
-GAME = ROOT / "profiles/game-v0.1.json"
+GAME = ROOT / "profiles/game-v0.2.json"
 
 
 def environment(*, speed: float = 0.0) -> EnvironmentConfig:
@@ -187,6 +189,36 @@ def test_caught_and_missed_outcomes_are_both_scriptable() -> None:
     assert missed.last_impact["outcome"] == "missed"
 
 
+def test_authoritative_collision_uses_configured_point_55_strike_radius() -> None:
+    inside = session()
+    assert inside.spec.strike_radius == 0.55
+    inside.commit_attack(0.54, 0.0, 1)
+    assert inside.snapshot()["strike"]["strike_radius"] == 0.55
+    advance(inside, 60)
+    assert inside.last_impact["strike_radius"] == 0.55
+    assert inside.last_impact["outcome"] == "caught"
+
+    outside = session()
+    outside.commit_attack(0.56, 0.0, 1)
+    advance(outside, 60)
+    assert outside.last_impact["strike_radius"] == 0.55
+    assert outside.last_impact["outcome"] == "missed"
+
+
+def test_game_spec_revision_changes_only_radius_beyond_version_provenance() -> None:
+    previous = json.loads((ROOT / "profiles/game-v0.1.json").read_text(encoding="utf-8"))
+    current = json.loads(GAME.read_text(encoding="utf-8"))
+    assert current["provenance"]["bounded_change"]["field"] == "attack.strike_radius"
+    assert previous["attack"]["strike_radius"] == 1.0
+    assert current["attack"]["strike_radius"] == 0.55
+    current.pop("provenance")
+    for value in (previous, current):
+        value.pop("profile_id")
+        value.pop("classification")
+    current["attack"]["strike_radius"] = previous["attack"]["strike_radius"]
+    assert current == previous
+
+
 def test_catch_uses_authoritative_post_motion_server_position() -> None:
     subject = session(speed=0.1)
     subject.commit_attack(6.0, 0.0, 1)
@@ -290,6 +322,11 @@ def test_all_accepted_live_identities_match_exact_bytes() -> None:
     assert value["decoder"]["sha256"] == ACCEPTED_DECODER_SHA256
     assert value["environment"]["sha256"] == ACCEPTED_ENVIRONMENT_SHA256
     assert resolved.game_spec_sha256 == ACCEPTED_GAME_SPEC_SHA256
+    provenance = json.loads(GAME.read_text(encoding="utf-8"))["provenance"]
+    assert provenance["previous_game_spec_sha256"] == M08_STARTING_GAME_SPEC_SHA256
+    assert sha256_file(ROOT / provenance["previous_game_spec_path"]) == (
+        M08_STARTING_GAME_SPEC_SHA256
+    )
     for key in ("controller", "encoder", "decoder", "environment"):
         assert sha256_file(ROOT / value[key]["path"]) == value[key]["sha256"]
 
