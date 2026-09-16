@@ -287,7 +287,9 @@ def boundary_fixtures() -> dict[str, Any]:
             graph = ReferenceGraph.from_edges(2, [(0, 1, 0.5)])
             state = ReferenceState(candidate, graph)
             em = math.exp(-dt / 20.0)
-            spike = state.step(np.array([1.0 / (1.0 - em), 0.0]))
+            tie_drive = np.nextafter(1.0 / (1.0 - em), math.inf)
+            assert math.isclose(tie_drive * (1.0 - em), 1.0, abs_tol=1e-10)
+            spike = state.step(np.array([tie_drive, 0.0]))
             assert spike.spikes.tolist() == [True, False]
             arrival_tick = spike.end_tick + candidate.delay_ticks
             before = []
@@ -316,7 +318,8 @@ def boundary_fixtures() -> dict[str, Any]:
         candidate = checked_spec(0.5)
         state = ReferenceState(candidate, ReferenceGraph.empty(1))
         em = math.exp(-0.5 / 20.0)
-        drive = 1.0 / (1.0 - em)
+        drive = np.nextafter(1.0 / (1.0 - em), math.inf)
+        assert math.isclose(drive * (1.0 - em), 1.0, abs_tol=1e-10)
         result = state.step(drive)
         assert result.spikes[0]
         assert state.voltage[0] == 0.0
@@ -331,7 +334,7 @@ def boundary_fixtures() -> dict[str, Any]:
         candidate = checked_spec(0.5)
         state = ReferenceState(candidate, ReferenceGraph.empty(1))
         em = math.exp(-0.5 / 20.0)
-        assert state.step(1.0 / (1.0 - em)).spikes[0]
+        assert state.step(np.nextafter(1.0 / (1.0 - em), math.inf)).spikes[0]
         release_tick = state.refractory_until_tick[0]
         state.queue_boundary_input(np.array([1.0]), arrival_tick=state.tick)
         trace = []
@@ -656,6 +659,13 @@ def compare_timesteps(
                 else "FAIL"
             ),
         }
+    reference_runs = {
+        panel: runs[reference_key] for panel, runs in panels.items()
+    }
+    reference_pass = all(
+        run["finite_state"] and run["rng_state_unchanged"]
+        for run in reference_runs.values()
+    )
     return {
         "schema_version": 1,
         "classification": "PROJECT NUMERICAL ACCEPTANCE MEASUREMENT — not physiology",
@@ -665,6 +675,17 @@ def compare_timesteps(
         "seed": NUMERICAL_SEED,
         "stimulus_schedule_alignment": "all changes at 0, 20, or 40 integer milliseconds",
         "raw_runs": panels,
+        "reference_run": {
+            "dt_ms": criteria["reference_dt_ms"],
+            "role": "comparison reference; analytical and boundary correctness are reported separately",
+            "finite_state_all_panels": all(
+                run["finite_state"] for run in reference_runs.values()
+            ),
+            "zero_rng_draws_all_panels": all(
+                run["rng_draws_consumed"] == 0 for run in reference_runs.values()
+            ),
+            "status": "PASS" if reference_pass else "FAIL",
+        },
         "comparisons": comparisons,
     }
 
@@ -730,6 +751,10 @@ def equation_review_text(
     ]
     for key, result in convergence["comparisons"].items():
         lines.append(f"Candidate dt {key} ms comparison: {result['status']}.")
+    lines.append(
+        f"Reference dt {convergence['reference_run']['dt_ms']} ms status: "
+        f"{convergence['reference_run']['status']}."
+    )
     lines.extend(
         [
             f"Selected numerical dt: {selected_dt if selected_dt is not None else 'NONE'} ms.",

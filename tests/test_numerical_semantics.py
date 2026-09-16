@@ -86,7 +86,9 @@ def test_exact_delay_and_no_retroactive_delivery(dt_ms: float) -> None:
     graph = ReferenceGraph.from_edges(2, [(0, 1, 0.5)])
     state = ReferenceState(candidate, graph)
     em = math.exp(-dt_ms / candidate.tau_m_ms)
-    tie_drive = candidate.threshold / (1.0 - em)
+    tie_drive = np.nextafter(
+        candidate.threshold / (1.0 - em), math.inf
+    )
     spike = state.step(np.array([tie_drive, 0.0]))
     assert spike.spikes.tolist() == [True, False]
     spike_tick = spike.end_tick
@@ -110,7 +112,9 @@ def test_threshold_tie_spikes_and_resets_immediately() -> None:
     candidate = spec()
     state = ReferenceState(candidate, ReferenceGraph.empty(1))
     em = math.exp(-candidate.neural_dt_ms / candidate.tau_m_ms)
-    independently_constructed_drive = 1.0 / (1.0 - em)
+    independently_constructed_drive = np.nextafter(1.0 / (1.0 - em), math.inf)
+    independent_endpoint = independently_constructed_drive * (1.0 - em)
+    assert math.isclose(independent_endpoint, candidate.threshold, abs_tol=1e-10)
     result = state.step(independently_constructed_drive)
     assert result.spikes[0]
     assert state.voltage[0] == candidate.reset
@@ -121,7 +125,7 @@ def test_current_evolves_during_full_refractory_and_release_is_exact() -> None:
     candidate = spec()
     state = ReferenceState(candidate, ReferenceGraph.empty(1))
     em = math.exp(-candidate.neural_dt_ms / candidate.tau_m_ms)
-    result = state.step(1.0 / (1.0 - em))
+    result = state.step(np.nextafter(1.0 / (1.0 - em), math.inf))
     assert result.spikes[0]
     state.queue_boundary_input(np.array([1.0]), arrival_tick=state.tick)
 

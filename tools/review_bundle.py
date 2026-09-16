@@ -810,7 +810,11 @@ def m05_material(root: Path, submitted: str, evidence_root: Path) -> None:
     acceptance = required["command-results.json"]
     if analytical.get("status") != "PASS" or boundary.get("status") != "PASS":
         raise BundleError("M05 analytical or boundary evidence does not pass")
-    if convergence.get("status") != "PASS" or not convergence.get("comparisons"):
+    if (
+        convergence.get("status") != "PASS"
+        or convergence.get("reference_run", {}).get("status") != "PASS"
+        or not convergence.get("comparisons")
+    ):
         raise BundleError("M05 timestep convergence evidence does not pass")
     if (
         decision.get("outcome") != "PASS"

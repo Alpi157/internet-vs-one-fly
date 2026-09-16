@@ -160,6 +160,7 @@ def test_required_m01_paths_and_registry() -> None:
         "profiles/decoder-v0.1.json",
         "profiles/calibration-plan.json",
         "profiles/numerical-criteria-v0.1.json",
+        "profiles/model-reference-v0.1.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
