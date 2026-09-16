@@ -26,20 +26,20 @@
   "measured_hardware_identity_sha256": "2517515001def1613a9dbb46595704428e320cb2b9e201dbabdbb7839f3b7c05",
   "measurement_evidence_manifest": {
     "circuit-performance.json": {
-      "bytes": 40371,
-      "sha256": "bda9c62161c4fb74c21d54866a8bc5760a01ab27b2bf9b6df2b778c10c74ca33"
+      "bytes": 40369,
+      "sha256": "129d1dc8b78745c4b57e4d2a31b85b41443fa39730bf21931795d275ad92e226"
     },
     "decision.json": {
-      "bytes": 2217,
-      "sha256": "f2b65ff3307efb2f603afccf15914368398069c0935b6a29e173a91f1d6ace5a"
+      "bytes": 2220,
+      "sha256": "a716842bdd969022973678ac334b5cd92f96bf74b1a471cb5b2229a8e275515e"
     },
     "full-authority-carryover.json": {
       "bytes": 240,
       "sha256": "66f26c7885b82a9e9e61b98653ba860b6f549bd5d9623eb70957a1ba6778d810"
     },
     "full-performance.json": {
-      "bytes": 41899,
-      "sha256": "92450327d93d49807d5171b706c456f494e33a2c09397ef32d857b14c44dbf7a"
+      "bytes": 41986,
+      "sha256": "81551d73ed75c5083f6ecb39f1109cd123e2dfb4393a67b2b8fe7fa4a438c206"
     },
     "hardware.json": {
       "bytes": 1233,
@@ -50,8 +50,8 @@
       "sha256": "afa679fad6adea6f73e7a78dc3694eed63243db8a68f00a067a1928d1bd6ca27"
     },
     "memory.json": {
-      "bytes": 6629,
-      "sha256": "662e24acd1f3dc75b25c379ea410ed45055a30defa7c808e5c2140801cbf899a"
+      "bytes": 6868,
+      "sha256": "b50a4103df653019869c1764219c39b135ab27b77c48440ec85ae43174c21ba8"
     },
     "optimization.json": {
       "bytes": 325,
@@ -62,15 +62,15 @@
       "sha256": "6b899430714b074cf96f8d8a263cf3fd491971febdaaaf3b3e7ab3c98be4b0a7"
     },
     "raw-interval-timings.jsonl": {
-      "bytes": 295129,
-      "sha256": "117ea7664b4f7e567ad444a946e897ad7c5e3bbf67e4539515245d4b1d71cd62"
+      "bytes": 295176,
+      "sha256": "1e752b3e1070d4f4e88a50127a02813c01eb3ce4de6f3b815caef35491fde48e"
     },
     "timeout-test.json": {
       "bytes": 475,
       "sha256": "e1259c7eb754d26889058239b63e0fcd98b600ff2b601b29de92bdfb29e76baa"
     }
   },
-  "measurement_evidence_sha256": "bcabedf69366aa47332aa8dad042e8a9b4a03a7581a1ce320b342fd16a0664dd",
+  "measurement_evidence_sha256": "469aeecb217ff7ff8d149346a310b98bdadbd9008a941513786e4377a658e79f",
   "neural_dt_ms": 0.5,
   "neural_steps_per_control_interval": 20,
   "optimization_passes_used": 0,
