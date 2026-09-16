@@ -14,7 +14,7 @@ milestone_status:
   M03: ACCEPTED
   M04: ACCEPTED
   M05: ACCEPTED
-  M06: CHANGES_REQUIRED
+  M06: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -835,6 +835,4 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Repair the M06 controller provenance metadata and runtime-ModelSpec evidence
-  guard, create a new frozen protocol commit, rerun the complete frozen M06 protocol
-  from reset, and submit M06 attempt 2; do not begin M07.
+next_action: Await external review of M06 attempt 2; do not begin M07.
