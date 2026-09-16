@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.numerical-criteria.v0.1",
+  "classification": "PROJECT NUMERICAL ACCEPTANCE CRITERION — not physiology",
+  "frozen_before_first_convergence_measurement": true,
+  "analytic_tolerance": {
+    "atol": 1e-10,
+    "rtol": 1e-10
+  },
+  "reference_dt_ms": 0.1,
+  "candidate_dt_order_ms": [
+    0.5,
+    0.25
+  ],
+  "selection_policy": "Select the first (coarsest) candidate in candidate_dt_order_ms that passes every requirement against reference_dt_ms; otherwise use reference_dt_ms only if analytical and boundary semantics pass.",
+  "spike_count_requirement": "exact equality per neuron",
+  "spike_time_requirement": "Each ordered matched spike differs from the 0.1 ms run by no more than the candidate dt.",
+  "subthreshold_common_time": {
+    "sample_period_ms": 1.0,
+    "voltage_max_abs_error": 1e-9,
+    "current_max_abs_error": 1e-9
+  },
+  "spiking_final_state": {
+    "voltage_max_abs_error": 0.05,
+    "current_max_abs_error": 0.05
+  },
+  "finite_state_required": true,
+  "schedule_alignment_rule": "All convergence stimulus changes occur at integer-millisecond boundaries exactly represented by 0.5, 0.25, and 0.1 ms grids.",
+  "studied_dt_ms": [
+    0.5,
+    0.25,
+    0.1
+  ],
+  "model_parameters_are_frozen": true,
+  "criteria_may_not_be_loosened_after_measurement": true
+}

@@ -137,6 +137,10 @@ def render_review(
     m04_mapping: dict[str, Any] | None,
     m04_decision: dict[str, Any] | None,
     m04_audit: dict[str, Any] | None,
+    m05_decision: dict[str, Any] | None,
+    m05_convergence: dict[str, Any] | None,
+    m05_analytical: dict[str, Any] | None,
+    m05_boundary: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -174,6 +178,18 @@ def render_review(
             "Raw contact counts remain source data; effective signs and the later model, encoder, decoder, and calibration grid remain explicit MODEL ASSUMPTIONS.",
             "The compact circuit arrays are included; full M03 arrays and raw MaleCNS sources are omitted and identified in large-files.json.",
             "No simulation, calibration execution, numerical acceptance, or behavioral claim is part of M04.",
+        ]
+    elif milestone == "M05":
+        objective = (
+            "Implement and validate a deterministic float64 reference oracle for the "
+            "accepted normalized-LIF candidate without implementing closed-loop behavior."
+        )
+        assumptions = [
+            "The accepted M04 model, mapping, circuit, encoder, decoder, and calibration profiles remain byte-identical.",
+            "The exact linear substep and flybench.neural-order.v1 are project numerical conventions over explicit MODEL ASSUMPTIONS, not physiology.",
+            "The runtime synaptic scale 1.0 is used only for bounded numerical fixtures and is not a calibrated controller choice.",
+            "The numerical criteria were committed before convergence measurement and were not loosened afterward.",
+            "No Runner, encoder/decoder implementation, behavioral calibration, game mechanics, or optimized kernel is part of M05.",
         ]
     else:
         objective = (
@@ -278,6 +294,21 @@ def render_review(
         lines.append(
             f"- G-MAP candidate decision: `{m04_decision.get('outcome')}`; external milestone acceptance remains `{m04_decision.get('external_milestone_acceptance')}`."
         )
+    if milestone == "M05" and m05_decision:
+        lines.extend(
+            [
+                f"- Numerical-semantics candidate decision: `{m05_decision.get('outcome')}`; external milestone acceptance remains `{m05_decision.get('external_milestone_acceptance')}`.",
+                f"- Selected neural dt: `{m05_decision.get('selected_neural_dt_ms')}` ms; delay `{m05_decision.get('delay_ticks')}` ticks; refractory `{m05_decision.get('refractory_ticks')}` ticks.",
+                f"- Resolved ModelSpec SHA-256: `{m05_decision.get('model_spec_sha256')}`; event order `{m05_decision.get('event_order_version')}`.",
+            ]
+        )
+    if milestone == "M05" and m05_convergence:
+        for dt, result in m05_convergence.get("comparisons", {}).items():
+            lines.append(f"- Candidate dt `{dt}` ms convergence: `{result.get('status')}`.")
+    if milestone == "M05" and m05_analytical:
+        lines.append(f"- Analytical fixtures: `{m05_analytical.get('status')}`.")
+    if milestone == "M05" and m05_boundary:
+        lines.append(f"- Boundary fixtures: `{m05_boundary.get('status')}`.")
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -317,6 +348,16 @@ def render_review(
                 else "absent; manual mapping review remains pending."
             )
         )
+    if milestone == "M05":
+        receipt = (m05_decision or {}).get("manual_equation_review_receipt", {})
+        lines.append(
+            "- `evidence/M05/manual-equation-review.txt`: "
+            + (
+                "present (operator-supplied)."
+                if receipt.get("status") == "PRESENT_OPERATOR_SUPPLIED"
+                else "absent; manual equation review remains pending."
+            )
+        )
 
     lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
     if milestone == "M02" and not manual_source_review_present:
@@ -325,6 +366,10 @@ def render_review(
         "manual_mapping_review_receipt", {}
     ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
         lines.append("- The operator's manual M04 mapping-review receipt is absent.")
+    if milestone == "M05" and (m05_decision or {}).get(
+        "manual_equation_review_receipt", {}
+    ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
+        lines.append("- The operator's manual M05 equation-review receipt is absent.")
     lines.extend(
         [
             "- Scientific and product capabilities assigned to later milestones remain intentionally unimplemented.",
@@ -341,7 +386,11 @@ def render_review(
                     else (
                         "- Full M03 arrays and raw sources are omitted with exact identities; compact circuit arrays and source-derived mapping evidence are included."
                         if milestone == "M04"
-                        else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                        else (
+                            "- This archive contains the complete small reference implementation, frozen criteria, fixtures, and numerical evidence; no raw MaleCNS or full-graph bulk data is required."
+                            if milestone == "M05"
+                            else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                        )
                     )
                 )
             ),
@@ -735,6 +784,89 @@ def m04_material(
     return omitted
 
 
+def m05_material(root: Path, submitted: str, evidence_root: Path) -> None:
+    """Validate complete, bounded M05 reference evidence before bundling."""
+
+    required: dict[str, dict[str, Any]] = {}
+    for name in (
+        "criteria-provenance.json",
+        "analytical-fixtures.json",
+        "boundary-fixtures.json",
+        "timestep-convergence.json",
+        "model-spec.json",
+        "decision.json",
+        "command-results.json",
+    ):
+        try:
+            required[name] = json.loads((evidence_root / name).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M05 {name} is missing or invalid: {exc}") from exc
+    provenance = required["criteria-provenance.json"]
+    analytical = required["analytical-fixtures.json"]
+    boundary = required["boundary-fixtures.json"]
+    convergence = required["timestep-convergence.json"]
+    model_spec = required["model-spec.json"]
+    decision = required["decision.json"]
+    acceptance = required["command-results.json"]
+    if analytical.get("status") != "PASS" or boundary.get("status") != "PASS":
+        raise BundleError("M05 analytical or boundary evidence does not pass")
+    if convergence.get("status") != "PASS" or not convergence.get("comparisons"):
+        raise BundleError("M05 timestep convergence evidence does not pass")
+    if (
+        decision.get("outcome") != "PASS"
+        or decision.get("allowed_next_milestone") != "M06"
+        or decision.get("external_milestone_acceptance") != "PENDING"
+        or decision.get("manual_equation_review_receipt", {}).get("status")
+        != "PRESENT_OPERATOR_SUPPLIED"
+    ):
+        raise BundleError("M05 decision or operator equation-review receipt is incomplete")
+    receipt_path = evidence_root / "manual-equation-review.txt"
+    if not receipt_path.is_file() or not receipt_path.stat().st_size:
+        raise BundleError("M05 manual equation-review receipt is absent")
+    receipt_size, receipt_sha = sha256_file(receipt_path)
+    receipt = decision["manual_equation_review_receipt"]
+    if receipt.get("bytes") != receipt_size or receipt.get("sha256") != receipt_sha:
+        raise BundleError("M05 manual equation-review receipt identity differs from decision")
+    criteria_bytes = commit_blob(
+        root, submitted, "profiles/numerical-criteria-v0.1.json"
+    )
+    criteria_sha = sha256(criteria_bytes)
+    criteria_commit = provenance.get("criteria_commit_sha")
+    if not isinstance(criteria_commit, str):
+        raise BundleError("M05 criteria provenance lacks a commit identity")
+    if (
+        provenance.get("status") != "PASS"
+        or provenance.get("criteria_sha256") != criteria_sha
+        or provenance.get("criteria_unchanged_since_commit") is not True
+        or commit_blob(root, criteria_commit, "profiles/numerical-criteria-v0.1.json")
+        != criteria_bytes
+    ):
+        raise BundleError("M05 criteria provenance does not bind unchanged committed bytes")
+    expected_reference_sha = sha256(
+        commit_blob(root, submitted, "src/flybench/reference.py")
+    )
+    expected_model_sha = sha256(commit_blob(root, submitted, "src/flybench/model.py"))
+    if (
+        model_spec.get("status") != "PASS"
+        or model_spec.get("producer_code_git_sha") != submitted
+        or model_spec.get("reference_code_sha256") != expected_reference_sha
+        or model_spec.get("model_code_sha256") != expected_model_sha
+        or model_spec.get("model_spec_sha256") != decision.get("model_spec_sha256")
+    ):
+        raise BundleError("M05 ModelSpec evidence does not identify submitted reference code")
+    profile_bytes = commit_blob(root, submitted, "profiles/model-reference-v0.1.json")
+    profile = json.loads(profile_bytes)
+    if (
+        profile.get("model_spec_sha256") != model_spec.get("model_spec_sha256")
+        or profile.get("model_spec") != model_spec.get("model_spec")
+        or profile.get("selected_neural_dt_ms") != convergence.get("selected_dt_ms")
+        or model_spec.get("resolved_profile", {}).get("sha256") != sha256(profile_bytes)
+    ):
+        raise BundleError("M05 committed resolved profile differs from measured ModelSpec")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M05 acceptance evidence does not pass for submitted code")
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -791,6 +923,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         omitted.extend(m03_large_graph_inventory(root, submitted, evidence_root))
     if milestone == "M04":
         omitted.extend(m04_material(root, submitted, evidence_root, entries))
+    if milestone == "M05":
+        m05_material(root, submitted, evidence_root)
 
     large_files = {
         "schema_version": 1,
@@ -837,6 +971,30 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m04_audit = None
+    try:
+        m05_decision = json.loads(
+            (evidence_root / "decision.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m05_decision = None
+    try:
+        m05_convergence = json.loads(
+            (evidence_root / "timestep-convergence.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m05_convergence = None
+    try:
+        m05_analytical = json.loads(
+            (evidence_root / "analytical-fixtures.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m05_analytical = None
+    try:
+        m05_boundary = json.loads(
+            (evidence_root / "boundary-fixtures.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m05_boundary = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -851,6 +1009,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m04_mapping,
         m04_decision,
         m04_audit,
+        m05_decision,
+        m05_convergence,
+        m05_analytical,
+        m05_boundary,
     )
 
     manifest = {

@@ -500,6 +500,141 @@
           "timeout_seconds": 30
         }
       ]
+    },
+    "M05": {
+      "title": "Reference neural model and numerical semantics",
+      "commands": [
+        {
+          "name": "m05-reference-and-semantics-tests",
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py",
+            "src/flybench/model.py",
+            "src/flybench/reference.py",
+            "profiles/numerical-criteria-v0.1.json"
+          ],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "m05-numerical-reference-evidence-and-human-gate",
+          "argv": [
+            "python",
+            "experiments/numerical_reference.py",
+            "--out",
+            "evidence/M05"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "experiments/numerical_reference.py",
+            "profiles/model-reference-v0.1.json",
+            "evidence/M05/manual-equation-review.txt"
+          ],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "m05-evidence-and-profile-consistency",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,json,pathlib,subprocess,sys; r=pathlib.Path('.'); e=r/'evidence/M05'; load=lambda p:json.loads(p.read_text()); d=load(e/'decision.json'); m=load(e/'model-spec.json'); p=load(e/'criteria-provenance.json'); c=load(e/'timestep-convergence.json'); profile=load(r/'profiles/model-reference-v0.1.json'); receipt=e/'manual-equation-review.txt'; head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(); sha=lambda x:hashlib.sha256(x.read_bytes()).hexdigest(); ok=d['outcome']=='PASS' and d['allowed_next_milestone']=='M06' and d['external_milestone_acceptance']=='PENDING' and d['manual_equation_review_receipt']['status']=='PRESENT_OPERATOR_SUPPLIED' and d['model_spec_sha256']==m['model_spec_sha256']==profile['model_spec_sha256'] and d['selected_neural_dt_ms']==c['selected_dt_ms']==profile['selected_neural_dt_ms'] and p['criteria_unchanged_since_commit'] is True and p['criteria_sha256']==sha(r/'profiles/numerical-criteria-v0.1.json') and m['reference_code_sha256']==sha(r/'src/flybench/reference.py') and m['model_code_sha256']==sha(r/'src/flybench/model.py') and m['producer_code_git_sha']==head and d['manual_equation_review_receipt']['sha256']==sha(receipt); print(json.dumps({'status':'PASS' if ok else 'FAIL','selected_dt_ms':d['selected_neural_dt_ms'],'model_spec_sha256':d['model_spec_sha256'],'criteria_sha256':p['criteria_sha256']},sort_keys=True)); sys.exit(not ok)"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "evidence/M05/criteria-provenance.json",
+            "evidence/M05/analytical-fixtures.json",
+            "evidence/M05/boundary-fixtures.json",
+            "evidence/M05/timestep-convergence.json",
+            "evidence/M05/model-spec.json",
+            "evidence/M05/equation-review.txt",
+            "evidence/M05/manual-equation-review.txt",
+            "evidence/M05/decision.json",
+            "profiles/model-reference-v0.1.json"
+          ],
+          "timeout_seconds": 60
+        },
+        {
+          "name": "m01-m02-m03-m04-m05-offline-regression",
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py",
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py",
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py"
+          ],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "accepted-m04-identities",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; r=pathlib.Path('.'); expected={'profiles/model-v0.1.json':'564c553f750ab9ef275014bbfc67d2b62ed5992fceb80185e09d7966d52b451a','profiles/encoder-v0.1.json':'f6879937ec2e7efbdb888d336f2041d980f61a8981d7970314a53641bda14bfa','profiles/decoder-v0.1.json':'71acbe641fc2c9ef4f9cee514f99e3dfdc392482d9c77483fc1334fdacb37544','profiles/calibration-plan.json':'b00b9066365b25153ab3c8c56adf866cf1659bc669836345fd1617d9eff0f6d4','profiles/escape-circuit.json':'29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b'}; actual={p:hashlib.sha256((r/p).read_bytes()).hexdigest() for p in expected}; print(actual); sys.exit(actual!=expected)"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "profiles/model-v0.1.json",
+            "profiles/encoder-v0.1.json",
+            "profiles/decoder-v0.1.json",
+            "profiles/calibration-plan.json",
+            "profiles/escape-circuit.json"
+          ],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "architecture-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["docs/architecture.md"],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "clean-committed-code-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [".git"],
+          "timeout_seconds": 30
+        }
+      ]
     }
   }
 }
