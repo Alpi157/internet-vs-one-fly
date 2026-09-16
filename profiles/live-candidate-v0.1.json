@@ -1,0 +1,82 @@
+{
+  "backend": "kernel",
+  "classification": "M07 CANDIDATE \u2014 external acceptance pending; not profiles/live.json",
+  "control_interval_ms": 10.0,
+  "controller_profile_sha256": "0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817",
+  "decoder_profile_sha256": "7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f",
+  "encoder_profile_sha256": "7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7",
+  "environment_profile_sha256": "9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7",
+  "external_milestone_acceptance": "PENDING",
+  "g_full_decision": "DISCLOSED_CIRCUIT",
+  "graph": {
+    "E": 20607,
+    "N": 313,
+    "contacts": 79112,
+    "semantic_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+  },
+  "implementation": {
+    "kernel_id": "flybench.numba-serial-active-source.v1",
+    "kernel_source_sha256": "5b1db14f97974dd377a3cbd66ecaca5f0b307c309001c7f2620ab5bcd2c12723",
+    "llvmlite": "0.44.0",
+    "numba": "0.61.2",
+    "numpy": "2.2.6",
+    "python": "3.12.3",
+    "reference_source_sha256": "ce53a63c8f22256ad1aed36088734f2132cf8c4b1f70fd8a06365f1593587783"
+  },
+  "measured_hardware_identity_sha256": "2517515001def1613a9dbb46595704428e320cb2b9e201dbabdbb7839f3b7c05",
+  "measurement_evidence_manifest": {
+    "circuit-performance.json": {
+      "bytes": 40352,
+      "sha256": "1bf7d68a4995ee034d6d0b9425a2dbe5adaeaf7669793e34569dbe45a122df29"
+    },
+    "decision.json": {
+      "bytes": 2216,
+      "sha256": "b07955abe885c270a2125072618aa073b15b023cecbb5cdbd5c529039d672520"
+    },
+    "full-authority-carryover.json": {
+      "bytes": 240,
+      "sha256": "66f26c7885b82a9e9e61b98653ba860b6f549bd5d9623eb70957a1ba6778d810"
+    },
+    "full-performance.json": {
+      "bytes": 41809,
+      "sha256": "f7fb689b8801bddc44f245775a4487e61bffbdfa6ad871666be3083cd7466c94"
+    },
+    "hardware.json": {
+      "bytes": 1233,
+      "sha256": "c93883841e53862dc55abb1e01e7e5613f8f3c21310350b39688613ad13c342d"
+    },
+    "kernel-parity.json": {
+      "bytes": 4982,
+      "sha256": "afa679fad6adea6f73e7a78dc3694eed63243db8a68f00a067a1928d1bd6ca27"
+    },
+    "memory.json": {
+      "bytes": 6668,
+      "sha256": "af69fad2b1e5d5d196fee5f4598785fcb1796ece981f6097728f9794cd18e452"
+    },
+    "optimization.json": {
+      "bytes": 325,
+      "sha256": "3a95d29fb71cd451c2716bbbae1700783a90750c607ec0c9f29c3ea6fc553b3c"
+    },
+    "profiler.json": {
+      "bytes": 268,
+      "sha256": "6b899430714b074cf96f8d8a263cf3fd491971febdaaaf3b3e7ab3c98be4b0a7"
+    },
+    "raw-interval-timings.jsonl": {
+      "bytes": 295032,
+      "sha256": "034e362a77cf515387d85929e3983638a23fdb5e4f2108e731a5f02a1fa1fe50"
+    },
+    "timeout-test.json": {
+      "bytes": 475,
+      "sha256": "e1259c7eb754d26889058239b63e0fcd98b600ff2b601b29de92bdfb29e76baa"
+    }
+  },
+  "measurement_evidence_sha256": "b29a30f7bf8efedb537248f40a2abd785ab4d48ce04d777ac4e7379f8a32bab7",
+  "neural_dt_ms": 0.5,
+  "neural_steps_per_control_interval": 20,
+  "optimization_passes_used": 0,
+  "probe_profile_sha256": "7d935e5eb9e0049ed4cf9ec8bf2679e52ec9b6201db6383d751c01b271e0f1b8",
+  "profile_id": "flybench.live-candidate.v0.1",
+  "provisional_until_m15": true,
+  "runtime_model_spec_sha256": "8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc",
+  "schema_version": 1
+}
