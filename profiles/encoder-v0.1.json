@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.feature-level-looming-encoder-candidate.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "milestone_scope": "M04 candidate specification for later M06 implementation",
+  "implementation_status": "NOT_IMPLEMENTED",
+  "mode": "feature-level stimulation",
+  "early_visual_computation": "bypassed explicitly",
+  "ports": [
+    {
+      "population": "LC4",
+      "scalar_feature": "positive looming expansion / angular-velocity feature",
+      "delivery": "population-level scalar port"
+    },
+    {
+      "population": "LPLC2",
+      "scalar_feature": "looming angular-size feature",
+      "delivery": "population-level scalar port"
+    }
+  ],
+  "circuit_profile": "profiles/escape-circuit.json",
+  "numerical_mapping_status": "must be made transparent and frozen before M06 execution",
+  "prohibitions": [
+    "raw pixels",
+    "learned encoder",
+    "hidden policy",
+    "invented retinotopic body-ID mapping",
+    "optic-column dataset expansion in M04",
+    "forwarding threat bearing to the motor decoder"
+  ],
+  "directional_claim": "The M04 candidate circuit does not claim directional visual reconstruction."
+}

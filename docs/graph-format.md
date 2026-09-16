@@ -11,6 +11,14 @@ exact positive integer `bodyId` remains the biological identity. Duplicate accep
 annotation IDs are deduplicated and counted. Connection endpoints never create
 nodes.
 
+M04 adds one narrow selection mode without changing graph semantics. An explicit
+profile may list exact decimal body IDs through named populations. The compiler
+rejects duplicate, non-canonical, missing, non-positive, out-of-`uint64`, or
+annotation-ineligible IDs, resolves their union, and sorts it numerically. Every
+explicit ID must still exist in the pinned curated annotations and satisfy the
+accepted full-population rule (`superclass` non-null). The M03 annotation-rule
+profile and its semantic graph identity remain unchanged.
+
 Accepted IDs are sorted numerically without conversion through floating point and
 written as `uint64`. Dense runtime index `i` identifies `ids[i]`. The target-index
 representation is rejected unless `N <= 2^31 - 1`.

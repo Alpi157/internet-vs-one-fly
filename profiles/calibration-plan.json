@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.escape-calibration-plan.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "execution_status": "FROZEN_NOT_EXECUTED",
+  "primary_grid": {
+    "runtime_synaptic_scale": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003
+    ],
+    "peak_sensory_external_drive": [
+      1.25,
+      2.0,
+      4.0
+    ],
+    "maximum_primary_combinations": 12,
+    "expansion_policy": "Do not expand after observing outcomes without an explicit later decision record."
+  },
+  "fixed_control_panel": [
+    "no-threat",
+    "standard looming",
+    "matched non-looming/static-size control",
+    "receding control"
+  ],
+  "schedule_policy": "M05/M06 may define the exact numerical stimulus schedule before first execution, but may not add post-hoc scenario categories to rescue a preferred result.",
+  "neighborhood_policy": "The later selected setting must be surrounded by a small declared neighborhood as required by the architecture.",
+  "scientific_status": "Search candidates are project model assumptions, not measured physiology.",
+  "m04_execution_prohibition": "Do not execute behavioral calibration during M04."
+}

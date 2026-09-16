@@ -19,4 +19,4 @@ jobs:
       - name: Install locked development environment
         run: uv sync --extra dev --locked
       - name: Run small offline tests
-        run: uv run pytest -q tests/test_scaffold.py tests/test_review_tools.py tests/test_source_fetch.py tests/test_graph_compile.py
+        run: uv run pytest -q tests/test_scaffold.py tests/test_review_tools.py tests/test_source_fetch.py tests/test_graph_compile.py tests/test_pathway_mapping.py

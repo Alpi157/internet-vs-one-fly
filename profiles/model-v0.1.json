@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.normalized-lif-candidate.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "milestone_scope": "M04 candidate specification for later M05 implementation",
+  "implementation_status": "NOT_IMPLEMENTED",
+  "neuron_model": {
+    "name": "normalized leaky integrate-and-fire",
+    "tau_m_ms": 20.0,
+    "tau_s_ms": 5.0,
+    "rest": 0.0,
+    "reset": 0.0,
+    "threshold": 1.0,
+    "refractory_ms": 2.0,
+    "delay_ms": 1.0,
+    "scientific_status": "MODEL ASSUMPTION — not MaleCNS measurements"
+  },
+  "candidate_timestep_study_ms": [
+    0.5,
+    0.25,
+    0.1
+  ],
+  "numerical_acceptance_status": "UNMEASURED; M05 must determine which timestep is supportable",
+  "synaptic_scale_convention": {
+    "compiled_base_weight": "raw_contact_count * accepted_effective_sign * 1.0",
+    "compile_normalization": "none",
+    "runtime_parameter": "runtime_synaptic_scale",
+    "runtime_parameter_identity_requirement": "must be part of later ModelSpec identity",
+    "hidden_environment_or_decoder_scaling": "forbidden",
+    "calibration_plan": "profiles/calibration-plan.json"
+  },
+  "excluded_from_m04": [
+    "simulator implementation",
+    "numerical validation",
+    "timestep convergence execution",
+    "behavioral calibration",
+    "performance claims"
+  ]
+}

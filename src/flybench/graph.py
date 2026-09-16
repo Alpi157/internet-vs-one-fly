@@ -128,20 +128,76 @@ def _validate_selection_profile(
         raise GraphCompileError("selection profile does not identify the supplied source lock")
     if profile.get("annotation_source_role") != "curated_annotations":
         raise GraphCompileError("selection profile must use curated_annotations")
-    selection = profile.get("selection")
-    if not isinstance(selection, dict):
+    selection_value = profile.get("selection")
+    if not isinstance(selection_value, dict):
         raise GraphCompileError("selection profile is missing selection rules")
+    # Resolve compiler-only convenience fields on a copy. The committed profile bytes
+    # remain the sole input to selection semantic identity and audit reproduction.
+    selection = dict(selection_value)
+    if selection.get("biological_id_field") != "bodyId":
+        raise GraphCompileError("selection biological ID field must be bodyId")
+    if selection.get("invalid_id_policy") != "error":
+        raise GraphCompileError("invalid biological IDs must use the error policy")
+    mode = selection.get("mode", "annotation_rule")
     accepted_when = selection.get("accepted_when")
     if accepted_when != {"field": "superclass", "operator": "not_null"}:
         raise GraphCompileError(
-            "M03 selection must explicitly require a non-null annotation superclass"
+            "selection must explicitly require membership in the accepted non-null-superclass population"
         )
-    if selection.get("biological_id_field") != "bodyId":
-        raise GraphCompileError("M03 selection biological ID field must be bodyId")
-    if selection.get("invalid_id_policy") != "error":
-        raise GraphCompileError("invalid biological IDs must use the error policy")
-    if selection.get("duplicate_id_policy") != "deduplicate_after_rule_and_account":
-        raise GraphCompileError("selection duplicate-ID policy is missing or unsupported")
+    if mode == "annotation_rule":
+        if selection.get("duplicate_id_policy") != "deduplicate_after_rule_and_account":
+            raise GraphCompileError(
+                "annotation-rule selection duplicate-ID policy is missing or unsupported"
+            )
+    elif mode == "explicit_body_ids":
+        if selection.get("duplicate_id_policy") != "error":
+            raise GraphCompileError("explicit selection must reject duplicate body IDs")
+        if selection.get("missing_id_policy") != "error":
+            raise GraphCompileError("explicit selection must reject missing body IDs")
+        raw_ids = selection.get("body_ids_decimal")
+        if raw_ids is None and selection.get("body_ids_from_populations") is True:
+            populations = profile.get("populations")
+            if not isinstance(populations, dict) or not populations:
+                raise GraphCompileError(
+                    "explicit selection population source is missing populations"
+                )
+            population_ids: list[str] = []
+            for population in sorted(populations):
+                entry = populations[population]
+                if not isinstance(entry, dict) or not isinstance(
+                    entry.get("body_ids_decimal"), list
+                ):
+                    raise GraphCompileError(
+                        f"explicit population {population!r} lacks body_ids_decimal"
+                    )
+                population_ids.extend(entry["body_ids_decimal"])
+            raw_ids = sorted(population_ids, key=lambda value: int(value))
+            selection["body_ids_decimal"] = raw_ids
+        if not isinstance(raw_ids, list) or not raw_ids:
+            raise GraphCompileError(
+                "explicit selection requires body_ids_decimal or population ID lists"
+            )
+        parsed: list[int] = []
+        for value in raw_ids:
+            if (
+                not isinstance(value, str)
+                or not value.isascii()
+                or not value.isdecimal()
+                or value != str(int(value))
+            ):
+                raise GraphCompileError(
+                    "explicit body IDs must be canonical positive decimal strings"
+                )
+            integer = int(value)
+            if not 1 <= integer <= UINT64_MAX:
+                raise GraphCompileError("explicit body ID is outside positive uint64 range")
+            parsed.append(integer)
+        if parsed != sorted(parsed) or len(parsed) != len(set(parsed)):
+            raise GraphCompileError(
+                "explicit body IDs must be unique and strictly numerically ordered"
+            )
+    else:
+        raise GraphCompileError(f"unsupported selection mode {mode!r}")
     transform = profile.get("compile_transform")
     if not isinstance(transform, dict) or not isinstance(transform.get("path"), str):
         raise GraphCompileError("selection profile must reference a compile transform path")
@@ -281,7 +337,7 @@ def _inventory(values: list[Any]) -> dict[str, int]:
     return {key: counts[key] for key in sorted(counts)}
 
 
-def _load_accepted_ids(
+def _load_annotation_rule_ids(
     path: Path, selection: dict[str, Any]
 ) -> tuple[np.ndarray, dict[str, Any]]:
     id_field = selection["biological_id_field"]
@@ -323,6 +379,97 @@ def _load_accepted_ids(
         "observed_superclass_inventory": _inventory(classes),
     }
     return accepted_ids, report
+
+
+def _load_explicit_ids(
+    path: Path, selection: dict[str, Any]
+) -> tuple[np.ndarray, dict[str, Any]]:
+    """Validate an exact circuit ID list against the pinned accepted population."""
+
+    id_field = selection["biological_id_field"]
+    class_field = selection["accepted_when"]["field"]
+    required = [id_field, class_field, "type", "somaSide", "status", "statusLabel"]
+    try:
+        table = feather.read_table(path, columns=required, memory_map=True)
+    except (OSError, pa.ArrowException) as exc:
+        raise GraphCompileError(f"cannot read explicit selection evidence fields: {exc}") from exc
+    annotation_ids = _strict_uint64_array(table[id_field], id_field, positive=True)
+    order = np.argsort(annotation_ids, kind="stable")
+    sorted_annotation_ids = annotation_ids[order]
+    requested = np.asarray(
+        [int(value) for value in selection["body_ids_decimal"]], dtype=np.dtype("<u8")
+    )
+    validate_int32_index_capacity(int(requested.size))
+    positions = np.searchsorted(sorted_annotation_ids, requested)
+    present = positions < sorted_annotation_ids.size
+    if np.any(present):
+        present[present] = sorted_annotation_ids[positions[present]] == requested[present]
+    missing = [str(int(value)) for value in requested[~present]]
+    if missing:
+        raise GraphCompileError(f"explicit body IDs are absent from annotations: {missing}")
+    selected_rows = order[positions]
+    if sorted_annotation_ids.size > 1:
+        duplicated_annotation_ids = set(
+            int(value)
+            for value in sorted_annotation_ids[1:][
+                sorted_annotation_ids[1:] == sorted_annotation_ids[:-1]
+            ]
+        )
+    else:
+        duplicated_annotation_ids = set()
+    selected_duplicates = sorted(
+        duplicated_annotation_ids.intersection(int(value) for value in requested)
+    )
+    if selected_duplicates:
+        raise GraphCompileError(
+            "explicit body IDs have duplicate annotation rows: "
+            + repr([str(value) for value in selected_duplicates])
+        )
+    classes = table[class_field].to_pylist()
+    rejected = [
+        str(int(requested[index]))
+        for index, row in enumerate(selected_rows)
+        if classes[int(row)] is None
+    ]
+    if rejected:
+        raise GraphCompileError(
+            "explicit body IDs are outside the accepted non-null-superclass population: "
+            + repr(rejected)
+        )
+    types = table["type"].to_pylist()
+    sides = table["somaSide"].to_pylist()
+    statuses = table["status"].to_pylist()
+    status_labels = table["statusLabel"].to_pylist()
+    rows = [int(row) for row in selected_rows]
+    report = {
+        "selection_mode": "explicit_body_ids",
+        "annotation_rows": int(table.num_rows),
+        "requested_body_ids": int(requested.size),
+        "accepted_annotation_rows": int(requested.size),
+        "accepted_unique_ids": int(requested.size),
+        "duplicate_requested_ids": 0,
+        "missing_requested_ids": 0,
+        "requested_ids_outside_accepted_population": 0,
+        "selected_type_inventory": _inventory([types[row] for row in rows]),
+        "selected_soma_side_inventory": _inventory([sides[row] for row in rows]),
+        "selected_status_inventory": _inventory([statuses[row] for row in rows]),
+        "selected_status_label_inventory": _inventory(
+            [status_labels[row] for row in rows]
+        ),
+        "accepted_population_rule": selection["accepted_when"],
+    }
+    return requested, report
+
+
+def _load_accepted_ids(
+    path: Path, selection: dict[str, Any]
+) -> tuple[np.ndarray, dict[str, Any]]:
+    mode = selection.get("mode", "annotation_rule")
+    if mode == "annotation_rule":
+        return _load_annotation_rule_ids(path, selection)
+    if mode == "explicit_body_ids":
+        return _load_explicit_ids(path, selection)
+    raise GraphCompileError(f"unsupported selection mode {mode!r}")
 
 
 def _map_ids(ordered_ids: np.ndarray, endpoints: np.ndarray) -> tuple[np.ndarray, np.ndarray]:

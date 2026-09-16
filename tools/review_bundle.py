@@ -134,6 +134,9 @@ def render_review(
     manual_source_review_present: bool,
     m03_audit: dict[str, Any] | None,
     m03_determinism: dict[str, Any] | None,
+    m04_mapping: dict[str, Any] | None,
+    m04_decision: dict[str, Any] | None,
+    m04_audit: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -159,6 +162,18 @@ def render_review(
             "Transmitter labels and confidences are source data; effective signs, unit gain, and no-normalization are explicit MODEL ASSUMPTIONS.",
             "Unknown, missing, unsupported, and modulatory signaling contributes zero fast-current weight rather than being silently made excitatory.",
             "Full arrays and pinned source bytes are omitted from this bounded ZIP and identified in large-files.json; the exact synthetic graph is included.",
+        ]
+    elif milestone == "M04":
+        objective = (
+            "Resolve exact MaleCNS v1.0 LC4, LPLC2, and DNp01 identities, verify direct "
+            "accepted-graph wiring and signs, and freeze an auditable ports-only candidate circuit."
+        )
+        assumptions = [
+            "Exact body IDs and sides come from pinned MaleCNS v1.0 annotation fields; literature grounds biological roles but is not an ID authority.",
+            "The circuit is the exact induced graph over all canonical LC4, LPLC2, and DNp01 matches; no context neurons or contact threshold are added.",
+            "Raw contact counts remain source data; effective signs and the later model, encoder, decoder, and calibration grid remain explicit MODEL ASSUMPTIONS.",
+            "The compact circuit arrays are included; full M03 arrays and raw MaleCNS sources are omitted and identified in large-files.json.",
+            "No simulation, calibration execution, numerical acceptance, or behavioral claim is part of M04.",
         ]
     else:
         objective = (
@@ -231,6 +246,38 @@ def render_review(
         lines.append(
             f"- Independent repeat-build comparison: `{m03_determinism.get('status')}`; first `{m03_determinism.get('first_semantic_graph_digest')}`, repeat `{m03_determinism.get('second_semantic_graph_digest')}`."
         )
+    if milestone == "M04" and m04_mapping:
+        claims = m04_mapping.get("mapping_claims", {})
+        populations = claims.get("populations", {})
+        pathways = claims.get("direct_pathways", [])
+        cut = claims.get("cut_context", {})
+        lines.append(
+            f"- Mapping semantic digest: `{m04_mapping.get('mapping_digest', {}).get('value')}`."
+        )
+        lines.append(
+            "- Exact population counts: "
+            + "; ".join(
+                f"{name} `{populations.get(name, {}).get('count')}`"
+                for name in ("LC4", "LPLC2", "DNp01")
+            )
+            + "."
+        )
+        for pathway in pathways:
+            lines.append(
+                f"- {pathway.get('source_population')} -> DNp01: `{pathway.get('direct_pair_edges')}` pair edges, `{pathway.get('raw_contact_mass')}` contacts, `{pathway.get('executable_nonzero_edges')}` executable nonzero edges."
+            )
+        lines.append(
+            f"- Cut context: incoming `{cut.get('cut_incoming', {}).get('pair_edges')}` edges / `{cut.get('cut_incoming', {}).get('contact_mass')}` contacts; outgoing `{cut.get('cut_outgoing', {}).get('pair_edges')}` edges / `{cut.get('cut_outgoing', {}).get('contact_mass')}` contacts."
+        )
+    if milestone == "M04" and m04_audit:
+        graph = m04_audit.get("graph", {})
+        lines.append(
+            f"- Circuit semantic digest: `{m04_audit.get('semantic_graph_digest')}`; N `{graph.get('N')}`, E `{graph.get('source_accepted_E')}`, contacts `{graph.get('represented_source_contacts')}`."
+        )
+    if milestone == "M04" and m04_decision:
+        lines.append(
+            f"- G-MAP candidate decision: `{m04_decision.get('outcome')}`; external milestone acceptance remains `{m04_decision.get('external_milestone_acceptance')}`."
+        )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -260,10 +307,24 @@ def render_review(
             "- `evidence/M02/manual-source-review.txt`: "
             + ("present (operator-supplied)." if manual_source_review_present else "absent; manual review remains pending.")
         )
+    if milestone == "M04":
+        receipt = (m04_decision or {}).get("manual_mapping_review_receipt", {})
+        lines.append(
+            "- `evidence/M04/manual-mapping-review.txt`: "
+            + (
+                "present (operator-supplied)."
+                if receipt.get("status") == "PRESENT_OPERATOR_SUPPLIED"
+                else "absent; manual mapping review remains pending."
+            )
+        )
 
     lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
     if milestone == "M02" and not manual_source_review_present:
         lines.append("- The operator's manual source-origin receipt is absent.")
+    if milestone == "M04" and (m04_decision or {}).get(
+        "manual_mapping_review_receipt", {}
+    ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
+        lines.append("- The operator's manual M04 mapping-review receipt is absent.")
     lines.extend(
         [
             "- Scientific and product capabilities assigned to later milestones remain intentionally unimplemented.",
@@ -277,7 +338,11 @@ def render_review(
                 else (
                     "- Full generated arrays are omitted for bounded review; exact hashes, dtypes, shapes, sizes, generation identities, audit results, and a directly inspectable synthetic graph are included."
                     if milestone == "M03"
-                    else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                    else (
+                        "- Full M03 arrays and raw sources are omitted with exact identities; compact circuit arrays and source-derived mapping evidence are included."
+                        if milestone == "M04"
+                        else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                    )
                 )
             ),
             "",
@@ -508,6 +573,168 @@ def m03_large_graph_inventory(
     return result
 
 
+def m04_material(
+    root: Path,
+    submitted: str,
+    evidence_root: Path,
+    entries: dict[str, bytes],
+) -> list[dict[str, Any]]:
+    """Validate M04 review evidence, include the compact circuit, inventory large inputs."""
+
+    required_json = {}
+    for name in (
+        "mapping.json",
+        "mapping-determinism.json",
+        "decision.json",
+        "circuit-audit.json",
+        "circuit-determinism.json",
+        "command-results.json",
+    ):
+        try:
+            required_json[name] = json.loads(
+                (evidence_root / name).read_text(encoding="utf-8")
+            )
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M04 {name} is missing or invalid: {exc}") from exc
+    mapping = required_json["mapping.json"]
+    decision = required_json["decision.json"]
+    mapping_determinism = required_json["mapping-determinism.json"]
+    audit = required_json["circuit-audit.json"]
+    determinism = required_json["circuit-determinism.json"]
+    acceptance = required_json["command-results.json"]
+    mapping_digest = mapping.get("mapping_digest", {}).get("value")
+    circuit_digest = audit.get("semantic_graph_digest")
+    if (
+        mapping.get("status") != "PASS"
+        or mapping.get("producer", {}).get("code_git_sha") != submitted
+        or mapping.get("circuit_profile_validation", {}).get("status") != "PASS"
+        or mapping.get("compiled_circuit_verification", {}).get("status") != "PASS"
+    ):
+        raise BundleError("M04 mapping evidence does not pass for submitted code")
+    if (
+        mapping_determinism.get("status") != "PASS"
+        or mapping_determinism.get("mapping_semantic_sha256") != mapping_digest
+        or mapping_determinism.get("before_sha256")
+        != mapping_determinism.get("after_sha256")
+    ):
+        raise BundleError("M04 mapping deterministic rerun evidence does not pass")
+    if (
+        decision.get("outcome") != "PASS"
+        or decision.get("external_milestone_acceptance") != "PENDING"
+        or decision.get("mapping_semantic_sha256") != mapping_digest
+        or decision.get("manual_mapping_review_receipt", {}).get("status")
+        != "PRESENT_OPERATOR_SUPPLIED"
+    ):
+        raise BundleError("M04 G-MAP decision or operator receipt is incomplete")
+    receipt_path = evidence_root / "manual-mapping-review.txt"
+    if not receipt_path.is_file() or not receipt_path.stat().st_size:
+        raise BundleError("M04 manual mapping-review receipt is absent")
+    receipt_size, receipt_digest = sha256_file(receipt_path)
+    receipt = decision["manual_mapping_review_receipt"]
+    if receipt.get("bytes") != receipt_size or receipt.get("sha256") != receipt_digest:
+        raise BundleError("M04 manual receipt identity differs from decision evidence")
+    expected_module_sha = sha256(commit_blob(root, submitted, "src/flybench/graph.py"))
+    if (
+        audit.get("status") != "PASS"
+        or audit.get("compiler", {}).get("code_git_sha") != submitted
+        or audit.get("compiler", {}).get("module_sha256") != expected_module_sha
+        or mapping.get("compiled_circuit_verification", {}).get(
+            "semantic_graph_digest"
+        )
+        != circuit_digest
+    ):
+        raise BundleError("M04 circuit audit does not identify submitted compiler/circuit")
+    if (
+        determinism.get("status") != "PASS"
+        or determinism.get("first_semantic_graph_digest") != circuit_digest
+        or determinism.get("second_semantic_graph_digest") != circuit_digest
+    ):
+        raise BundleError("M04 circuit deterministic rebuild does not match audit")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M04 acceptance evidence does not pass for submitted code")
+    circuit_profile = json.loads(
+        commit_blob(root, submitted, "profiles/escape-circuit.json").decode("utf-8")
+    )
+    if circuit_profile.get("mapping_evidence", {}).get("semantic_sha256") != mapping_digest:
+        raise BundleError("committed circuit profile does not bind M04 mapping digest")
+
+    circuit_dir = root / "data" / "compiled" / "escape"
+    if not circuit_dir.is_dir():
+        raise BundleError("compiled M04 circuit directory is missing")
+    for path in sorted(circuit_dir.iterdir()):
+        if not path.is_file() or path.is_symlink():
+            continue
+        data = path.read_bytes()
+        if len(data) > MAX_INCLUDED_FILE_BYTES:
+            raise BundleError(f"compact circuit artifact is unexpectedly large: {path.name}")
+        entries[f"data/compiled/escape/{path.name}"] = data
+    for name, item in audit.get("arrays", {}).items():
+        filename = item.get("filename")
+        path = circuit_dir / str(filename)
+        size, digest = sha256_file(path)
+        if size != item.get("bytes") or digest != item.get("sha256"):
+            raise BundleError(f"M04 compact circuit array differs from audit: {name}")
+
+    try:
+        full_manifest = json.loads(
+            (root / "data" / "compiled" / "full" / "manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"accepted M03 full manifest is unavailable: {exc}") from exc
+    accepted_full_digest = mapping.get("mapping_claims", {}).get(
+        "accepted_full_graph", {}
+    ).get("semantic_digest")
+    if (
+        accepted_full_digest
+        != "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0"
+        or full_manifest.get("semantic_digest", {}).get("value") != accepted_full_digest
+    ):
+        raise BundleError("M04 mapping/full graph does not match accepted M03 identity")
+    source_lock_bytes = commit_blob(root, submitted, "profiles/source-lock.json")
+    source_lock_digest = sha256(source_lock_bytes)
+    if source_lock_digest != "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c":
+        raise BundleError("M04 committed source lock differs from accepted identity")
+    source_lock = json.loads(source_lock_bytes)
+    omitted: list[dict[str, Any]] = []
+    for source in sorted(source_lock["files"], key=lambda value: value["role"]):
+        path = root / "data" / "raw" / source["filename"]
+        size, digest = sha256_file(path)
+        if size != source["observed_bytes"] or digest != source["observed_sha256"]:
+            raise BundleError(f"M04 raw source differs from lock: {source['filename']}")
+        omitted.append(
+            {
+                "path": f"data/raw/{source['filename']}",
+                "reason": "official MaleCNS bulk source excluded from bounded review ZIP",
+                "role": source["role"],
+                "bytes": size,
+                "sha256": digest,
+                "upstream_sha256": source.get("upstream_sha256"),
+                "source_lock_sha256": source_lock_digest,
+            }
+        )
+    for name, item in sorted(full_manifest.get("arrays", {}).items()):
+        path = root / "data" / "compiled" / "full" / item["filename"]
+        size, digest = sha256_file(path)
+        if size != item["bytes"] or digest != item["sha256"]:
+            raise BundleError(f"accepted M03 full array differs from manifest: {name}")
+        omitted.append(
+            {
+                "path": f"data/compiled/full/{item['filename']}",
+                "reason": "accepted full M03 graph array omitted from bounded review ZIP",
+                "array_name": name,
+                "bytes": size,
+                "sha256": digest,
+                "dtype": item["dtype"],
+                "shape": item["shape"],
+                "graph_semantic_digest": accepted_full_digest,
+                "source_lock_sha256": source_lock_digest,
+            }
+        )
+    return omitted
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -562,6 +789,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
     if milestone == "M03":
         omitted.extend(m03_large_graph_inventory(root, submitted, evidence_root))
+    if milestone == "M04":
+        omitted.extend(m04_material(root, submitted, evidence_root, entries))
 
     large_files = {
         "schema_version": 1,
@@ -590,6 +819,24 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m03_determinism = None
+    try:
+        m04_mapping = json.loads(
+            (evidence_root / "mapping.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m04_mapping = None
+    try:
+        m04_decision = json.loads(
+            (evidence_root / "decision.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m04_decision = None
+    try:
+        m04_audit = json.loads(
+            (evidence_root / "circuit-audit.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m04_audit = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -601,6 +848,9 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         (evidence_root / "manual-source-review.txt").is_file(),
         m03_audit,
         m03_determinism,
+        m04_mapping,
+        m04_decision,
+        m04_audit,
     )
 
     manifest = {

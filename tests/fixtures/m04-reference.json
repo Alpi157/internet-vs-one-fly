@@ -1,0 +1,5264 @@
+{
+  "accepted_full_graph_semantic_digest": "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0",
+  "annotation_source_fields": [
+    "bodyId",
+    "type",
+    "instance",
+    "synonyms",
+    "somaSide",
+    "rootSide",
+    "superclass",
+    "class",
+    "subclass",
+    "supertype",
+    "flywireType",
+    "hemibrainType",
+    "mancType",
+    "matchingNotes",
+    "status",
+    "statusLabel"
+  ],
+  "circuit_expected": {
+    "N": 313,
+    "disabled_zero_weight_contact_mass": 0,
+    "executable_nonzero_E": 20607,
+    "represented_source_contacts": 79112,
+    "source_accepted_E": 20607,
+    "zero_disabled_E": 0
+  },
+  "classification": "committed exact M04 reference derived from pinned source/accepted graph evidence",
+  "compile_transform_profile_sha256": "e2a740b868f7e0b0de3738ec33c9f1c70d8cb949fbf8ec0d4afbf5fcec21a623",
+  "cut_context": {
+    "balance_checks": {
+      "selected_source_contacts_equal_internal_plus_outgoing": "PASS",
+      "selected_source_pair_edges_equal_internal_plus_outgoing": "PASS",
+      "selected_target_contacts_equal_internal_plus_incoming": "PASS",
+      "selected_target_pair_edges_equal_internal_plus_incoming": "PASS"
+    },
+    "classification": "SOURCE / MEASURED DATA",
+    "cut_incoming": {
+      "contact_mass": 614628,
+      "disabled_contact_mass": 2513,
+      "disabled_edges": 1510,
+      "nonzero_edges": 145342,
+      "pair_edges": 146852
+    },
+    "cut_incoming_by_target_population": [
+      {
+        "contact_mass": 284234,
+        "disabled_contact_mass": 565,
+        "disabled_edges": 382,
+        "nonzero_edges": 56387,
+        "pair_edges": 56769,
+        "target_population": "LC4"
+      },
+      {
+        "contact_mass": 304887,
+        "disabled_contact_mass": 1804,
+        "disabled_edges": 1102,
+        "nonzero_edges": 87840,
+        "pair_edges": 88942,
+        "target_population": "LPLC2"
+      },
+      {
+        "contact_mass": 25507,
+        "disabled_contact_mass": 144,
+        "disabled_edges": 26,
+        "nonzero_edges": 1115,
+        "pair_edges": 1141,
+        "target_population": "DNp01"
+      }
+    ],
+    "cut_outgoing": {
+      "contact_mass": 254696,
+      "disabled_contact_mass": 0,
+      "disabled_edges": 0,
+      "nonzero_edges": 47620,
+      "pair_edges": 47620
+    },
+    "cut_outgoing_by_source_population": [
+      {
+        "contact_mass": 119498,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 19711,
+        "pair_edges": 19711,
+        "source_population": "LC4"
+      },
+      {
+        "contact_mass": 132710,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 27296,
+        "pair_edges": 27296,
+        "source_population": "LPLC2"
+      },
+      {
+        "contact_mass": 2488,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 613,
+        "pair_edges": 613,
+        "source_population": "DNp01"
+      }
+    ],
+    "internal": {
+      "contact_mass": 79112,
+      "disabled_contact_mass": 0,
+      "disabled_edges": 0,
+      "nonzero_edges": 20607,
+      "pair_edges": 20607
+    },
+    "internal_by_population_pair": [
+      {
+        "contact_mass": 2,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 2,
+        "pair_edges": 2,
+        "source_population": "DNp01",
+        "target_population": "DNp01"
+      },
+      {
+        "contact_mass": 45,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 32,
+        "pair_edges": 32,
+        "source_population": "DNp01",
+        "target_population": "LC4"
+      },
+      {
+        "contact_mass": 8,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 8,
+        "pair_edges": 8,
+        "source_population": "DNp01",
+        "target_population": "LPLC2"
+      },
+      {
+        "contact_mass": 6362,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 126,
+        "pair_edges": 126,
+        "source_population": "LC4",
+        "target_population": "DNp01"
+      },
+      {
+        "contact_mass": 18392,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 5334,
+        "pair_edges": 5334,
+        "source_population": "LC4",
+        "target_population": "LC4"
+      },
+      {
+        "contact_mass": 361,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 306,
+        "pair_edges": 306,
+        "source_population": "LC4",
+        "target_population": "LPLC2"
+      },
+      {
+        "contact_mass": 4862,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 185,
+        "pair_edges": 185,
+        "source_population": "LPLC2",
+        "target_population": "DNp01"
+      },
+      {
+        "contact_mass": 2902,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 1180,
+        "pair_edges": 1180,
+        "source_population": "LPLC2",
+        "target_population": "LC4"
+      },
+      {
+        "contact_mass": 46178,
+        "disabled_contact_mass": 0,
+        "disabled_edges": 0,
+        "nonzero_edges": 13434,
+        "pair_edges": 13434,
+        "source_population": "LPLC2",
+        "target_population": "LPLC2"
+      }
+    ],
+    "intervention": {
+      "classification": "MODEL ASSUMPTION",
+      "description": "Ports-only induced circuit; all outside context is intentionally omitted."
+    },
+    "selected_node_count": 313
+  },
+  "direct_pathways": [
+    {
+      "contacts": 6362,
+      "disabled_contact_mass": 0,
+      "disabled_edges": 0,
+      "edges": [
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "12032",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "12349",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 58,
+          "effective_sign": 1,
+          "executable_weight": 58.0,
+          "source_body_id_decimal": "12824",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "14888",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "15018",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 65,
+          "effective_sign": 1,
+          "executable_weight": 65.0,
+          "source_body_id_decimal": "16128",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "16138",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 53,
+          "effective_sign": 1,
+          "executable_weight": 53.0,
+          "source_body_id_decimal": "16628",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "16809",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "16917",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "17054",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "17266",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 63,
+          "effective_sign": 1,
+          "executable_weight": 63.0,
+          "source_body_id_decimal": "17270",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "17340",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "17364",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 86,
+          "effective_sign": 1,
+          "executable_weight": 86.0,
+          "source_body_id_decimal": "17478",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 35,
+          "effective_sign": 1,
+          "executable_weight": 35.0,
+          "source_body_id_decimal": "17548",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "17608",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 83,
+          "effective_sign": 1,
+          "executable_weight": 83.0,
+          "source_body_id_decimal": "17653",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 63,
+          "effective_sign": 1,
+          "executable_weight": 63.0,
+          "source_body_id_decimal": "17668",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 50,
+          "effective_sign": 1,
+          "executable_weight": 50.0,
+          "source_body_id_decimal": "17860",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "17926",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "17987",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 57,
+          "effective_sign": 1,
+          "executable_weight": 57.0,
+          "source_body_id_decimal": "18127",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "18189",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 59,
+          "effective_sign": 1,
+          "executable_weight": 59.0,
+          "source_body_id_decimal": "18396",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "18432",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 58,
+          "effective_sign": 1,
+          "executable_weight": 58.0,
+          "source_body_id_decimal": "18478",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "19260",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "19420",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 49,
+          "effective_sign": 1,
+          "executable_weight": 49.0,
+          "source_body_id_decimal": "19543",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "19550",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 56,
+          "effective_sign": 1,
+          "executable_weight": 56.0,
+          "source_body_id_decimal": "19634",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 44,
+          "effective_sign": 1,
+          "executable_weight": 44.0,
+          "source_body_id_decimal": "19794",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "19954",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "20016",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 35,
+          "effective_sign": 1,
+          "executable_weight": 35.0,
+          "source_body_id_decimal": "20282",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "20399",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "20440",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "20542",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "20572",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "20588",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 44,
+          "effective_sign": 1,
+          "executable_weight": 44.0,
+          "source_body_id_decimal": "20673",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "20808",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 81,
+          "effective_sign": 1,
+          "executable_weight": 81.0,
+          "source_body_id_decimal": "20859",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "20917",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "20967",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 57,
+          "effective_sign": 1,
+          "executable_weight": 57.0,
+          "source_body_id_decimal": "20976",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "21151",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 31,
+          "effective_sign": 1,
+          "executable_weight": 31.0,
+          "source_body_id_decimal": "21165",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "21225",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "21287",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "21313",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "21336",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "21721",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "21804",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "22034",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 59,
+          "effective_sign": 1,
+          "executable_weight": 59.0,
+          "source_body_id_decimal": "22194",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "22328",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "22772",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 67,
+          "effective_sign": 1,
+          "executable_weight": 67.0,
+          "source_body_id_decimal": "22847",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "22922",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 61,
+          "effective_sign": 1,
+          "executable_weight": 61.0,
+          "source_body_id_decimal": "22966",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 58,
+          "effective_sign": 1,
+          "executable_weight": 58.0,
+          "source_body_id_decimal": "22975",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "23098",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 54,
+          "effective_sign": 1,
+          "executable_weight": 54.0,
+          "source_body_id_decimal": "23202",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "23226",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 56,
+          "effective_sign": 1,
+          "executable_weight": 56.0,
+          "source_body_id_decimal": "23392",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "23792",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 56,
+          "effective_sign": 1,
+          "executable_weight": 56.0,
+          "source_body_id_decimal": "23929",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 63,
+          "effective_sign": 1,
+          "executable_weight": 63.0,
+          "source_body_id_decimal": "24338",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "24523",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "25584",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 53,
+          "effective_sign": 1,
+          "executable_weight": 53.0,
+          "source_body_id_decimal": "26112",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "27624",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 59,
+          "effective_sign": 1,
+          "executable_weight": 59.0,
+          "source_body_id_decimal": "27750",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 64,
+          "effective_sign": 1,
+          "executable_weight": 64.0,
+          "source_body_id_decimal": "27829",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "28945",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "28980",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "29417",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 73,
+          "effective_sign": 1,
+          "executable_weight": 73.0,
+          "source_body_id_decimal": "29469",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 58,
+          "effective_sign": 1,
+          "executable_weight": 58.0,
+          "source_body_id_decimal": "29514",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "29563",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "30087",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "30480",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 57,
+          "effective_sign": 1,
+          "executable_weight": 57.0,
+          "source_body_id_decimal": "30803",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "31262",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 61,
+          "effective_sign": 1,
+          "executable_weight": 61.0,
+          "source_body_id_decimal": "31301",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "31308",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "31429",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 69,
+          "effective_sign": 1,
+          "executable_weight": 69.0,
+          "source_body_id_decimal": "32597",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "33137",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "34845",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 56,
+          "effective_sign": 1,
+          "executable_weight": 56.0,
+          "source_body_id_decimal": "35262",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 61,
+          "effective_sign": 1,
+          "executable_weight": 61.0,
+          "source_body_id_decimal": "35616",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "37587",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "38065",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 52,
+          "effective_sign": 1,
+          "executable_weight": 52.0,
+          "source_body_id_decimal": "77614",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "81112",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 58,
+          "effective_sign": 1,
+          "executable_weight": 58.0,
+          "source_body_id_decimal": "100485",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "107513",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "111787",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 54,
+          "effective_sign": 1,
+          "executable_weight": 54.0,
+          "source_body_id_decimal": "511914",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 65,
+          "effective_sign": 1,
+          "executable_weight": 65.0,
+          "source_body_id_decimal": "512366",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 53,
+          "effective_sign": 1,
+          "executable_weight": 53.0,
+          "source_body_id_decimal": "512705",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "514508",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 60,
+          "effective_sign": 1,
+          "executable_weight": 60.0,
+          "source_body_id_decimal": "514956",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 64,
+          "effective_sign": 1,
+          "executable_weight": 64.0,
+          "source_body_id_decimal": "515476",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 54,
+          "effective_sign": 1,
+          "executable_weight": 54.0,
+          "source_body_id_decimal": "515900",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "516909",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "517752",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "518016",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 82,
+          "effective_sign": 1,
+          "executable_weight": 82.0,
+          "source_body_id_decimal": "518439",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "518544",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 51,
+          "effective_sign": 1,
+          "executable_weight": 51.0,
+          "source_body_id_decimal": "518730",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "518983",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "519650",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "519931",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "520449",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 64,
+          "effective_sign": 1,
+          "executable_weight": 64.0,
+          "source_body_id_decimal": "524899",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "526286",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "527408",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 62,
+          "effective_sign": 1,
+          "executable_weight": 62.0,
+          "source_body_id_decimal": "530029",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 34,
+          "effective_sign": 1,
+          "executable_weight": 34.0,
+          "source_body_id_decimal": "532254",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 69,
+          "effective_sign": 1,
+          "executable_weight": 69.0,
+          "source_body_id_decimal": "533129",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "535341",
+          "target_body_id_decimal": "10010"
+        }
+      ],
+      "nonzero_edges": 126,
+      "pair_edges": 126,
+      "per_output_body": [
+        {
+          "disabled_edges": 0,
+          "executable_nonzero_edges": 55,
+          "pair_edges": 55,
+          "raw_contact_mass": 2580,
+          "target_body_id_decimal": "10001",
+          "target_side": "R"
+        },
+        {
+          "disabled_edges": 0,
+          "executable_nonzero_edges": 71,
+          "pair_edges": 71,
+          "raw_contact_mass": 3782,
+          "target_body_id_decimal": "10010",
+          "target_side": "L"
+        }
+      ],
+      "source_population": "LC4",
+      "target_population": "DNp01"
+    },
+    {
+      "contacts": 4862,
+      "disabled_contact_mass": 0,
+      "disabled_edges": 0,
+      "edges": [
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 2,
+          "effective_sign": 1,
+          "executable_weight": 2.0,
+          "source_body_id_decimal": "11498",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "12384",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 8,
+          "effective_sign": 1,
+          "executable_weight": 8.0,
+          "source_body_id_decimal": "13132",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "13726",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 6,
+          "effective_sign": 1,
+          "executable_weight": 6.0,
+          "source_body_id_decimal": "13764",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 4,
+          "effective_sign": 1,
+          "executable_weight": 4.0,
+          "source_body_id_decimal": "14030",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "14102",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "14465",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "15804",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 12,
+          "effective_sign": 1,
+          "executable_weight": 12.0,
+          "source_body_id_decimal": "17059",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 9,
+          "effective_sign": 1,
+          "executable_weight": 9.0,
+          "source_body_id_decimal": "17544",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "17551",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "17774",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 44,
+          "effective_sign": 1,
+          "executable_weight": 44.0,
+          "source_body_id_decimal": "17775",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 15,
+          "effective_sign": 1,
+          "executable_weight": 15.0,
+          "source_body_id_decimal": "17880",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "17990",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "18672",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "18900",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 5,
+          "effective_sign": 1,
+          "executable_weight": 5.0,
+          "source_body_id_decimal": "18929",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "18936",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 28,
+          "effective_sign": 1,
+          "executable_weight": 28.0,
+          "source_body_id_decimal": "19034",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 34,
+          "effective_sign": 1,
+          "executable_weight": 34.0,
+          "source_body_id_decimal": "19146",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 34,
+          "effective_sign": 1,
+          "executable_weight": 34.0,
+          "source_body_id_decimal": "19229",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 1,
+          "effective_sign": 1,
+          "executable_weight": 1.0,
+          "source_body_id_decimal": "19249",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 1,
+          "effective_sign": 1,
+          "executable_weight": 1.0,
+          "source_body_id_decimal": "19549",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "19589",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 49,
+          "effective_sign": 1,
+          "executable_weight": 49.0,
+          "source_body_id_decimal": "19608",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 55,
+          "effective_sign": 1,
+          "executable_weight": 55.0,
+          "source_body_id_decimal": "19787",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 12,
+          "effective_sign": 1,
+          "executable_weight": 12.0,
+          "source_body_id_decimal": "19830",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 5,
+          "effective_sign": 1,
+          "executable_weight": 5.0,
+          "source_body_id_decimal": "19842",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 10,
+          "effective_sign": 1,
+          "executable_weight": 10.0,
+          "source_body_id_decimal": "19911",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "20047",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "20103",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "20162",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 59,
+          "effective_sign": 1,
+          "executable_weight": 59.0,
+          "source_body_id_decimal": "20182",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "20240",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 53,
+          "effective_sign": 1,
+          "executable_weight": 53.0,
+          "source_body_id_decimal": "20269",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "20329",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 14,
+          "effective_sign": 1,
+          "executable_weight": 14.0,
+          "source_body_id_decimal": "20334",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "20471",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "20535",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 8,
+          "effective_sign": 1,
+          "executable_weight": 8.0,
+          "source_body_id_decimal": "20584",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "20694",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 12,
+          "effective_sign": 1,
+          "executable_weight": 12.0,
+          "source_body_id_decimal": "20749",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "20799",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "21045",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 8,
+          "effective_sign": 1,
+          "executable_weight": 8.0,
+          "source_body_id_decimal": "21299",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 4,
+          "effective_sign": 1,
+          "executable_weight": 4.0,
+          "source_body_id_decimal": "21318",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 34,
+          "effective_sign": 1,
+          "executable_weight": 34.0,
+          "source_body_id_decimal": "21361",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "21562",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 14,
+          "effective_sign": 1,
+          "executable_weight": 14.0,
+          "source_body_id_decimal": "21703",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 12,
+          "effective_sign": 1,
+          "executable_weight": 12.0,
+          "source_body_id_decimal": "21769",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "21808",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "21862",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 15,
+          "effective_sign": 1,
+          "executable_weight": 15.0,
+          "source_body_id_decimal": "21899",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 14,
+          "effective_sign": 1,
+          "executable_weight": 14.0,
+          "source_body_id_decimal": "22218",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 60,
+          "effective_sign": 1,
+          "executable_weight": 60.0,
+          "source_body_id_decimal": "22253",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "22261",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 54,
+          "effective_sign": 1,
+          "executable_weight": 54.0,
+          "source_body_id_decimal": "22557",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 9,
+          "effective_sign": 1,
+          "executable_weight": 9.0,
+          "source_body_id_decimal": "22677",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 31,
+          "effective_sign": 1,
+          "executable_weight": 31.0,
+          "source_body_id_decimal": "23247",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "23349",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "23497",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 31,
+          "effective_sign": 1,
+          "executable_weight": 31.0,
+          "source_body_id_decimal": "23550",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "23590",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "23665",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "23878",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "23919",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 35,
+          "effective_sign": 1,
+          "executable_weight": 35.0,
+          "source_body_id_decimal": "24118",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "24187",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 29,
+          "effective_sign": 1,
+          "executable_weight": 29.0,
+          "source_body_id_decimal": "24268",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "24308",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 47,
+          "effective_sign": 1,
+          "executable_weight": 47.0,
+          "source_body_id_decimal": "24401",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "24568",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 10,
+          "effective_sign": 1,
+          "executable_weight": 10.0,
+          "source_body_id_decimal": "24605",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "24800",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "24840",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "25027",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 15,
+          "effective_sign": 1,
+          "executable_weight": 15.0,
+          "source_body_id_decimal": "25136",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 28,
+          "effective_sign": 1,
+          "executable_weight": 28.0,
+          "source_body_id_decimal": "25209",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "25253",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 7,
+          "effective_sign": 1,
+          "executable_weight": 7.0,
+          "source_body_id_decimal": "25267",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 6,
+          "effective_sign": 1,
+          "executable_weight": 6.0,
+          "source_body_id_decimal": "25286",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 6,
+          "effective_sign": 1,
+          "executable_weight": 6.0,
+          "source_body_id_decimal": "25316",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "25497",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "25511",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "25524",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "25572",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 24,
+          "effective_sign": 1,
+          "executable_weight": 24.0,
+          "source_body_id_decimal": "25575",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "25636",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "25854",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 42,
+          "effective_sign": 1,
+          "executable_weight": 42.0,
+          "source_body_id_decimal": "26147",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "26393",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 13,
+          "effective_sign": 1,
+          "executable_weight": 13.0,
+          "source_body_id_decimal": "26416",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "26528",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 3,
+          "effective_sign": 1,
+          "executable_weight": 3.0,
+          "source_body_id_decimal": "26730",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "26915",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 11,
+          "effective_sign": 1,
+          "executable_weight": 11.0,
+          "source_body_id_decimal": "27023",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "27355",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 25,
+          "effective_sign": 1,
+          "executable_weight": 25.0,
+          "source_body_id_decimal": "27399",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "27471",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 10,
+          "effective_sign": 1,
+          "executable_weight": 10.0,
+          "source_body_id_decimal": "27566",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 30,
+          "effective_sign": 1,
+          "executable_weight": 30.0,
+          "source_body_id_decimal": "27716",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 29,
+          "effective_sign": 1,
+          "executable_weight": 29.0,
+          "source_body_id_decimal": "27796",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 25,
+          "effective_sign": 1,
+          "executable_weight": 25.0,
+          "source_body_id_decimal": "28003",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "28011",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "28044",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "28188",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 28,
+          "effective_sign": 1,
+          "executable_weight": 28.0,
+          "source_body_id_decimal": "28741",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "28871",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 31,
+          "effective_sign": 1,
+          "executable_weight": 31.0,
+          "source_body_id_decimal": "29014",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 13,
+          "effective_sign": 1,
+          "executable_weight": 13.0,
+          "source_body_id_decimal": "29183",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "29216",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 29,
+          "effective_sign": 1,
+          "executable_weight": 29.0,
+          "source_body_id_decimal": "29287",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "29319",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 32,
+          "effective_sign": 1,
+          "executable_weight": 32.0,
+          "source_body_id_decimal": "29391",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 14,
+          "effective_sign": 1,
+          "executable_weight": 14.0,
+          "source_body_id_decimal": "29598",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "29702",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 29,
+          "effective_sign": 1,
+          "executable_weight": 29.0,
+          "source_body_id_decimal": "29753",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "29815",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 16,
+          "effective_sign": 1,
+          "executable_weight": 16.0,
+          "source_body_id_decimal": "29873",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 29,
+          "effective_sign": 1,
+          "executable_weight": 29.0,
+          "source_body_id_decimal": "29955",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 18,
+          "effective_sign": 1,
+          "executable_weight": 18.0,
+          "source_body_id_decimal": "29986",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 12,
+          "effective_sign": 1,
+          "executable_weight": 12.0,
+          "source_body_id_decimal": "30041",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 3,
+          "effective_sign": 1,
+          "executable_weight": 3.0,
+          "source_body_id_decimal": "30207",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 18,
+          "effective_sign": 1,
+          "executable_weight": 18.0,
+          "source_body_id_decimal": "30512",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 6,
+          "effective_sign": 1,
+          "executable_weight": 6.0,
+          "source_body_id_decimal": "30893",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "30895",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 23,
+          "effective_sign": 1,
+          "executable_weight": 23.0,
+          "source_body_id_decimal": "30938",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 9,
+          "effective_sign": 1,
+          "executable_weight": 9.0,
+          "source_body_id_decimal": "31105",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "31257",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 64,
+          "effective_sign": 1,
+          "executable_weight": 64.0,
+          "source_body_id_decimal": "31563",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 44,
+          "effective_sign": 1,
+          "executable_weight": 44.0,
+          "source_body_id_decimal": "31964",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 24,
+          "effective_sign": 1,
+          "executable_weight": 24.0,
+          "source_body_id_decimal": "31988",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 10,
+          "effective_sign": 1,
+          "executable_weight": 10.0,
+          "source_body_id_decimal": "32223",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "32237",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "32507",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "32737",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 41,
+          "effective_sign": 1,
+          "executable_weight": 41.0,
+          "source_body_id_decimal": "33185",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 24,
+          "effective_sign": 1,
+          "executable_weight": 24.0,
+          "source_body_id_decimal": "33303",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "33396",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 35,
+          "effective_sign": 1,
+          "executable_weight": 35.0,
+          "source_body_id_decimal": "33406",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "33439",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 11,
+          "effective_sign": 1,
+          "executable_weight": 11.0,
+          "source_body_id_decimal": "33694",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "33965",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "34051",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 16,
+          "effective_sign": 1,
+          "executable_weight": 16.0,
+          "source_body_id_decimal": "34110",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 9,
+          "effective_sign": 1,
+          "executable_weight": 9.0,
+          "source_body_id_decimal": "34372",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "34407",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 33,
+          "effective_sign": 1,
+          "executable_weight": 33.0,
+          "source_body_id_decimal": "34655",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 19,
+          "effective_sign": 1,
+          "executable_weight": 19.0,
+          "source_body_id_decimal": "34681",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 11,
+          "effective_sign": 1,
+          "executable_weight": 11.0,
+          "source_body_id_decimal": "35294",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 4,
+          "effective_sign": 1,
+          "executable_weight": 4.0,
+          "source_body_id_decimal": "35632",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "35680",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 4,
+          "effective_sign": 1,
+          "executable_weight": 4.0,
+          "source_body_id_decimal": "35838",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 38,
+          "effective_sign": 1,
+          "executable_weight": 38.0,
+          "source_body_id_decimal": "35889",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "37431",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 5,
+          "effective_sign": 1,
+          "executable_weight": 5.0,
+          "source_body_id_decimal": "37613",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 9,
+          "effective_sign": 1,
+          "executable_weight": 9.0,
+          "source_body_id_decimal": "37925",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 5,
+          "effective_sign": 1,
+          "executable_weight": 5.0,
+          "source_body_id_decimal": "38542",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "39620",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "40811",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 23,
+          "effective_sign": 1,
+          "executable_weight": 23.0,
+          "source_body_id_decimal": "40841",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 39,
+          "effective_sign": 1,
+          "executable_weight": 39.0,
+          "source_body_id_decimal": "41097",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 17,
+          "effective_sign": 1,
+          "executable_weight": 17.0,
+          "source_body_id_decimal": "50287",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 16,
+          "effective_sign": 1,
+          "executable_weight": 16.0,
+          "source_body_id_decimal": "55627",
+          "target_body_id_decimal": "10001"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 11,
+          "effective_sign": 1,
+          "executable_weight": 11.0,
+          "source_body_id_decimal": "95241",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "100103",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 6,
+          "effective_sign": 1,
+          "executable_weight": 6.0,
+          "source_body_id_decimal": "111903",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 21,
+          "effective_sign": 1,
+          "executable_weight": 21.0,
+          "source_body_id_decimal": "112292",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 22,
+          "effective_sign": 1,
+          "executable_weight": 22.0,
+          "source_body_id_decimal": "129687",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 18,
+          "effective_sign": 1,
+          "executable_weight": 18.0,
+          "source_body_id_decimal": "134521",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 37,
+          "effective_sign": 1,
+          "executable_weight": 37.0,
+          "source_body_id_decimal": "514670",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 45,
+          "effective_sign": 1,
+          "executable_weight": 45.0,
+          "source_body_id_decimal": "515971",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 15,
+          "effective_sign": 1,
+          "executable_weight": 15.0,
+          "source_body_id_decimal": "517078",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 43,
+          "effective_sign": 1,
+          "executable_weight": 43.0,
+          "source_body_id_decimal": "517079",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 44,
+          "effective_sign": 1,
+          "executable_weight": 44.0,
+          "source_body_id_decimal": "517819",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 48,
+          "effective_sign": 1,
+          "executable_weight": 48.0,
+          "source_body_id_decimal": "518731",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 46,
+          "effective_sign": 1,
+          "executable_weight": 46.0,
+          "source_body_id_decimal": "520764",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 40,
+          "effective_sign": 1,
+          "executable_weight": 40.0,
+          "source_body_id_decimal": "521115",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 20,
+          "effective_sign": 1,
+          "executable_weight": 20.0,
+          "source_body_id_decimal": "524366",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 27,
+          "effective_sign": 1,
+          "executable_weight": 27.0,
+          "source_body_id_decimal": "525844",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 23,
+          "effective_sign": 1,
+          "executable_weight": 23.0,
+          "source_body_id_decimal": "531014",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 50,
+          "effective_sign": 1,
+          "executable_weight": 50.0,
+          "source_body_id_decimal": "533895",
+          "target_body_id_decimal": "10010"
+        },
+        {
+          "consensus_nt": "acetylcholine",
+          "contacts": 36,
+          "effective_sign": 1,
+          "executable_weight": 36.0,
+          "source_body_id_decimal": "536444",
+          "target_body_id_decimal": "10010"
+        }
+      ],
+      "nonzero_edges": 185,
+      "pair_edges": 185,
+      "per_output_body": [
+        {
+          "disabled_edges": 0,
+          "executable_nonzero_edges": 91,
+          "pair_edges": 91,
+          "raw_contact_mass": 2220,
+          "target_body_id_decimal": "10001",
+          "target_side": "R"
+        },
+        {
+          "disabled_edges": 0,
+          "executable_nonzero_edges": 94,
+          "pair_edges": 94,
+          "raw_contact_mass": 2642,
+          "target_body_id_decimal": "10010",
+          "target_side": "L"
+        }
+      ],
+      "source_population": "LPLC2",
+      "target_population": "DNp01"
+    }
+  ],
+  "mapping_semantic_sha256": "6652462228ddf9af863fae95608fd6cacb44fbd86fd12d0799ec65d8dabcef3d",
+  "populations": {
+    "DNp01": [
+      {
+        "body_id_decimal": "10001",
+        "canonical_type": "DNp01",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 0,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "10010",
+        "canonical_type": "DNp01",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6,
+        "soma_side": "L"
+      }
+    ],
+    "LC4": [
+      {
+        "body_id_decimal": "12032",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 1899,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "12349",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 2195,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "12824",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 2642,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "14888",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 4517,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "15018",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 4635,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "16128",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 5623,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "16138",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 5631,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "16628",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6080,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "16809",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6241,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "16917",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6336,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17054",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6457,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17266",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6647,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17270",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6650,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17340",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6711,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17364",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6735,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17478",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6837,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17548",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6899,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17608",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6955,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17653",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6997,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17668",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7010,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17860",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7186,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17926",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7245,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17987",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7296,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "18127",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7421,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "18189",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7476,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "18396",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7663,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "18432",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7695,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "18478",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7734,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "19260",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8438,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19420",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8575,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19543",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8685,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19550",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8691,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19634",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8767,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19794",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8908,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19954",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9053,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20016",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9107,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20282",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9344,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20399",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9444,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20440",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9479,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20542",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9570,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20572",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9598,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20588",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9614,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20673",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9694,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20808",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9813,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20859",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9859,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20917",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9911,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20967",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9951,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20976",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9958,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "21151",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10115,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21165",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10126,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21225",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10184,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21287",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10242,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21313",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10264,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21336",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10284,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21721",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10625,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "21804",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10704,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22034",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10912,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22194",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11061,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22328",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11185,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22772",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11583,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "22847",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11655,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22922",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11722,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "22966",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11759,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22975",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11768,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23098",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11876,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23202",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11963,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23226",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11986,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23392",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12137,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23792",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12493,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23929",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12620,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24338",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12985,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24523",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13146,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25584",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14093,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "26112",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14556,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "27624",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15905,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27750",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16019,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27829",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16092,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "28945",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17081,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "28980",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17114,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29417",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17499,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29469",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17543,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29514",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17586,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29563",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17634,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "30087",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18106,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "30480",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18444,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "30803",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18729,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "31262",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19119,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "31301",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19155,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "31308",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19161,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "31429",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19266,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "32597",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20300,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "33137",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20766,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "34845",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22276,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "35262",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22649,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "35616",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22964,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "37587",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 24704,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "38065",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 25128,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "77614",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 58457,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "81112",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 61225,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "100485",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 75901,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "107513",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 80999,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "111787",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 84063,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "511914",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 125827,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "512366",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 126072,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "512705",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 126264,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "514508",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 127264,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "514956",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 127525,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "515476",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 127807,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "515900",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 128063,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "516909",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 128669,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "517752",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129156,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518016",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129319,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518439",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129563,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518544",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129627,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518730",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129746,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518983",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129906,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "519650",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 130298,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "519931",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 130450,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "520449",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 130739,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "524899",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 132556,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "526286",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 133176,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "527408",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 133603,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "530029",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 134283,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "532254",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 135368,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "533129",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 135787,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "535341",
+        "canonical_type": "LC4",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 136845,
+        "soma_side": "L"
+      }
+    ],
+    "LPLC2": [
+      {
+        "body_id_decimal": "11498",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 1398,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "12384",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 2228,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "13132",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 2932,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "13726",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 3475,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "13764",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 3509,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "14030",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 3755,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "14102",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 3817,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "14465",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 4134,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "15804",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 5341,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17059",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6462,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17544",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6896,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17551",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 6902,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "17774",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7107,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17775",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7108,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17880",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7205,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "17990",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7299,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "18672",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 7907,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "18900",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8115,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "18929",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8143,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "18936",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8150,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "19034",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8240,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19146",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8341,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19229",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8410,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19249",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8427,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19549",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8690,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19589",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8726,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19608",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8745,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19787",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8903,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "19830",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8942,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "19842",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 8953,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "19911",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9015,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20047",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9135,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20103",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9186,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20162",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9235,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20182",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9253,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20240",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9307,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20269",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9331,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20329",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9384,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "20334",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9388,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20471",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9507,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20535",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9564,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20584",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9610,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20694",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9711,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20749",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9761,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "20799",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 9805,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "21045",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10021,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21299",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10254,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "21318",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10268,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21361",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10307,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "21562",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10483,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21703",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10608,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21769",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10670,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21808",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10708,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21862",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10757,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "21899",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 10789,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22218",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11084,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22253",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11115,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "22261",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11122,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "22557",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11387,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "22677",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 11495,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23247",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12004,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23349",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12097,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23497",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12224,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23550",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12270,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23590",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12306,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23665",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12375,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "23878",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12572,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "23919",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12611,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "24118",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12783,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24187",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12846,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24268",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12919,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24308",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 12957,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "24401",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13045,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24568",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13178,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "24605",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13210,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "24800",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13387,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "24840",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13422,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25027",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13591,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25136",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13688,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25209",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13753,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25253",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13792,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25267",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13804,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25286",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13821,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25316",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 13846,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25497",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14014,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25511",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14027,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25524",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14038,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25572",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14082,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25575",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14085,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "25636",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14138,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "25854",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14335,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "26147",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14587,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "26393",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14810,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "26416",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14832,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "26528",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 14930,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "26730",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15112,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "26915",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15274,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "27023",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15368,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27355",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15663,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27399",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15705,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27471",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15767,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "27566",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15855,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "27716",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 15988,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "27796",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16063,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "28003",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16248,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "28011",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16255,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "28044",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16283,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "28188",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16413,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "28741",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 16903,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "28871",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17019,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29014",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17145,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29183",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17298,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29216",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17326,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29287",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17385,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29319",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17414,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29391",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17477,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29598",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17664,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29702",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17764,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29753",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17812,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29815",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17867,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29873",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17917,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "29955",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 17989,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "29986",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18018,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "30041",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18069,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "30207",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18206,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "30512",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18472,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "30893",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18808,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "30895",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18810,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "30938",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18844,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "31105",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 18994,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "31257",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19116,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "31563",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19384,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "31964",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19735,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "31988",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19758,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "32223",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19968,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "32237",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 19977,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "32507",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20221,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "32737",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20419,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "33185",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20808,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "33303",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 20915,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "33396",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21001,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "33406",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21010,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "33439",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21040,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "33694",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21263,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "33965",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21503,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "34051",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21580,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "34110",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21630,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "34372",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21864,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "34407",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 21893,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "34655",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22110,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "34681",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22133,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "35294",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22677,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "35632",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 22980,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "35680",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 23023,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "35838",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 23162,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "35889",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 23206,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "37431",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 24566,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "37613",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 24729,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "37925",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 25003,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "38542",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 25546,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "39620",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 26505,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "40811",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 27556,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "40841",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 27585,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "41097",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 27813,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "50287",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 35821,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "55627",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 40408,
+        "soma_side": "R"
+      },
+      {
+        "body_id_decimal": "95241",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 72043,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "100103",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 75609,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "111903",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 84153,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "112292",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 84429,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "129687",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 95909,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "134521",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 98801,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "514670",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 127361,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "515971",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 128100,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "517078",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 128773,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "517079",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 128774,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "517819",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129185,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "518731",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 129747,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "520764",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 130920,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "521115",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 131061,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "524366",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 132276,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "525844",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 132975,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "531014",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 134783,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "533895",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 136179,
+        "soma_side": "L"
+      },
+      {
+        "body_id_decimal": "536444",
+        "canonical_type": "LPLC2",
+        "consensus_nt": "acetylcholine",
+        "effective_sign": 1,
+        "full_graph_dense_index": 137274,
+        "soma_side": "L"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
+}

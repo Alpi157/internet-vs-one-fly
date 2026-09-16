@@ -284,6 +284,222 @@
           "timeout_seconds": 30
         }
       ]
+    },
+    "M04": {
+      "title": "Candidate pathway mapping and circuit/model cards",
+      "commands": [
+        {
+          "name": "m04-explicit-circuit-compile",
+          "argv": [
+            "flybench",
+            "data",
+            "compile",
+            "--lock",
+            "profiles/source-lock.json",
+            "--selection",
+            "profiles/escape-circuit.json",
+            "--out",
+            "data/compiled/escape"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "profiles/source-lock.json",
+            "profiles/escape-circuit.json",
+            "profiles/compile-transform-v1.json",
+            "data/raw/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+            "data/raw/body-neurotransmitters-male-cns-v1.0.feather",
+            "data/raw/connectome-weights-male-cns-v1.0-minconf-0.5.feather"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "m04-circuit-audit",
+          "argv": [
+            "flybench",
+            "data",
+            "audit",
+            "data/compiled/escape",
+            "--out",
+            "evidence/M04/circuit-audit.json"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["data/compiled/escape/manifest.json"],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "m04-mapping-and-human-review-gate",
+          "argv": [
+            "python",
+            "tools/build_m04_mapping.py",
+            "--lock",
+            "profiles/source-lock.json",
+            "--full-graph",
+            "data/compiled/full",
+            "--circuit-profile",
+            "profiles/escape-circuit.json",
+            "--circuit-graph",
+            "data/compiled/escape",
+            "--out",
+            "evidence/M04",
+            "--require-manual-review"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tools/build_m04_mapping.py",
+            "src/flybench/pathway.py",
+            "data/compiled/full/manifest.json",
+            "profiles/model-v0.1.json",
+            "profiles/encoder-v0.1.json",
+            "profiles/decoder-v0.1.json",
+            "profiles/calibration-plan.json"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "m04-mapping-deterministic-rerun",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,json,pathlib,subprocess,sys; e=pathlib.Path('evidence/M04'); names=['mapping.json','mapping-review.txt','annotation-excerpts.json','pathway-connectivity.json','sign-coverage.json','cut-context.json','calibration-plan.json','decision.json']; digest=lambda p: hashlib.sha256(p.read_bytes()).hexdigest(); before={n:digest(e/n) for n in names}; cmd=[sys.executable,'tools/build_m04_mapping.py','--lock','profiles/source-lock.json','--full-graph','data/compiled/full','--circuit-profile','profiles/escape-circuit.json','--circuit-graph','data/compiled/escape','--out','evidence/M04','--require-manual-review']; run=subprocess.run(cmd,capture_output=True,text=True); after={n:digest(e/n) for n in names}; stable=run.returncode==0 and before==after; report={'schema_version':1,'status':'PASS' if stable else 'FAIL','command':cmd,'before_sha256':before,'after_sha256':after,'mapping_semantic_sha256':json.loads((e/'mapping.json').read_text())['mapping_digest']['value']}; (e/'mapping-determinism.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n'); print(json.dumps(report,sort_keys=True)); sys.stderr.write(run.stderr); sys.exit(not stable)"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "evidence/M04/mapping.json",
+            "evidence/M04/manual-mapping-review.txt",
+            "tools/build_m04_mapping.py"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "m04-circuit-deterministic-rebuild",
+          "argv": [
+            "python",
+            "tools/check_m03_determinism.py",
+            "--primary",
+            "data/compiled/escape",
+            "--lock",
+            "profiles/source-lock.json",
+            "--selection",
+            "profiles/escape-circuit.json",
+            "--repeat-out",
+            "data/compiled/escape-repeat",
+            "--out",
+            "evidence/M04/circuit-determinism.json"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tools/check_m03_determinism.py",
+            "data/compiled/escape/manifest.json"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "m04-pathway-mapping-tests",
+          "argv": ["python", "-m", "pytest", "-q", "tests/test_pathway_mapping.py"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tests/test_pathway_mapping.py",
+            "tests/fixtures/m04-reference.json"
+          ],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "m01-m02-m03-m04-offline-regression",
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py"
+          ],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "m04-evidence-consistency",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,json,pathlib,sys; r=pathlib.Path('.'); e=r/'evidence/M04'; m=json.loads((e/'mapping.json').read_text()); d=json.loads((e/'decision.json').read_text()); a=json.loads((e/'circuit-audit.json').read_text()); c=json.loads((e/'cut-context.json').read_text()); profiles={x['kind']:x for x in m['candidate_profile_identities']}; paths={'model':'profiles/model-v0.1.json','encoder':'profiles/encoder-v0.1.json','decoder':'profiles/decoder-v0.1.json','calibration_plan':'profiles/calibration-plan.json'}; ok=m['status']=='PASS' and m['producer']['code_git_sha']==__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip() and m['circuit_profile_validation']['status']=='PASS' and m['compiled_circuit_verification']['status']=='PASS' and d['outcome']=='PASS' and d['allowed_next_milestone']=='M05' and d['manual_mapping_review_receipt']['status']=='PRESENT_OPERATOR_SUPPLIED' and a['status']=='PASS' and a['semantic_graph_digest']==m['compiled_circuit_verification']['semantic_graph_digest'] and a['graph']['source_accepted_E']==c['internal']['pair_edges'] and a['graph']['represented_source_contacts']==c['internal']['contact_mass'] and all(hashlib.sha256((r/p).read_bytes()).hexdigest()==profiles[k]['sha256'] for k,p in paths.items()); print(json.dumps({'status':'PASS' if ok else 'FAIL','mapping':m['mapping_digest']['value'],'circuit':a['semantic_graph_digest']},sort_keys=True)); sys.exit(not ok)"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "evidence/M04/mapping.json",
+            "evidence/M04/decision.json",
+            "evidence/M04/manual-mapping-review.txt",
+            "evidence/M04/circuit-audit.json",
+            "evidence/M04/cut-context.json"
+          ],
+          "timeout_seconds": 60
+        },
+        {
+          "name": "architecture-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["docs/architecture.md"],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "source-lock-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('profiles/source-lock.json'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != '2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["profiles/source-lock.json"],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "accepted-full-graph-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import json,pathlib,sys; p=pathlib.Path('data/compiled/full/manifest.json'); d=json.loads(p.read_text()); h=d['semantic_digest']['value']; print(h); sys.exit(h != '429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["data/compiled/full/manifest.json"],
+          "timeout_seconds": 30
+        },
+        {
+          "name": "clean-committed-code-identity",
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [".git"],
+          "timeout_seconds": 30
+        }
+      ]
     }
   }
 }

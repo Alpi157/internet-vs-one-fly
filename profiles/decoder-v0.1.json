@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.dnp01-spike-decoder-candidate.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "milestone_scope": "M04 candidate specification for later M06 implementation",
+  "implementation_status": "NOT_IMPLEMENTED",
+  "only_external_scientific_input": "declared DNp01 model spike output",
+  "candidate_readout": "a DNp01 model spike requests escape onset",
+  "bilateral_rule": "If either member of the bilateral DNp01 population spikes, the abstract escape command may trigger according to the later explicit decoder state rule.",
+  "circuit_profile": "profiles/escape-circuit.json",
+  "forbidden_inputs": [
+    "threat geometry",
+    "cursor position",
+    "attack target",
+    "threat bearing",
+    "distance",
+    "future collision information",
+    "environment object or reference",
+    "precomputed away vector",
+    "hidden shared state carrying any prohibited input"
+  ],
+  "body_mechanics": "not implemented by the decoder",
+  "state_rule_status": "must be explicit before M06 execution"
+}

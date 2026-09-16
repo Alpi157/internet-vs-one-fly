@@ -1,19 +1,21 @@
 playbook_version: '0.1'
-current_milestone: M03
+current_milestone: M04
 current_attempt: 1
-last_accepted_milestone: M02
+last_accepted_milestone: M03
 accepted_milestones:
 - M01
 - M02
+- M03
 milestone_status:
   M01: ACCEPTED
   M02: ACCEPTED
-  M03: SUBMITTED
+  M03: ACCEPTED
+  M04: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
 repository_url: null
-last_accepted_code_commit: df3d2cc2e70064456e508080e2ef0d1188edbfbd
+last_accepted_code_commit: 74e70880f0029c32928fdd3d8632b51bb70890c8
 tooling:
   python: 3.12.3
   uv: 0.12.13
@@ -45,11 +47,11 @@ source_files:
   hash_provenance: Locally computed over complete bytes acquired from the official
     MaleCNS v1.0 HTTPS URL; not an upstream-published checksum.
 full_graph:
-  digest: null
-  N: null
-  E: null
-  contacts: null
-  audit_path: null
+  digest: 429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0
+  N: 166700
+  E: 25582938
+  contacts: 124177617
+  audit_path: evidence/M03/full-audit.json
 live_graph:
   digest: null
   N: null
@@ -191,13 +193,54 @@ reviews:
     byte hashes were not independently recomputed by reviewer.
   - Reviewer runtime does not contain pyarrow; tests/test_source_fetch.py was not
     independently rerun.
+- milestone: M03
+  attempt: 1
+  code_sha: 74e70880f0029c32928fdd3d8632b51bb70890c8
+  zip_sha256: d341b0ef507b4f868ce26be8bbd7c774eb09c847b722c40970b34b48970386d3
+  verdict: ACCEPTED
+  evidence_inspected_or_rerun:
+  - 'Independent: review ZIP SHA-256 verified.'
+  - 'Independent: review-manifest inventory 94/94 hashes and byte sizes verified.'
+  - 'Independent: M03 git_diff.patch applied to the accepted M02-a03 repository snapshot;
+    all tracked output files matched the submitted repo snapshot.'
+  - 'Independent: tests/test_scaffold.py + tests/test_review_tools.py — 11 passed.'
+  - 'Independent: exact synthetic .npy arrays recomputed/inspected: ids [10,20,40,99],
+    offsets [0,1,3,4,4], targets [1,1,2,0], counts [1,4,3,7], contacts 15, isolated
+    ID 99.'
+  - 'Independent: source-major propagation over the synthetic arrays produced [0,-10,-9,0],
+    confirming A[source,target] / A.T @ spikes orientation.'
+  - 'Independent: uploaded full-audit.json was byte-identical to evidence/M03/full-audit.json
+    in the review ZIP.'
+  - 'Independent: full-audit endpoint row/contact arithmetic and E=nonzero+disabled
+    accounting balance.'
+  - 'Independent: large-files.json identities for all omitted full arrays and all
+    three raw sources agree with full-audit/source-lock evidence.'
+  - 'Inspected: graph compiler, audit implementation, graph tests, accepted-neuron
+    profile, compile-transform profile, deterministic rebuild helper, acceptance registry
+    and graph-format documentation.'
+  - 'Web-verified against final MaleCNS publication: bodies with a superclass are
+    defined as neurons; published 166,700 total neurons, 166,483 connected neurons
+    plus 217 disconnected, ~25.6M edges and ~124.2M retained synaptic connections
+    are consistent with the audited graph.'
+  - 'Captured-only: tests/test_graph_compile.py — 13 passed; complete M01-M03 offline
+    suite — 31 passed.'
+  - 'Captured-only: full compile/audit and independent rebuild completed with matching
+    semantic digest and array hashes.'
+  limitations:
+  - Full MaleCNS source bytes and full compiled graph arrays are intentionally omitted
+    from the bounded review ZIP, so their byte hashes and the full semantic graph
+    digest were not independently recomputed by the reviewer.
+  - Reviewer runtime lacks pyarrow, so tests/test_graph_compile.py and full-data compile/audit
+    were inspected but not independently executed.
+  - M03 build-resource measurements are accepted as captured execution evidence and
+    are not runtime/session performance measurements.
 decisions: []
 biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- 'M03: run the actual full deterministic graph compilation/audit on the pinned MaleCNS
-  v1.0 source files and preserve build resource receipts.'
+- 'M04: inspect the exact LC4/LPLC2/DNp01 mapping report and the pinned annotation/literature
+  evidence before the pathway/circuit profile can be accepted.'
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -208,5 +251,5 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Begin M03 — deterministic graph compiler and full-graph audit; do not
-  begin biological pathway mapping or simulation.
+next_action: Begin M04 — candidate pathway mapping and circuit/model cards; do not
+  begin numerical simulation.
