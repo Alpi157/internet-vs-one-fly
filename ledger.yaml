@@ -1,23 +1,25 @@
 playbook_version: '0.1'
-current_milestone: M05
+current_milestone: M06
 current_attempt: 1
-last_accepted_milestone: M04
+last_accepted_milestone: M05
 accepted_milestones:
 - M01
 - M02
 - M03
 - M04
+- M05
 milestone_status:
   M01: ACCEPTED
   M02: ACCEPTED
   M03: ACCEPTED
   M04: ACCEPTED
-  M05: SUBMITTED
+  M05: ACCEPTED
+  M06: IN_PROGRESS
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
 repository_url: null
-last_accepted_code_commit: 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8
+last_accepted_code_commit: a7041a71e9da2b7de17d47f566f68d975ceec851
 tooling:
   python: 3.12.3
   uv: 0.12.13
@@ -383,7 +385,7 @@ ports:
   - '10001'
   - '10010'
 profiles:
-  model: 564c553f750ab9ef275014bbfc67d2b62ed5992fceb80185e09d7966d52b451a
+  model: e7bf666f0b9b716d0c6e80af001604b4355ce34ff38e8fa514b90898d6b1dd91
   encoder: f6879937ec2e7efbdb888d336f2041d980f61a8981d7970314a53641bda14bfa
   decoder: 71acbe641fc2c9ef4f9cee514f99e3dfdc392482d9c77483fc1334fdacb37544
   environment: null
@@ -393,9 +395,9 @@ calibration:
   search_digest: null
   frozen_commit: 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8
 clocks:
-  neural_dt_ms: null
+  neural_dt_ms: 0.5
   control_interval_ms: null
-  ordering_version: null
+  ordering_version: flybench.neural-order.v1
 reexecution:
   envelope: null
   sample_digest: null
@@ -432,6 +434,35 @@ gates:
     - Changing mapped port IDs/sides or label-transfer rule.
     - Changing source lock/full graph identity.
     - Changing sign/normalization assumptions without repeating affected M03-M04 evidence.
+  M05-NUMERICAL-SEMANTICS:
+    decision: PASS
+    supporting_review: M05-a01
+    code_sha: a7041a71e9da2b7de17d47f566f68d975ceec851
+    review_zip_sha256: 5a366cef54893fbc43d116246eb928150e352e3f91e903ef97d9ebd8eed8e23f
+    criteria_sha256: f49c383d028078c27eeaaa986e75f41b9199ce72d6646f9082b6376b831f8422
+    criteria_provenance_commit: 029605a5ebd136b5259a7e4cd49da677deb77916
+    model_spec_sha256: e7bf666f0b9b716d0c6e80af001604b4355ce34ff38e8fa514b90898d6b1dd91
+    resolved_profile_sha256: 3c497fc6c6f6aba051e2c19e3f9bfd7ed4688ed181b5fb4ef5431e8a72548239
+    reference_code_sha256: ce53a63c8f22256ad1aed36088734f2132cf8c4b1f70fd8a06365f1593587783
+    selected_neural_dt_ms: 0.5
+    event_order_version: flybench.neural-order.v1
+    integration_version: flybench.exact-linear-lif.v1
+    conditions:
+    - M04 mapping/circuit identities and accepted model parameters remain unchanged.
+    - 0.5 ms is the selected numerical timestep under the frozen coarsest-complete-pass
+      rule.
+    - 0.25 ms remains a recorded failed candidate under its stricter spike-time bound.
+    - runtime_synaptic_scale=1.0 in M05 was a numerical fixture only, not a calibrated
+      controller value.
+    - This gate establishes numerical reference semantics only; it does not establish
+      behavioral calibration, controller authority, physiology, optimized-kernel parity,
+      or performance.
+    invalidating_changes:
+    - Changing LIF equations, parameters, threshold comparator, refractory semantics,
+      delay semantics, event ordering, or selected neural timestep.
+    - Changing the frozen numerical criteria without a new explicit decision/review.
+    - Changing the accepted M04 circuit/sign/profile identities without repeating
+      affected evidence.
 reviews:
 - milestone: M01
   attempt: 1
@@ -629,13 +660,67 @@ reviews:
   - M04 establishes mapping/wiring and candidate assumptions only; numerical stability,
     calibration outcome, natural-fly behavior and neural controller authority remain
     unmeasured.
+- milestone: M05
+  attempt: 1
+  code_sha: a7041a71e9da2b7de17d47f566f68d975ceec851
+  zip_sha256: 5a366cef54893fbc43d116246eb928150e352e3f91e903ef97d9ebd8eed8e23f
+  verdict: ACCEPTED
+  evidence_inspected_or_rerun:
+  - 'Independent: review ZIP SHA-256 verified.'
+  - 'Independent: review-manifest inventory 83/83 hashed entries verified for exact
+    hashes and byte sizes; review-manifest.json is the sole intentionally unhashed
+    entry.'
+  - 'Independent: M05 git_diff.patch applied cleanly to the accepted M04 repository
+    snapshot and reproduced every submitted tracked repo file byte-for-byte.'
+  - 'Independent: architecture SHA-256 and accepted M04 model/encoder/decoder/calibration/circuit
+    profile identities recomputed and matched.'
+  - 'Independent: numerical-criteria, resolved-reference-profile, model.py and reference.py
+    SHA-256 identities recomputed and matched the evidence.'
+  - 'Independent: tests/test_reference.py and tests/test_numerical_semantics.py rerun
+    in the reviewer runtime with only the Git-history provenance test excluded — 20
+    passed, 1 deselected.'
+  - 'Independent: tests/test_scaffold.py + tests/test_review_tools.py — 11 passed.'
+  - 'Independent: analytical_fixtures(), boundary_fixtures(), raw timestep runs and
+    compare_timesteps() rerun directly from the submitted implementation; analytical/boundary
+    PASS, 0.5 ms PASS, 0.25 ms FAIL, 0.1 ms reference PASS and selected 0.5 ms exactly
+    matched captured evidence.'
+  - 'Independent: captured analytical-fixtures.json and boundary-fixtures.json matched
+    the independently regenerated values exactly.'
+  - 'Independent: 0.25 ms failure traced to constant-drive ordered spike times [14.0,
+    30.0, 46.0] versus 0.1 ms [13.9, 29.8, 45.7], with the third 0.30 ms difference
+    exceeding the frozen 0.25 ms bound; the same trace satisfies the frozen 0.5 ms
+    bound.'
+  - 'Independent: manual equation-review receipt byte size and SHA-256 verified.'
+  - 'Inspected: exact-linear integration formula including equal-time-constant limit,
+    source-major propagation, boundary ordering, fixed-delay ring, threshold/reset/refractory
+    behavior, current evolution during refractory, complete reset/RNG ownership, ModelSpec
+    identity, convergence selection policy and M05 acceptance registry.'
+  - 'Captured-only: provenance commit 029605a5ebd136b5259a7e4cd49da677deb77916 is
+    the oldest criteria commit and an ancestor of the submitted measurement commit,
+    because .git history is intentionally absent from the bounded review ZIP.'
+  - 'Captured-only: full supported-environment M05 suite — 21 passed; cumulative M01-M05
+    offline suite — 58 passed; M05 acceptance registry — 7/7 PASS at submitted SHA.'
+  limitations:
+  - The review ZIP intentionally excludes .git, so the exact intermediate criteria-provenance
+    commit object and ancestry could not be independently verified; the provenance-check
+    implementation and captured receipt were inspected.
+  - The independent test rerun used the reviewer Python 3.13 environment, outside
+    the repository's declared Python >=3.12,<3.13 support range; supported Python
+    3.12 execution remains captured evidence.
+  - The 0.1 ms run is a discrete comparison reference, not an independent continuum
+    solver.
+  - The accepted 0.5 ms choice is criterion-dependent and non-monotonic with the 0.25
+    ms candidate because the frozen spike-time tolerance scales with candidate dt;
+    this is preserved rather than hidden.
+  - M05 does not establish physiology, behavioral calibration, closed-loop neural
+    authority, optimized-kernel equivalence, or performance.
 decisions: []
 biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- 'M05: review the short equations/update-order/units document and candidate numerical
-  tolerances before numerical reference acceptance.'
+- 'M06: inspect one normal looming trial, one failed/control trial and the decoder
+  dependency review before G-BIO can be externally accepted.'
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -646,5 +731,5 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Begin M05 — reference neural model and numerical semantics; do not begin
-  closed-loop controller work.
+next_action: Begin M06 — headless closed loop and neural-authority gate; do not begin
+  optimized-kernel/performance work.

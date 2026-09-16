@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.dnp01-spike-decoder-runtime.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "accepted_m04_decoder_profile": {
+    "path": "profiles/decoder-v0.1.json",
+    "sha256": "71acbe641fc2c9ef4f9cee514f99e3dfdc392482d9c77483fc1334fdacb37544"
+  },
+  "scientific_input": "DNp01 spike body IDs from the just-completed neural interval only",
+  "dnp01_body_ids_decimal": ["10001", "10010"],
+  "rule": "escape_request(t+h) is true iff body 10001 or 10010 emitted at least one model spike during [t,t+h]",
+  "command_duration": "one control interval pulse",
+  "state": "stateless",
+  "implementation": {
+    "path": "src/flybench/decoder.py",
+    "callable": "flybench.decoder.decode_dnp01",
+    "sha256": "5a688940e5c62af6941d43569507ec7cc9f2c1026f97b4bee05b78eeebbee01e"
+  },
+  "forbidden_dependencies": [
+    "threat geometry",
+    "cursor or strike position",
+    "attack target",
+    "bearing or distance",
+    "future impact",
+    "body position for deciding escape",
+    "away vector",
+    "encoder observation",
+    "environment reference",
+    "mutable shared state"
+  ],
+  "body_mechanics": "owned by the environment, never by this decoder"
+}

@@ -161,6 +161,11 @@ def test_required_m01_paths_and_registry() -> None:
         "profiles/calibration-plan.json",
         "profiles/numerical-criteria-v0.1.json",
         "profiles/model-reference-v0.1.json",
+        "profiles/looming-controls.json",
+        "profiles/encoder-runtime-v0.1.json",
+        "profiles/decoder-runtime-v0.1.json",
+        "profiles/environment-v0.1.json",
+        "profiles/intervention-direct-visual-to-dnp01-zero-v0.1.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
@@ -168,7 +173,14 @@ def test_required_m01_paths_and_registry() -> None:
         "src/flybench/pathway.py",
         "src/flybench/model.py",
         "src/flybench/reference.py",
+        "src/flybench/encoding.py",
+        "src/flybench/decoder.py",
+        "src/flybench/catch.py",
+        "src/flybench/runner.py",
+        "src/flybench/authority.py",
+        "src/flybench/bench.py",
         "tools/acceptance.json",
+        "tools/check_m06_evidence.py",
         "tools/run_acceptance.py",
         "tools/review_bundle.py",
         "tests/test_scaffold.py",
@@ -178,6 +190,8 @@ def test_required_m01_paths_and_registry() -> None:
         "tests/test_pathway_mapping.py",
         "tests/test_reference.py",
         "tests/test_numerical_semantics.py",
+        "tests/test_runner.py",
+        "tests/test_controller_authority.py",
         "tests/fixtures/m04-reference.json",
         "tools/build_m04_mapping.py",
         "experiments/numerical_reference.py",
@@ -186,7 +200,9 @@ def test_required_m01_paths_and_registry() -> None:
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert {"M01", "M02", "M03", "M04", "M05"} <= set(registry["milestones"])
+    assert {"M01", "M02", "M03", "M04", "M05", "M06"} <= set(
+        registry["milestones"]
+    )
     for milestone in registry["milestones"].values():
         commands = milestone["commands"]
         assert commands

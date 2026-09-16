@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.feature-level-looming-encoder-runtime.v0.1",
+  "classification": "MODEL ASSUMPTION",
+  "accepted_m04_encoder_profile": {
+    "path": "profiles/encoder-v0.1.json",
+    "sha256": "f6879937ec2e7efbdb888d336f2041d980f61a8981d7970314a53641bda14bfa"
+  },
+  "mapping_digest": "6652462228ddf9af863fae95608fd6cacb44fbd86fd12d0799ec65d8dabcef3d",
+  "population_identity": {
+    "path": "profiles/escape-circuit.json",
+    "sha256": "29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b",
+    "exact_body_id_json_pointers": {
+      "LC4": "/populations/LC4/body_ids_decimal",
+      "LPLC2": "/populations/LPLC2/body_ids_decimal",
+      "DNp01": "/populations/DNp01/body_ids_decimal"
+    },
+    "counts": {"LC4": 126, "LPLC2": 185, "DNp01": 2},
+    "dnp01_body_ids_decimal": ["10001", "10010"]
+  },
+  "protocol_constants": {
+    "radius_model_distance_unit": 1.0,
+    "theta_peak_rad": 1.5707963267948966,
+    "expansion_peak_rad_per_ms": 0.0275,
+    "control_interval_ms": 10.0,
+    "neural_dt_ms": 0.5,
+    "hold_neural_steps": 20
+  },
+  "formulas": {
+    "angular_size_rad": "2 * atan(1 / distance)",
+    "angular_velocity_rad_per_ms": "-2 / (distance^2 + 1) * radial_velocity",
+    "positive_expansion": "max(angular_velocity_rad_per_ms, 0)",
+    "size_feature": "clip(angular_size_rad / (pi/2), 0, 1)",
+    "expansion_feature": "clip(positive_expansion / 0.0275, 0, 1)",
+    "LC4_external_drive": "peak_sensory_external_drive * expansion_feature",
+    "LPLC2_external_drive": "peak_sensory_external_drive * size_feature",
+    "DNp01_external_drive": "0"
+  },
+  "delivery": "one population scalar held unchanged across all 20 neural steps in a control interval",
+  "implementation": {
+    "path": "src/flybench/encoding.py",
+    "sha256": "ec53a59eed2f5f434f665a91996e073570e18ce9eb93cc66ea95e452f8b834c2"
+  },
+  "claims": {
+    "raw_pixels": false,
+    "learned_mapping": false,
+    "retinotopy": false,
+    "direction_or_bearing": false,
+    "body_specific_hidden_coefficients": false
+  }
+}

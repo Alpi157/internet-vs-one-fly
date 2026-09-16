@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from flybench.bench import run_bench
 from flybench.data import SourceFetchError, fetch_sources
 from flybench.graph import (
     GraphAuditError,
@@ -39,6 +40,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     audit.add_argument("graph", type=Path)
     audit.add_argument("--out", required=True, type=Path)
+    bench = commands.add_parser(
+        "bench", help="Run the frozen M06 headless calibration and authority protocol"
+    )
+    bench.add_argument("profile", type=Path)
+    bench.add_argument("--out", required=True, type=Path)
     return parser
 
 
@@ -136,6 +142,12 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         return 0
+    if args.command == "bench":
+        try:
+            return run_bench(args.profile, args.out)
+        except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
+            print(f"M06 bench failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return 1
     parser.error("unsupported command")
     return 2
 

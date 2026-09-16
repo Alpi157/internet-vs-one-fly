@@ -141,6 +141,10 @@ def render_review(
     m05_convergence: dict[str, Any] | None,
     m05_analytical: dict[str, Any] | None,
     m05_boundary: dict[str, Any] | None,
+    m06_decision: dict[str, Any] | None,
+    m06_calibration: dict[str, Any] | None,
+    m06_authority: dict[str, Any] | None,
+    m06_dependencies: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -190,6 +194,18 @@ def render_review(
             "The runtime synaptic scale 1.0 is used only for bounded numerical fixtures and is not a calibrated controller choice.",
             "The numerical criteria were committed before convergence measurement and were not loosened afterward.",
             "No Runner, encoder/decoder implementation, behavioral calibration, game mechanics, or optimized kernel is part of M05.",
+        ]
+    elif milestone == "M06":
+        objective = (
+            "Implement one integer-clock headless Runner and test whether the accepted "
+            "ports-only neural model has declared DNp01-dependent escape-command authority."
+        )
+        assumptions = [
+            "The accepted M04 circuit and M05 numerical semantics remain unchanged; M06 adds only the frozen feature encoder, pure DNp01 decoder, abstract environment, and declared interventions.",
+            "The 12-point grid and four normal scenarios were committed before calibration and were not expanded after outcomes were observed.",
+            "The output clamp acts only at the declared decoder boundary; the direct visual-to-DNp01 intervention zeroes exactly the predeclared in-memory executable weights.",
+            "Ambient walking and takeoff are provisional threat-independent game mechanics, not physiology or biomechanics.",
+            "The claim is limited to modeled DNp01-dependent escape onset in the declared simplified circuit/controller.",
         ]
     else:
         objective = (
@@ -309,6 +325,30 @@ def render_review(
         lines.append(f"- Analytical fixtures: `{m05_analytical.get('status')}`.")
     if milestone == "M05" and m05_boundary:
         lines.append(f"- Boundary fixtures: `{m05_boundary.get('status')}`.")
+    if milestone == "M06" and m06_decision:
+        lines.extend(
+            [
+                f"- G-BIO candidate decision: `{m06_decision.get('outcome')}`; external milestone acceptance remains `{m06_decision.get('external_milestone_acceptance')}`.",
+                f"- Claim scope: `{m06_decision.get('claim_scope')}`.",
+                f"- Calibration protocol commit: `{m06_decision.get('calibration_protocol_commit')}`.",
+            ]
+        )
+    if milestone == "M06" and m06_calibration:
+        lines.append(
+            f"- Frozen normal panel: `{m06_calibration.get('primary_combination_count')}` combinations / `{m06_calibration.get('normal_trial_count')}` trials; selected `{m06_calibration.get('selected_combination')}`."
+        )
+        lines.append(
+            f"- Failed combinations retained: `{len(m06_calibration.get('failed_combinations', []))}`."
+        )
+    if milestone == "M06" and m06_authority:
+        selected_authority = m06_authority.get("selected_attempt") or {}
+        lines.append(
+            f"- Authority selection: `{m06_authority.get('status')}`; checks `{selected_authority.get('checks')}`."
+        )
+    if milestone == "M06" and m06_dependencies:
+        lines.append(
+            f"- Decoder dependency audit: `{m06_dependencies.get('decoder', {}).get('status')}`; ambient-walk dependency audit: `{m06_dependencies.get('ambient_walking', {}).get('status')}`."
+        )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -358,6 +398,16 @@ def render_review(
                 else "absent; manual equation review remains pending."
             )
         )
+    if milestone == "M06":
+        receipt = (m06_decision or {}).get("manual_authority_review_receipt", {})
+        lines.append(
+            "- `evidence/M06/manual-authority-review.txt`: "
+            + (
+                "present (operator-supplied)."
+                if receipt.get("status") == "PRESENT_OPERATOR_SUPPLIED"
+                else "absent; manual authority review remains pending."
+            )
+        )
 
     lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
     if milestone == "M02" and not manual_source_review_present:
@@ -370,6 +420,10 @@ def render_review(
         "manual_equation_review_receipt", {}
     ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
         lines.append("- The operator's manual M05 equation-review receipt is absent.")
+    if milestone == "M06" and (m06_decision or {}).get(
+        "manual_authority_review_receipt", {}
+    ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
+        lines.append("- The operator's manual M06 authority-review receipt is absent.")
     lines.extend(
         [
             "- Scientific and product capabilities assigned to later milestones remain intentionally unimplemented.",
@@ -389,7 +443,11 @@ def render_review(
                         else (
                             "- This archive contains the complete small reference implementation, frozen criteria, fixtures, and numerical evidence; no raw MaleCNS or full-graph bulk data is required."
                             if milestone == "M05"
-                            else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                            else (
+                                "- This archive contains the frozen M06 protocol, complete compact trial evidence, authority comparisons, dependency audits, and accepted compact circuit; raw MaleCNS and full M03 arrays remain excluded."
+                                if milestone == "M06"
+                                else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                            )
                         )
                     )
                 )
@@ -873,6 +931,130 @@ def m05_material(root: Path, submitted: str, evidence_root: Path) -> None:
         raise BundleError("M05 acceptance evidence does not pass for submitted code")
 
 
+def m06_material(
+    root: Path,
+    submitted: str,
+    evidence_root: Path,
+    entries: dict[str, bytes],
+) -> None:
+    """Validate complete M06 authority evidence and include the compact circuit."""
+
+    required: dict[str, dict[str, Any]] = {}
+    for name in (
+        "calibration-summary.json",
+        "authority.json",
+        "stability.json",
+        "decoder-dependency.json",
+        "intervention.json",
+        "controller-profile.json",
+        "calibration-provenance.json",
+        "decision.json",
+        "command-results.json",
+    ):
+        try:
+            required[name] = json.loads((evidence_root / name).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M06 {name} is missing or invalid: {exc}") from exc
+    decision = required["decision.json"]
+    calibration = required["calibration-summary.json"]
+    authority = required["authority.json"]
+    stability = required["stability.json"]
+    dependencies = required["decoder-dependency.json"]
+    intervention = required["intervention.json"]
+    controller_evidence = required["controller-profile.json"]
+    provenance = required["calibration-provenance.json"]
+    acceptance = required["command-results.json"]
+    if (
+        decision.get("gate") != "G-BIO"
+        or decision.get("outcome") != "PASS"
+        or decision.get("allowed_next_milestone") != "M07"
+        or decision.get("external_milestone_acceptance") != "PENDING"
+        or decision.get("manual_authority_review_receipt", {}).get("status")
+        != "PRESENT_OPERATOR_SUPPLIED"
+    ):
+        raise BundleError("M06 G-BIO decision or manual receipt is incomplete")
+    if (
+        calibration.get("status") != "PASS"
+        or calibration.get("primary_combination_count") != 12
+        or calibration.get("normal_trial_count") != 48
+        or len(calibration.get("combinations", [])) != 12
+        or not calibration.get("selected_combination")
+    ):
+        raise BundleError("M06 frozen calibration evidence is incomplete")
+    selected_attempt = authority.get("selected_attempt") or {}
+    if authority.get("status") != "PASS" or not all(
+        selected_attempt.get("checks", {}).values()
+    ):
+        raise BundleError("M06 neural-authority checks do not pass")
+    if (
+        stability.get("status") != "PASS"
+        or dependencies.get("decoder", {}).get("status") != "PASS"
+        or dependencies.get("ambient_walking", {}).get("status") != "PASS"
+        or intervention.get("mask_audit", {}).get("total_pair_edges") != 311
+        or intervention.get("mask_audit", {}).get("total_source_contacts") != 11224
+    ):
+        raise BundleError("M06 stability, dependency, or intervention evidence failed")
+    receipt_path = evidence_root / "manual-authority-review.txt"
+    if not receipt_path.is_file() or not receipt_path.stat().st_size:
+        raise BundleError("M06 manual authority-review receipt is absent")
+    receipt_size, receipt_sha = sha256_file(receipt_path)
+    receipt = decision["manual_authority_review_receipt"]
+    if receipt.get("bytes") != receipt_size or receipt.get("sha256") != receipt_sha:
+        raise BundleError("M06 manual authority-review receipt identity differs from decision")
+    if not (evidence_root / "authority-review.txt").is_file():
+        raise BundleError("M06 human-readable authority review is absent")
+    controller_bytes = commit_blob(root, submitted, "profiles/controller-v0.1.json")
+    if json.loads(controller_bytes) != controller_evidence:
+        raise BundleError("committed M06 controller differs from measured controller evidence")
+    protocol_commit = provenance.get("calibration_protocol_commit")
+    if (
+        not isinstance(protocol_commit, str)
+        or provenance.get("measurement_code_commit") != submitted
+        or provenance.get("protocol_files_unchanged") is not True
+        or provenance.get("measurement_worktree_clean_at_start") is not True
+        or decision.get("calibration_protocol_commit") != protocol_commit
+    ):
+        raise BundleError("M06 calibration protocol provenance is incomplete")
+    for item in provenance.get("protocol_files", []):
+        path = item.get("path")
+        if not isinstance(path, str):
+            raise BundleError("M06 protocol provenance contains an invalid path")
+        current = commit_blob(root, submitted, path)
+        frozen = commit_blob(root, protocol_commit, path)
+        if current != frozen or sha256(current) != item.get("sha256"):
+            raise BundleError(f"M06 protocol bytes changed after calibration: {path}")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M06 acceptance evidence does not pass for submitted code")
+
+    normal_trials = 0
+    try:
+        with (evidence_root / "trials.jsonl").open(encoding="utf-8") as stream:
+            for line in stream:
+                trial = json.loads(line)
+                normal_trials += trial.get("mode") == "normal"
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M06 raw trial evidence is missing or invalid: {exc}") from exc
+    if normal_trials != 48 or not (evidence_root / "trials.csv").is_file():
+        raise BundleError("M06 raw trial outputs do not contain the complete normal panel")
+
+    circuit_dir = root / "data" / "compiled" / "escape"
+    try:
+        manifest = json.loads((circuit_dir / "manifest.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M06 accepted compact circuit is unavailable: {exc}") from exc
+    if manifest.get("semantic_digest", {}).get("value") != (
+        "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+    ):
+        raise BundleError("M06 compact circuit identity differs from accepted M04")
+    for path in sorted(circuit_dir.iterdir()):
+        if not path.is_file() or path.is_symlink():
+            continue
+        data = path.read_bytes()
+        if len(data) > MAX_INCLUDED_FILE_BYTES:
+            raise BundleError(f"M06 compact circuit artifact is unexpectedly large: {path.name}")
+        entries[f"data/compiled/escape/{path.name}"] = data
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -931,6 +1113,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         omitted.extend(m04_material(root, submitted, evidence_root, entries))
     if milestone == "M05":
         m05_material(root, submitted, evidence_root)
+    if milestone == "M06":
+        m06_material(root, submitted, evidence_root, entries)
 
     large_files = {
         "schema_version": 1,
@@ -1001,6 +1185,30 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m05_boundary = None
+    try:
+        m06_decision = json.loads(
+            (evidence_root / "decision.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m06_decision = None
+    try:
+        m06_calibration = json.loads(
+            (evidence_root / "calibration-summary.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m06_calibration = None
+    try:
+        m06_authority = json.loads(
+            (evidence_root / "authority.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m06_authority = None
+    try:
+        m06_dependencies = json.loads(
+            (evidence_root / "decoder-dependency.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m06_dependencies = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -1019,6 +1227,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m05_convergence,
         m05_analytical,
         m05_boundary,
+        m06_decision,
+        m06_calibration,
+        m06_authority,
+        m06_dependencies,
     )
 
     manifest = {

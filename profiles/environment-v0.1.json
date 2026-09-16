@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.abstract-catch-environment.v0.1",
+  "classification": "PROVISIONAL GAME MECHANICS — not physiology or biomechanics",
+  "arena": {
+    "units": "abstract model distance units",
+    "minimum": -10.0,
+    "maximum": 10.0,
+    "boundary_rule": "clamp to square boundary and reflect the corresponding heading component"
+  },
+  "initial_body_state": {"x": 0.0, "y": 0.0, "heading_rad": 0.0},
+  "ambient_walking": {
+    "speed_per_control_interval": 0.02,
+    "heading_jitter_distribution": "independent uniform per ambient control interval",
+    "heading_jitter_uniform_rad": [-0.05, 0.05],
+    "rng_algorithm": "numpy PCG64",
+    "seed_rule": "trial_seed + 1 in a distinct environment-owned Generator",
+    "dependency_rule": "body state, mechanics, and environment RNG only; no sensory or attack geometry"
+  },
+  "takeoff": {
+    "trigger": "previously held escape_request at interval start",
+    "duration_ms": 100.0,
+    "duration_control_intervals": 10,
+    "speed_per_control_interval": 0.2,
+    "direction": "body heading at takeoff onset",
+    "threat_relative_direction": false,
+    "retrigger_while_active": false
+  },
+  "impact": {
+    "timing": "after environment motion and before decoding at the ending control boundary",
+    "outcomes": ["modeled-contact", "takeoff-active-at-impact"],
+    "authority_note": "G-BIO is based on neural output and command authority, not this provisional outcome"
+  },
+  "implementation": {
+    "path": "src/flybench/catch.py",
+    "sha256": "5f56b6fd607329ad5b3ca91767a26045557ed61ac8a83652fcc382bd2642e44e"
+  },
+  "disclaimer": "These mechanics establish neither fly physiology nor realistic biomechanics and are not tuned to improve G-BIO."
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.m06-looming-controls.v0.1",
+  "classification": "PROJECT SCRIPTED-CONTROL CONVENTION — not fly physiology",
+  "trial": {
+    "duration_ms": 800.0,
+    "pre_stimulus_ms": [0.0, 200.0],
+    "stimulus_window_ms": [200.0, 600.0],
+    "post_stimulus_ms": [600.0, 800.0],
+    "modeled_impact_ms": 600.0,
+    "sample_phase": "control-interval start",
+    "stimulus_end_is_exclusive": true
+  },
+  "clock": {
+    "neural_dt_ms": 0.5,
+    "control_interval_ms": 10.0,
+    "neural_steps_per_control_interval": 20,
+    "authoritative_representation": "integer neural and control ticks"
+  },
+  "object": {
+    "shape": "abstract circle",
+    "radius_model_distance_unit": 1.0
+  },
+  "scenarios_in_execution_order": [
+    "no-threat",
+    "standard looming",
+    "matched non-looming/static-size",
+    "receding"
+  ],
+  "scenarios": {
+    "no-threat": {
+      "visual_threat_present": false,
+      "sensory_features": "zero at all control intervals",
+      "modeled_impact": false
+    },
+    "standard looming": {
+      "stimulus_distance": "linear 12.0 -> 1.0 over 200 <= t < 600 ms",
+      "radial_velocity_distance_unit_per_ms": -0.0275,
+      "modeled_impact": true
+    },
+    "matched non-looming/static-size": {
+      "stimulus_distance": 1.0,
+      "radial_velocity_distance_unit_per_ms": 0.0,
+      "purpose": "match standard looming theoretical peak angular size while removing expansion",
+      "modeled_impact": false
+    },
+    "receding": {
+      "stimulus_distance": "linear 1.0 -> 12.0 over 200 <= t < 600 ms",
+      "radial_velocity_distance_unit_per_ms": 0.0275,
+      "modeled_impact": false
+    }
+  },
+  "outside_stimulus_window": "visual threat features are exactly zero",
+  "seed": {
+    "trial_seed": 20260916,
+    "neural_seed_rule": "ModelSpec.seed = trial_seed",
+    "environment_seed_rule": "environment_seed = trial_seed + 1",
+    "paired_trials": "all normal and intervention comparisons use the same complete reset and seeds"
+  },
+  "primary_grid": {
+    "runtime_synaptic_scale": [0.0001, 0.0003, 0.001, 0.003],
+    "peak_sensory_external_drive": [1.25, 2.0, 4.0],
+    "maximum_primary_combinations": 12,
+    "order": "ascending runtime_synaptic_scale, then ascending peak_sensory_external_drive",
+    "expansion_prohibited": true
+  },
+  "normal_candidate_criteria": {
+    "no-threat": "DNp01 spike count = 0 and escape command count = 0",
+    "standard looming": "DNp01 spike count >= 1, command count >= 1, and first command strictly before 600 ms",
+    "input_dependence": "standard looming response signature differs from both static-size and receding",
+    "response_signature": [
+      "total DNp01 spike count",
+      "first DNp01 spike logical neural tick or null",
+      "escape command count"
+    ],
+    "finite_state": "voltage and synaptic current finite throughout",
+    "recovery": "no DNp01 spikes and no new escape command during 700 <= t <= 800 ms"
+  },
+  "authority_criteria": {
+    "output_clamp": "zero escape commands and complete neural state trace identical to paired normal trial",
+    "pathway_intervention": "DNp01 response differs in total count, ordered first-spike tick by at least one neural tick, or response presence",
+    "selection": "first complete passing combination in primary-grid order"
+  },
+  "neighborhood": "report only immediately adjacent values already in the primary grid",
+  "prohibitions": [
+    "new scenario categories",
+    "additional parameter combinations",
+    "post-outcome tuning",
+    "physiology-based firing-rate threshold"
+  ]
+}

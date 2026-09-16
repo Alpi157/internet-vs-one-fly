@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "intervention_id": "direct_visual_to_dnp01_zero",
+  "classification": "MODELED INTERVENTION — not a biological lesion claim",
+  "graph_scope": {
+    "semantic_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+    "N": 313,
+    "E": 20607,
+    "contacts": 79112
+  },
+  "operation": "set executable weights to zero in memory only; retain topology, body IDs, raw contact counts, and compiled files",
+  "selected_edges": {
+    "LC4_to_DNp01": {"pair_edges": 126, "source_contacts": 6362},
+    "LPLC2_to_DNp01": {"pair_edges": 185, "source_contacts": 4862},
+    "total": {"pair_edges": 311, "source_contacts": 11224}
+  },
+  "selection": "source body belongs to accepted LC4 or LPLC2 port and target body belongs to accepted DNp01 port",
+  "predeclared_before_calibration": true,
+  "effect_criterion": "DNp01 total spike count changes, ordered first-spike tick changes by at least one 0.5 ms tick, or response presence differs",
+  "prohibition": "do not strengthen or replace this intervention after observing calibration results"
+}
