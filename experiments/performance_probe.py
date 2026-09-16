@@ -116,9 +116,10 @@ def _child_entry(
     worker: Callable[..., dict[str, Any]],
     worker_args: tuple[Any, ...],
 ) -> None:
+    worker_process_startup_ns = time.perf_counter_ns() - launched_ns
     try:
         result = worker(progress, timing_buffer, temporary_directory, *worker_args)
-        result["worker_process_startup_ns"] = time.perf_counter_ns() - launched_ns
+        result["worker_process_startup_ns"] = worker_process_startup_ns
         connection.send({"status": "COMPLETE", "payload": result})
     except BaseException as exc:  # child must always communicate a classified failure
         connection.send(
@@ -761,6 +762,7 @@ def validate_profile(profile: dict[str, Any], profile_path: Path) -> None:
 
 
 def main() -> int:
+    process_interpreter_startup_to_main_ns = time.perf_counter_ns() - PROCESS_START_NS
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
@@ -877,8 +879,7 @@ def main() -> int:
         )
         else "INCOMPLETE",
         "numba_jit_cold_cost_ns": jit_warmup_ns,
-        "process_interpreter_startup_to_main_ns": time.perf_counter_ns()
-        - PROCESS_START_NS,
+        "process_interpreter_startup_to_main_ns": process_interpreter_startup_to_main_ns,
         "graphs": {
             graph: next(
                 (
