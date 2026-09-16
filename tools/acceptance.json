@@ -701,9 +701,11 @@
             "evidence/M06/decoder-dependency.json",
             "evidence/M06/intervention.json",
             "evidence/M06/controller-profile.json",
+            "evidence/M06/review-repair-comparison.json",
             "evidence/M06/decision.json",
             "evidence/M06/authority-review.txt",
-            "evidence/M06/manual-authority-review.txt"
+            "evidence/M06/manual-authority-review.txt",
+            "decisions/D-M06-REVIEW-01.json"
           ],
           "timeout_seconds": 120
         },

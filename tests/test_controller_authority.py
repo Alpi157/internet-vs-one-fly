@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import math
 from pathlib import Path
@@ -33,8 +34,6 @@ from flybench.runner import (
     build_direct_visual_to_dnp01_zero,
     load_graph,
 )
-
-
 ROOT = Path(__file__).resolve().parents[1]
 LOOMING = ROOT / "profiles/looming-controls.json"
 
@@ -305,6 +304,70 @@ def test_selected_neighborhood_uses_only_existing_grid_values() -> None:
     }
     assert pairs == {(0.0003, 2.0), (0.003, 2.0), (0.001, 1.25), (0.001, 4.0)}
     assert all(item in combinations for item in neighbors)
+
+
+def test_evidence_check_rejects_controller_model_spec_sha_mismatch() -> None:
+    checker_spec = importlib.util.spec_from_file_location(
+        "flybench_m06_evidence_checker", ROOT / "tools/check_m06_evidence.py"
+    )
+    assert checker_spec is not None and checker_spec.loader is not None
+    checker = importlib.util.module_from_spec(checker_spec)
+    checker_spec.loader.exec_module(checker)
+    payload = {
+        "schema_version": 1,
+        "runtime_synaptic_scale": 0.001,
+        "seed": 20260916,
+    }
+    runtime_sha = checker.canonical_json_sha256(payload)
+    trial_id = "authority-normal-standard-looming-scale-0.001-drive-4"
+    trial = {
+        "trial_id": trial_id,
+        "runtime_model_spec_sha256": runtime_sha,
+        "runtime_model_spec": payload,
+        "runtime_synaptic_scale": 0.001,
+        "peak_sensory_external_drive": 4.0,
+    }
+    authority = {
+        "selected_attempt": {
+            "runtime_synaptic_scale": 0.001,
+            "peak_sensory_external_drive": 4.0,
+            "trial_ids": {"normal": trial_id},
+        }
+    }
+    controller = {
+        "selected_runtime_model_spec_sha256": runtime_sha,
+        "selected_runtime_model_spec": payload,
+        "selected_runtime_model_spec_payload_role": {
+            "classification": "legacy executable identity metadata",
+            "note": (
+                "The embedded canonical payload preserves historical M05 identity "
+                "wording and is not the M06 calibration provenance."
+            ),
+        },
+        "selected_runtime_synaptic_scale": 0.001,
+        "selected_peak_sensory_external_drive": 4.0,
+        "selected_runtime_synaptic_scale_provenance": {
+            "runtime_synaptic_scale": 0.001,
+            "classification": checker.M06_SCALE_CLASSIFICATION,
+            "selection_provenance": checker.M06_SCALE_SELECTION_PROVENANCE,
+            "physiology_claim": "none",
+        },
+    }
+    assert (
+        checker.validate_runtime_model_spec_consistency(
+            controller, authority, {trial_id: trial}
+        )
+        is trial
+    )
+
+    controller["selected_runtime_model_spec_sha256"] = "0" * 64
+    with pytest.raises(
+        ValueError,
+        match="controller runtime ModelSpec SHA differs from selected normal trial evidence",
+    ):
+        checker.validate_runtime_model_spec_consistency(
+            controller, authority, {trial_id: trial}
+        )
 
 
 def test_protocol_files_match_recorded_calibration_commit_after_execution() -> None:

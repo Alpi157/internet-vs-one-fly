@@ -50,8 +50,14 @@ ACCEPTED_REFERENCE_CODE_SHA256 = (
     "ce53a63c8f22256ad1aed36088734f2132cf8c4b1f70fd8a06365f1593587783"
 )
 REPAIR_DECISION_IDS = ("D-M06-PROTOCOL-01", "D-M06-PROTOCOL-02")
+EXTERNAL_REVIEW_DECISION_IDS = ("D-M06-REVIEW-01",)
 SUPERSEDED_FAILED_PROTOCOL_COMMIT = "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
 INTERMEDIATE_REPAIR_COMMIT = "d0ac081bacb476d557608746eabca7141ee49e4e"
+ATTEMPT_1_VALID_PROTOCOL_COMMIT = "52da05dfa21d9c637cd34a5f8cfdce71c5c328da"
+ATTEMPT_1_SUBMITTED_COMMIT = "69bf4e054d09cbe029a85c45184934cd7707e788"
+ATTEMPT_1_REVIEW_ZIP_SHA256 = (
+    "7fefa5f755b1c4ce56710a746b351958fb1cf16c9769980f03b89e477c3fd432"
+)
 NORMAL_SCENARIOS = (
     "no-threat",
     "standard looming",
@@ -61,6 +67,7 @@ NORMAL_SCENARIOS = (
 PROTOCOL_PATHS = (
     "decisions/D-M06-PROTOCOL-01.json",
     "decisions/D-M06-PROTOCOL-02.json",
+    "decisions/D-M06-REVIEW-01.json",
     "src/flybench/authority.py",
     "src/flybench/bench.py",
     "src/flybench/catch.py",
@@ -413,11 +420,20 @@ def _protocol_provenance() -> dict[str, Any]:
         "protocol_files_unchanged": unchanged,
         "measurement_worktree_clean_at_start": clean,
         "protocol_files": files,
-        "protocol_execution": 2,
+        "external_review_attempt": 2,
+        "protocol_execution": 3,
         "repair_decision_ids": list(REPAIR_DECISION_IDS),
+        "external_review_decision_ids": list(EXTERNAL_REVIEW_DECISION_IDS),
         "superseded_failed_protocol_commit": SUPERSEDED_FAILED_PROTOCOL_COMMIT,
         "intermediate_mechanical_repair_commit": INTERMEDIATE_REPAIR_COMMIT,
         "intermediate_commit_calibration_execution": "NONE",
+        "attempt_1": {
+            "valid_calibration_protocol_commit": ATTEMPT_1_VALID_PROTOCOL_COMMIT,
+            "submitted_commit": ATTEMPT_1_SUBMITTED_COMMIT,
+            "review_zip_path": "reviews/M06-a01.zip",
+            "review_zip_sha256": ATTEMPT_1_REVIEW_ZIP_SHA256,
+            "protocol_execution": 2,
+        },
         "superseded_execution": {
             "protocol_execution": 1,
             "status": "INVALID_NOT_RECORDED",
@@ -492,6 +508,19 @@ def _controller_profile(
             "runtime_model_spec_sha256"
         ],
         "selected_runtime_model_spec": selected_trial["runtime_model_spec"],
+        "selected_runtime_model_spec_payload_role": {
+            "classification": "legacy executable identity metadata",
+            "note": (
+                "The embedded canonical payload preserves historical M05 identity "
+                "wording and is not the M06 calibration provenance."
+            ),
+        },
+        "selected_runtime_synaptic_scale_provenance": {
+            "runtime_synaptic_scale": selected["runtime_synaptic_scale"],
+            "classification": "MODEL ASSUMPTION / project controller parameter",
+            "selection_provenance": "selected by the frozen M06 calibration protocol",
+            "physiology_claim": "none",
+        },
         "resolved_encoder_profile_sha256": profile_hashes["encoder"],
         "resolved_decoder_profile_sha256": profile_hashes["decoder"],
         "environment_profile_sha256": profile_hashes["environment"],

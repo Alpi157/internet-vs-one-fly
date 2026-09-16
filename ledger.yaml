@@ -1,6 +1,6 @@
 playbook_version: '0.1'
 current_milestone: M06
-current_attempt: 1
+current_attempt: 2
 last_accepted_milestone: M05
 accepted_milestones:
 - M01
@@ -14,7 +14,7 @@ milestone_status:
   M03: ACCEPTED
   M04: ACCEPTED
   M05: ACCEPTED
-  M06: SUBMITTED
+  M06: CHANGES_REQUIRED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -714,13 +714,117 @@ reviews:
     this is preserved rather than hidden.
   - M05 does not establish physiology, behavioral calibration, closed-loop neural
     authority, optimized-kernel equivalence, or performance.
-decisions: []
+- milestone: M06
+  attempt: 1
+  code_sha: 69bf4e054d09cbe029a85c45184934cd7707e788
+  zip_sha256: 7fefa5f755b1c4ce56710a746b351958fb1cf16c9769980f03b89e477c3fd432
+  verdict: CHANGES_REQUIRED
+  evidence_inspected_or_rerun:
+  - 'Independent: review ZIP SHA-256 verified.'
+  - 'Independent: review-manifest inventory 122/122 hashed entries verified for exact
+    hashes and byte sizes; review-manifest.json is the sole intentionally unhashed
+    entry.'
+  - 'Independent: M06 git_diff.patch applied cleanly to the accepted M05 repository
+    snapshot and reproduced all 67 submitted tracked repository files byte-for-byte.'
+  - 'Independent: M05->M06 tracked diff consists of 22 in-scope files: Runner/encoder/decoder/environment/authority/bench
+    code, runtime profiles, protocol decisions, dedicated tests and bounded acceptance/review-tool
+    updates.'
+  - 'Independent: tests/test_runner.py + tests/test_controller_authority.py — 27 passed;
+    the sole failing test requires git show against the omitted .git history.'
+  - 'Independent: scaffold/review/reference/numerical/runner/authority reviewer subset
+    — 58 passed with the two Git-history-only provenance tests deselected.'
+  - 'Independent: complete scientific core rerun from submitted code and included
+    313-neuron circuit regenerated all 51 trials (48 normal + 3 selected authority
+    trials) in reviewer runtime; selected response/signatures, interval neural-state
+    digests, spikes, commands, impacts, held drives and relevant interval traces matched
+    captured trials with 0 mismatches.'
+  - 'Independent: frozen normal panel contains exactly 12 parameter combinations x
+    4 scenarios; all 51 recorded trials are VALID, finite and recovered.'
+  - 'Independent: eligible normal combinations in frozen grid order are (0.001,4.0),
+    (0.003,2.0), (0.003,4.0); selected combination is the first eligible, (0.001,4.0).'
+  - 'Independent: selected normal looming rerun produced 6 DNp01 spikes, first neural
+    tick 1130 (565 ms), commands at control ticks 57/59/60/61, first command 570 ms
+    and modeled impact at 600 ms.'
+  - 'Independent: output-clamp trial retained an interval-by-interval identical neural
+    trace while reducing escape commands from 4 to 0.'
+  - 'Independent: direct LC4/LPLC2->DNp01 intervention mask selects 311 accepted pair
+    edges / 11224 contacts and selected rerun reduces DNp01 spikes and commands from
+    6/4 to 0/0.'
+  - 'Independent: raw evidence arithmetic verified 51 JSONL and 51 CSV trials with
+    matching IDs; 9 failed normal combinations retained; all no-threat panels have
+    zero output.'
+  - 'Independent: manual authority-review receipt byte size and SHA-256 verified;
+    preserved protocol-defect evidence SHA-256 agrees with both repair decision records/provenance.'
+  - 'Inspected: Runner phase ordering, previous-held-command mechanics, impact-before-new-command
+    semantics, multi-attack neural continuity/reset isolation, encoder formulas, pure
+    DNp01 decoder, ambient-walk dependency boundary, intervention construction, G-BIO
+    selection logic, protocol provenance implementation and acceptance registry.'
+  - 'Captured-only: valid calibration protocol commit 52da05dfa21d9c637cd34a5f8cfdce71c5c328da
+    ancestry/current-byte equality and submitted clean Git identity, because .git
+    history is intentionally absent from the review ZIP.'
+  - 'Captured-only: supported Python 3.12 dedicated suite — 28 passed; cumulative
+    M01-M06 offline suite — 86 passed; M06 acceptance registry — 6/6 PASS.'
+  limitations:
+  - The bounded review ZIP intentionally omits .git, so protocol-commit ancestry and
+    exact git-show provenance checks could not be independently rerun.
+  - Reviewer runtime is Python 3.13 rather than the declared supported Python >=3.12,<3.13
+    environment; the complete scientific core nevertheless reproduced exactly.
+  - Reviewer runtime lacks pyarrow, so earlier source/graph/pathway tests requiring
+    it were not rerun during this review.
+  - The selected 313-neuron ports-only circuit still omits substantial CNS context;
+    M06 establishes only modeled DNp01-dependent escape onset in the declared simplified
+    controller.
+  finding:
+  - 'profiles/controller-v0.1.json embeds selected_runtime_model_spec.runtime_synaptic_scale_classification=''MODEL
+    ASSUMPTION; M05 numerical-fixture value, not behavioral calibration'' for the
+    M06-selected runtime_synaptic_scale=0.001. That statement is false in M06: 0.001
+    was selected by the frozen behavioral/controller calibration grid.'
+  - 'tools/check_m06_evidence.py lines 120-125 perform a vacuous runtime-ModelSpec
+    check: runtime_model_spec_sha256 is looked up in normal_response_signature, where
+    the field does not exist, so the fallback is controller[''selected_runtime_model_spec_sha256'']
+    and the expression compares the value with itself.'
+decisions:
+- id: D-M06-PROTOCOL-01
+  issue: Frozen M06 protocol execution 1 failed before evidence serialization because
+    src/flybench/bench.py used the invalid Python literal false.
+  allowed_fallback_or_deviation: 'Mechanical repair only: false -> False at the recorded
+    output_clamp expression; no scientific/protocol semantics change.'
+  evidence: evidence/M06/protocol-defect.json and decisions/D-M06-PROTOCOL-01.json
+  owner: external reviewer/operator
+  affected_milestones:
+  - M06
+- id: D-M06-PROTOCOL-02
+  issue: Before protocol execution 2, a second invalid Python literal null was found
+    at the recorded pathway_intervention expression; no calibration had run from the
+    intermediate repair commit.
+  allowed_fallback_or_deviation: 'Mechanical repair only: null -> None at the recorded
+    expression; no scientific/protocol semantics change.'
+  evidence: decisions/D-M06-PROTOCOL-02.json and M06 calibration provenance
+  owner: external reviewer/operator
+  affected_milestones:
+  - M06
+- id: D-M06-REVIEW-01
+  issue: M06 attempt 1 scientifically reproduces, but the submitted controller provenance
+    metadata mislabels the calibrated runtime scale and the M06 evidence checker contains
+    a vacuous runtime-ModelSpec consistency check.
+  allowed_fallback_or_deviation: Repair only controller provenance wording/context
+    and the evidence consistency guard. Do not change graph/model equations, frozen
+    grid, scenarios, selection criteria, encoder/decoder/environment behavior, intervention,
+    selected parameter values, or M05 identities. Because tracked frozen-protocol
+    files change, create a new protocol commit and rerun the complete frozen M06 protocol
+    from reset.
+  evidence: External review of reviews/M06-a01.zip
+  owner: external reviewer
+  affected_milestones:
+  - M06
 biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- 'M06: inspect one normal looming trial, one failed/control trial and the decoder
-  dependency review before G-BIO can be externally accepted.'
+- 'M06 attempt 2: no new human authority review is required if the complete rerun
+  reproduces the attempt-1 scientific trial outputs exactly and the existing operator
+  receipt is preserved unchanged; if any scientific trial/authority result changes,
+  stop and require a new human review.'
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -731,5 +835,6 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Begin M06 — headless closed loop and neural-authority gate; do not begin
-  optimized-kernel/performance work.
+next_action: Repair the M06 controller provenance metadata and runtime-ModelSpec evidence
+  guard, create a new frozen protocol commit, rerun the complete frozen M06 protocol
+  from reset, and submit M06 attempt 2; do not begin M07.

@@ -948,6 +948,7 @@ def m06_material(
         "intervention.json",
         "controller-profile.json",
         "calibration-provenance.json",
+        "review-repair-comparison.json",
         "decision.json",
         "command-results.json",
     ):
@@ -963,6 +964,7 @@ def m06_material(
     intervention = required["intervention.json"]
     controller_evidence = required["controller-profile.json"]
     provenance = required["calibration-provenance.json"]
+    repair_comparison = required["review-repair-comparison.json"]
     acceptance = required["command-results.json"]
     if (
         decision.get("gate") != "G-BIO"
@@ -1013,9 +1015,11 @@ def m06_material(
         or provenance.get("protocol_files_unchanged") is not True
         or provenance.get("measurement_worktree_clean_at_start") is not True
         or decision.get("calibration_protocol_commit") != protocol_commit
-        or provenance.get("protocol_execution") != 2
+        or provenance.get("external_review_attempt") != 2
+        or provenance.get("protocol_execution") != 3
         or provenance.get("repair_decision_ids")
         != ["D-M06-PROTOCOL-01", "D-M06-PROTOCOL-02"]
+        or provenance.get("external_review_decision_ids") != ["D-M06-REVIEW-01"]
         or provenance.get("superseded_failed_protocol_commit")
         != "5fb91a10604bcfbfffefb1367fa0ea7ebe8e944f"
         or provenance.get("superseded_execution", {}).get("status")
@@ -1023,8 +1027,23 @@ def m06_material(
         or provenance.get("intermediate_mechanical_repair_commit")
         != "d0ac081bacb476d557608746eabca7141ee49e4e"
         or provenance.get("intermediate_commit_calibration_execution") != "NONE"
+        or provenance.get("attempt_1", {}).get("valid_calibration_protocol_commit")
+        != "52da05dfa21d9c637cd34a5f8cfdce71c5c328da"
+        or provenance.get("attempt_1", {}).get("submitted_commit")
+        != "69bf4e054d09cbe029a85c45184934cd7707e788"
+        or provenance.get("attempt_1", {}).get("review_zip_sha256")
+        != "7fefa5f755b1c4ce56710a746b351958fb1cf16c9769980f03b89e477c3fd432"
     ):
         raise BundleError("M06 calibration protocol provenance is incomplete")
+    if (
+        repair_comparison.get("status") != "PASS"
+        or repair_comparison.get("scientific_mismatch_count") != 0
+        or not all(repair_comparison.get("checks", {}).values())
+        or repair_comparison.get("attempt_2", {}).get("trial_count") != 51
+        or repair_comparison.get("attempt_2", {}).get("normal_trial_count") != 48
+        or repair_comparison.get("attempt_2", {}).get("authority_trial_count") != 3
+    ):
+        raise BundleError("M06 attempt-1 versus attempt-2 scientific comparison failed")
     defect_path = evidence_root / "protocol-defect.json"
     if (
         not defect_path.is_file()

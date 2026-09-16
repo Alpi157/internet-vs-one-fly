@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-M06-REVIEW-01",
+  "milestone": "M06",
+  "authorizing_external_review_attempt": 1,
+  "target_submission_attempt": 2,
+  "classification": "EXTERNAL-REVIEW-AUTHORIZED BOUNDED ARTIFACT REPAIR",
+  "accepted_base_commit": "a7041a71e9da2b7de17d47f566f68d975ceec851",
+  "attempt_1": {
+    "valid_calibration_protocol_commit": "52da05dfa21d9c637cd34a5f8cfdce71c5c328da",
+    "submitted_commit": "69bf4e054d09cbe029a85c45184934cd7707e788",
+    "review_zip_path": "reviews/M06-a01.zip",
+    "review_zip_sha256": "7fefa5f755b1c4ce56710a746b351958fb1cf16c9769980f03b89e477c3fd432"
+  },
+  "authorized_repairs": [
+    {
+      "defect": "incorrect M06 runtime-synaptic-scale provenance metadata",
+      "scope": "clarify the generated M06 controller profile while retaining the exact executable ModelSpec identity and its legacy canonical payload"
+    },
+    {
+      "defect": "vacuous runtime ModelSpec evidence consistency check",
+      "scope": "resolve the selected normal authority trial, compare its ModelSpec identity and selected parameters, recompute any expanded payload identity, and regression-test mismatch rejection"
+    }
+  ],
+  "scientific_semantics_change_authorized": false,
+  "required_protocol_action": "create a new frozen M06 protocol commit and rerun the complete 12 x 4 panel and selected authority interventions from reset",
+  "comparison_requirement": "attempt-2 scientific trial evidence must have zero mismatches against reviews/M06-a01.zip",
+  "human_receipt_reuse_condition": "permitted only when the attempt-1 versus attempt-2 scientific comparison reports zero mismatches",
+  "preservation_requirements": [
+    "preserve evidence/M06/protocol-defect.json byte-identically",
+    "preserve D-M06-PROTOCOL-01 and D-M06-PROTOCOL-02",
+    "preserve reviews/M06-a01.zip byte-identically",
+    "do not begin M07",
+    "do not mark M06 ACCEPTED"
+  ]
+}
