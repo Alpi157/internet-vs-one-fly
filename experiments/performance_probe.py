@@ -40,7 +40,7 @@ from flybench.runner import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PROCESS_START_NS = time.perf_counter_ns()
+MODULE_READY_NS = time.perf_counter_ns()
 PARITY_PROFILE = ROOT / "profiles/kernel-parity-v0.1.json"
 CONTROLLER_PROFILE = ROOT / "profiles/controller-v0.1.json"
 PORTS_PROFILE = ROOT / "profiles/escape-circuit.json"
@@ -762,7 +762,7 @@ def validate_profile(profile: dict[str, Any], profile_path: Path) -> None:
 
 
 def main() -> int:
-    process_interpreter_startup_to_main_ns = time.perf_counter_ns() - PROCESS_START_NS
+    probe_module_ready_to_main_ns = time.perf_counter_ns() - MODULE_READY_NS
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
@@ -879,7 +879,11 @@ def main() -> int:
         )
         else "INCOMPLETE",
         "numba_jit_cold_cost_ns": jit_warmup_ns,
-        "process_interpreter_startup_to_main_ns": process_interpreter_startup_to_main_ns,
+        "probe_module_ready_to_main_ns": probe_module_ready_to_main_ns,
+        "process_interpreter_startup": {
+            "status": "NOT_SEPARATELY_MEASURED",
+            "reason": "An in-process monotonic timer cannot observe pre-import interpreter launch; parent process launch to worker entry is recorded for every repeat instead.",
+        },
         "graphs": {
             graph: next(
                 (
