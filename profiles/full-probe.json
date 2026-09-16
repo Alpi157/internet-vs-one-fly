@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.m07-bounded-performance-probe.v0.1",
+  "classification": "PREDECLARED M07 MEASUREMENT PROFILE",
+  "graphs": {
+    "circuit": {
+      "path": "data/compiled/escape",
+      "semantic_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+      "N": 313,
+      "E": 20607,
+      "contacts": 79112
+    },
+    "full": {
+      "path": "data/compiled/full",
+      "semantic_digest": "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0",
+      "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+      "N": 166700,
+      "E": 25582938,
+      "contacts": 124177617
+    }
+  },
+  "model": {
+    "selected_runtime_model_spec_sha256": "8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc",
+    "neural_dt_ms": 0.5,
+    "runtime_synaptic_scale": 0.001,
+    "control_interval_ms": 10.0,
+    "neural_steps_per_control_interval": 20,
+    "seed": 20260916
+  },
+  "controller": {
+    "profile_sha256": "0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817",
+    "peak_sensory_external_drive": 4.0
+  },
+  "workloads": {
+    "quiet": {
+      "control_intervals": 100,
+      "external_drive": "all populations zero"
+    },
+    "nominal": {
+      "control_intervals": 100,
+      "intervals_0_79": "accepted M06 800 ms standard-looming encoder schedule",
+      "intervals_80_99": "zero sensory drive"
+    },
+    "sustained": {
+      "control_intervals": 100,
+      "LC4_u": 4.0,
+      "LPLC2_u": 4.0,
+      "DNp01_u": 0.0,
+      "claim": "bounded computational stress workload; not a behavioral claim"
+    }
+  },
+  "repeats_per_graph_workload": 3,
+  "full_repeat_hard_wall_timeout_seconds": 60.0,
+  "circuit_repeat_hard_wall_timeout_seconds": 30.0,
+  "headroom_target_ms": 7.0,
+  "control_deadline_ms": 10.0,
+  "timing_clock": "time.perf_counter_ns",
+  "jit_rule": "warm on a small deterministic fixture, then reset measured state before timing",
+  "optimization_pass_limit": 1
+}

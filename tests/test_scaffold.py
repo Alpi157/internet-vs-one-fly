@@ -166,6 +166,8 @@ def test_required_m01_paths_and_registry() -> None:
         "profiles/decoder-runtime-v0.1.json",
         "profiles/environment-v0.1.json",
         "profiles/intervention-direct-visual-to-dnp01-zero-v0.1.json",
+        "profiles/kernel-parity-v0.1.json",
+        "profiles/full-probe.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
@@ -179,8 +181,10 @@ def test_required_m01_paths_and_registry() -> None:
         "src/flybench/runner.py",
         "src/flybench/authority.py",
         "src/flybench/bench.py",
+        "src/flybench/kernel.py",
         "tools/acceptance.json",
         "tools/check_m06_evidence.py",
+        "tools/check_m07_evidence.py",
         "tools/run_acceptance.py",
         "tools/review_bundle.py",
         "tests/test_scaffold.py",
@@ -192,15 +196,18 @@ def test_required_m01_paths_and_registry() -> None:
         "tests/test_numerical_semantics.py",
         "tests/test_runner.py",
         "tests/test_controller_authority.py",
+        "tests/test_kernel_parity.py",
+        "tests/test_probe_limits.py",
         "tests/fixtures/m04-reference.json",
         "tools/build_m04_mapping.py",
         "experiments/numerical_reference.py",
+        "experiments/performance_probe.py",
         ".github/workflows/m01-offline.yml",
     ]
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert {"M01", "M02", "M03", "M04", "M05", "M06"} <= set(
+    assert {"M01", "M02", "M03", "M04", "M05", "M06", "M07"} <= set(
         registry["milestones"]
     )
     for milestone in registry["milestones"].values():

@@ -145,6 +145,10 @@ def render_review(
     m06_calibration: dict[str, Any] | None,
     m06_authority: dict[str, Any] | None,
     m06_dependencies: dict[str, Any] | None,
+    m07_decision: dict[str, Any] | None,
+    m07_candidate: dict[str, Any] | None,
+    m07_circuit_performance: dict[str, Any] | None,
+    m07_full_performance: dict[str, Any] | None,
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -206,6 +210,18 @@ def render_review(
             "The output clamp acts only at the declared decoder boundary; the direct visual-to-DNp01 intervention zeroes exactly the predeclared in-memory executable weights.",
             "Ambient walking and takeoff are provisional threat-independent game mechanics, not physiology or biomechanics.",
             "The claim is limited to modeled DNp01-dependent escape onset in the declared simplified circuit/controller.",
+        ]
+    elif milestone == "M07":
+        objective = (
+            "Implement one restricted deterministic CPU backend, prove reference/kernel "
+            "parity, and make the bounded G-FULL initial live-graph decision."
+        )
+        assumptions = [
+            "The accepted M03 graph identities and M05/M06 scientific semantics, controller parameters, and authority boundaries remain unchanged.",
+            "The Numba backend is serial, float64-state, source-major over active scheduled sources, and uses neither parallel accumulation nor fast math.",
+            "Each full-graph repeat is independently terminable at the predeclared 60 second wall bound; timeout and partial completion are not completed samples.",
+            "The 7 ms value is provisional headroom and 10 ms is the control deadline; all measured activity and edge work accompany timings.",
+            "The selected live candidate and all host feasibility remain provisional until external M07 review and final M15 host-capacity work.",
         ]
     else:
         objective = (
@@ -349,6 +365,34 @@ def render_review(
         lines.append(
             f"- Decoder dependency audit: `{m06_dependencies.get('decoder', {}).get('status')}`; ambient-walk dependency audit: `{m06_dependencies.get('ambient_walking', {}).get('status')}`."
         )
+    if milestone == "M07" and m07_decision:
+        lines.extend(
+            [
+                f"- G-FULL candidate decision: `{m07_decision.get('outcome')}`; selection `{m07_decision.get('selection')}`; external milestone acceptance remains `{m07_decision.get('external_milestone_acceptance')}`.",
+                f"- Kernel parity: `{m07_decision.get('kernel_parity_status')}`; full authority carryover: `{m07_decision.get('full_authority_carryover_status')}`.",
+                f"- Full-graph failed conditions: `{m07_decision.get('failed_full_graph_conditions')}`.",
+            ]
+        )
+    if milestone == "M07" and m07_candidate:
+        graph = m07_candidate.get("graph", {})
+        lines.append(
+            f"- Candidate graph/backend: digest `{graph.get('semantic_digest')}`, N `{graph.get('N')}`, E `{graph.get('E')}`, contacts `{graph.get('contacts')}`, backend `{m07_candidate.get('backend')}`."
+        )
+        lines.append(
+            f"- Measurement evidence digest: `{m07_candidate.get('measurement_evidence_sha256')}`; optimization passes `{m07_candidate.get('optimization_passes_used')}`."
+        )
+    if milestone == "M07":
+        for graph_name, performance in (
+            ("circuit", m07_circuit_performance),
+            ("full", m07_full_performance),
+        ):
+            if not performance:
+                continue
+            for workload, result in performance.get("workloads", {}).items():
+                metrics = result.get("metrics") or {}
+                lines.append(
+                    f"- {graph_name} `{workload}`: complete repeats `{result.get('complete_repeat_count')}`; timeouts `{result.get('timeout_repeat_count')}`; p99 ns `{metrics.get('p99_ns')}`; >10 ms `{metrics.get('count_interval_gt_10_ms')}`."
+                )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -446,7 +490,11 @@ def render_review(
                             else (
                                 "- This archive contains the frozen M06 protocol, complete compact trial evidence, authority comparisons, dependency audits, and accepted compact circuit; raw MaleCNS and full M03 arrays remain excluded."
                                 if milestone == "M06"
-                                else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                else (
+                                    "- This archive contains the M07 kernel, frozen parity/probe profiles, raw bounded timing evidence, memory/hardware receipts, and G-FULL candidate decision. Full graph arrays remain omitted with exact identities."
+                                    if milestone == "M07"
+                                    else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                )
                             )
                         )
                     )
@@ -1091,6 +1139,142 @@ def m06_material(
         entries[f"data/compiled/escape/{path.name}"] = data
 
 
+def m07_material(
+    root: Path,
+    submitted: str,
+    evidence_root: Path,
+    entries: dict[str, bytes],
+) -> list[dict[str, Any]]:
+    """Validate M07 decision evidence, include the circuit, and inventory full arrays."""
+
+    required: dict[str, dict[str, Any]] = {}
+    for name in (
+        "hardware.json",
+        "kernel-parity.json",
+        "circuit-performance.json",
+        "full-performance.json",
+        "memory.json",
+        "timeout-test.json",
+        "full-authority-carryover.json",
+        "optimization.json",
+        "live-candidate.json",
+        "decision.json",
+        "command-results.json",
+    ):
+        try:
+            required[name] = json.loads(
+                (evidence_root / name).read_text(encoding="utf-8")
+            )
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M07 {name} is missing or invalid: {exc}") from exc
+    decision = required["decision.json"]
+    candidate = required["live-candidate.json"]
+    parity = required["kernel-parity.json"]
+    timeout = required["timeout-test.json"]
+    memory = required["memory.json"]
+    optimization = required["optimization.json"]
+    acceptance = required["command-results.json"]
+    if (
+        decision.get("gate") != "G-FULL"
+        or decision.get("outcome") != "PASS"
+        or decision.get("selection") not in {"PROVISIONAL_FULL", "DISCLOSED_CIRCUIT"}
+        or decision.get("external_milestone_acceptance") != "PENDING"
+    ):
+        raise BundleError("M07 G-FULL candidate decision is incomplete")
+    if (
+        parity.get("status") != "PASS"
+        or parity.get("circuit_gbio_preservation", {}).get("status") != "PASS"
+        or parity.get("kernel_configuration", {}).get("parallel") is not False
+        or parity.get("kernel_configuration", {}).get("fastmath") is not False
+    ):
+        raise BundleError("M07 kernel/circuit parity evidence does not pass")
+    forced = timeout.get("forced_timeout_result", {})
+    if (
+        timeout.get("status") != "PASS"
+        or forced.get("status") != "TIMEOUT"
+        or forced.get("worker_alive_after_join") is not False
+        or forced.get("temporary_worker_state_released") is not True
+    ):
+        raise BundleError("M07 timeout evidence does not prove termination and cleanup")
+    if memory.get("status") != "COMPLETE" or any(
+        memory.get("graphs", {}).get(graph) is None for graph in ("circuit", "full")
+    ):
+        raise BundleError("M07 graph/state/RSS memory evidence is incomplete")
+    if optimization.get("optimization_passes_used") not in (0, 1):
+        raise BundleError("M07 optimization-pass count is invalid")
+    if (
+        acceptance.get("status") != "PASS"
+        or acceptance.get("submitted_code_sha") != submitted
+    ):
+        raise BundleError("M07 acceptance evidence does not pass for submitted code")
+    try:
+        committed_candidate = json.loads(
+            commit_blob(root, submitted, "profiles/live-candidate-v0.1.json")
+        )
+    except (BundleError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"committed M07 candidate is invalid: {exc}") from exc
+    if candidate != committed_candidate:
+        raise BundleError("M07 committed and evidence candidate profiles differ")
+    if (
+        candidate.get("g_full_decision") != decision.get("selection")
+        or candidate.get("implementation", {}).get("kernel_source_sha256")
+        != sha256(commit_blob(root, submitted, "src/flybench/kernel.py"))
+        or candidate.get("optimization_passes_used")
+        != optimization.get("optimization_passes_used")
+        or candidate.get("external_milestone_acceptance") != "PENDING"
+    ):
+        raise BundleError("M07 candidate identities are inconsistent")
+    raw_path = evidence_root / "raw-interval-timings.jsonl"
+    if not raw_path.is_file() or not raw_path.stat().st_size:
+        raise BundleError("M07 raw interval timings are missing")
+
+    circuit_dir = root / "data" / "compiled" / "escape"
+    full_dir = root / "data" / "compiled" / "full"
+    try:
+        circuit_manifest = json.loads((circuit_dir / "manifest.json").read_text())
+        full_manifest = json.loads((full_dir / "manifest.json").read_text())
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M07 compiled graph manifest unavailable: {exc}") from exc
+    if circuit_manifest.get("semantic_digest", {}).get("value") != (
+        "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+    ):
+        raise BundleError("M07 circuit identity differs from accepted M04")
+    if full_manifest.get("semantic_digest", {}).get("value") != (
+        "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0"
+    ):
+        raise BundleError("M07 full graph identity differs from accepted M03")
+    for path in sorted(circuit_dir.iterdir()):
+        if not path.is_file() or path.is_symlink():
+            continue
+        data = path.read_bytes()
+        if len(data) > MAX_INCLUDED_FILE_BYTES:
+            raise BundleError(f"M07 compact circuit artifact is too large: {path.name}")
+        entries[f"data/compiled/escape/{path.name}"] = data
+    for name in ("manifest.json", "selection-profile.json", "source-lock.json"):
+        entries[f"data/compiled/full/{name}"] = (full_dir / name).read_bytes()
+
+    omitted: list[dict[str, Any]] = []
+    for name, item in sorted(full_manifest.get("arrays", {}).items()):
+        path = full_dir / item["filename"]
+        size, digest = sha256_file(path)
+        if size != item.get("bytes") or digest != item.get("sha256"):
+            raise BundleError(f"M07 full graph array differs from manifest: {name}")
+        omitted.append(
+            {
+                "path": f"data/compiled/full/{item['filename']}",
+                "reason": "accepted M03 full graph array omitted from bounded M07 review ZIP",
+                "array_name": name,
+                "bytes": size,
+                "sha256": digest,
+                "dtype": item.get("dtype"),
+                "shape": item.get("shape"),
+                "graph_semantic_digest": full_manifest["semantic_digest"]["value"],
+                "source_lock_sha256": full_manifest.get("source_lock_sha256"),
+            }
+        )
+    return omitted
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -1151,6 +1335,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m05_material(root, submitted, evidence_root)
     if milestone == "M06":
         m06_material(root, submitted, evidence_root, entries)
+    if milestone == "M07":
+        omitted.extend(m07_material(root, submitted, evidence_root, entries))
 
     large_files = {
         "schema_version": 1,
@@ -1245,6 +1431,30 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m06_dependencies = None
+    try:
+        m07_decision = json.loads(
+            (evidence_root / "decision.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m07_decision = None
+    try:
+        m07_candidate = json.loads(
+            (evidence_root / "live-candidate.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m07_candidate = None
+    try:
+        m07_circuit_performance = json.loads(
+            (evidence_root / "circuit-performance.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m07_circuit_performance = None
+    try:
+        m07_full_performance = json.loads(
+            (evidence_root / "full-performance.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        m07_full_performance = None
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -1267,6 +1477,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m06_calibration,
         m06_authority,
         m06_dependencies,
+        m07_decision,
+        m07_candidate,
+        m07_circuit_performance,
+        m07_full_performance,
     )
 
     manifest = {

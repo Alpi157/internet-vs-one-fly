@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.kernel-parity.v0.1",
+  "classification": "PREDECLARED M07 NUMERICAL ACCEPTANCE PROFILE",
+  "reference_oracle": "flybench.reference.ReferenceState",
+  "candidate_backend": "flybench.numba-serial-active-source.v1",
+  "numerical_array_comparison": {
+    "arrays": ["voltage", "synaptic_current"],
+    "atol": 1e-10,
+    "rtol": 1e-10,
+    "provenance": "accepted M05 analytical tolerance"
+  },
+  "exact_comparison": [
+    "spike_neuron_ids",
+    "spike_logical_ticks",
+    "refractory_integer_state",
+    "pending_spike_ring_logical_contents",
+    "pending_external_input_ring_contents",
+    "command_ticks",
+    "impact_ticks_and_outcomes"
+  ],
+  "runner_boundary_comparison": "complete neural state at every 10 ms control boundary",
+  "required_kernel_configuration": {
+    "serial": true,
+    "parallel": false,
+    "fastmath": false,
+    "state_dtype": "float64",
+    "graph_mutation": false
+  },
+  "scientific_identities": {
+    "event_order": "flybench.neural-order.v1",
+    "integration": "flybench.exact-linear-lif.v1",
+    "neural_dt_ms": 0.5,
+    "control_interval_ms": 10.0,
+    "runtime_synaptic_scale": 0.001,
+    "peak_sensory_external_drive": 4.0,
+    "circuit_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+    "selected_runtime_model_spec_sha256": "8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc",
+    "controller_profile_sha256": "0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817"
+  }
+}

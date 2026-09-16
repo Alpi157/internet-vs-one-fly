@@ -7,7 +7,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 
@@ -20,10 +20,14 @@ from flybench.encoding import (
 )
 from flybench.model import ModelSpec
 from flybench.reference import ReferenceGraph, ReferenceState
+from flybench.kernel import KernelGraph, KernelState
 
 
 ACCEPTED_CIRCUIT_DIGEST = (
     "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+)
+ACCEPTED_FULL_GRAPH_DIGEST = (
+    "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0"
 )
 ACCEPTED_SELECTION_SHA256 = (
     "29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b"
@@ -66,7 +70,7 @@ def _immutable_int_indices(ids: np.ndarray, body_ids: list[str]) -> np.ndarray:
 @dataclass(frozen=True, slots=True)
 class GraphBundle:
     directory: Path
-    graph: ReferenceGraph
+    graph: ReferenceGraph | KernelGraph
     body_ids: np.ndarray
     counts: np.ndarray
     lc4_indices: np.ndarray
@@ -85,7 +89,7 @@ class GraphBundle:
 class PathwayIntervention:
     intervention_id: str
     profile_sha256: str
-    graph: ReferenceGraph
+    graph: ReferenceGraph | KernelGraph
     edge_mask: np.ndarray
     audit: dict[str, Any]
 
@@ -155,6 +159,64 @@ def load_graph(directory: Path) -> GraphBundle:
     return bundle
 
 
+def load_full_graph(directory: Path, ports_profile_path: Path) -> GraphBundle:
+    """Identity-check and mmap the accepted M03 full graph for bounded M07 probes."""
+
+    directory = directory.resolve()
+    manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
+    digest = manifest.get("semantic_digest", {}).get("value")
+    selection_sha = manifest.get("selection_profile", {}).get("sha256")
+    source_sha = manifest.get("source_lock_sha256")
+    if digest != ACCEPTED_FULL_GRAPH_DIGEST:
+        raise ValueError("compiled full graph semantic identity mismatch")
+    if source_sha != ACCEPTED_SOURCE_LOCK_SHA256:
+        raise ValueError("compiled full graph source-lock identity mismatch")
+    if _sha256_file(directory / "selection-profile.json") != selection_sha:
+        raise ValueError("full graph copied selection profile identity mismatch")
+    if _sha256_file(ports_profile_path) != ACCEPTED_SELECTION_SHA256:
+        raise ValueError("full graph port-resolution profile identity mismatch")
+
+    arrays: dict[str, np.ndarray] = {}
+    for name in ("ids", "offsets", "targets", "counts", "weights"):
+        entry = manifest["arrays"][name]
+        path = directory / entry["filename"]
+        if _sha256_file(path) != entry["sha256"]:
+            raise ValueError(f"compiled full graph array identity mismatch: {name}")
+        value = np.load(path, allow_pickle=False, mmap_mode="r")
+        if list(value.shape) != entry["shape"] or value.dtype.name != entry["dtype"]:
+            raise ValueError(f"compiled full graph array metadata mismatch: {name}")
+        arrays[name] = value
+    if arrays["ids"].size != 166700 or arrays["targets"].size != 25582938:
+        raise ValueError("compiled full graph cardinality mismatch")
+    if int(np.sum(arrays["counts"], dtype=np.uint64)) != 124177617:
+        raise ValueError("compiled full graph source-contact total mismatch")
+
+    ports = json.loads(ports_profile_path.read_text(encoding="utf-8"))["populations"]
+    ids = arrays["ids"]
+    counts = arrays["counts"]
+    graph = KernelGraph(
+        offsets=arrays["offsets"], targets=arrays["targets"], weights=arrays["weights"]
+    )
+    bundle = GraphBundle(
+        directory=directory,
+        graph=graph,
+        body_ids=ids,
+        counts=counts,
+        lc4_indices=_immutable_int_indices(ids, ports["LC4"]["body_ids_decimal"]),
+        lplc2_indices=_immutable_int_indices(ids, ports["LPLC2"]["body_ids_decimal"]),
+        dnp01_indices=_immutable_int_indices(ids, ports["DNp01"]["body_ids_decimal"]),
+        semantic_graph_digest=digest,
+        selection_profile_sha256=selection_sha,
+        source_lock_sha256=source_sha,
+    )
+    resolved = tuple(int(ids[index]) for index in bundle.dnp01_indices)
+    if resolved != (10001, 10010):
+        raise ValueError("full graph DNp01 port identity mismatch")
+    if (bundle.lc4_indices.size, bundle.lplc2_indices.size) != (126, 185):
+        raise ValueError("full graph sensory-port cardinality mismatch")
+    return bundle
+
+
 def build_direct_visual_to_dnp01_zero(
     bundle: GraphBundle, profile_path: Path
 ) -> PathwayIntervention:
@@ -200,14 +262,23 @@ def build_direct_visual_to_dnp01_zero(
         "compiled_graph_files_modified": False,
         "only_selected_executable_weights_zeroed": True,
     }
-    return PathwayIntervention(
-        intervention_id="direct_visual_to_dnp01_zero",
-        profile_sha256=hashlib.sha256(profile_bytes).hexdigest(),
-        graph=ReferenceGraph(
+    intervention_graph: ReferenceGraph | KernelGraph
+    if isinstance(bundle.graph, KernelGraph):
+        intervention_graph = KernelGraph(
             offsets=bundle.graph.offsets,
             targets=bundle.graph.targets,
             weights=weights,
-        ),
+        )
+    else:
+        intervention_graph = ReferenceGraph(
+            offsets=bundle.graph.offsets,
+            targets=bundle.graph.targets,
+            weights=weights,
+        )
+    return PathwayIntervention(
+        intervention_id="direct_visual_to_dnp01_zero",
+        profile_sha256=hashlib.sha256(profile_bytes).hexdigest(),
+        graph=intervention_graph,
         edge_mask=mask,
         audit=audit,
     )
@@ -240,6 +311,7 @@ class Runner:
         environment_seed: int,
         output_clamp: bool = False,
         intervention: PathwayIntervention | None = None,
+        backend: Literal["reference", "kernel"] = "reference",
     ):
         if model_spec.neural_dt_ms != NEURAL_DT_MS:
             raise ValueError("M06 requires the accepted 0.5 ms neural timestep")
@@ -256,8 +328,16 @@ class Runner:
         self.environment_seed = environment_seed
         self.output_clamp = bool(output_clamp)
         self.intervention = intervention
+        if backend not in ("reference", "kernel"):
+            raise ValueError("backend must be 'reference' or 'kernel'")
+        self.backend = backend
         graph = intervention.graph if intervention is not None else graph_bundle.graph
-        self.neural = ReferenceState(model_spec, graph)
+        if backend == "reference":
+            if not isinstance(graph, ReferenceGraph):
+                raise ValueError("reference backend requires an in-memory ReferenceGraph")
+            self.neural = ReferenceState(model_spec, graph)
+        else:
+            self.neural = KernelState(model_spec, graph)
         self.environment = CatchEnvironment(environment_config, seed=environment_seed)
         if self.neural.rng is self.environment.rng:
             raise RuntimeError("neural and environment RNG ownership must be distinct")
@@ -387,6 +467,7 @@ class Runner:
                 for item in impacts
             ],
             "finite_state": finite_state,
+            "backend": self.backend,
             "neural_state_sha256": _state_digest(self.neural),
             "dnp01_voltage": [
                 float(self.neural.voltage[int(index)])
@@ -408,6 +489,7 @@ class Runner:
             "control_tick": self._control_tick,
             "neural_tick": self.neural.tick,
             "neural_steps_per_control_interval": NEURAL_STEPS_PER_CONTROL_INTERVAL,
+            "backend": self.backend,
             "dnp01_spike_count": len(self.dnp01_spikes),
             "dnp01_spikes": [
                 {"neural_tick": tick, "body_id": body_id}

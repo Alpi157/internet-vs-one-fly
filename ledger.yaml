@@ -1,25 +1,27 @@
 playbook_version: '0.1'
-current_milestone: M06
-current_attempt: 2
-last_accepted_milestone: M05
+current_milestone: M07
+current_attempt: 1
+last_accepted_milestone: M06
 accepted_milestones:
 - M01
 - M02
 - M03
 - M04
 - M05
+- M06
 milestone_status:
   M01: ACCEPTED
   M02: ACCEPTED
   M03: ACCEPTED
   M04: ACCEPTED
   M05: ACCEPTED
-  M06: SUBMITTED
+  M06: ACCEPTED
+  M07: NOT_STARTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
 repository_url: null
-last_accepted_code_commit: a7041a71e9da2b7de17d47f566f68d975ceec851
+last_accepted_code_commit: ab8e88ff00db5a72e10a5769b232fb10f689c815
 tooling:
   python: 3.12.3
   uv: 0.12.13
@@ -65,8 +67,8 @@ live_graph:
     profile_id: flybench.escape-circuit.malecns-v1.0.v1
     profile_sha256: 29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b
     scope: ports-only induced circuit
-    status: accepted M04 candidate graph; live serving/backend selection remains pending
-      M07
+    status: M04 circuit identity accepted; M06 G-BIO controller accepted; live backend/performance
+      selection remains pending M07.
 ports:
   mapping_digest: 6652462228ddf9af863fae95608fd6cacb44fbd86fd12d0799ec65d8dabcef3d
   input_body_ids:
@@ -385,18 +387,18 @@ ports:
   - '10001'
   - '10010'
 profiles:
-  model: e7bf666f0b9b716d0c6e80af001604b4355ce34ff38e8fa514b90898d6b1dd91
-  encoder: f6879937ec2e7efbdb888d336f2041d980f61a8981d7970314a53641bda14bfa
-  decoder: 71acbe641fc2c9ef4f9cee514f99e3dfdc392482d9c77483fc1334fdacb37544
-  environment: null
+  model: 8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc
+  encoder: 7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7
+  decoder: 7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f
+  environment: 9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7
   deployed_backend: null
 calibration:
   panel_digest: b00b9066365b25153ab3c8c56adf866cf1659bc669836345fd1617d9eff0f6d4
-  search_digest: null
-  frozen_commit: 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8
+  search_digest: d525939b1e63906b50179c7ebed21c2f6ac38b1f3a8f54a9b60928c512acb70c
+  frozen_commit: b78516995e185d952e4d4b9aeef2fea30ea8d75a
 clocks:
   neural_dt_ms: 0.5
-  control_interval_ms: null
+  control_interval_ms: 10.0
   ordering_version: flybench.neural-order.v1
 reexecution:
   envelope: null
@@ -463,6 +465,48 @@ gates:
     - Changing the frozen numerical criteria without a new explicit decision/review.
     - Changing the accepted M04 circuit/sign/profile identities without repeating
       affected evidence.
+  G-BIO:
+    decision: PASS
+    supporting_review: M06-a02
+    code_sha: ab8e88ff00db5a72e10a5769b232fb10f689c815
+    review_zip_sha256: f0413430efb0c4afad59dbbefe956951d5f3b6df4cc035d0f4d968c1837b9e81
+    claim_scope: modeled DNp01-dependent escape onset in the declared simplified circuit/controller
+    calibration_protocol_commit: b78516995e185d952e4d4b9aeef2fea30ea8d75a
+    mapping_digest: 6652462228ddf9af863fae95608fd6cacb44fbd86fd12d0799ec65d8dabcef3d
+    circuit_digest: 53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5
+    accepted_m05_model_spec_sha256: e7bf666f0b9b716d0c6e80af001604b4355ce34ff38e8fa514b90898d6b1dd91
+    selected_runtime_model_spec_sha256: 8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc
+    selected_runtime_synaptic_scale: 0.001
+    selected_peak_sensory_external_drive: 4.0
+    controller_profile_sha256: 0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817
+    encoder_profile_sha256: 7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7
+    decoder_profile_sha256: 7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f
+    environment_profile_sha256: 9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7
+    authority_evidence_sha256: 0fc7e0826ac72bef8c69521b6fc98f47931d3856890ba7d9ed384d85df5e47f0
+    intervention_evidence_sha256: 8dce9d4fbdafaccb245337ffd60f341492e23e1f25d7e0eb66817c93e9d762be
+    attempt1_attempt2_scientific_comparison_sha256: 7afc10fbec1b9a5a33485574b227d0f710602fea2f6171460a63bd25f7e516a6
+    conditions:
+    - Mapped ports, accepted circuit, M05 equations/numerical ordering and selected
+      0.5 ms neural timestep remain unchanged.
+    - The M06-selected runtime scale is 0.001 and peak sensory drive is 4.0 under
+      the frozen calibration protocol.
+    - Output clamp removes escape commands without altering the neural trace; the
+      declared direct visual-to-DNp01 intervention removes the selected DNp01 response.
+    - The claim is limited to modeled DNp01-dependent escape onset in the declared
+      simplified controller.
+    - Feature-level stimulation bypasses early vision; the 313-neuron circuit omits
+      wider CNS context; static-size activity exceeds looming activity at the selected
+      setting.
+    - M07 optimized/backend execution must preserve the accepted M05/M06 numerical
+      and controller semantics before serving.
+    invalidating_changes:
+    - Changing mapped ports, circuit graph, sign mapping, LIF equations, neural timestep,
+      event ordering or 10 ms control interval.
+    - Changing encoder/decoder/environment semantics or the selected M06 calibration
+      parameters without repeating affected gates.
+    - Introducing hidden threat access in the decoder or ambient movement.
+    - Treating the G-BIO result as natural-fly validation, biological causality, wiring
+      superiority or whole-CNS locomotion.
 reviews:
 - milestone: M01
   attempt: 1
@@ -783,6 +827,69 @@ reviews:
     check: runtime_model_spec_sha256 is looked up in normal_response_signature, where
     the field does not exist, so the fallback is controller[''selected_runtime_model_spec_sha256'']
     and the expression compares the value with itself.'
+- milestone: M06
+  attempt: 2
+  code_sha: ab8e88ff00db5a72e10a5769b232fb10f689c815
+  zip_sha256: f0413430efb0c4afad59dbbefe956951d5f3b6df4cc035d0f4d968c1837b9e81
+  verdict: ACCEPTED
+  evidence_inspected_or_rerun:
+  - 'Independent: review ZIP SHA-256 verified.'
+  - 'Independent: review-manifest inventory 124/124 hashed entries verified for exact
+    hashes and byte sizes; review-manifest.json is the sole intentionally unhashed
+    entry.'
+  - 'Independent: M06 attempt-2 git_diff.patch applied to the accepted M05 repository
+    snapshot; all 68 submitted repo manifest files matched byte-for-byte.'
+  - 'Independent: direct attempt-1 versus attempt-2 repo comparison found exactly
+    one added file (decisions/D-M06-REVIEW-01.json) and seven changed files: ledger.yaml,
+    profiles/controller-v0.1.json, src/flybench/bench.py, tests/test_controller_authority.py,
+    tools/acceptance.json, tools/check_m06_evidence.py and tools/review_bundle.py.'
+  - 'Independent: submitted attempt-2 ledger matched the reviewer-supplied attempt-2
+    ledger semantically except the permitted M06 CHANGES_REQUIRED -> SUBMITTED transition
+    and next_action update.'
+  - 'Independent: all 51 attempt-2 trial JSON objects are exactly equal to the corresponding
+    attempt-1 trial objects.'
+  - 'Independent: calibration summary differs scientifically only by the new calibration_protocol_commit;
+    authority.json, intervention.json and stability.json are byte-identical to attempt
+    1.'
+  - 'Independent: manual-authority-review.txt, protocol-defect.json and both prior
+    protocol-repair decision files are byte-identical to attempt 1.'
+  - 'Independent: repaired controller embeds the exact selected runtime ModelSpec
+    SHA 8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc, explicitly
+    distinguishes its legacy M05 canonical payload wording from M06 calibration provenance,
+    and records scale 0.001 as a MODEL ASSUMPTION/project controller parameter selected
+    by the frozen M06 protocol with no physiology claim.'
+  - 'Independent: repaired runtime ModelSpec guard resolved the selected normal raw
+    trial, accepted the real controller/trial identity, and rejected a deliberately
+    substituted all-zero controller ModelSpec SHA.'
+  - 'Independent: selected_runtime_model_spec canonical payload SHA recomputed as
+    8fb910576dd01bb28dece1198274072302e03cd7a00808dcec8948e4b2dac2bc.'
+  - 'Independent: dedicated M06 suite with only the Git-history provenance test deselected
+    — 28 passed, 1 deselected, using the exact compact circuit bytes included in the
+    review ZIP.'
+  - 'Independent: scaffold/review/reference/numerical/runner/authority reviewer subset
+    — 59 passed, 2 Git-history-only tests deselected.'
+  - 'Independent: attempt-1 versus attempt-2 raw scientific comparison confirms the
+    same 48 normal + 3 authority trials, selected combination, spike/command/impact
+    outputs and interval neural-state hashes; scientific mismatch count 0.'
+  - 'Captured-only: valid calibration protocol commit b78516995e185d952e4d4b9aeef2fea30ea8d75a
+    ancestry/current-byte equality and submitted clean Git identity, because .git
+    history is intentionally absent from the review ZIP.'
+  - 'Captured-only: supported Python 3.12 dedicated M06 suite — 29 passed; cumulative
+    M01-M06 offline suite — 87 passed; M06 acceptance registry — 6/6 PASS.'
+  limitations:
+  - The bounded review ZIP intentionally omits .git, so protocol-commit ancestry/current-byte
+    git-show checks could not be independently rerun.
+  - Reviewer runtime uses Python 3.13 rather than the declared supported Python >=3.12,<3.13
+    environment; supported Python 3.12 execution is captured evidence.
+  - The compact circuit is included in the review ZIP, but the full M03 graph arrays
+    and raw MaleCNS sources are intentionally omitted and were not rerun during this
+    M06 repair review.
+  - G-BIO establishes only modeled DNp01-dependent escape onset in the simplified
+    313-neuron controller; it does not establish natural-fly behavior, physiological
+    validity, biological causality, wiring superiority, realistic biomechanics or
+    whole-CNS locomotion.
+  - The selected setting has stronger static-size activity than looming activity;
+    M06 supports input dependence/authority, not biological looming selectivity.
 decisions:
 - id: D-M06-PROTOCOL-01
   issue: Frozen M06 protocol execution 1 failed before evidence serialization because
@@ -821,10 +928,9 @@ biological_risks: []
 technical_risks: []
 launch_blockers: []
 manual_actions_pending:
-- 'M06 attempt 2: no new human authority review is required if the complete rerun
-  reproduces the attempt-1 scientific trial outputs exactly and the existing operator
-  receipt is preserved unchanged; if any scientific trial/authority result changes,
-  stop and require a new human review.'
+- 'M07: run parity and bounded circuit/full-graph performance probes on the current
+  representative CPU and preserve exact hardware/runtime receipts; if this is not
+  the eventual host, keep full-graph live feasibility provisional until M15.'
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -835,4 +941,5 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Await external review of M06 attempt 2; do not begin M07.
+next_action: Begin M07 — CPU parity and bounded full-graph feasibility decision; do
+  not begin M08.
