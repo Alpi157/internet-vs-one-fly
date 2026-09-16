@@ -842,6 +842,8 @@ def m05_material(root: Path, submitted: str, evidence_root: Path) -> None:
         provenance.get("status") != "PASS"
         or provenance.get("criteria_sha256") != criteria_sha
         or provenance.get("criteria_unchanged_since_commit") is not True
+        or provenance.get("final_measurement_worktree_clean") is not True
+        or provenance.get("final_measurement_code_sha") != submitted
         or commit_blob(root, criteria_commit, "profiles/numerical-criteria-v0.1.json")
         != criteria_bytes
     ):

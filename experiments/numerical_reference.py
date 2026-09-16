@@ -87,17 +87,11 @@ def criteria_provenance(out: Path) -> dict[str, Any]:
     ).returncode == 0
     if not ancestry:
         raise RuntimeError("criteria commit is not an ancestor of the measurement code")
-    previous_path = out / "criteria-provenance.json"
-    first_measurement_sha = current_head
-    if previous_path.is_file():
-        try:
-            previous = json.loads(previous_path.read_text())
-            if previous.get("criteria_sha256") == sha256_bytes(current_bytes):
-                first_measurement_sha = previous.get(
-                    "first_measurement_code_sha", current_head
-                )
-        except (OSError, json.JSONDecodeError):
-            pass
+    worktree_status = subprocess.check_output(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+        cwd=ROOT,
+        text=True,
+    )
     return {
         "schema_version": 1,
         "classification": "PROJECT NUMERICAL ACCEPTANCE CRITERION — not physiology",
@@ -106,10 +100,11 @@ def criteria_provenance(out: Path) -> dict[str, Any]:
         "criteria_commit_sha": criteria_commit,
         "criteria_commit_is_ancestor": ancestry,
         "criteria_unchanged_since_commit": unchanged,
-        "first_measurement_code_sha": first_measurement_sha,
-        "latest_measurement_code_sha": current_head,
-        "proof": "The oldest commit touching the criteria contains bytes identical to the current file and is an ancestor of measurement code.",
-        "status": "PASS",
+        "criteria_and_executable_anchor_commit_sha": criteria_commit,
+        "final_measurement_code_sha": current_head,
+        "final_measurement_worktree_clean": worktree_status == "",
+        "proof": "The oldest commit touching the criteria contains bytes identical to the current file and is an ancestor of the clean final measurement code.",
+        "status": "PASS" if worktree_status == "" else "FAIL",
     }
 
 
