@@ -19,7 +19,7 @@ milestone_status:
   M06: ACCEPTED
   M07: ACCEPTED
   M08: BLOCKED
-  M09: IN_PROGRESS
+  M09: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1196,10 +1196,20 @@ m09_execution:
   coordinate_quantization: flybench.coordinate-binary64.v1
   coordinate_numerical_gameplay_change: false
   attempt_2_operator_demo:
-    path: evidence/M09/operator-demo/demo-round-000001.flyrun
+    path: evidence/M09/attempt-2-operator-demo/demo-round-000001.flyrun
     archive_sha256: 62ac367d5c6a0d6dac573e6fcea52a18de75d06e52a4bdf74661da07817e2321
     content_digest: d28d023b29aa8acd1c99c21af140590f279f42cf72ac858ddc3dff6e0ed4edd4
     candidate_product_sha: d900fd407119ae7289bcbc2170492e7ee057ae6e
+    status: COMPLETE_VALIDATED_OPERATOR_DEMO_INTEGRATION_EVIDENCE
+    m08_usability_evidence: false
+  attempt_3_candidate_product_sha: 35b16caeb625257ea0a9bead1118f53da9ea9589
+  attempt_3_operator_demo:
+    path: evidence/M09/operator-demo/demo-round-000001.flyrun
+    archive_sha256: 45ff45b86ddb45bacefd925c2d2383f398a2288bc4c13d490babb44f1b572183
+    content_digest: 3b4cbbf17efcdacd19acce7e6a177c0f7b2c148ab143a2569b4a4f8186b2046a
+    applied_input_sha256: b284efcdd13bfdaba7ef94c9fbf641137bcee00d25b522758c6b1e0e5f723ff9
+    final_whole_state_sha256: ffd635efab9c97036021601ab667710d0059f87ef16617797bd463eb2053d1ef
+    candidate_product_sha: 35b16caeb625257ea0a9bead1118f53da9ea9589
     status: COMPLETE_VALIDATED_OPERATOR_DEMO_INTEGRATION_EVIDENCE
     m08_usability_evidence: false
   capture_envelope_complete: true
@@ -1218,4 +1228,4 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Commit the M09 attempt-3 product candidate, then run exactly one complete local recorded operator round bound to that candidate before submission bookkeeping. Do not begin M10. M08 G-GAME remains pending and unmeasured; public alpha and release remain blocked on the deferred M08 human gate.
+next_action: Submit reviews/M09-a03.zip for external M09 attempt-3 review. Do not begin M10 before the external verdict. M08 G-GAME remains pending and unmeasured; public alpha and release remain blocked on the deferred M08 human gate.
