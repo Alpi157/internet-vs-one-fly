@@ -1202,6 +1202,4 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Submit reviews/M09-a02.zip for external M09 attempt-2 review. Do not
-  begin M10 before the external verdict. M08 G-GAME remains pending and unmeasured;
-  public alpha and release remain blocked on the deferred M08 human gate.
+next_action: Submit reviews/M09-a02.zip for external M09 attempt-2 review. Do not begin M10 before the external verdict. M08 G-GAME remains pending and unmeasured; public alpha and release remain blocked on the deferred M08 human gate.
