@@ -19,7 +19,7 @@ milestone_status:
   M06: ACCEPTED
   M07: ACCEPTED
   M08: BLOCKED
-  M09: IN_PROGRESS
+  M09: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1161,6 +1161,10 @@ m08_integration_baseline:
 m09_execution:
   status: AT_RISK
   predecessor_gate: M08_G_GAME_PENDING_UNMEASURED
+  candidate_product_sha: 067b3c831469ce2475201074ad47b39853694b60
+  recorder_schema: flybench.flyrun.v0.1
+  candidate_decision: evidence/M09/decision.json
+  external_milestone_acceptance: PENDING
   revalidation_rule: If later M08 human testing changes game, UI, or GameSpec bytes,
     rerun affected M09 integration evidence.
 publication:
@@ -1173,6 +1177,6 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Implement M09 applied-input capture and bounded flyrun only, at risk
-  under D-M08-HUMAN-GATE-DEFER-01. Do not begin M10. Public alpha and release
-  remain blocked on the deferred M08 human gate.
+next_action: Submit M09 for external review at risk under D-M08-HUMAN-GATE-DEFER-01.
+  Do not begin M10. M08 G-GAME remains pending and unmeasured; public alpha and
+  release remain blocked on the deferred M08 human gate.
