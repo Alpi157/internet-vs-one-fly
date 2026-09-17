@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-M08-HUMAN-GATE-DEFER-01",
+  "classification": "PROCESS DEVIATION — OPERATOR-AUTHORIZED AT-RISK CONTINUATION",
+  "decision_scope": "project process only; not scientific evidence or external acceptance",
+  "operator_authorization": {
+    "kind": "explicit project-process choice",
+    "choice": "continue development with M09 rather than block on currently unavailable human testers",
+    "external_reviewer_acceptance": false
+  },
+  "m08": {
+    "candidate_product_sha": "76ccadccab5c37626557c6ff4b8a565d3c387c4f",
+    "game_spec_sha256": "5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b",
+    "live_profile_sha256": "abd4c4d216708427e4b959991e0efbf788e6dfa5ba35f5ab5df79fc274dd6ca4",
+    "integration_baseline": "FROZEN_PROVISIONAL",
+    "milestone_acceptance": "NOT_ACCEPTED",
+    "g_game": "PENDING_UNMEASURED",
+    "human_usability_evidence": "DEFERRED_NOT_WAIVED",
+    "unfamiliar_player_evidence_collected": false,
+    "representative_remote_host_human_smoke_completed": false,
+    "operator_real_browser_observation": "positive operator-only gameplay judgment; insufficient for a general-user usability claim"
+  },
+  "claim_restrictions": [
+    "M08 human usability evidence is deferred, not waived as having passed.",
+    "No usability or general-user claim may be made from operator-only testing.",
+    "M09 implementation is not evidence that M08 passed usability.",
+    "Public alpha and public release remain blocked on the missing release-relevant human evidence."
+  ],
+  "frozen_m09_integration_inputs": {
+    "game_spec_profile": "flybench.catch-game.v0.3",
+    "strike_radius": 0.55,
+    "ambient_speed_per_control_interval": 0.03,
+    "heading_jitter_uniform_rad": [-0.09, 0.09],
+    "live_neuron_count": 313,
+    "backend": "deterministic Numba kernel",
+    "controller": "accepted M06 controller",
+    "live_profile_path": "profiles/live.json"
+  },
+  "m09": {
+    "permission": "BEGIN_AT_RISK_ONLY",
+    "predecessor_gate_state": "M08 G-GAME PENDING_UNMEASURED",
+    "required_revalidation": "If later M08 human testing requires game, UI, or GameSpec changes, rerun all affected M09 integration evidence."
+  },
+  "scientific_acceptance": {
+    "m05_m07_reopened": false,
+    "m05_m07_changed": false,
+    "last_accepted_milestone": "M07",
+    "last_accepted_code_commit": "c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5"
+  }
+}

@@ -1,5 +1,5 @@
 playbook_version: '0.1'
-current_milestone: M08
+current_milestone: M09
 current_attempt: 1
 last_accepted_milestone: M07
 accepted_milestones:
@@ -18,7 +18,8 @@ milestone_status:
   M05: ACCEPTED
   M06: ACCEPTED
   M07: ACCEPTED
-  M08: IN_PROGRESS
+  M08: BLOCKED
+  M09: IN_PROGRESS
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1131,11 +1132,37 @@ decisions:
   owner: external reviewer
   affected_milestones:
   - M06
+- id: D-M08-HUMAN-GATE-DEFER-01
+  issue: Required unfamiliar-player usability evidence and representative remote-host
+    human smoke are unavailable, so G-GAME remains pending and unmeasured.
+  allowed_fallback_or_deviation: Freeze the current M08 candidate as a provisional
+    integration baseline and begin M09 at risk only. This defers the human gate;
+    it does not waive or pass it.
+  evidence: decisions/D-M08-HUMAN-GATE-DEFER-01.json
+  owner: operator project-process decision; no external reviewer acceptance
+  affected_milestones:
+  - M08
+  - M09
 biological_risks: []
 technical_risks: []
-launch_blockers: []
+launch_blockers:
+- M08 G-GAME remains pending and unmeasured; unfamiliar-player evidence and representative
+  remote-host human smoke are required before public alpha or public release.
 manual_actions_pending:
-- 'M08 human gate: operator local browser check, three anonymized unfamiliar-player playtests, restricted external-host smoke, gameplay screenshot, short gameplay clip, and operator-authored receipts are required before submission.'
+- 'Deferred M08 human gate: three anonymized unfamiliar-player playtests, representative restricted external-host human smoke, current-candidate gameplay screenshot and clip, and operator-authored receipts remain missing. This evidence was not waived or passed.'
+m08_integration_baseline:
+  status: FROZEN_PROVISIONAL_AT_RISK
+  candidate_product_sha: 76ccadccab5c37626557c6ff4b8a565d3c387c4f
+  game_spec_sha256: 5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b
+  live_profile_sha256: abd4c4d216708427e4b959991e0efbf788e6dfa5ba35f5ab5df79fc274dd6ca4
+  g_game: PENDING_UNMEASURED
+  human_gate: DEFERRED_NOT_WAIVED
+  decision: D-M08-HUMAN-GATE-DEFER-01
+m09_execution:
+  status: AT_RISK
+  predecessor_gate: M08_G_GAME_PENDING_UNMEASURED
+  revalidation_rule: If later M08 human testing changes game, UI, or GameSpec bytes,
+    rerun affected M09 integration evidence.
 publication:
   repository: NOT_PUBLISHED
   beta: NOT_PUBLISHED
@@ -1146,5 +1173,6 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Complete the exact M08 candidate automated checks, commit the candidate,
-  then stop for operator human evaluation. Do not begin M09.
+next_action: Implement M09 applied-input capture and bounded flyrun only, at risk
+  under D-M08-HUMAN-GATE-DEFER-01. Do not begin M10. Public alpha and release
+  remain blocked on the deferred M08 human gate.
