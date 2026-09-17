@@ -285,7 +285,6 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         if len(operator_paths) != 1:
             raise ValueError("submission requires exactly one real operator demo flyrun")
         operator = load_flyrun(operator_paths[0])
-        commands = load_json(evidence / "command-results.json")
         m09_decision = load_json(evidence / "decision.json")
         if (
             not isinstance(candidate, str)
@@ -297,8 +296,6 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
             or operator_report.get("process_status") != PROCESS_STATUS
             or operator_report.get("archive_sha256")
             != sha256_file(operator_paths[0])
-            or commands.get("status") != "PASS"
-            or commands.get("submitted_code_sha") != head
             or m09_decision.get("milestone") != "M09"
             or m09_decision.get("review_attempt") != 2
             or m09_decision.get("candidate_product_sha") != candidate
@@ -317,6 +314,10 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
                 "operator_demo_content_digest": operator.content_digest,
             }
         )
+        # command-results.json is written only after this checker returns from
+        # inside the acceptance runner. The review-bundle validator checks that
+        # completed report against the final submitted SHA, avoiding a circular
+        # dependency on evidence that does not yet exist at this boundary.
     return result
 
 
