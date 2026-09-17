@@ -19,7 +19,7 @@ milestone_status:
   M06: ACCEPTED
   M07: ACCEPTED
   M08: BLOCKED
-  M09: IN_PROGRESS
+  M09: SUBMITTED
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1176,7 +1176,19 @@ m09_execution:
   attempt_1_submission_sha: d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc
   attempt_1_review_zip_sha256: cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66
   attempt_1_external_verdict: CHANGES_REQUIRED
+  attempt_2_candidate_product_sha: d900fd407119ae7289bcbc2170492e7ee057ae6e
+  attempt_2_submission_tooling_fix_sha: 9ff779a951a116adcb903230a7509509b982ccc4
   recorder_schema: flybench.flyrun.v0.2
+  operator_demo:
+    path: evidence/M09/operator-demo/demo-round-000001.flyrun
+    archive_sha256: 62ac367d5c6a0d6dac573e6fcea52a18de75d06e52a4bdf74661da07817e2321
+    content_digest: d28d023b29aa8acd1c99c21af140590f279f42cf72ac858ddc3dff6e0ed4edd4
+    candidate_product_sha: d900fd407119ae7289bcbc2170492e7ee057ae6e
+    status: COMPLETE_VALIDATED_OPERATOR_DEMO_INTEGRATION_EVIDENCE
+    m08_usability_evidence: false
+  capture_envelope_complete: true
+  reexecution_verified: false
+  verification_milestone: M10
   external_milestone_acceptance: PENDING
   revalidation_rule: If later M08 human testing changes game, UI, or GameSpec bytes,
     rerun affected M09 integration evidence.
@@ -1190,7 +1202,6 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Repair M09 review attempt 2 at risk under D-M08-HUMAN-GATE-DEFER-01,
-  then stop for one real operator demo recording before submission. Do not begin
-  M10. M08 G-GAME remains pending and unmeasured; public alpha and release remain
-  blocked on the deferred M08 human gate.
+next_action: Submit reviews/M09-a02.zip for external M09 attempt-2 review. Do not
+  begin M10 before the external verdict. M08 G-GAME remains pending and unmeasured;
+  public alpha and release remain blocked on the deferred M08 human gate.
