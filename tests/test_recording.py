@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import inspect
 import io
+import hashlib
+import json
 import math
 from pathlib import Path
 import stat
 import zipfile
 
+import numpy as np
 import pytest
 
 from flybench.game import DemoProtocol, GameInputError, build_live_session, load_live_profile
@@ -22,8 +25,12 @@ from flybench.recording import (
     RecordedGameSession,
     RecorderLimits,
     build_recorded_live_session,
+    canonical_applied_input_records,
+    canonical_applied_input_sha256,
     load_flyrun,
     run_representative_recording,
+    run_selected_benchmark,
+    scientific_state_digest,
     write_flyrun,
 )
 import flybench.recording as recording_module
@@ -200,7 +207,11 @@ def test_essential_capacity_loss_is_explicit_and_not_certifiable() -> None:
     assert subject.recorder.essential_dropped > 0
     assert result.summary["recording"]["essential_status"] == "INCOMPLETE"
     assert result.summary["recording"]["essential_records_dropped"] > 0
-    assert result.summary["recording"]["reexecution_certifiable"] is False
+    assert result.summary["reexecution"] == {
+        "capture_envelope_complete": False,
+        "verified": False,
+        "verification_milestone": "M10",
+    }
     assert result.manifest["validity"]["essential_input_evidence"] == "INCOMPLETE"
 
 
@@ -224,6 +235,7 @@ def test_optional_capacity_loss_has_a_gap_marker() -> None:
             "stream": "optional",
             "reason": "maximum-optional-records-reached",
             "recording_class": "essential",
+            "event_ordinal": gaps[0]["event_ordinal"],
         }
     ]
 
@@ -252,7 +264,9 @@ def zip_bytes(entries: list[tuple[str, bytes, int]]) -> bytes:
     "entries",
     [
         [("../manifest.json", b"{}", stat.S_IFREG | 0o644)],
+        [("/manifest.json", b"{}", stat.S_IFREG | 0o644)],
         [("manifest.json", b"{}", stat.S_IFREG | 0o755)],
+        [("manifest.json", b"summary.json", stat.S_IFLNK | 0o644)],
         [
             ("manifest.json", b"{}", stat.S_IFREG | 0o644),
             ("events.jsonl", b"", stat.S_IFREG | 0o644),
@@ -284,6 +298,71 @@ def test_loader_rejects_oversized_expanded_content(tmp_path: Path) -> None:
     )
     assert path.stat().st_size < MAX_ARCHIVE_BYTES
     with pytest.raises(FlyRunLimitError, match="expanded flyrun"):
+        load_flyrun(path)
+
+
+def test_loader_rejects_duplicate_members(tmp_path: Path) -> None:
+    path = tmp_path / "duplicate.flyrun"
+    with pytest.warns(UserWarning, match="Duplicate name"):
+        path.write_bytes(
+            zip_bytes(
+                [
+                    ("manifest.json", b"{}\n", stat.S_IFREG | 0o644),
+                    ("manifest.json", b"{}\n", stat.S_IFREG | 0o644),
+                    ("events.jsonl", b"", stat.S_IFREG | 0o644),
+                ]
+            )
+        )
+    with pytest.raises(FlyRunSafetyError, match="duplicate flyrun members"):
+        load_flyrun(path)
+
+
+def test_loader_rejects_payload_hash_mismatch(tmp_path: Path) -> None:
+    _subject, result = run_representative_recording(
+        LIVE, run_id="payload-mismatch-v2", code_git_sha=FIXED_CODE_SHA
+    )
+    with zipfile.ZipFile(io.BytesIO(result.archive_bytes)) as bundle:
+        manifest = bundle.read("manifest.json")
+        events = bundle.read("events.jsonl") + b"{}\n"
+        summary = bundle.read("summary.json")
+    path = tmp_path / "payload-mismatch.flyrun"
+    path.write_bytes(
+        zip_bytes(
+            [
+                ("manifest.json", manifest, stat.S_IFREG | 0o644),
+                ("events.jsonl", events, stat.S_IFREG | 0o644),
+                ("summary.json", summary, stat.S_IFREG | 0o644),
+            ]
+        )
+    )
+    with pytest.raises(FlyRunSafetyError, match="payload identity mismatch"):
+        load_flyrun(path)
+
+
+def test_loader_rejects_unsupported_schema_version(tmp_path: Path) -> None:
+    _subject, result = run_representative_recording(
+        LIVE, run_id="schema-mismatch-v2", code_git_sha=FIXED_CODE_SHA
+    )
+    with zipfile.ZipFile(io.BytesIO(result.archive_bytes)) as bundle:
+        manifest = json.loads(bundle.read("manifest.json"))
+        events = bundle.read("events.jsonl")
+        summary = bundle.read("summary.json")
+    manifest["schema_version"] = 1
+    path = tmp_path / "schema-mismatch.flyrun"
+    path.write_bytes(
+        zip_bytes(
+            [
+                (
+                    "manifest.json",
+                    (json.dumps(manifest, separators=(",", ":"), sort_keys=True) + "\n").encode(),
+                    stat.S_IFREG | 0o644,
+                ),
+                ("events.jsonl", events, stat.S_IFREG | 0o644),
+                ("summary.json", summary, stat.S_IFREG | 0o644),
+            ]
+        )
+    )
+    with pytest.raises(FlyRunSafetyError, match="unsupported or executable"):
         load_flyrun(path)
 
 
@@ -325,7 +404,8 @@ def test_current_live_identities_are_embedded_and_validated(tmp_path: Path) -> N
     assert provenance["live_profile_sha256"] == resolved.sha256
     assert provenance["game_spec_sha256"] == resolved.game_spec_sha256
     assert provenance["graph"] == resolved.value["graph"]
-    assert provenance["backend"] == resolved.value["backend"]
+    assert provenance["selected_live_backend"] == resolved.value["backend"]
+    assert provenance["executed_backend"] == "kernel"
     assert provenance["identities"] == {
         "m07_live_candidate_sha256": resolved.value["m07_live_candidate"]["sha256"],
         "runtime_model_spec_sha256": resolved.value["model"][
@@ -388,3 +468,274 @@ def test_flyrun_inventory_is_exact_and_bounded(tmp_path: Path) -> None:
     with zipfile.ZipFile(path) as bundle:
         assert tuple(bundle.namelist()) == FLYRUN_MEMBERS
         assert sum(info.file_size for info in bundle.infolist()) <= MAX_EXPANDED_BYTES
+
+
+def test_state_digests_are_initial_periodic_and_final() -> None:
+    subject = recorded("state-cadence-v2")
+    complete_round(subject)
+    result = subject.finalize()
+    digests = [
+        event
+        for event in subject.recorder.essential_events
+        if event["type"] == "state_digest"
+    ]
+    expected = [0, *range(100, subject.control_tick, 100)]
+    if subject.control_tick not in expected:
+        expected.append(subject.control_tick)
+    assert [event["control_tick"] for event in digests] == expected
+    assert digests[0]["digest_kind"] == "initial"
+    assert digests[-1]["digest_kind"] in {"final", "periodic-final"}
+    assert all(event["recording_class"] == "essential" for event in digests)
+    assert result.summary["reexecution"] == {
+        "capture_envelope_complete": True,
+        "verified": False,
+        "verification_milestone": "M10",
+    }
+
+
+def test_same_complete_state_has_identical_component_and_whole_digests() -> None:
+    subject = build_live_session(LIVE)
+    left = scientific_state_digest(subject.runner, game_session=subject)
+    right = scientific_state_digest(subject.runner, game_session=subject)
+    assert left == right
+
+
+def test_neural_state_change_changes_neural_and_whole_digest() -> None:
+    subject = build_live_session(LIVE)
+    before = scientific_state_digest(subject.runner, game_session=subject)
+    subject.runner.neural.voltage[0] += 0.125
+    after = scientific_state_digest(subject.runner, game_session=subject)
+    assert after["neural_state_sha256"] != before["neural_state_sha256"]
+    assert after["whole_state_sha256"] != before["whole_state_sha256"]
+    assert after["environment_state_sha256"] == before["environment_state_sha256"]
+
+
+def test_environment_rng_change_changes_environment_and_whole_digest() -> None:
+    subject = build_live_session(LIVE)
+    before = scientific_state_digest(subject.runner, game_session=subject)
+    subject.runner.environment.rng.uniform()
+    after = scientific_state_digest(subject.runner, game_session=subject)
+    assert after["environment_state_sha256"] != before["environment_state_sha256"]
+    assert after["whole_state_sha256"] != before["whole_state_sha256"]
+    assert after["neural_state_sha256"] == before["neural_state_sha256"]
+
+
+def test_pending_neural_state_changes_neural_and_whole_digest() -> None:
+    subject = build_live_session(LIVE)
+    before = scientific_state_digest(subject.runner, game_session=subject)
+    subject.runner.neural.pending_inputs[0, 0] = 0.25
+    subject.runner.neural.pending_spikes[0, 1] = True
+    after = scientific_state_digest(subject.runner, game_session=subject)
+    assert after["neural_state_sha256"] != before["neural_state_sha256"]
+    assert after["whole_state_sha256"] != before["whole_state_sha256"]
+
+
+def test_held_command_change_changes_whole_digest() -> None:
+    subject = build_live_session(LIVE)
+    before = scientific_state_digest(subject.runner, game_session=subject)
+    subject.runner.held_command = True
+    after = scientific_state_digest(subject.runner, game_session=subject)
+    assert after["whole_state_sha256"] != before["whole_state_sha256"]
+    assert after["neural_state_sha256"] == before["neural_state_sha256"]
+    assert after["environment_state_sha256"] == before["environment_state_sha256"]
+    assert after["game_state_sha256"] == before["game_state_sha256"]
+
+
+def test_pending_strike_changes_game_and_whole_digest() -> None:
+    subject = build_live_session(LIVE)
+    before = scientific_state_digest(subject.runner, game_session=subject)
+    subject.commit_attack(2.5, -1.5, 1)
+    after = scientific_state_digest(subject.runner, game_session=subject)
+    assert after["game_state_sha256"] != before["game_state_sha256"]
+    assert after["whole_state_sha256"] != before["whole_state_sha256"]
+    assert after["neural_state_sha256"] == before["neural_state_sha256"]
+
+
+def test_final_state_digest_matches_actual_authoritative_state() -> None:
+    subject = recorded("final-state-v2")
+    complete_round(subject)
+    actual = scientific_state_digest(subject.runner, game_session=subject.session)
+    result = subject.finalize()
+    final = [
+        event
+        for event in subject.recorder.essential_events
+        if event["type"] == "state_digest"
+    ][-1]
+    for key, value in actual.items():
+        assert final[key] == value
+    assert result.summary["final_whole_state_sha256"] == actual[
+        "whole_state_sha256"
+    ]
+
+
+def test_manifest_applied_hash_matches_independent_canonical_projection() -> None:
+    subject = recorded("applied-hash-v2")
+    complete_round(subject)
+    result = subject.finalize()
+    records = canonical_applied_input_records(subject.recorder.essential_events)
+    canonical = b"".join(
+        (
+            json.dumps(
+                record,
+                allow_nan=False,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            + "\n"
+        ).encode("utf-8")
+        for record in records
+    )
+    independent = hashlib.sha256(canonical).hexdigest()
+    assert independent == canonical_applied_input_sha256(
+        subject.recorder.essential_events
+    )
+    assert result.applied_input_digest == independent
+    assert result.manifest["run"]["applied_input_sha256"] == independent
+    assert result.manifest["integrity"]["applied_input_sha256"] == independent
+    assert result.summary["applied_input_sha256"] == independent
+
+
+def test_loader_rejects_manifest_summary_applied_hash_disagreement(
+    tmp_path: Path,
+) -> None:
+    _subject, result = run_representative_recording(
+        LIVE, run_id="applied-mismatch-v2", code_git_sha=FIXED_CODE_SHA
+    )
+    with zipfile.ZipFile(io.BytesIO(result.archive_bytes)) as bundle:
+        manifest = json.loads(bundle.read("manifest.json"))
+        events = bundle.read("events.jsonl")
+        summary = bundle.read("summary.json")
+    manifest["run"]["applied_input_sha256"] = "0" * 64
+    path = tmp_path / "applied-mismatch.flyrun"
+    path.write_bytes(
+        zip_bytes(
+            [
+                (
+                    "manifest.json",
+                    (json.dumps(manifest, separators=(",", ":"), sort_keys=True) + "\n").encode(),
+                    stat.S_IFREG | 0o644,
+                ),
+                ("events.jsonl", events, stat.S_IFREG | 0o644),
+                ("summary.json", summary, stat.S_IFREG | 0o644),
+            ]
+        )
+    )
+    with pytest.raises(FlyRunSafetyError, match="applied-input identity mismatch"):
+        load_flyrun(path)
+
+
+def test_aim_updates_coalesce_to_latest_sequence_at_application_boundary() -> None:
+    subject = recorded("aim-coalesce-v2")
+    subject.update_aim(-4.0, 3.0, 1)
+    subject.update_aim(1.5, -2.25, 4)
+    subject.update_aim(8.0, 9.0, 7)
+    assert subject.recorder.applied_input_events == ()
+    subject.advance_interval()
+    applied = subject.recorder.applied_input_events
+    assert len(applied) == 1
+    assert applied[0]["type"] == "accepted_aim"
+    assert applied[0]["sequence"] == 7
+    assert applied[0]["aim"] == {"x": 8.0, "y": 9.0}
+    assert subject.recorder.essential_events[0]["type"] == "lifecycle"
+    assert subject.session.coalesced_aim_updates == 2
+
+
+def test_duplicate_stale_and_malformed_sequences_never_become_applied() -> None:
+    subject = recorded("sequence-rejection-v2")
+    subject.update_aim(1.0, 1.0, 4)
+    for sequence in (4, 3, 4.0, True):
+        with pytest.raises(GameInputError):
+            subject.update_aim(2.0, 2.0, sequence)
+    subject.advance_interval()
+    applied = subject.recorder.applied_input_events
+    assert len(applied) == 1
+    assert applied[0]["sequence"] == 4
+    assert subject.recorder.rejected_diagnostics == {
+        "malformed": 2,
+        "stale_sequence": 2,
+    }
+
+
+def test_same_tick_aim_then_commit_order_and_locked_target_are_deterministic() -> None:
+    subject = recorded("same-tick-order-v2")
+    subject.update_aim(-8.0, 7.0, 1)
+    subject.update_aim(-2.0, 4.0, 2)
+    acknowledgement = subject.commit_attack(2.25, -3.5, 3)
+    subject.update_aim(9.0, 9.0, 4)
+    subject.advance_interval()
+    applied = list(subject.recorder.applied_input_events)
+    assert [event["type"] for event in applied] == [
+        "accepted_aim",
+        "attack_commit",
+        "accepted_aim",
+    ]
+    assert applied[0]["aim"] == {"x": -2.0, "y": 4.0}
+    assert applied[1]["locked_target"] == acknowledgement["locked_target"] == {
+        "x": 2.25,
+        "y": -3.5,
+    }
+    assert subject.snapshot()["strike"]["locked_target"] == {
+        "x": 2.25,
+        "y": -3.5,
+    }
+    assert [event["event_ordinal"] for event in applied] == sorted(
+        event["event_ordinal"] for event in applied
+    )
+
+
+def test_archive_event_order_is_explicit_and_stable(tmp_path: Path) -> None:
+    _subject, result = run_representative_recording(
+        LIVE, run_id="event-order-v2", code_git_sha=FIXED_CODE_SHA
+    )
+    path = tmp_path / "event-order.flyrun"
+    write_flyrun(path, result)
+    loaded = load_flyrun(path)
+    keys = [
+        (event["control_tick"], event["event_ordinal"])
+        for event in loaded.events
+    ]
+    assert keys == sorted(keys)
+    assert len({ordinal for _tick, ordinal in keys}) == len(keys)
+    assert loaded.manifest["event_ordering"]["sort_key"] == [
+        "control_tick",
+        "event_ordinal",
+    ]
+
+
+def test_benchmark_recording_is_observational_and_writes_valid_flyrun(
+    tmp_path: Path,
+) -> None:
+    stimulus = ROOT / "profiles/looming-controls.json"
+    plain_summary, plain_recording = run_selected_benchmark(stimulus)
+    recorded_summary, result = run_selected_benchmark(
+        stimulus,
+        record_directory=tmp_path,
+        code_git_sha=FIXED_CODE_SHA,
+    )
+    assert plain_recording is None
+    assert result is not None
+    assert recorded_summary == plain_summary
+    path = tmp_path / "looming-seed-0.flyrun"
+    loaded = load_flyrun(path)
+    assert loaded.manifest["run"]["execution_kind"] == "bench-trial"
+    assert loaded.summary["dnp01_spikes"] == plain_summary["dnp01_spikes"]
+    assert loaded.summary["decoded_escape_command_control_ticks"] == plain_summary[
+        "escape_command_control_ticks"
+    ]
+    assert loaded.summary["authoritative_result"] == "trial-complete"
+
+
+def test_no_m09_archive_claims_reexecution_was_verified() -> None:
+    _subject, result = run_representative_recording(
+        LIVE, run_id="not-m10-v2", code_git_sha=FIXED_CODE_SHA
+    )
+    assert result.manifest["validity"]["reexecution"] == {
+        "capture_envelope_complete": True,
+        "verified": False,
+        "verification_milestone": "M10",
+    }
+    assert result.manifest["tested_runtime_envelope"]["reexecution_verified"] is False
+    serialized = json.dumps({"manifest": result.manifest, "summary": result.summary})
+    assert '"verified": true' not in serialized.lower()
+    assert '"reexecution_certifiable"' not in serialized

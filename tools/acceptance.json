@@ -934,7 +934,7 @@
       ]
     },
     "M09": {
-      "title": "Applied authoritative input capture and bounded data-only flyrun",
+      "title": "Attempt-2 applied-input capture, whole-state envelope, and real-path bounded flyrun",
       "commands": [
         {
           "name": "locked-python-environment",
@@ -969,11 +969,11 @@
           "timeout_seconds": 300
         },
         {
-          "name": "m09-recorder-tests",
+          "name": "m09-attempt2-recorder-contract-tests",
           "argv": ["python", "-m", "pytest", "-q", "tests/test_recording.py"],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/recording.py", "tests/test_recording.py", "profiles/live.json"],
+          "required_paths": ["src/flybench/recording.py", "src/flybench/game.py", "src/flybench/server.py", "tests/test_recording.py", "profiles/live.json", "decisions/D-M09-COORDINATE-APPLICATION-01.json"],
           "timeout_seconds": 300
         },
         {
@@ -1025,6 +1025,22 @@
           "timeout_seconds": 120
         },
         {
+          "name": "m09-bounded-demo-recording-smoke",
+          "argv": ["python", "tools/m09_demo_recording_smoke.py", "--profile", "profiles/live.json", "--out", "evidence/M09/demo-recording-smoke.json"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["tools/m09_demo_recording_smoke.py", "apps/web/dist/index.html", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "timeout_seconds": 120
+        },
+        {
+          "name": "m09-bench-recording-cli-integration",
+          "argv": ["flybench", "bench", "profiles/looming-controls.json", "--out", "/tmp/flybench-m09-bench-unused", "--record-dir", "/tmp/flybench-m09-bench-smoke"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["src/flybench/cli.py", "src/flybench/recording.py", "profiles/looming-controls.json", "profiles/live.json"],
+          "timeout_seconds": 180
+        },
+        {
           "name": "m09-build-recorder-evidence",
           "argv": ["python", "tools/m09_build_evidence.py", "--profile", "profiles/live.json", "--out", "evidence/M09"],
           "cwd": ".",
@@ -1034,10 +1050,10 @@
         },
         {
           "name": "m09-automated-evidence-consistency",
-          "argv": ["python", "tools/check_m09_evidence.py", "--out", "evidence/M09", "--phase", "automated"],
+          "argv": ["python", "tools/check_m09_evidence.py", "--out", "evidence/M09", "--phase", "current"],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/check_m09_evidence.py", "evidence/M09/representative.flyrun", "evidence/M09/recorder-format.json", "decisions/D-M08-HUMAN-GATE-DEFER-01.json"],
+          "required_paths": ["tools/check_m09_evidence.py", "evidence/M09/representative.flyrun", "evidence/M09/looming-seed-0.flyrun", "evidence/M09/review-fixtures/valid-complete.flyrun", "evidence/M09/review-fixtures/valid-optional-truncated.flyrun", "evidence/M09/review-fixtures/malformed-path-traversal.flyrun", "evidence/M09/review-fixtures/malformed-executable-member.flyrun", "evidence/M09/review-fixtures/malformed-integrity.flyrun", "evidence/M09/fixture-excerpts.md", "decisions/D-M08-HUMAN-GATE-DEFER-01.json", "decisions/D-M09-COORDINATE-APPLICATION-01.json"],
           "timeout_seconds": 120
         },
         {

@@ -47,12 +47,22 @@ def build_parser() -> argparse.ArgumentParser:
     )
     bench.add_argument("profile", type=Path)
     bench.add_argument("--out", required=True, type=Path)
+    bench.add_argument(
+        "--record-dir",
+        type=Path,
+        help="run the selected accepted standard-looming trial with M09 recording",
+    )
     demo = commands.add_parser(
         "demo", help="Run the M08 Catch the Fly demo on the loopback interface"
     )
     demo.add_argument("--profile", required=True, type=Path)
     demo.add_argument("--port", type=int, default=8000)
     demo.add_argument("--no-browser", action="store_true")
+    demo.add_argument(
+        "--record-dir",
+        type=Path,
+        help="write one bounded .flyrun for each completed local demo round",
+    )
     record = commands.add_parser(
         "record", help="Write one bounded M09 authoritative .flyrun example"
     )
@@ -158,6 +168,40 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "bench":
         try:
+            if args.record_dir is not None:
+                from flybench.recording import run_selected_benchmark
+
+                summary, result = run_selected_benchmark(
+                    args.profile,
+                    record_directory=args.record_dir,
+                )
+                assert result is not None
+                print(
+                    json.dumps(
+                        {
+                            "status": "PASS",
+                            "scope": "M09 selected accepted standard-looming benchmark recording",
+                            "path": str(
+                                (args.record_dir / "looming-seed-0.flyrun").resolve()
+                            ),
+                            "bytes": len(result.archive_bytes),
+                            "content_digest": result.content_digest,
+                            "applied_input_sha256": result.applied_input_digest,
+                            "final_whole_state_sha256": result.summary[
+                                "final_whole_state_sha256"
+                            ],
+                            "essential_record_count": result.essential_record_count,
+                            "optional_record_count": result.optional_record_count,
+                            "optional_trace_status": result.optional_trace_status,
+                            "dnp01_spike_count": summary["dnp01_spike_count"],
+                            "escape_command_control_ticks": summary[
+                                "escape_command_control_ticks"
+                            ],
+                        },
+                        sort_keys=True,
+                    )
+                )
+                return 0
             return run_bench(args.profile, args.out)
         except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
             print(f"M06 bench failed: {type(exc).__name__}: {exc}", file=sys.stderr)
@@ -182,13 +226,22 @@ def main(argv: list[str] | None = None) -> int:
             # and warm the exact scored kernel signature once.
             preflight = build_live_session(resolved)
             preflight.advance_interval()
-            app = create_app(resolved.path, frontend)
+            app = create_app(
+                resolved.path,
+                frontend,
+                record_directory=args.record_dir,
+            )
         except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
             print(f"M08 demo failed: {type(exc).__name__}: {exc}", file=sys.stderr)
             return 1
         url = f"http://127.0.0.1:{args.port}/"
         print(f"FlyBench M08 local demo: {url}", flush=True)
         print("Bound to loopback only. Press Ctrl+C to stop.", flush=True)
+        if args.record_dir is not None:
+            print(
+                f"Completed-round recordings: {args.record_dir.resolve()}",
+                flush=True,
+            )
         if not args.no_browser:
             threading.Timer(0.5, webbrowser.open, args=(url,)).start()
         uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="info")
@@ -216,6 +269,12 @@ def main(argv: list[str] | None = None) -> int:
                     "path": str(args.out.resolve()),
                     "bytes": loaded.archive_bytes,
                     "content_digest": loaded.content_digest,
+                    "format_id": loaded.manifest["format_id"],
+                    "schema_version": loaded.manifest["schema_version"],
+                    "applied_input_sha256": result.applied_input_digest,
+                    "final_whole_state_sha256": result.summary[
+                        "final_whole_state_sha256"
+                    ],
                     "essential_record_count": result.essential_record_count,
                     "optional_record_count": result.optional_record_count,
                     "optional_trace_status": result.optional_trace_status,

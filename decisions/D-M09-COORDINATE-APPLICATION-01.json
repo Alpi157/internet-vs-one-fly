@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-M09-COORDINATE-APPLICATION-01",
+  "classification": "M09 AUTHORITATIVE INPUT APPLICATION DECISION",
+  "architecture_finding": "The architecture requires accepted quantized values but declares no numerical coordinate quantum, rounding mode, or grid.",
+  "decision": {
+    "quantization_added": false,
+    "authoritative_value": "The finite Python float produced by the existing GameSession server validation after numeric type conversion and arena-bounds validation.",
+    "clamping_added": false,
+    "normalization_added": false,
+    "recorder_rule": "Record exactly the coordinate value applied by GameSession; the recorder must not transform its copy independently."
+  },
+  "sequence_and_coalescing": {
+    "sequence_rule": "Client sequence numbers are bounded nonnegative integers and must increase strictly.",
+    "aim_rule": "For valid aim updates pending at one authoritative control boundary, only the greatest accepted sequence is applied; earlier pending aims are coalesced diagnostics, not applied inputs.",
+    "attack_rule": "A pending aim is applied before a same-tick attack commit; the attack then locks its own validated coordinates immutably."
+  },
+  "scope": "M09 capture semantics only; no M08 GameSpec, neural, controller, encoder, decoder, graph, kernel, or movement parameter changes.",
+  "external_milestone_acceptance": "PENDING"
+}

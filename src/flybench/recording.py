@@ -13,6 +13,8 @@ import subprocess
 from typing import Any
 import zipfile
 
+import numpy as np
+
 from flybench.game import (
     GameInputError,
     GameSession,
@@ -23,9 +25,11 @@ from flybench.game import (
 )
 
 
-FLYRUN_FORMAT_ID = "flybench.flyrun.v0.1"
-FLYRUN_SCHEMA_VERSION = 1
+FLYRUN_FORMAT_ID = "flybench.flyrun.v0.2"
+FLYRUN_SCHEMA_VERSION = 2
 FLYRUN_MEMBERS = ("manifest.json", "events.jsonl", "summary.json")
+STATE_DIGEST_INTERVALS = 100
+EVENT_ORDER_ID = "flybench.flyrun-event-order.v0.2"
 ARCHITECTURE_SHA256 = (
     "bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1"
 )
@@ -41,6 +45,7 @@ MAX_OPTIONAL_RECORDS = 2_048
 MAX_ARCHIVE_BYTES = 4 * 1024 * 1024
 MAX_EXPANDED_BYTES = 4 * 1024 * 1024
 MAX_EVENT_LINE_BYTES = 64 * 1024
+MAX_ARCHIVE_MEMBERS = len(FLYRUN_MEMBERS)
 
 
 class FlyRunError(ValueError):
@@ -89,6 +94,169 @@ def _git_head(root: Path) -> str:
     if completed.returncode or len(value) != 40:
         raise FlyRunError("unable to resolve the recorder code Git identity")
     return value
+
+
+def canonical_applied_input_records(
+    events: tuple[dict[str, Any], ...] | list[dict[str, Any]],
+) -> tuple[dict[str, Any], ...]:
+    """Project only server-applied scientific/game inputs in logical order."""
+
+    records: list[dict[str, Any]] = []
+    for event in events:
+        event_type = event.get("type")
+        if event_type == "accepted_aim":
+            records.append(
+                {
+                    "type": "accepted_aim",
+                    "control_tick": event["control_tick"],
+                    "sequence": event["sequence"],
+                    "aim": event["aim"],
+                }
+            )
+        elif event_type == "attack_commit":
+            records.append(
+                {
+                    "type": "attack_commit",
+                    "control_tick": event["control_tick"],
+                    "sequence": event["sequence"],
+                    "attack_id": event["attack_id"],
+                    "locked_target": event["locked_target"],
+                    "impact_tick": event["impact_tick"],
+                }
+            )
+    return tuple(records)
+
+
+def canonical_applied_input_sha256(
+    events: tuple[dict[str, Any], ...] | list[dict[str, Any]],
+) -> str:
+    """Hash authoritative applied values, excluding recorder/presentation metadata."""
+
+    return _sha256(
+        b"".join(
+            _canonical_json(record)
+            for record in canonical_applied_input_records(events)
+        )
+    )
+
+
+def _update_array(digest: Any, name: str, value: np.ndarray) -> None:
+    array = np.ascontiguousarray(value)
+    metadata = {
+        "name": name,
+        "dtype": array.dtype.str,
+        "shape": list(array.shape),
+        "bytes": int(array.nbytes),
+    }
+    digest.update(_canonical_json(metadata))
+    digest.update(array.tobytes(order="C"))
+
+
+def _hash_json_context(label: str, value: object) -> str:
+    digest = hashlib.sha256(f"FlyBench M09 {label} v0.2\0".encode("ascii"))
+    digest.update(_canonical_json(value))
+    return digest.hexdigest()
+
+
+def scientific_state_digest(
+    runner: Any,
+    *,
+    game_session: GameSession | None = None,
+    bench_state: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Hash complete mutable authoritative state without serializing full arrays."""
+
+    neural = runner.neural
+    neural_digest = hashlib.sha256(b"FlyBench M09 neural state v0.2\0")
+    neural_digest.update(
+        _canonical_json(
+            {
+                "tick": int(neural.tick),
+                "seed": int(neural.seed),
+                "rng_state": neural.rng.bit_generator.state,
+            }
+        )
+    )
+    for name in (
+        "voltage",
+        "synaptic_current",
+        "refractory_until_tick",
+        "pending_spikes",
+        "pending_inputs",
+    ):
+        _update_array(neural_digest, name, getattr(neural, name))
+    neural_sha = neural_digest.hexdigest()
+
+    environment = runner.environment
+    environment_snapshot = environment.snapshot()
+    environment_value = {
+        "x": environment_snapshot["x"],
+        "y": environment_snapshot["y"],
+        "heading_rad": environment_snapshot["heading_rad"],
+        "control_tick": environment_snapshot["control_tick"],
+        "takeoff_ticks_remaining": environment_snapshot["takeoff_ticks_remaining"],
+        "takeoff_heading_rad": environment_snapshot["takeoff_heading_rad"],
+        "takeoff_active_last_interval": environment_snapshot[
+            "takeoff_active_last_interval"
+        ],
+        "scheduled_impact_ticks": list(
+            environment_snapshot["scheduled_impact_ticks"]
+        ),
+        "impacts": [asdict(item) for item in environment_snapshot["impacts"]],
+        "rng_state": environment_snapshot["rng_state"],
+        "seed": environment_snapshot["seed"],
+    }
+    environment_sha = _hash_json_context("environment state", environment_value)
+
+    if game_session is not None:
+        strike = game_session.active_strike
+        game_value: dict[str, Any] = {
+            "kind": "game-session",
+            "control_tick": game_session.control_tick,
+            "latest_aim": (
+                None
+                if game_session.latest_aim is None
+                else list(game_session.latest_aim)
+            ),
+            "pending_aim": (
+                None
+                if game_session.pending_aim is None
+                else list(game_session.pending_aim)
+            ),
+            "last_sequence": game_session.last_sequence,
+            "active_strike": None if strike is None else asdict(strike),
+            "cooldown_until_tick": game_session.cooldown_until_tick,
+            "attack_count": game_session.attack_count,
+            "round_horizon_tick": game_session.spec.round_horizon_tick,
+            "result": game_session.result,
+            "result_reason": game_session.result_reason,
+            "last_impact": game_session.last_impact,
+            "last_motion": game_session.last_motion,
+        }
+    else:
+        game_value = {"kind": "bench-trial", **(bench_state or {})}
+    game_sha = _hash_json_context("game state", game_value)
+    runner_value = {
+        "control_tick": int(runner.control_tick),
+        "held_escape_command": bool(runner.held_command),
+        "backend": runner.backend,
+        "output_clamp": bool(runner.output_clamp),
+        "intervention_id": (
+            None if runner.intervention is None else runner.intervention.intervention_id
+        ),
+        "neural_state_sha256": neural_sha,
+        "environment_state_sha256": environment_sha,
+        "game_state_sha256": game_sha,
+    }
+    whole_sha = _hash_json_context("whole authoritative state", runner_value)
+    return {
+        "control_tick": int(runner.control_tick),
+        "neural_tick": int(neural.tick),
+        "whole_state_sha256": whole_sha,
+        "neural_state_sha256": neural_sha,
+        "environment_state_sha256": environment_sha,
+        "game_state_sha256": game_sha,
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -172,6 +340,8 @@ class FlyRunRecorder:
         run_id: str,
         limits: RecorderLimits | None = None,
         code_git_sha: str | None = None,
+        execution_kind: str = "game-session",
+        execution_context: dict[str, Any] | None = None,
     ):
         if not run_id or len(run_id) > 96 or any(
             not (character.isalnum() or character in "-_.") for character in run_id
@@ -185,6 +355,10 @@ class FlyRunRecorder:
         if resolved.game_spec.maximum_committed_attacks > self.limits.maximum_attacks:
             raise ValueError("GameSpec attack count exceeds recorder attack limit")
         self.code_git_sha = code_git_sha or _git_head(resolved.root)
+        if execution_kind not in {"game-session", "bench-trial"}:
+            raise ValueError("unsupported recorder execution kind")
+        self.execution_kind = execution_kind
+        self.execution_context = dict(execution_context or {})
         self.essential_events: list[dict[str, Any]] = []
         self.optional_events: list[dict[str, Any]] = []
         self.essential_dropped = 0
@@ -192,6 +366,7 @@ class FlyRunRecorder:
         self.rejected_diagnostics: dict[str, int] = {}
         self._optional_gap_recorded = False
         self._finalized = False
+        self._next_event_ordinal = 0
 
     @property
     def applied_input_events(self) -> tuple[dict[str, Any], ...]:
@@ -245,6 +420,8 @@ class FlyRunRecorder:
         if not isinstance(value.get("phase"), str) or not value["phase"]:
             raise FlyRunError("every event requires a documented phase")
         value["recording_class"] = recording_class
+        value["event_ordinal"] = self._next_event_ordinal
+        self._next_event_ordinal += 1
         _canonical_json(value)
         return value
 
@@ -255,8 +432,8 @@ class FlyRunRecorder:
             raise FlyRunError("cannot finalize before authoritative round termination")
         self._finalized = True
         runner_summary = session.runner.finish_run()
-        applied_input_digest = _sha256(
-            b"".join(_canonical_json(event) for event in self.applied_input_events)
+        applied_input_digest = canonical_applied_input_sha256(
+            list(self.applied_input_events)
         )
         scientific_events = [
             event
@@ -270,6 +447,7 @@ class FlyRunRecorder:
                 "motor_command",
                 "impact",
                 "round_end",
+                "state_digest",
             }
         ]
         scientific_record_digest = _sha256(
@@ -277,6 +455,23 @@ class FlyRunRecorder:
         )
         optional_status = "TRUNCATED" if self.optional_dropped else "COMPLETE"
         essential_status = "INCOMPLETE" if self.essential_dropped else "COMPLETE"
+        state_digests = [
+            event for event in self.essential_events if event["type"] == "state_digest"
+        ]
+        expected_state_ticks = [0]
+        expected_state_ticks.extend(
+            range(STATE_DIGEST_INTERVALS, session.control_tick, STATE_DIGEST_INTERVALS)
+        )
+        if session.control_tick not in expected_state_ticks:
+            expected_state_ticks.append(session.control_tick)
+        actual_state_ticks = [int(event["control_tick"]) for event in state_digests]
+        state_envelope_complete = (
+            self.essential_dropped == 0
+            and actual_state_ticks == expected_state_ticks
+            and bool(state_digests)
+            and state_digests[-1].get("digest_kind")
+            in {"final", "periodic-final"}
+        )
         summary = {
             "schema_version": FLYRUN_SCHEMA_VERSION,
             "run_id": self.run_id,
@@ -296,6 +491,9 @@ class FlyRunRecorder:
             "final_neural_state_sha256": runner_summary[
                 "final_neural_state_sha256"
             ],
+            "final_whole_state_sha256": (
+                state_digests[-1]["whole_state_sha256"] if state_digests else None
+            ),
             "finite_scientific_state": runner_summary["finite_state"],
             "recording": {
                 "essential_status": essential_status,
@@ -307,7 +505,12 @@ class FlyRunRecorder:
                 "rejected_input_diagnostics": dict(
                     sorted(self.rejected_diagnostics.items())
                 ),
-                "reexecution_certifiable": self.essential_dropped == 0,
+                "coalesced_aim_updates": session.coalesced_aim_updates,
+            },
+            "reexecution": {
+                "capture_envelope_complete": state_envelope_complete,
+                "verified": False,
+                "verification_milestone": "M10",
             },
             "process_status": {
                 "m09_execution": "AT_RISK",
@@ -317,21 +520,14 @@ class FlyRunRecorder:
                 "public_release_blocked": True,
             },
         }
-        ordered_events = [
-            (event, 0, index)
-            for index, event in enumerate(self.essential_events)
-        ] + [
-            (event, 1, index)
-            for index, event in enumerate(self.optional_events)
-        ]
+        ordered_events = [*self.essential_events, *self.optional_events]
         events = [
             event
-            for event, _recording_class_order, _stream_index in sorted(
+            for event in sorted(
                 ordered_events,
                 key=lambda item: (
-                    int(item[0]["control_tick"]),
-                    item[1],
-                    item[2],
+                    int(item["control_tick"]),
+                    int(item["event_ordinal"]),
                 ),
             )
         ]
@@ -392,6 +588,8 @@ class FlyRunRecorder:
                 {
                     "live_profile_sha256": self.resolved.sha256,
                     "game_spec_sha256": self.resolved.game_spec_sha256,
+                    "execution_kind": self.execution_kind,
+                    "execution_context": self.execution_context,
                 }
             )
         )
@@ -419,6 +617,9 @@ class FlyRunRecorder:
                 "run_id": self.run_id,
                 "round_id": f"{self.run_id}-round-1",
                 "profile_recipe_sha256": profile_recipe_sha256,
+                "applied_input_sha256": summary["applied_input_sha256"],
+                "execution_kind": self.execution_kind,
+                "execution_context": self.execution_context,
             },
             "provenance": {
                 "architecture_sha256": ARCHITECTURE_SHA256,
@@ -427,7 +628,8 @@ class FlyRunRecorder:
                 "game_spec_path": value["game"]["path"],
                 "game_spec_sha256": self.resolved.game_spec_sha256,
                 "graph": value["graph"],
-                "backend": value["backend"],
+                "selected_live_backend": value["backend"],
+                "executed_backend": session.runner.backend,
                 "identities": {
                     "m07_live_candidate_sha256": value["m07_live_candidate"]["sha256"],
                     "runtime_model_spec_sha256": value["model"][
@@ -440,8 +642,8 @@ class FlyRunRecorder:
                 },
                 "clock": value["clock"],
                 "seeds": {
-                    "neural": value["model"]["seed"],
-                    "environment": value["environment"]["seed"],
+                    "neural": session.runner.neural.seed,
+                    "environment": session.runner.environment.seed,
                     "environment_rng": "numpy.PCG64",
                 },
                 "code_git_sha": self.code_git_sha,
@@ -456,21 +658,94 @@ class FlyRunRecorder:
             },
             "tested_runtime_envelope": {
                 "python": ">=3.12,<3.13",
-                "backend": "deterministic serial CPU Numba kernel",
-                "parallel": False,
-                "fastmath": False,
-                "exact_reexecution_scope": "reset-only on the pinned project dependency lock",
+                "executed_backend": session.runner.backend,
+                "selected_live_backend": "deterministic serial CPU Numba kernel",
+                "parallel": False if session.runner.backend == "kernel" else None,
+                "fastmath": False if session.runner.backend == "kernel" else None,
+                "capture_eligibility": "reset-only under the pinned project dependency lock",
+                "reexecution_verified": False,
+                "verification_milestone": "M10",
             },
             "initial_conditions": {
-                "fly": {"x": 0.0, "y": 0.0, "heading_rad": 0.0},
-                "held_escape_command": False,
+                "neural_seed": session.runner.model_spec.seed,
+                "environment_seed": session.runner.environment_seed,
                 "control_tick": 0,
                 "neural_tick": 0,
+                "held_escape_command": False,
+                "environment": {
+                    "x": session.runner.environment.config.initial_x,
+                    "y": session.runner.environment.config.initial_y,
+                    "heading_rad": session.runner.environment.config.initial_heading_rad,
+                    "control_tick": 0,
+                    "takeoff_ticks_remaining": 0,
+                    "takeoff_heading_rad": None,
+                    "takeoff_active": False,
+                    "scheduled_impact_ticks": [],
+                    "resolved_impacts": [],
+                },
+                "game": {
+                    **(
+                        {
+                            "latest_aim": None,
+                            "pending_aim": None,
+                            "active_strike": None,
+                            "attack_count": 0,
+                            "cooldown_until_tick": 0,
+                            "result": None,
+                            "result_reason": None,
+                        }
+                        if self.execution_kind == "game-session"
+                        else {
+                            "kind": "bench-trial",
+                            **self.execution_context,
+                            "completed_intervals": 0,
+                            "result": None,
+                        }
+                    )
+                },
+                "state_digest": next(
+                    (
+                        {
+                            key: event[key]
+                            for key in (
+                                "control_tick",
+                                "neural_tick",
+                                "whole_state_sha256",
+                                "neural_state_sha256",
+                                "environment_state_sha256",
+                                "game_state_sha256",
+                            )
+                        }
+                        for event in self.essential_events
+                        if event["type"] == "state_digest"
+                        and event.get("digest_kind") == "initial"
+                    ),
+                    None,
+                ),
             },
             "sampling": {
                 "environment_frame_control_intervals": self.resolved.game_spec.presentation_intervals,
                 "dnp01_events": "all declared DNp01 spike events at neural-tick resolution",
                 "full_neuron_state_arrays": False,
+                "state_digest_control_intervals": STATE_DIGEST_INTERVALS,
+                "state_digest_boundary": "after an authoritative control interval and all GameSession updates at that boundary; initial before inputs; final after termination",
+            },
+            "event_ordering": {
+                "identity": EVENT_ORDER_ID,
+                "sort_key": ["control_tick", "event_ordinal"],
+                "ordinal_rule": "monotonic recorder observation order after authoritative application; applied pending aim precedes same-tick attack commit",
+            },
+            "applied_input_hash": {
+                "algorithm": "SHA-256",
+                "encoding": "concatenated UTF-8 canonical JSON records with sorted keys and one LF terminator per record",
+                "included_types": ["accepted_aim", "attack_commit"],
+                "excluded": [
+                    "recording_class",
+                    "event_ordinal",
+                    "rejected messages",
+                    "coalesced-but-never-applied aim values",
+                    "browser timestamps",
+                ],
             },
             "limits": self.limits.as_dict(),
             "payloads": {
@@ -486,8 +761,13 @@ class FlyRunRecorder:
             "validity": {
                 "essential_input_evidence": summary["recording"]["essential_status"],
                 "optional_trace": summary["recording"]["optional_status"],
-                "reexecution_certifiable": summary["recording"][
-                    "reexecution_certifiable"
+                "reexecution": summary["reexecution"],
+            },
+            "integrity": {
+                "applied_input_sha256": summary["applied_input_sha256"],
+                "scientific_record_sha256": summary["scientific_record_sha256"],
+                "final_whole_state_sha256": summary[
+                    "final_whole_state_sha256"
                 ],
             },
             "process_deviation": {
@@ -498,6 +778,13 @@ class FlyRunRecorder:
                 "m08_g_game": "PENDING_UNMEASURED",
                 "m09_is_m08_usability_evidence": False,
                 "public_release_blocked": True,
+            },
+            "attempt_2_provenance": {
+                "attempt_1_format": "flybench.flyrun.v0.1",
+                "attempt_1_candidate_product_sha": "067b3c831469ce2475201074ad47b39853694b60",
+                "attempt_1_submission_sha": "d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc",
+                "attempt_1_review_zip_sha256": "cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66",
+                "attempt_1_external_verdict": "CHANGES_REQUIRED",
             },
         }
 
@@ -514,6 +801,7 @@ class RecordedGameSession:
         self._last_decoded_command = False
         self._recorded_impacts: set[str] = set()
         self._round_end_recorded = False
+        self._applied_input_cursor = 0
         self.recorder.record_essential(
             {
                 "type": "lifecycle",
@@ -522,6 +810,7 @@ class RecordedGameSession:
                 "state": "running",
             }
         )
+        self._record_state_digest("initial")
 
     @property
     def control_tick(self) -> int:
@@ -559,17 +848,7 @@ class RecordedGameSession:
         except GameInputError as exc:
             self.recorder.note_rejected_input(exc.code)
             raise
-        aim = self.session.latest_aim
-        assert aim is not None
-        self.recorder.record_essential(
-            {
-                "type": "accepted_aim",
-                "control_tick": int(acknowledgement["server_tick"]),
-                "phase": "apply-accepted-input",
-                "sequence": int(acknowledgement["sequence"]),
-                "aim": {"x": aim[0], "y": aim[1]},
-            }
-        )
+        self._capture_applied_inputs()
         return acknowledgement
 
     def commit_attack(self, x: object, y: object, sequence: object) -> dict[str, Any]:
@@ -578,17 +857,7 @@ class RecordedGameSession:
         except GameInputError as exc:
             self.recorder.note_rejected_input(exc.code)
             raise
-        self.recorder.record_essential(
-            {
-                "type": "attack_commit",
-                "control_tick": int(acknowledgement["server_tick"]),
-                "phase": "apply-accepted-input",
-                "sequence": int(acknowledgement["sequence"]),
-                "attack_id": acknowledgement["attack_id"],
-                "locked_target": acknowledgement["locked_target"],
-                "impact_tick": int(acknowledgement["impact_tick"]),
-            }
-        )
+        self._capture_applied_inputs()
         self._record_phase_transition(self.snapshot())
         return acknowledgement
 
@@ -597,6 +866,7 @@ class RecordedGameSession:
         state = self.session.advance_interval()
         if self.control_tick == prior_tick:
             return state
+        self._capture_applied_inputs()
         interval = self.runner.interval_records[-1]
         self.recorder.record_essential(
             {
@@ -692,7 +962,42 @@ class RecordedGameSession:
                     "termination_reason": state["result_reason"],
                 }
             )
+        if state["result"] is not None:
+            self._record_state_digest(
+                "periodic-final"
+                if self.control_tick % STATE_DIGEST_INTERVALS == 0
+                else "final"
+            )
+        elif self.control_tick % STATE_DIGEST_INTERVALS == 0:
+            self._record_state_digest("periodic")
         return state
+
+    def _capture_applied_inputs(self) -> None:
+        records = self.session.applied_input_records
+        for applied in records[self._applied_input_cursor :]:
+            event = dict(applied)
+            event["phase"] = "apply-authoritative-input"
+            self.recorder.record_essential(event)
+        self._applied_input_cursor = len(records)
+
+    def _record_state_digest(self, digest_kind: str) -> None:
+        digest = scientific_state_digest(
+            self.runner,
+            game_session=self.session,
+        )
+        self.recorder.record_essential(
+            {
+                "type": "state_digest",
+                "control_tick": digest["control_tick"],
+                "phase": "post-authoritative-boundary",
+                "digest_kind": digest_kind,
+                **{
+                    key: value
+                    for key, value in digest.items()
+                    if key != "control_tick"
+                },
+            }
+        )
 
     def _record_phase_transition(self, state: dict[str, Any]) -> None:
         current = str(state["phase"])
@@ -711,6 +1016,167 @@ class RecordedGameSession:
 
     def finalize(self) -> FlyRunResult:
         return self.recorder.finalize(self.session)
+
+
+@dataclass(slots=True)
+class _BenchSessionView:
+    runner: Any
+    result: str = "trial-complete"
+    result_reason: str = "fixed-duration-complete"
+    attack_count: int = 0
+    coalesced_aim_updates: int = 0
+
+    @property
+    def control_tick(self) -> int:
+        return int(self.runner.control_tick)
+
+
+class RecordedBenchTrial:
+    """Observe the existing accepted scripted benchmark Runner path."""
+
+    def __init__(
+        self,
+        runner: Any,
+        recorder: FlyRunRecorder,
+        *,
+        scenario: str,
+        interval_count: int,
+    ):
+        self.runner = runner
+        self.recorder = recorder
+        self.scenario = scenario
+        self.interval_count = interval_count
+        self.completed_intervals = 0
+        self._last_decoded_command = False
+        self.recorder.record_essential(
+            {
+                "type": "lifecycle",
+                "control_tick": 0,
+                "phase": "bench-trial-start",
+                "state": "running",
+            }
+        )
+        self._record_state_digest("initial", result=None)
+
+    def capture_interval(self, record: dict[str, Any]) -> None:
+        self.completed_intervals = int(record["end_control_tick"])
+        self.recorder.record_essential(
+            {
+                "type": "sensory_input",
+                "control_tick": int(record["start_control_tick"]),
+                "phase": "form-observation",
+                "applies_through_control_tick": int(record["end_control_tick"]),
+                "observation": record["observation"],
+            }
+        )
+        if record["dnp01_spikes"]:
+            self.recorder.record_essential(
+                {
+                    "type": "neural_output",
+                    "control_tick": int(record["end_control_tick"]),
+                    "phase": "advance-neural-20-steps",
+                    "start_neural_tick": int(record["start_neural_tick"]),
+                    "end_neural_tick": int(record["end_neural_tick"]),
+                    "dnp01_spikes": record["dnp01_spikes"],
+                }
+            )
+        decoded = bool(record["decoded_next_command"])
+        if decoded != self._last_decoded_command:
+            self.recorder.record_essential(
+                {
+                    "type": "motor_command",
+                    "control_tick": int(record["end_control_tick"]),
+                    "phase": "decode-completed-neural-interval",
+                    "escape_request": decoded,
+                    "applies_from_control_tick": int(record["end_control_tick"]),
+                }
+            )
+            self._last_decoded_command = decoded
+        for impact in record["impacts"]:
+            self.recorder.record_essential(
+                {
+                    "type": "impact",
+                    "control_tick": int(impact["control_tick"]),
+                    "phase": "resolve-impact",
+                    "outcome": impact["outcome"],
+                    "takeoff_was_active": impact["takeoff_was_active"],
+                    "benchmark_scenario": self.scenario,
+                }
+            )
+        if self.completed_intervals % 2 == 0:
+            motion = record["motion"]
+            self.recorder.record_optional(
+                {
+                    "type": "environment_frame",
+                    "control_tick": self.completed_intervals,
+                    "phase": "authoritative-state-sample",
+                    "logical_time_ms": int(record["end_ms"]),
+                    "game_phase": "bench-trial",
+                    "fly": {
+                        "x": motion["x"],
+                        "y": motion["y"],
+                        "heading_rad": motion["heading_rad"],
+                        "motion_mode": (
+                            "takeoff" if motion["takeoff_active"] else "walking"
+                        ),
+                        "takeoff_started": motion["takeoff_started"],
+                    },
+                    "strike": None,
+                    "stimulus": record["observation"],
+                }
+            )
+        if (
+            self.completed_intervals < self.interval_count
+            and self.completed_intervals % STATE_DIGEST_INTERVALS == 0
+        ):
+            self._record_state_digest("periodic", result=None)
+
+    def _bench_state(self, *, result: str | None) -> dict[str, Any]:
+        return {
+            "scenario": self.scenario,
+            "fixed_interval_count": self.interval_count,
+            "completed_intervals": self.completed_intervals,
+            "result": result,
+        }
+
+    def _record_state_digest(self, digest_kind: str, *, result: str | None) -> None:
+        digest = scientific_state_digest(
+            self.runner,
+            bench_state=self._bench_state(result=result),
+        )
+        self.recorder.record_essential(
+            {
+                "type": "state_digest",
+                "control_tick": digest["control_tick"],
+                "phase": "post-authoritative-boundary",
+                "digest_kind": digest_kind,
+                **{
+                    key: value
+                    for key, value in digest.items()
+                    if key != "control_tick"
+                },
+            }
+        )
+
+    def finalize(self) -> FlyRunResult:
+        if self.completed_intervals != self.interval_count:
+            raise FlyRunError("cannot finalize an incomplete benchmark trial")
+        self.recorder.record_essential(
+            {
+                "type": "round_end",
+                "control_tick": self.completed_intervals,
+                "phase": "bench-trial-termination",
+                "result": "trial-complete",
+                "termination_reason": "fixed-duration-complete",
+            }
+        )
+        self._record_state_digest(
+            "periodic-final"
+            if self.completed_intervals % STATE_DIGEST_INTERVALS == 0
+            else "final",
+            result="trial-complete",
+        )
+        return self.recorder.finalize(_BenchSessionView(self.runner))  # type: ignore[arg-type]
 
 
 def build_recorded_live_session(
@@ -763,6 +1229,98 @@ def run_representative_recording(
         if subject.control_tick > subject.spec.round_horizon_tick:
             raise RuntimeError("representative recording exceeded the GameSpec horizon")
     return subject, subject.finalize()
+
+
+def run_selected_benchmark(
+    stimulus_path: Path,
+    *,
+    record_directory: Path | None = None,
+    code_git_sha: str | None = None,
+) -> tuple[dict[str, Any], FlyRunResult | None]:
+    """Run the accepted selected standard-looming trial, optionally observing it."""
+
+    from flybench.bench import scripted_observation
+    from flybench.catch import load_environment_config
+    from flybench.model import load_candidate_model_spec
+    from flybench.runner import CONTROL_INTERVAL_MS, NEURAL_DT_MS, Runner, load_graph
+
+    root = stimulus_path.resolve().parent.parent
+    resolved = load_live_profile(root / "profiles" / "live.json")
+    stimulus = json.loads(stimulus_path.resolve().read_text(encoding="utf-8"))
+    if (
+        stimulus.get("profile_id") != "flybench.m06-looming-controls.v0.1"
+        or "standard looming" not in stimulus.get("scenarios_in_execution_order", [])
+    ):
+        raise ValueError("selected benchmark requires the accepted looming controls")
+    controller = json.loads(
+        (root / resolved.value["controller"]["path"]).read_text(encoding="utf-8")
+    )
+    scale = float(controller["selected_runtime_synaptic_scale"])
+    peak_drive = float(controller["selected_peak_sensory_external_drive"])
+    seed = int(stimulus["seed"]["trial_seed"])
+    model = load_candidate_model_spec(
+        neural_dt_ms=NEURAL_DT_MS,
+        runtime_synaptic_scale=scale,
+        seed=seed,
+        model_profile_path=root / resolved.value["model"]["profile_path"],
+        criteria_path=root
+        / resolved.value["model"]["numerical_criteria_path"],
+    )
+    runner = Runner(
+        load_graph(root / resolved.value["graph"]["path"]),
+        model,
+        peak_sensory_external_drive=peak_drive,
+        environment_config=load_environment_config(
+            root / resolved.value["environment"]["path"]
+        ),
+        environment_seed=seed + 1,
+        backend="reference",
+    )
+    interval_count = int(
+        stimulus["trial"]["duration_ms"] / CONTROL_INTERVAL_MS
+    )
+    recorder_result: FlyRunResult | None = None
+    observer: RecordedBenchTrial | None = None
+    if record_directory is not None:
+        context = {
+            "scenario": "standard looming",
+            "stimulus_profile_path": "profiles/looming-controls.json",
+            "stimulus_profile_sha256": sha256_file(stimulus_path.resolve()),
+            "fixture_name": "looming-seed-0.flyrun",
+            "seed_index": 0,
+            "actual_neural_seed": seed,
+            "actual_environment_seed": seed + 1,
+            "fixed_interval_count": interval_count,
+        }
+        recorder = FlyRunRecorder(
+            resolved,
+            run_id="m09-bench-standard-looming-seed-index-0",
+            code_git_sha=code_git_sha,
+            execution_kind="bench-trial",
+            execution_context=context,
+        )
+        observer = RecordedBenchTrial(
+            runner,
+            recorder,
+            scenario="standard looming",
+            interval_count=interval_count,
+        )
+    for control_tick in range(interval_count):
+        observation, impact = scripted_observation(
+            stimulus, "standard looming", control_tick
+        )
+        record = runner.advance_control_interval(
+            observation,
+            impact_at_end=impact,
+        )
+        if observer is not None:
+            observer.capture_interval(record)
+    summary = runner.finish_run()
+    if observer is not None:
+        recorder_result = observer.finalize()
+        assert record_directory is not None
+        write_flyrun(record_directory / "looming-seed-0.flyrun", recorder_result)
+    return summary, recorder_result
 
 
 def write_flyrun(path: Path, result: FlyRunResult) -> None:
@@ -823,6 +1381,8 @@ def load_flyrun(path: Path) -> LoadedFlyRun:
         raise FlyRunSafetyError(f"invalid flyrun ZIP: {exc}") from exc
     with bundle:
         infos = bundle.infolist()
+        if len(infos) > MAX_ARCHIVE_MEMBERS:
+            raise FlyRunSafetyError("flyrun member count exceeds the hard allowlist")
         names = [info.filename for info in infos]
         if len(names) != len(set(names)):
             raise FlyRunSafetyError("duplicate flyrun members are forbidden")
@@ -889,6 +1449,8 @@ def load_flyrun(path: Path) -> LoadedFlyRun:
             or not isinstance(event.get("type"), str)
             or not isinstance(event.get("phase"), str)
             or event.get("recording_class") not in {"essential", "optional"}
+            or type(event.get("event_ordinal")) is not int
+            or event["event_ordinal"] < 0
         ):
             raise FlyRunSafetyError("flyrun event schema validation failed")
         events.append(event)
@@ -900,10 +1462,73 @@ def load_flyrun(path: Path) -> LoadedFlyRun:
         raise FlyRunLimitError("essential event count exceeds the declared limit")
     if optional_count > declared_limits["maximum_optional_records"]:
         raise FlyRunLimitError("optional event count exceeds the declared limit")
-    if not isinstance(summary, dict) or summary.get("schema_version") != 1:
+    if not isinstance(summary, dict) or summary.get("schema_version") != FLYRUN_SCHEMA_VERSION:
         raise FlyRunSafetyError("flyrun summary schema validation failed")
     if summary.get("run_id") != manifest.get("run", {}).get("run_id"):
         raise FlyRunSafetyError("flyrun run identity mismatch")
+    event_keys = [
+        (int(event["control_tick"]), int(event["event_ordinal"])) for event in events
+    ]
+    if event_keys != sorted(event_keys) or len(
+        {event["event_ordinal"] for event in events}
+    ) != len(events):
+        raise FlyRunSafetyError("flyrun event ordering is not canonical")
+    applied_input_digest = canonical_applied_input_sha256(events)
+    declared_applied = {
+        summary.get("applied_input_sha256"),
+        manifest.get("run", {}).get("applied_input_sha256"),
+        manifest.get("integrity", {}).get("applied_input_sha256"),
+    }
+    if declared_applied != {applied_input_digest}:
+        raise FlyRunSafetyError("flyrun applied-input identity mismatch")
+    reexecution = manifest.get("validity", {}).get("reexecution", {})
+    if (
+        not isinstance(reexecution, dict)
+        or reexecution.get("verified") is not False
+        or reexecution.get("verification_milestone") != "M10"
+        or summary.get("reexecution") != reexecution
+    ):
+        raise FlyRunSafetyError("flyrun re-execution status is unsupported or overstated")
+    state_events = [event for event in events if event["type"] == "state_digest"]
+    if not state_events or state_events[0].get("digest_kind") != "initial":
+        raise FlyRunSafetyError("flyrun initial state digest is missing")
+    if state_events[-1].get("digest_kind") not in {"final", "periodic-final"}:
+        raise FlyRunSafetyError("flyrun final state digest is missing")
+    final_control_tick = summary.get("final_control_tick")
+    if type(final_control_tick) is not int or final_control_tick < 0:
+        raise FlyRunSafetyError("flyrun final control tick is invalid")
+    expected_state_ticks = [0]
+    expected_state_ticks.extend(
+        range(STATE_DIGEST_INTERVALS, final_control_tick, STATE_DIGEST_INTERVALS)
+    )
+    if final_control_tick not in expected_state_ticks:
+        expected_state_ticks.append(final_control_tick)
+    if [event["control_tick"] for event in state_events] != expected_state_ticks:
+        raise FlyRunSafetyError("flyrun state-digest cadence is incomplete")
+    for event in state_events:
+        if event.get("recording_class") != "essential" or any(
+            not isinstance(event.get(name), str)
+            or len(event[name]) != 64
+            or any(character not in "0123456789abcdef" for character in event[name])
+            for name in (
+                "whole_state_sha256",
+                "neural_state_sha256",
+                "environment_state_sha256",
+                "game_state_sha256",
+            )
+        ):
+            raise FlyRunSafetyError("flyrun state-digest schema validation failed")
+    if (
+        manifest.get("initial_conditions", {}).get("state_digest", {}).get(
+            "whole_state_sha256"
+        )
+        != state_events[0].get("whole_state_sha256")
+        or manifest.get("integrity", {}).get("final_whole_state_sha256")
+        != state_events[-1].get("whole_state_sha256")
+        or summary.get("final_whole_state_sha256")
+        != state_events[-1].get("whole_state_sha256")
+    ):
+        raise FlyRunSafetyError("flyrun state-digest identity mismatch")
     return LoadedFlyRun(
         path=path,
         archive_bytes=size,

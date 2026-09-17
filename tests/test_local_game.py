@@ -163,6 +163,7 @@ def test_locked_strike_target_remains_unchanged_after_later_aim_updates() -> Non
         "x": 1.25,
         "y": -2.5,
     }
+    subject.advance_interval()
     assert subject.snapshot()["aim"] == {"x": 8.0, "y": 9.0}
 
 

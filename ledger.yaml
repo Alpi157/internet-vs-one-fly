@@ -1,6 +1,6 @@
 playbook_version: '0.1'
 current_milestone: M09
-current_attempt: 1
+current_attempt: 2
 last_accepted_milestone: M07
 accepted_milestones:
 - M01
@@ -19,7 +19,7 @@ milestone_status:
   M06: ACCEPTED
   M07: ACCEPTED
   M08: BLOCKED
-  M09: SUBMITTED
+  M09: IN_PROGRESS
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1143,6 +1143,16 @@ decisions:
   affected_milestones:
   - M08
   - M09
+- id: D-M09-COORDINATE-APPLICATION-01
+  issue: Architecture requires recorded accepted coordinate values but defines no
+    numerical coordinate quantum, rounding mode, or grid for M09.
+  allowed_fallback_or_deviation: Preserve the existing finite in-arena server-applied
+    Python float exactly and record that same value; do not introduce recorder-only
+    quantization, clamping, or normalization.
+  evidence: decisions/D-M09-COORDINATE-APPLICATION-01.json
+  owner: M09 implementation decision; external milestone acceptance pending
+  affected_milestones:
+  - M09
 biological_risks: []
 technical_risks: []
 launch_blockers:
@@ -1161,9 +1171,12 @@ m08_integration_baseline:
 m09_execution:
   status: AT_RISK
   predecessor_gate: M08_G_GAME_PENDING_UNMEASURED
-  candidate_product_sha: 067b3c831469ce2475201074ad47b39853694b60
-  recorder_schema: flybench.flyrun.v0.1
-  candidate_decision: evidence/M09/decision.json
+  review_attempt: 2
+  attempt_1_candidate_product_sha: 067b3c831469ce2475201074ad47b39853694b60
+  attempt_1_submission_sha: d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc
+  attempt_1_review_zip_sha256: cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66
+  attempt_1_external_verdict: CHANGES_REQUIRED
+  recorder_schema: flybench.flyrun.v0.2
   external_milestone_acceptance: PENDING
   revalidation_rule: If later M08 human testing changes game, UI, or GameSpec bytes,
     rerun affected M09 integration evidence.
@@ -1177,6 +1190,7 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Submit M09 for external review at risk under D-M08-HUMAN-GATE-DEFER-01.
-  Do not begin M10. M08 G-GAME remains pending and unmeasured; public alpha and
-  release remain blocked on the deferred M08 human gate.
+next_action: Repair M09 review attempt 2 at risk under D-M08-HUMAN-GATE-DEFER-01,
+  then stop for one real operator demo recording before submission. Do not begin
+  M10. M08 G-GAME remains pending and unmeasured; public alpha and release remain
+  blocked on the deferred M08 human gate.

@@ -482,6 +482,9 @@ class GameSession:
     def reset_round(self) -> None:
         self.runner.reset_run()
         self.latest_aim: tuple[float, float] | None = None
+        self.pending_aim: tuple[float, float, int] | None = None
+        self.applied_input_records: list[dict[str, Any]] = []
+        self.coalesced_aim_updates = 0
         self.last_sequence = -1
         self.active_strike: ActiveStrike | None = None
         self.cooldown_until_tick = 0
@@ -526,13 +529,33 @@ class GameSession:
         target_x = self._coordinate(x, name="x")
         target_y = self._coordinate(y, name="y")
         accepted_sequence = self._accept_sequence(sequence)
-        self.latest_aim = (target_x, target_y)
+        if self.pending_aim is not None:
+            self.coalesced_aim_updates += 1
+        self.pending_aim = (target_x, target_y, accepted_sequence)
         return {
             "type": "ack",
             "kind": "aim",
             "sequence": accepted_sequence,
             "server_tick": self.control_tick,
+            "application_boundary_tick": self.control_tick,
+            "applied": False,
         }
+
+    def _apply_pending_aim(self) -> dict[str, Any] | None:
+        pending = self.pending_aim
+        if pending is None:
+            return None
+        target_x, target_y, sequence = pending
+        self.pending_aim = None
+        self.latest_aim = (target_x, target_y)
+        applied = {
+            "type": "accepted_aim",
+            "control_tick": self.control_tick,
+            "sequence": sequence,
+            "aim": {"x": target_x, "y": target_y},
+        }
+        self.applied_input_records.append(applied)
+        return applied
 
     def commit_attack(self, x: object, y: object, sequence: object) -> dict[str, Any]:
         target_x = self._coordinate(x, name="x")
@@ -546,6 +569,7 @@ class GameSession:
         if self.attack_count >= self.spec.maximum_committed_attacks:
             raise GameInputError("attack_limit", "the attack limit is exhausted")
         accepted_sequence = self._accept_sequence(sequence)
+        self._apply_pending_aim()
         self.latest_aim = (target_x, target_y)
         self.attack_count += 1
         commit_tick = self.control_tick
@@ -557,6 +581,15 @@ class GameSession:
             stimulus_tick=commit_tick + self.spec.stimulus_start_ticks,
             impact_tick=commit_tick + self.spec.impact_ticks,
         )
+        applied = {
+            "type": "attack_commit",
+            "control_tick": commit_tick,
+            "sequence": accepted_sequence,
+            "attack_id": self.active_strike.attack_id,
+            "locked_target": {"x": target_x, "y": target_y},
+            "impact_tick": self.active_strike.impact_tick,
+        }
+        self.applied_input_records.append(applied)
         return {
             "type": "ack",
             "kind": "attack",
@@ -586,6 +619,7 @@ class GameSession:
     def advance_interval(self) -> dict[str, Any]:
         if self.result is not None:
             return self.snapshot()
+        self._apply_pending_aim()
         strike = self.active_strike
         impact_at_end = bool(
             strike is not None and self.control_tick + 1 == strike.impact_tick
