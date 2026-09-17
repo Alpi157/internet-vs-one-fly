@@ -386,8 +386,11 @@ def test_protocol_files_match_recorded_calibration_commit_after_execution() -> N
         "tests/test_controller_authority.py",
     }
     m08_authorized_evolution = m07_authorized_evolution | {"src/flybench/cli.py"}
+    m09_authorized_evolution = m08_authorized_evolution
     ledger = (ROOT / "ledger.yaml").read_text(encoding="utf-8")
-    if "current_milestone: M08" in ledger:
+    if "current_milestone: M09" in ledger:
+        allowed = m09_authorized_evolution
+    elif "current_milestone: M08" in ledger:
         allowed = m08_authorized_evolution
     elif "current_milestone: M07" in ledger:
         allowed = m07_authorized_evolution

@@ -152,6 +152,7 @@ def render_review(
     m08_decision: dict[str, Any] | None,
     m08_identity: dict[str, Any] | None,
     m08_smoke: dict[str, Any] | None,
+    m09_evidence: dict[str, dict[str, Any]],
 ) -> bytes:
     primary = next((report for path, report in reports if path == "command-results.json"), None)
     primary_status = primary.get("status") if primary else "NOT_CAPTURED"
@@ -238,6 +239,18 @@ def render_review(
             "The audited 166,700-neuron graph is not executed by the live game and is not presented as the live neuron count.",
             "The human receipts are usability and restricted-host smoke evidence; they are not biological validation, retention evidence, or external milestone acceptance.",
         ]
+    elif milestone == "M09":
+        objective = (
+            "Capture the server-applied authoritative inputs and a bounded essential "
+            "execution record in a deterministic, data-only .flyrun archive."
+        )
+        assumptions = [
+            "M09 was implemented AT RISK under D-M08-HUMAN-GATE-DEFER-01; M08 G-GAME remains pending and unmeasured.",
+            "M09 implementation and recorder evidence are not evidence that M08 passed usability, and public release remains blocked by the deferred human gate.",
+            "The recorder observes the existing authoritative GameSession and Runner; it does not introduce a second simulation path or browser-side scientific authority.",
+            "Applied inputs are server-accepted logical-tick records; raw pointer events, browser timestamps, and rejected messages are not scientific inputs.",
+            "The .flyrun is bounded canonical JSON/JSONL data in a fixed ZIP inventory; it contains no pickle, code, credentials, raw MaleCNS data, or full per-neuron state traces.",
+        ]
     else:
         objective = (
             "Establish the M01 reproducible Python workspace, repository invariants, offline "
@@ -274,6 +287,14 @@ def render_review(
                 "- Last accepted product implementation SHA before M08: `c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5`."
             ]
             if milestone == "M08"
+            else []
+        ),
+        *(
+            [
+                "- Frozen provisional M08 integration baseline: `76ccadccab5c37626557c6ff4b8a565d3c387c4f`.",
+                "- Process-deviation decision: `D-M08-HUMAN-GATE-DEFER-01` (`79d9a7e68e4d2d865411c2bb00fa62295fec503c976f38c4d579f8d077212a89`).",
+            ]
+            if milestone == "M09"
             else []
         ),
         "",
@@ -435,6 +456,21 @@ def render_review(
         lines.append(
             f"- Bounded loopback server smoke: `{m08_smoke.get('status')}`; clean termination `{m08_smoke.get('server_terminated_cleanly')}`; bind `{m08_smoke.get('bind_host')}`."
         )
+    if milestone == "M09" and m09_evidence:
+        recorder = m09_evidence.get("recorder-format.json", {})
+        deterministic = m09_evidence.get("deterministic-recording.json", {})
+        authority = m09_evidence.get("applied-input-authority.json", {})
+        safety = m09_evidence.get("archive-safety.json", {})
+        parity = m09_evidence.get("headless-server-recorder-parity.json", {})
+        decision = m09_evidence.get("decision.json", {})
+        lines.extend(
+            [
+                f"- Recorder format: `{recorder.get('format_id')}`; fixture bytes `{recorder.get('fixture_bytes')}`; content digest `{recorder.get('content_digest')}`.",
+                f"- Deterministic recording evidence: `{deterministic.get('status')}`; applied-input authority: `{authority.get('status')}`; archive safety: `{safety.get('status')}`; headless/server-recorder parity: `{parity.get('status')}`.",
+                f"- M09 proposed outcome: `{decision.get('proposed_outcome')}`; external milestone acceptance remains `{decision.get('external_milestone_acceptance')}`.",
+                "- M08 G-GAME remains `PENDING_UNMEASURED`; this M09 evidence does not establish M08 usability.",
+            ]
+        )
 
     lines.extend(["", "## Failures", ""])
     primary_failures = [
@@ -503,6 +539,14 @@ def render_review(
                 "- Gameplay screenshot and short actual-execution clip: present and included subject to the bundle size bound.",
             ]
         )
+    if milestone == "M09":
+        lines.extend(
+            [
+                "- M08 unfamiliar-player playtests remain unavailable and are not claimed in this bundle.",
+                "- M08 representative remote-host human smoke remains incomplete and is not claimed in this bundle.",
+                "- No M08 G-GAME receipt, media set, or general-user usability claim is supplied by M09.",
+            ]
+        )
 
     lines.extend(["", "## Unresolved issues", "", "- The external reviewer has not issued a verdict."])
     if milestone == "M02" and not manual_source_review_present:
@@ -519,6 +563,14 @@ def render_review(
         "manual_authority_review_receipt", {}
     ).get("status") != "PRESENT_OPERATOR_SUPPLIED":
         lines.append("- The operator's manual M06 authority-review receipt is absent.")
+    if milestone == "M09":
+        lines.extend(
+            [
+                "- M08 G-GAME remains pending/unmeasured under the recorded process deviation.",
+                "- Public alpha and public release remain blocked on the deferred M08 human evidence.",
+                "- If later M08 testing changes game, UI, or GameSpec behavior, affected M09 integration evidence must be rerun.",
+            ]
+        )
     lines.extend(
         [
             "- Scientific and product capabilities assigned to later milestones remain intentionally unimplemented.",
@@ -547,7 +599,11 @@ def render_review(
                                     else (
                                         "- This archive contains the M08 local game/server/frontend implementation, exact lockfiles, automated evidence, operator receipts, bounded media, and compact accepted circuit. Raw MaleCNS and full 166,700-neuron arrays remain excluded."
                                         if milestone == "M08"
-                                        else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                        else (
+                                            "- This archive contains the M09 bounded recorder, deterministic data-only .flyrun fixture, applied-input/bounds/safety/parity evidence, and compact accepted circuit. Raw MaleCNS and full graph arrays remain excluded."
+                                            if milestone == "M09"
+                                            else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
+                                        )
                                     )
                                 )
                             )
@@ -1527,6 +1583,143 @@ def m08_material(
     return omitted
 
 
+def m09_material(
+    root: Path,
+    submitted: str,
+    evidence_root: Path,
+    entries: dict[str, bytes],
+) -> list[dict[str, Any]]:
+    """Validate the M09 at-risk submission and include the compact live circuit."""
+
+    checker = subprocess.run(
+        [
+            sys.executable,
+            str(root / "tools" / "check_m09_evidence.py"),
+            "--out",
+            str(evidence_root),
+            "--phase",
+            "submission",
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if checker.returncode:
+        raise BundleError(f"M09 evidence validation failed: {checker.stdout}{checker.stderr}")
+    required: dict[str, dict[str, Any]] = {}
+    for name in (
+        "recorder-format.json",
+        "deterministic-recording.json",
+        "applied-input-authority.json",
+        "bounds.json",
+        "archive-safety.json",
+        "headless-server-recorder-parity.json",
+        "decision.json",
+        "command-results.json",
+    ):
+        try:
+            required[name] = json.loads(
+                (evidence_root / name).read_text(encoding="utf-8")
+            )
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BundleError(f"M09 {name} is missing or invalid: {exc}") from exc
+    acceptance = required["command-results.json"]
+    decision = required["decision.json"]
+    process = {
+        "decision": "D-M08-HUMAN-GATE-DEFER-01",
+        "m09_execution": "AT_RISK",
+        "m08_g_game": "PENDING_UNMEASURED",
+        "m09_is_m08_usability_evidence": False,
+        "public_release_blocked": True,
+    }
+    reports = tuple(name for name in required if name not in {"decision.json", "command-results.json"})
+    if any(
+        required[name].get("status") != "PASS"
+        or required[name].get("process_status") != process
+        for name in reports
+    ):
+        raise BundleError("M09 evidence does not pass with the required at-risk disclosure")
+    if acceptance.get("status") != "PASS" or acceptance.get("submitted_code_sha") != submitted:
+        raise BundleError("M09 acceptance evidence does not pass for the submitted SHA")
+    if (
+        decision.get("milestone") != "M09"
+        or decision.get("proposed_outcome") != "PASS_CANDIDATE"
+        or decision.get("external_milestone_acceptance") != "PENDING"
+        or decision.get("m09_execution") != "AT_RISK"
+        or decision.get("m08_g_game") != "PENDING_UNMEASURED"
+        or decision.get("m09_is_m08_usability_evidence") is not False
+        or decision.get("public_release_blocked") is not True
+    ):
+        raise BundleError("M09 candidate decision overstates acceptance or M08 usability")
+    decision_bytes = commit_blob(
+        root, submitted, "decisions/D-M08-HUMAN-GATE-DEFER-01.json"
+    )
+    if sha256(decision_bytes) != (
+        "79d9a7e68e4d2d865411c2bb00fa62295fec503c976f38c4d579f8d077212a89"
+    ):
+        raise BundleError("M09 process-deviation decision identity changed")
+    ledger = commit_blob(root, submitted, "ledger.yaml").decode("utf-8")
+    for required_text in (
+        "last_accepted_milestone: M07",
+        "last_accepted_code_commit: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5",
+        "M08: BLOCKED",
+        "M09: SUBMITTED",
+        "PENDING_UNMEASURED",
+        "Do not begin M10",
+    ):
+        if required_text not in ledger:
+            raise BundleError(f"M09 submitted ledger is missing: {required_text}")
+    fixture = evidence_root / "representative.flyrun"
+    if not fixture.is_file() or fixture.stat().st_size != required["recorder-format.json"].get(
+        "fixture_bytes"
+    ):
+        raise BundleError("M09 representative flyrun fixture is missing or changed")
+
+    circuit_dir = root / "data" / "compiled" / "escape"
+    full_dir = root / "data" / "compiled" / "full"
+    try:
+        circuit_manifest = json.loads((circuit_dir / "manifest.json").read_text())
+        full_manifest = json.loads((full_dir / "manifest.json").read_text())
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M09 compiled graph manifest unavailable: {exc}") from exc
+    if circuit_manifest.get("semantic_digest", {}).get("value") != (
+        "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+    ):
+        raise BundleError("M09 compact circuit identity differs from the accepted circuit")
+    if full_manifest.get("semantic_digest", {}).get("value") != (
+        "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0"
+    ):
+        raise BundleError("M09 full graph manifest identity differs from accepted M03")
+    for path in sorted(circuit_dir.iterdir()):
+        if not path.is_file() or path.is_symlink():
+            continue
+        data = path.read_bytes()
+        if len(data) > MAX_INCLUDED_FILE_BYTES:
+            raise BundleError(f"M09 compact circuit artifact is too large: {path.name}")
+        entries[f"data/compiled/escape/{path.name}"] = data
+
+    omitted: list[dict[str, Any]] = []
+    for name, item in sorted(full_manifest.get("arrays", {}).items()):
+        path = full_dir / item["filename"]
+        size, digest = sha256_file(path)
+        if size != item.get("bytes") or digest != item.get("sha256"):
+            raise BundleError(f"M09 full graph array differs from accepted manifest: {name}")
+        omitted.append(
+            {
+                "path": f"data/compiled/full/{item['filename']}",
+                "reason": "accepted offline full graph is not executed by M09 and is omitted from the bounded review ZIP",
+                "array_name": name,
+                "bytes": size,
+                "sha256": digest,
+                "dtype": item.get("dtype"),
+                "shape": item.get("shape"),
+                "graph_semantic_digest": full_manifest["semantic_digest"]["value"],
+            }
+        )
+    return omitted
+
+
 def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> bytes:
     submitted = str(git(root, "rev-parse", "HEAD")).strip()
     status = str(git(root, "status", "--porcelain=v1", "--untracked-files=all"))
@@ -1543,6 +1736,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         diff_base = base
     if milestone == "M08" and base != "eca1ea5cae5a4805708d4994395e8e5755212b9d":
         raise BundleError("M08 review base must be the reviewer-approved M07 bookkeeping SHA")
+    if milestone == "M09" and base != "76ccadccab5c37626557c6ff4b8a565d3c387c4f":
+        raise BundleError("M09 review base must be the frozen provisional M08 integration baseline")
 
     architecture_path = root / "docs" / "architecture.md"
     if not architecture_path.is_file():
@@ -1593,6 +1788,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         omitted.extend(m07_material(root, submitted, evidence_root, entries))
     if milestone == "M08":
         omitted.extend(m08_material(root, submitted, evidence_root, entries))
+    if milestone == "M09":
+        omitted.extend(m09_material(root, submitted, evidence_root, entries))
 
     large_files = {
         "schema_version": 1,
@@ -1729,6 +1926,22 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         m08_smoke = None
+    m09_evidence: dict[str, dict[str, Any]] = {}
+    if milestone == "M09":
+        for name in (
+            "recorder-format.json",
+            "deterministic-recording.json",
+            "applied-input-authority.json",
+            "archive-safety.json",
+            "headless-server-recorder-parity.json",
+            "decision.json",
+        ):
+            try:
+                value = json.loads((evidence_root / name).read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                continue
+            if isinstance(value, dict):
+                m09_evidence[name] = value
     entries["REVIEW.md"] = render_review(
         milestone,
         attempt,
@@ -1758,6 +1971,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         m08_decision,
         m08_identity,
         m08_smoke,
+        m09_evidence,
     )
 
     manifest = {

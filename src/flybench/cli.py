@@ -53,6 +53,12 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--profile", required=True, type=Path)
     demo.add_argument("--port", type=int, default=8000)
     demo.add_argument("--no-browser", action="store_true")
+    record = commands.add_parser(
+        "record", help="Write one bounded M09 authoritative .flyrun example"
+    )
+    record.add_argument("--profile", required=True, type=Path)
+    record.add_argument("--out", required=True, type=Path)
+    record.add_argument("--run-id", default="m09-representative-v1")
     return parser
 
 
@@ -186,6 +192,40 @@ def main(argv: list[str] | None = None) -> int:
         if not args.no_browser:
             threading.Timer(0.5, webbrowser.open, args=(url,)).start()
         uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="info")
+        return 0
+    if args.command == "record":
+        try:
+            from flybench.recording import (
+                load_flyrun,
+                run_representative_recording,
+                write_flyrun,
+            )
+
+            _subject, result = run_representative_recording(
+                args.profile, run_id=args.run_id
+            )
+            write_flyrun(args.out, result)
+            loaded = load_flyrun(args.out)
+        except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
+            print(f"M09 record failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return 1
+        print(
+            json.dumps(
+                {
+                    "status": "PASS",
+                    "path": str(args.out.resolve()),
+                    "bytes": loaded.archive_bytes,
+                    "content_digest": loaded.content_digest,
+                    "essential_record_count": result.essential_record_count,
+                    "optional_record_count": result.optional_record_count,
+                    "optional_trace_status": result.optional_trace_status,
+                    "authoritative_result": result.summary["authoritative_result"],
+                    "m09_execution": "AT_RISK",
+                    "m08_g_game": "PENDING_UNMEASURED",
+                },
+                sort_keys=True,
+            )
+        )
         return 0
     parser.error("unsupported command")
     return 2

@@ -5,6 +5,7 @@ import importlib
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 
@@ -128,7 +129,7 @@ def test_observed_tooling_is_honest() -> None:
     assert commands["git"]["normalized_version"] == "2.43.0"
     assert commands["python"]["normalized_version"] == "3.12.3"
     assert commands["uv"]["normalized_version"] == "0.12.13"
-    if ledger["current_milestone"] == "M08":
+    if ledger["current_milestone"] in {"M08", "M09"}:
         assert commands["node"]["available"] is True
         assert commands["node"]["exit_status"] == 0
         assert commands["node"]["normalized_version"] == "24.21.0"
@@ -142,6 +143,38 @@ def test_observed_tooling_is_honest() -> None:
             assert commands[missing]["normalized_version"] is None
     assert "WSL2" in commands["uname"]["normalized_version"]
     assert "x86_64" in commands["uname"]["normalized_version"]
+
+
+def test_m09_at_risk_process_state_does_not_claim_m08_acceptance() -> None:
+    ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
+    if ledger["current_milestone"] != "M09":
+        pytest.skip("M09 at-risk process state is not active")
+    decision = json.loads(
+        (ROOT / "decisions/D-M08-HUMAN-GATE-DEFER-01.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert ledger["milestone_status"]["M08"] == "BLOCKED"
+    assert ledger["milestone_status"]["M09"] in {"IN_PROGRESS", "SUBMITTED"}
+    assert ledger["last_accepted_milestone"] == "M07"
+    assert ledger["accepted_milestones"] == [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07",
+    ]
+    assert ledger["m08_integration_baseline"]["g_game"] == "PENDING_UNMEASURED"
+    assert ledger["m09_execution"]["status"] == "AT_RISK"
+    assert decision["classification"].startswith("PROCESS DEVIATION")
+    assert decision["m08"]["milestone_acceptance"] == "NOT_ACCEPTED"
+    assert decision["m08"]["unfamiliar_player_evidence_collected"] is False
+    assert (
+        decision["m08"]["representative_remote_host_human_smoke_completed"]
+        is False
+    )
 
 
 def test_required_m01_paths_and_registry() -> None:
