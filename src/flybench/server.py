@@ -51,6 +51,13 @@ def public_profile(resolved: ResolvedLiveProfile) -> dict[str, object]:
             "strike_radius": resolved.game_spec.strike_radius,
             "attack_wind_up_ms": resolved.game_spec.attack_wind_up_ms,
             "impact_offset_ms": resolved.game_spec.impact_offset_ms,
+            "ambient_walking": {
+                "classification": "M08 GAME MECHANICS — not physiology",
+                "speed_per_control_interval": resolved.game_spec.ambient_speed_per_control_interval,
+                "heading_jitter_uniform_rad": resolved.game_spec.heading_jitter_uniform_rad,
+                "server_authoritative": True,
+                "threat_independent": True,
+            },
         },
         "claim_scope": value["claim_scope"],
         "model_notice": value["model_notice"],

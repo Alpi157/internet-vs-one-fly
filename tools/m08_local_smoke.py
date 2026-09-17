@@ -170,12 +170,34 @@ def main(argv: list[str] | None = None) -> int:
             "live_E_20607": profile_value.get("graph", {}).get("E") == 20607,
             "live_contacts_79112": profile_value.get("graph", {}).get("represented_contacts") == 79112,
             "kernel_backend": profile_value.get("backend", {}).get("name") == "kernel",
-            "game_spec_v02": profile_value.get("game", {}).get("profile_id")
-            == "flybench.catch-game.v0.2",
+            "game_spec_v03": profile_value.get("game", {}).get("profile_id")
+            == "flybench.catch-game.v0.3",
             "profile_strike_radius_point_55": profile_value.get("game", {}).get(
                 "strike_radius"
             )
             == 0.55,
+            "profile_ambient_speed_point_03": profile_value.get("game", {})
+            .get("ambient_walking", {})
+            .get("speed_per_control_interval")
+            == 0.03,
+            "profile_heading_jitter_minus_point_09_to_point_09": profile_value.get(
+                "game", {}
+            )
+            .get("ambient_walking", {})
+            .get("heading_jitter_uniform_rad")
+            == [-0.09, 0.09],
+            "profile_ambient_motion_server_authoritative": profile_value.get(
+                "game", {}
+            )
+            .get("ambient_walking", {})
+            .get("server_authoritative")
+            is True,
+            "profile_ambient_motion_threat_independent": profile_value.get(
+                "game", {}
+            )
+            .get("ambient_walking", {})
+            .get("threat_independent")
+            is True,
             "locked_target_immutable": websocket["locked_target_after_later_aim"]
             == {"x": 10.0, "y": 10.0},
             "locked_strike_radius_point_55": websocket["locked_strike_radius"]

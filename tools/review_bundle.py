@@ -1411,9 +1411,10 @@ def m08_material(
     try:
         committed_live = commit_blob(root, submitted, "profiles/live.json")
         game_profile_path = identity.get("game_spec_path")
-        if game_profile_path != "profiles/game-v0.2.json":
-            raise BundleError("M08 evidence does not select the bounded v0.2 GameSpec")
+        if game_profile_path != "profiles/game-v0.3.json":
+            raise BundleError("M08 evidence does not select the bounded v0.3 GameSpec")
         committed_game = commit_blob(root, submitted, game_profile_path)
+        previous_game = commit_blob(root, submitted, "profiles/game-v0.2.json")
         starting_game = commit_blob(root, submitted, "profiles/game-v0.1.json")
     except BundleError as exc:
         raise BundleError(f"committed M08 profile is unavailable: {exc}") from exc
@@ -1423,7 +1424,10 @@ def m08_material(
         raise BundleError("M08 GameSpec evidence differs from committed bytes")
     if sha256(starting_game) != "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7":
         raise BundleError("M08 historical starting GameSpec identity was not preserved")
+    if sha256(previous_game) != "4d28775a7c69f063d7aab0cee44d6f8b1c4eaa72687644f96a59c65ae7220a25":
+        raise BundleError("M08 historical v0.2 GameSpec identity was not preserved")
     game_value = json.loads(committed_game)
+    previous_game_value = json.loads(previous_game)
     pre_repair_path = evidence_root / "pre-repair" / "operator-usability-finding.json"
     try:
         pre_repair = json.loads(pre_repair_path.read_text(encoding="utf-8"))
@@ -1433,10 +1437,31 @@ def m08_material(
         pre_repair.get("status") != "REPAIR_REQUIRED"
         or pre_repair.get("candidate_product_sha")
         != "2a68de03f713409f7525c02629d894828debfd32"
-        or game_value.get("provenance", {}).get("pre_repair_evidence_sha256")
+        or previous_game_value.get("provenance", {}).get("pre_repair_evidence_sha256")
         != sha256(pre_repair_path.read_bytes())
     ):
         raise BundleError("M08 pre-repair finding was not preserved as repair-required evidence")
+    pre_experiment_path = (
+        evidence_root
+        / "pre-experiment"
+        / "operator-ambient-movement-finding.json"
+    )
+    try:
+        pre_experiment = json.loads(pre_experiment_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BundleError(f"M08 pre-experiment operator evidence is missing: {exc}") from exc
+    if (
+        pre_experiment.get("status")
+        != "BOUNDED_GAME_MECHANICS_EXPERIMENT_REQUIRED"
+        or pre_experiment.get("candidate_product_sha")
+        != "70bd9de17308048c5d51df3cc4efe692daab9d32"
+        or pre_experiment.get("gate_scope", {}).get("pass_claim") is not False
+        or game_value.get("provenance", {}).get("pre_experiment_evidence_sha256")
+        != sha256(pre_experiment_path.read_bytes())
+    ):
+        raise BundleError(
+            "M08 pre-experiment finding was not preserved as experiment-required evidence"
+        )
     if (
         identity.get("status") != "PASS"
         or identity.get("graph", {}).get("N") != 313

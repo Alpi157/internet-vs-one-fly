@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.catch-game.v0.3",
+  "classification": "PROVISIONAL GAME MECHANICS — M08 usability tuning; not physiology or biomechanics",
+  "arena": {
+    "minimum": -10.0,
+    "maximum": 10.0,
+    "units": "abstract arena units",
+    "source": "profiles/environment-v0.1.json"
+  },
+  "round": {
+    "horizon_ms": 20000,
+    "maximum_committed_attacks": 6,
+    "first_attack_available_immediately": true
+  },
+  "attack": {
+    "wind_up_ms": 600,
+    "stimulus_start_offset_ms": 200,
+    "stimulus_end_offset_ms": 600,
+    "impact_offset_ms": 600,
+    "cooldown_after_impact_ms": 600,
+    "strike_radius": 0.55,
+    "collision_rule": "distance(locked target, authoritative post-motion fly position at impact) <= strike_radius"
+  },
+  "stimulus": {
+    "kind": "accepted M06 scalar standard-looming schedule",
+    "start_distance": 12.0,
+    "end_distance": 1.0,
+    "radial_velocity_per_ms": -0.0275,
+    "direction_or_bearing": false,
+    "notice": "The model receives a simplified scalar looming signal. Strike direction is not reconstructed from fly vision."
+  },
+  "ambient_walking_overrides": {
+    "classification": "PROVISIONAL GAME MECHANICS — M08 usability tuning; not physiology or biomechanics",
+    "scope": "M08 GameSession only",
+    "speed_per_control_interval": 0.03,
+    "heading_jitter_uniform_rad": [-0.09, 0.09],
+    "dependency_rule": "seeded server-authoritative body mechanics and environment RNG only; no aim, strike, cursor, threat geometry, future collision, or away vector",
+    "biological_estimate": false
+  },
+  "presentation": {
+    "target_hz": 50,
+    "control_intervals_per_state": 2
+  },
+  "clock": {
+    "control_interval_ms": 10,
+    "neural_dt_ms": 0.5,
+    "neural_steps_per_control_interval": 20,
+    "ordering_identity": "flybench.neural-order.v1"
+  },
+  "policy": {
+    "hidden_difficulty_adjustment": false,
+    "adaptive_handicap": false,
+    "neural_parameter_change": false,
+    "client_authoritative_collision": false
+  },
+  "provenance": {
+    "previous_game_spec_path": "profiles/game-v0.2.json",
+    "previous_game_spec_sha256": "4d28775a7c69f063d7aab0cee44d6f8b1c4eaa72687644f96a59c65ae7220a25",
+    "superseded_candidate_product_sha": "70bd9de17308048c5d51df3cc4efe692daab9d32",
+    "pre_experiment_evidence_path": "evidence/M08/pre-experiment/operator-ambient-movement-finding.json",
+    "pre_experiment_evidence_sha256": "0b4e802d045a0d858f8cf9d1f4075ab567803d0b4541662394c8e469dfdb4d98",
+    "bounded_changes": [
+      {
+        "field": "ambient_walking.speed_per_control_interval",
+        "previous": 0.02,
+        "current": 0.03,
+        "units": "abstract arena units per control interval"
+      },
+      {
+        "field": "ambient_walking.heading_jitter_uniform_rad",
+        "previous": [-0.05, 0.05],
+        "current": [-0.09, 0.09],
+        "units": "radians per ambient control interval"
+      }
+    ],
+    "strike_radius_held_constant": 0.55,
+    "scientific_runtime_changes": false,
+    "automatic_win_rate_tuning": false
+  }
+}

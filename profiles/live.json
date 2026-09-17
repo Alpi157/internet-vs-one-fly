@@ -56,8 +56,19 @@
     "ordering_identity": "flybench.neural-order.v1"
   },
   "game": {
-    "path": "profiles/game-v0.2.json",
-    "sha256": "4d28775a7c69f063d7aab0cee44d6f8b1c4eaa72687644f96a59c65ae7220a25"
+    "path": "profiles/game-v0.3.json",
+    "sha256": "5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b"
+  },
+  "game_mechanics": {
+    "classification": "PROVISIONAL GAME MECHANICS — M08 usability tuning; not physiology or biomechanics",
+    "scope": "M08-specific GameSession override applied to the immutable accepted environment base",
+    "ambient_walking_overrides": {
+      "speed_per_control_interval": 0.03,
+      "heading_jitter_uniform_rad": [-0.09, 0.09]
+    },
+    "server_authoritative": true,
+    "threat_independent": true,
+    "biological_estimate": false
   },
   "claim_scope": "modeled DNp01-dependent escape onset in the declared simplified circuit/controller",
   "model_notice": "Live model: 313-neuron MaleCNS-derived circuit. The neural model controls escape onset; walking and takeoff mechanics are simplified. The stimulus is feature-level/scalar, not reconstructed raw vision.",

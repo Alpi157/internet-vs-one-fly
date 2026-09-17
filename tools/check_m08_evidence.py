@@ -51,9 +51,13 @@ def validate_automated(evidence: Path) -> dict[str, Any]:
         raise ValueError("captured game-spec.json does not match the committed GameSpec")
     pre_repair_path = evidence / "pre-repair" / "operator-usability-finding.json"
     pre_repair = load_json(pre_repair_path)
-    provenance = json.loads(
+    current_provenance = json.loads(
         (ROOT / resolved.value["game"]["path"]).read_text(encoding="utf-8")
     ).get("provenance", {})
+    v02_path = ROOT / "profiles/game-v0.2.json"
+    v02_provenance = json.loads(v02_path.read_text(encoding="utf-8")).get(
+        "provenance", {}
+    )
     if (
         pre_repair.get("status") != "REPAIR_REQUIRED"
         or pre_repair.get("candidate_product_sha")
@@ -62,10 +66,33 @@ def validate_automated(evidence: Path) -> dict[str, Any]:
             "required_unfamiliar_player_playtests_satisfied"
         )
         != 0
-        or provenance.get("pre_repair_evidence_sha256")
+        or v02_provenance.get("pre_repair_evidence_sha256")
         != sha256_file(pre_repair_path)
     ):
         raise ValueError("M08 pre-repair operator evidence is missing or reinterpreted")
+    pre_experiment_path = (
+        evidence / "pre-experiment" / "operator-ambient-movement-finding.json"
+    )
+    pre_experiment = load_json(pre_experiment_path)
+    if (
+        pre_experiment.get("status")
+        != "BOUNDED_GAME_MECHANICS_EXPERIMENT_REQUIRED"
+        or pre_experiment.get("candidate_product_sha")
+        != "70bd9de17308048c5d51df3cc4efe692daab9d32"
+        or pre_experiment.get("game_spec", {}).get("sha256")
+        != sha256_file(v02_path)
+        or pre_experiment.get("game_spec", {}).get("strike_radius") != 0.55
+        or pre_experiment.get("gate_scope", {}).get(
+            "required_unfamiliar_player_playtests_satisfied"
+        )
+        != 0
+        or pre_experiment.get("gate_scope", {}).get("pass_claim") is not False
+        or current_provenance.get("pre_experiment_evidence_sha256")
+        != sha256_file(pre_experiment_path)
+    ):
+        raise ValueError(
+            "M08 pre-experiment operator evidence is missing or reinterpreted"
+        )
     for name in (
         "local-game-tests.json",
         "local-server-smoke.json",

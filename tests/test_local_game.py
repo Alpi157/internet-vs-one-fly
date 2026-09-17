@@ -1,16 +1,25 @@
 from __future__ import annotations
 
+import ast
 import copy
 from dataclasses import replace
 import hashlib
+import inspect
 import json
 import math
 from pathlib import Path
+import textwrap
 
 import numpy as np
 import pytest
 
-from flybench.catch import EnvironmentConfig
+from flybench.authority import FORBIDDEN_AMBIENT_TOKENS, audit_callable_dependencies
+from flybench.catch import (
+    CatchEnvironment,
+    EnvironmentConfig,
+    ambient_step,
+    load_environment_config,
+)
 from flybench.game import (
     ACCEPTED_CONTACTS,
     ACCEPTED_CONTROLLER_SHA256,
@@ -26,6 +35,8 @@ from flybench.game import (
     DemoProtocol,
     GameInputError,
     GameSession,
+    M08_GAME_SPEC_V02_SHA256,
+    apply_game_environment_overrides,
     build_live_session,
     load_game_spec,
     load_live_profile,
@@ -39,10 +50,12 @@ from flybench.runner import ACCEPTED_CIRCUIT_DIGEST, GraphBundle, Runner
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "profiles/live.json"
-GAME = ROOT / "profiles/game-v0.2.json"
+GAME = ROOT / "profiles/game-v0.3.json"
 
 
-def environment(*, speed: float = 0.0) -> EnvironmentConfig:
+def environment(
+    *, speed: float = 0.0, jitter_bounds: tuple[float, float] = (0.0, 0.0)
+) -> EnvironmentConfig:
     return EnvironmentConfig(
         arena_min=-10.0,
         arena_max=10.0,
@@ -50,8 +63,8 @@ def environment(*, speed: float = 0.0) -> EnvironmentConfig:
         initial_y=0.0,
         initial_heading_rad=0.0,
         ambient_speed_per_interval=speed,
-        heading_jitter_min_rad=0.0,
-        heading_jitter_max_rad=0.0,
+        heading_jitter_min_rad=jitter_bounds[0],
+        heading_jitter_max_rad=jitter_bounds[1],
         takeoff_duration_intervals=10,
         takeoff_speed_per_interval=0.2,
     )
@@ -82,6 +95,9 @@ def bundle() -> GraphBundle:
 def session(
     *,
     speed: float = 0.0,
+    jitter_bounds: tuple[float, float] = (0.0, 0.0),
+    environment_seed: int = 20260917,
+    output_clamp: bool = False,
     maximum_attacks: int = 6,
     horizon_ms: int = 20000,
 ) -> GameSession:
@@ -96,8 +112,9 @@ def session(
         bundle(),
         model,
         peak_sensory_external_drive=4.0,
-        environment_config=environment(speed=speed),
-        environment_seed=20260917,
+        environment_config=environment(speed=speed, jitter_bounds=jitter_bounds),
+        environment_seed=environment_seed,
+        output_clamp=output_clamp,
         backend="reference",
     )
     spec = replace(
@@ -111,6 +128,17 @@ def session(
 def advance(subject: GameSession, intervals: int) -> None:
     for _ in range(intervals):
         subject.advance_interval()
+
+
+def ambient_trajectory(subject: GameSession, intervals: int) -> list[tuple[float, float, float]]:
+    trajectory = []
+    for _ in range(intervals):
+        subject.advance_interval()
+        environment_state = subject.runner.environment
+        trajectory.append(
+            (environment_state.x, environment_state.y, environment_state.heading_rad)
+        )
+    return trajectory
 
 
 def neural_snapshots_equal(left: dict[str, object], right: dict[str, object]) -> bool:
@@ -205,18 +233,175 @@ def test_authoritative_collision_uses_configured_point_55_strike_radius() -> Non
     assert outside.last_impact["outcome"] == "missed"
 
 
-def test_game_spec_revision_changes_only_radius_beyond_version_provenance() -> None:
-    previous = json.loads((ROOT / "profiles/game-v0.1.json").read_text(encoding="utf-8"))
+def test_game_spec_v03_changes_only_declared_ambient_mechanics() -> None:
+    previous = json.loads((ROOT / "profiles/game-v0.2.json").read_text(encoding="utf-8"))
     current = json.loads(GAME.read_text(encoding="utf-8"))
-    assert current["provenance"]["bounded_change"]["field"] == "attack.strike_radius"
-    assert previous["attack"]["strike_radius"] == 1.0
-    assert current["attack"]["strike_radius"] == 0.55
+    assert current["provenance"]["bounded_changes"] == [
+        {
+            "field": "ambient_walking.speed_per_control_interval",
+            "previous": 0.02,
+            "current": 0.03,
+            "units": "abstract arena units per control interval",
+        },
+        {
+            "field": "ambient_walking.heading_jitter_uniform_rad",
+            "previous": [-0.05, 0.05],
+            "current": [-0.09, 0.09],
+            "units": "radians per ambient control interval",
+        },
+    ]
+    assert previous["attack"]["strike_radius"] == current["attack"]["strike_radius"] == 0.55
+    current.pop("ambient_walking_overrides")
     current.pop("provenance")
     for value in (previous, current):
+        value.pop("provenance", None)
         value.pop("profile_id")
         value.pop("classification")
-    current["attack"]["strike_radius"] = previous["attack"]["strike_radius"]
     assert current == previous
+
+
+def test_live_game_session_applies_ambient_overrides_to_an_immutable_base() -> None:
+    resolved = load_live_profile(LIVE)
+    base = load_environment_config(ROOT / resolved.value["environment"]["path"])
+    effective = apply_game_environment_overrides(base, resolved.game_spec)
+    subject = build_live_session(resolved)
+
+    assert base.ambient_speed_per_interval == 0.02
+    assert (base.heading_jitter_min_rad, base.heading_jitter_max_rad) == (-0.05, 0.05)
+    assert effective is not base
+    assert effective.ambient_speed_per_interval == 0.03
+    assert (effective.heading_jitter_min_rad, effective.heading_jitter_max_rad) == (
+        -0.09,
+        0.09,
+    )
+    assert subject.runner.environment.config == effective
+    assert subject.runner.environment.rng.bit_generator.__class__.__name__ == "PCG64"
+    assert resolved.value["game_mechanics"]["ambient_walking_overrides"] == {
+        "speed_per_control_interval": 0.03,
+        "heading_jitter_uniform_rad": [-0.09, 0.09],
+    }
+
+
+def test_same_seed_and_authoritative_schedule_produce_identical_ambient_trajectory() -> None:
+    left = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=42,
+        output_clamp=True,
+    )
+    right = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=42,
+        output_clamp=True,
+    )
+    for subject in (left, right):
+        subject.update_aim(9.0, 9.0, 1)
+        subject.commit_attack(9.0, 9.0, 2)
+
+    assert ambient_trajectory(left, 120) == ambient_trajectory(right, 120)
+    for subject in (left, right):
+        subject.update_aim(-9.0, 9.0, 3)
+        subject.commit_attack(-9.0, 9.0, 4)
+    assert ambient_trajectory(left, 60) == ambient_trajectory(right, 60)
+    assert left.runner.environment.snapshot() == right.runner.environment.snapshot()
+
+
+def test_different_environment_seeds_produce_different_ambient_trajectories() -> None:
+    first = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=17,
+        output_clamp=True,
+    )
+    second = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=23,
+        output_clamp=True,
+    )
+    assert ambient_trajectory(first, 100) != ambient_trajectory(second, 100)
+
+
+def test_aim_and_strike_geometry_do_not_change_output_clamped_walking() -> None:
+    left = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=31,
+        output_clamp=True,
+    )
+    right = session(
+        speed=0.03,
+        jitter_bounds=(-0.09, 0.09),
+        environment_seed=31,
+        output_clamp=True,
+    )
+    left.update_aim(10.0, 10.0, 1)
+    left.commit_attack(10.0, 10.0, 2)
+    right.update_aim(-10.0, -10.0, 1)
+    right.commit_attack(-10.0, -10.0, 2)
+
+    assert ambient_trajectory(left, 120) == ambient_trajectory(right, 120)
+    assert left.last_impact["outcome"] == right.last_impact["outcome"] == "missed"
+    assert left.runner.finish_run()["escape_command_count"] == 0
+    assert right.runner.finish_run()["escape_command_count"] == 0
+
+
+def test_ambient_motion_dependency_audit_has_no_hidden_evasion_path() -> None:
+    for function in (ambient_step, apply_game_environment_overrides):
+        audit = audit_callable_dependencies(
+            function, forbidden_tokens=FORBIDDEN_AMBIENT_TOKENS
+        )
+        assert audit["status"] == "PASS", audit
+        assert audit["closure_variables"]["nonlocals"] == {}
+        assert audit["mutable_referenced_globals"] == []
+        assert audit["forbidden_token_scan"]["hits"] == {}
+        assert audit["reachable_environment_objects"] == []
+
+    motion = CatchEnvironment.advance_motion
+    motion_source = textwrap.dedent(inspect.getsource(motion))
+    motion_tree = ast.parse(motion_source)
+    closure = inspect.getclosurevars(motion)
+    scanned_source = "\n".join(
+        (motion_source, inspect.getsource(closure.globals["ambient_step"]))
+    ).lower()
+    assert {
+        token: scanned_source.count(token)
+        for token in FORBIDDEN_AMBIENT_TOKENS
+        if token in scanned_source
+    } == {}
+    assert closure.nonlocals == {}
+    assert not any(
+        isinstance(value, (dict, list, set, bytearray))
+        for value in closure.globals.values()
+    )
+    direct_calls = {
+        node.func.id
+        for node in ast.walk(motion_tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+    }
+    assert "ambient_step" in direct_calls
+    assert tuple(inspect.signature(motion).parameters) == (
+        "self",
+        "held_escape_request",
+    )
+
+    owned_environment = CatchEnvironment(
+        environment(speed=0.03, jitter_bounds=(-0.09, 0.09)), seed=41
+    )
+    assert not set(vars(owned_environment)).intersection(
+        {
+            "aim_x",
+            "aim_y",
+            "cursor_position",
+            "strike_target",
+            "attack_bearing",
+            "threat_bearing",
+            "distance_to_attack",
+            "future_collision_location",
+            "away_from_attack",
+        }
+    )
 
 
 def test_catch_uses_authoritative_post_motion_server_position() -> None:
@@ -249,15 +434,20 @@ def test_new_command_at_impact_cannot_retroactively_change_catch() -> None:
 def test_neural_state_continues_across_attacks_and_cooldown() -> None:
     subject = session(maximum_attacks=3)
     neural_owner = subject.runner.neural
+    environment_owner = subject.runner.environment
     subject.commit_attack(10.0, 10.0, 1)
     advance(subject, 60)
     first_neural_tick = subject.runner.neural.tick
+    first_environment_tick = subject.runner.environment.control_tick
     advance(subject, 60)
     assert subject.runner.neural is neural_owner
+    assert subject.runner.environment is environment_owner
     assert subject.runner.neural.tick == first_neural_tick + 60 * 20
+    assert subject.runner.environment.control_tick == first_environment_tick + 60
     subject.commit_attack(-10.0, 10.0, 2)
     subject.advance_interval()
     assert subject.runner.neural.tick == first_neural_tick + 61 * 20
+    assert subject.runner.environment.control_tick == first_environment_tick + 61
     assert subject.control_tick == 121
 
 
@@ -323,10 +513,11 @@ def test_all_accepted_live_identities_match_exact_bytes() -> None:
     assert value["environment"]["sha256"] == ACCEPTED_ENVIRONMENT_SHA256
     assert resolved.game_spec_sha256 == ACCEPTED_GAME_SPEC_SHA256
     provenance = json.loads(GAME.read_text(encoding="utf-8"))["provenance"]
-    assert provenance["previous_game_spec_sha256"] == M08_STARTING_GAME_SPEC_SHA256
+    assert provenance["previous_game_spec_sha256"] == M08_GAME_SPEC_V02_SHA256
     assert sha256_file(ROOT / provenance["previous_game_spec_path"]) == (
-        M08_STARTING_GAME_SPEC_SHA256
+        M08_GAME_SPEC_V02_SHA256
     )
+    assert sha256_file(ROOT / "profiles/game-v0.1.json") == M08_STARTING_GAME_SPEC_SHA256
     for key in ("controller", "encoder", "decoder", "environment"):
         assert sha256_file(ROOT / value[key]["path"]) == value[key]["sha256"]
 

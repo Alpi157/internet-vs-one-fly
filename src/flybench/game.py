@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import hashlib
 import json
 import math
 from pathlib import Path
 from typing import Any
 
-from flybench.catch import load_environment_config
+from flybench.catch import EnvironmentConfig, load_environment_config
 from flybench.encoding import ThreatObservation
 from flybench.kernel import KERNEL_IMPLEMENTATION_ID, kernel_configuration
 from flybench.model import load_candidate_model_spec
@@ -53,8 +53,11 @@ ACCEPTED_CONTACTS = 79112
 M08_STARTING_GAME_SPEC_SHA256 = (
     "521dc8f33457155b0f5c5438f11da2c6b489d9a5667b7d63421ed863fbb62cd7"
 )
-ACCEPTED_GAME_SPEC_SHA256 = (
+M08_GAME_SPEC_V02_SHA256 = (
     "4d28775a7c69f063d7aab0cee44d6f8b1c4eaa72687644f96a59c65ae7220a25"
+)
+ACCEPTED_GAME_SPEC_SHA256 = (
+    "5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b"
 )
 
 
@@ -93,12 +96,15 @@ class GameSpec:
     stimulus_start_distance: float
     stimulus_end_distance: float
     stimulus_radial_velocity_per_ms: float
+    ambient_speed_per_control_interval: float | None
+    heading_jitter_uniform_rad: tuple[float, float] | None
     presentation_intervals: int
 
     def __post_init__(self) -> None:
         if self.profile_id not in {
             "flybench.catch-game.v0.1",
             "flybench.catch-game.v0.2",
+            "flybench.catch-game.v0.3",
         }:
             raise ValueError("unsupported GameSpec identity")
         if not self.classification.startswith("PROVISIONAL GAME MECHANICS"):
@@ -130,6 +136,25 @@ class GameSpec:
             raise ValueError("looming distances must be positive and approaching")
         if not math.isfinite(self.stimulus_radial_velocity_per_ms) or self.stimulus_radial_velocity_per_ms >= 0.0:
             raise ValueError("looming radial velocity must be finite and negative")
+        overrides = (
+            self.ambient_speed_per_control_interval,
+            self.heading_jitter_uniform_rad,
+        )
+        if any(value is not None for value in overrides):
+            if any(value is None for value in overrides):
+                raise ValueError("ambient walking overrides must be complete")
+            assert self.ambient_speed_per_control_interval is not None
+            assert self.heading_jitter_uniform_rad is not None
+            jitter_min, jitter_max = self.heading_jitter_uniform_rad
+            if (
+                not math.isfinite(self.ambient_speed_per_control_interval)
+                or self.ambient_speed_per_control_interval <= 0.0
+            ):
+                raise ValueError("ambient walking speed override must be finite and positive")
+            if not math.isfinite(jitter_min) or not math.isfinite(jitter_max):
+                raise ValueError("ambient walking jitter bounds must be finite")
+            if not jitter_min < jitter_max:
+                raise ValueError("ambient walking jitter bounds must be strictly ordered")
         if type(self.presentation_intervals) is not int or self.presentation_intervals <= 0:
             raise ValueError("presentation interval count must be positive")
 
@@ -165,6 +190,7 @@ def load_game_spec(path: Path) -> GameSpec:
     round_value = value["round"]
     attack = value["attack"]
     stimulus = value["stimulus"]
+    ambient = value.get("ambient_walking_overrides")
     clock = value["clock"]
     presentation = value["presentation"]
     if (
@@ -196,6 +222,47 @@ def load_game_spec(path: Path) -> GameSpec:
             or provenance.get("automatic_win_rate_tuning") is not False
         ):
             raise ValueError("M08 GameSpec revision provenance is incomplete")
+    if value.get("profile_id") == "flybench.catch-game.v0.3":
+        provenance = value.get("provenance", {})
+        if (
+            provenance.get("previous_game_spec_path") != "profiles/game-v0.2.json"
+            or provenance.get("previous_game_spec_sha256")
+            != M08_GAME_SPEC_V02_SHA256
+            or provenance.get("superseded_candidate_product_sha")
+            != "70bd9de17308048c5d51df3cc4efe692daab9d32"
+            or provenance.get("pre_experiment_evidence_path")
+            != "evidence/M08/pre-experiment/operator-ambient-movement-finding.json"
+            or provenance.get("pre_experiment_evidence_sha256")
+            != "0b4e802d045a0d858f8cf9d1f4075ab567803d0b4541662394c8e469dfdb4d98"
+            or provenance.get("bounded_changes")
+            != [
+                {
+                    "field": "ambient_walking.speed_per_control_interval",
+                    "previous": 0.02,
+                    "current": 0.03,
+                    "units": "abstract arena units per control interval",
+                },
+                {
+                    "field": "ambient_walking.heading_jitter_uniform_rad",
+                    "previous": [-0.05, 0.05],
+                    "current": [-0.09, 0.09],
+                    "units": "radians per ambient control interval",
+                },
+            ]
+            or provenance.get("strike_radius_held_constant") != 0.55
+            or provenance.get("scientific_runtime_changes") is not False
+            or provenance.get("automatic_win_rate_tuning") is not False
+        ):
+            raise ValueError("M08 GameSpec v0.3 provenance is incomplete")
+        if ambient != {
+            "classification": "PROVISIONAL GAME MECHANICS — M08 usability tuning; not physiology or biomechanics",
+            "scope": "M08 GameSession only",
+            "speed_per_control_interval": 0.03,
+            "heading_jitter_uniform_rad": [-0.09, 0.09],
+            "dependency_rule": "seeded server-authoritative body mechanics and environment RNG only; no aim, strike, cursor, threat geometry, future collision, or away vector",
+            "biological_estimate": False,
+        }:
+            raise ValueError("M08 ambient walking override declaration changed")
     return GameSpec(
         profile_id=value["profile_id"],
         classification=value["classification"],
@@ -212,7 +279,35 @@ def load_game_spec(path: Path) -> GameSpec:
         stimulus_start_distance=float(stimulus["start_distance"]),
         stimulus_end_distance=float(stimulus["end_distance"]),
         stimulus_radial_velocity_per_ms=float(stimulus["radial_velocity_per_ms"]),
+        ambient_speed_per_control_interval=(
+            None if ambient is None else float(ambient["speed_per_control_interval"])
+        ),
+        heading_jitter_uniform_rad=(
+            None
+            if ambient is None
+            else (
+                float(ambient["heading_jitter_uniform_rad"][0]),
+                float(ambient["heading_jitter_uniform_rad"][1]),
+            )
+        ),
         presentation_intervals=int(presentation["control_intervals_per_state"]),
+    )
+
+
+def apply_game_environment_overrides(
+    base_config: EnvironmentConfig, game_spec: GameSpec
+) -> EnvironmentConfig:
+    """Return the M08-only effective mechanics without mutating the accepted base."""
+
+    if game_spec.ambient_speed_per_control_interval is None:
+        return base_config
+    assert game_spec.heading_jitter_uniform_rad is not None
+    jitter_min, jitter_max = game_spec.heading_jitter_uniform_rad
+    return replace(
+        base_config,
+        ambient_speed_per_interval=game_spec.ambient_speed_per_control_interval,
+        heading_jitter_min_rad=jitter_min,
+        heading_jitter_max_rad=jitter_max,
     )
 
 
@@ -292,6 +387,18 @@ def load_live_profile(path: Path) -> ResolvedLiveProfile:
         root, value["game"], ACCEPTED_GAME_SPEC_SHA256, "GameSpec"
     )
     game_spec = load_game_spec(game_path)
+    if value.get("game_mechanics") != {
+        "classification": "PROVISIONAL GAME MECHANICS — M08 usability tuning; not physiology or biomechanics",
+        "scope": "M08-specific GameSession override applied to the immutable accepted environment base",
+        "ambient_walking_overrides": {
+            "speed_per_control_interval": 0.03,
+            "heading_jitter_uniform_rad": [-0.09, 0.09],
+        },
+        "server_authoritative": True,
+        "threat_independent": True,
+        "biological_estimate": False,
+    }:
+        raise ValueError("live M08 game-mechanics declaration changed")
     return ResolvedLiveProfile(
         path=path,
         root=root,
@@ -325,15 +432,19 @@ def build_live_session(profile: ResolvedLiveProfile | Path) -> "GameSession":
     controller = json.loads(
         (resolved.root / value["controller"]["path"]).read_text(encoding="utf-8")
     )
+    accepted_base_environment = load_environment_config(
+        resolved.root / value["environment"]["path"]
+    )
+    effective_game_environment = apply_game_environment_overrides(
+        accepted_base_environment, resolved.game_spec
+    )
     runner = Runner(
         bundle,
         model,
         peak_sensory_external_drive=float(
             controller["selected_peak_sensory_external_drive"]
         ),
-        environment_config=load_environment_config(
-            resolved.root / value["environment"]["path"]
-        ),
+        environment_config=effective_game_environment,
         environment_seed=int(value["environment"]["seed"]),
         backend="kernel",
     )
