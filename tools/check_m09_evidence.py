@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate M09 attempt-2 evidence without interpreting deferred M08 usability."""
+"""Validate M09 attempt-3 evidence without interpreting deferred M08 usability."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from typing import Any
 
 import yaml
 
+from flybench.game import COORDINATE_QUANTIZATION_ID
 from flybench.recording import (
     ARCHITECTURE_SHA256,
     FLYRUN_FORMAT_ID,
@@ -44,14 +45,16 @@ PASS_REPORTS = (
     "archive-safety.json",
     "input-coalescing.json",
     "input-ordering.json",
-    "coordinate-application.json",
+    "coordinate-quantization.json",
     "bench-recording.json",
+    "recording-parity.json",
     "demo-recording-smoke.json",
     "headless-server-recorder-parity.json",
 )
 VALID_FIXTURES = (
     "representative.flyrun",
     "looming-seed-0.flyrun",
+    "runs/looming-seed-0.flyrun",
     "review-fixtures/valid-complete.flyrun",
     "review-fixtures/valid-optional-truncated.flyrun",
 )
@@ -64,6 +67,12 @@ ATTEMPT_1 = {
     "candidate_product_sha": "067b3c831469ce2475201074ad47b39853694b60",
     "submission_sha": "d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc",
     "review_zip_sha256": "cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66",
+    "external_verdict": "CHANGES_REQUIRED",
+}
+ATTEMPT_2 = {
+    "candidate_product_sha": "d900fd407119ae7289bcbc2170492e7ee057ae6e",
+    "submission_sha": "057bf62587516bd0e1e12ada0eb0afb454656c1a",
+    "review_zip_sha256": "cf3d09f22427eb30e07937867127f1060beed2abc8a6b0b17473d34df2d3a0b7",
     "external_verdict": "CHANGES_REQUIRED",
 }
 
@@ -103,14 +112,24 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
     ):
         raise ValueError("process-deviation decision does not preserve the boundary")
 
-    coordinate_path = ROOT / "decisions/D-M09-COORDINATE-APPLICATION-01.json"
+    coordinate_path = ROOT / "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"
     coordinate = load_json(coordinate_path)
     if (
-        coordinate.get("decision_id") != "D-M09-COORDINATE-APPLICATION-01"
-        or coordinate.get("decision", {}).get("quantization_added") is not False
+        coordinate.get("decision_id") != "D-M09-COORDINATE-QUANTIZATION-01"
+        or coordinate.get("decision", {}).get("quantization_identity")
+        != COORDINATE_QUANTIZATION_ID
+        or coordinate.get("decision", {}).get("decimal_or_gameplay_grid_added")
+        is not False
+        or coordinate.get("decision", {}).get("numerical_gameplay_change")
+        is not False
         or coordinate.get("decision", {}).get("clamping_added") is not False
     ):
-        raise ValueError("coordinate application decision is missing or changed")
+        raise ValueError("coordinate quantization decision is missing or changed")
+    historical_coordinate = ROOT / "decisions/D-M09-COORDINATE-APPLICATION-01.json"
+    if sha256_file(historical_coordinate) != (
+        "e1ec3bc1b8f00c75184bbfca3aaa5ff4b4f4f98bd7b1479d96c36a7e4ee3ed84"
+    ):
+        raise ValueError("historical attempt-2 coordinate decision changed")
 
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
     m09_status = ledger.get("milestone_status", {}).get("M09")
@@ -118,7 +137,7 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         phase = "submission" if m09_status == "SUBMITTED" else "automated"
     if (
         ledger.get("current_milestone") != "M09"
-        or ledger.get("current_attempt") != 2
+        or ledger.get("current_attempt") != 3
         or ledger.get("milestone_status", {}).get("M08") != "BLOCKED"
         or m09_status not in {"IN_PROGRESS", "SUBMITTED"}
         or ledger.get("last_accepted_milestone") != "M07"
@@ -129,11 +148,11 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         or ledger.get("m08_integration_baseline", {}).get("g_game")
         != "PENDING_UNMEASURED"
         or ledger.get("m09_execution", {}).get("status") != "AT_RISK"
-        or ledger.get("m09_execution", {}).get("review_attempt") != 2
+        or ledger.get("m09_execution", {}).get("review_attempt") != 3
         or ledger.get("m09_execution", {}).get("recorder_schema")
         != FLYRUN_FORMAT_ID
     ):
-        raise ValueError("ledger does not truthfully represent attempt 2 and M08 risk")
+        raise ValueError("ledger does not truthfully represent attempt 3 and M08 risk")
     if phase == "submission" and m09_status != "SUBMITTED":
         raise ValueError("submission validation requires M09 SUBMITTED")
     if phase == "automated" and m09_status != "IN_PROGRESS":
@@ -148,6 +167,21 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         checks = value.get("checks")
         if isinstance(checks, dict) and not all(checks.values()):
             raise ValueError(f"M09 evidence contains a failing check: {name}")
+
+    selected_trial = load_json(evidence / "bench/selected-trial-summary.json")
+    recorder_parity = load_json(evidence / "bench/recorder-parity.json")
+    if (
+        selected_trial.get("status") != "PASS"
+        or recorder_parity.get("status") != "PASS"
+        or selected_trial.get("process_status") != PROCESS_STATUS
+        or recorder_parity.get("process_status") != PROCESS_STATUS
+        or selected_trial.get("selected_fixture", {}).get(
+            "not_full_m06_calibration"
+        )
+        is not True
+        or not all(recorder_parity.get("checks", {}).values())
+    ):
+        raise ValueError("M09 bench --out selected-trial/parity evidence is incomplete")
 
     superseded = load_json(evidence / "attempt-1-superseded.json")
     if (
@@ -167,9 +201,35 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
     ]:
         raise ValueError("historical M09-a01 review archive is absent or changed")
 
+    superseded_a02 = load_json(evidence / "attempt-2-superseded.json")
+    if (
+        superseded_a02.get("status") != "SUPERSEDED_CHANGES_REQUIRED"
+        or superseded_a02.get("candidate_product_sha")
+        != ATTEMPT_2["candidate_product_sha"]
+        or superseded_a02.get("submission_sha") != ATTEMPT_2["submission_sha"]
+        or superseded_a02.get("review_zip_sha256")
+        != ATTEMPT_2["review_zip_sha256"]
+        or superseded_a02.get("external_verdict")
+        != ATTEMPT_2["external_verdict"]
+        or superseded_a02.get("process_status") != PROCESS_STATUS
+        or superseded_a02.get("remaining_reason_categories")
+        != [
+            "required tests/test_recording_parity.py absent",
+            "bench --record-dir ignored --out and changed CLI mode without an explicit output contract",
+            "coordinate decision contradicted the architecture quantization requirement",
+        ]
+    ):
+        raise ValueError("attempt-2 supersession provenance is incomplete")
+    archive_a02 = ROOT / "reviews/M09-a02.zip"
+    if not archive_a02.is_file() or sha256_file(archive_a02) != ATTEMPT_2[
+        "review_zip_sha256"
+    ]:
+        raise ValueError("historical M09-a02 review archive is absent or changed")
+
     loaded = {name: load_flyrun(evidence / name) for name in VALID_FIXTURES}
     representative = loaded["representative.flyrun"]
     looming = loaded["looming-seed-0.flyrun"]
+    runs_looming = loaded["runs/looming-seed-0.flyrun"]
     truncated = loaded["review-fixtures/valid-optional-truncated.flyrun"]
     if (
         representative.manifest.get("format_id") != FLYRUN_FORMAT_ID
@@ -187,8 +247,15 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
             "scenario"
         )
         != "standard looming"
+        or looming.content_digest != runs_looming.content_digest
+        or selected_trial.get("recording", {}).get("content_digest")
+        != runs_looming.content_digest
+        or recorder_parity.get("recording_enabled", {}).get(
+            "final_scientific_state", {}
+        ).get("whole_state_sha256")
+        != runs_looming.summary.get("final_whole_state_sha256")
     ):
-        raise ValueError("valid attempt-2 fixture inventory or identities mismatch")
+        raise ValueError("valid attempt-3 fixture inventory or identities mismatch")
     for fixture in loaded.values():
         if (
             fixture.summary.get("applied_input_sha256")
@@ -199,6 +266,27 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
             or not fixture.summary.get("final_whole_state_sha256")
         ):
             raise ValueError(f"fixture integrity envelope is incomplete: {fixture.path}")
+        quantization = fixture.manifest.get("applied_input_hash", {}).get(
+            "coordinate_quantization", {}
+        )
+        if (
+            quantization.get("identity") != COORDINATE_QUANTIZATION_ID
+            or quantization.get("recorder_rule")
+            != "copy the exact applied binary64; no recorder-side rounding"
+        ):
+            raise ValueError(
+                f"fixture coordinate quantization provenance is incomplete: {fixture.path}"
+            )
+
+    quantization_report = reports["coordinate-quantization.json"]
+    if (
+        quantization_report.get("quantization_identity")
+        != COORDINATE_QUANTIZATION_ID
+        or quantization_report.get("numerical_gameplay_change") is not False
+        or quantization_report.get("decision_path")
+        != "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"
+    ):
+        raise ValueError("coordinate quantization evidence is incomplete")
     for relative, expected in MALFORMED_FIXTURES.items():
         try:
             load_flyrun(evidence / relative)
@@ -256,7 +344,11 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         raise ValueError("representative scientific/runtime identity mismatch")
 
     head = git_head()
-    for name in ("representative.flyrun", "looming-seed-0.flyrun"):
+    for name in (
+        "representative.flyrun",
+        "looming-seed-0.flyrun",
+        "runs/looming-seed-0.flyrun",
+    ):
         if loaded[name].manifest["provenance"].get("code_git_sha") != head:
             raise ValueError(f"{name} does not identify the checked commit")
     if reports["demo-recording-smoke.json"].get("checks", {}).get(
@@ -271,14 +363,14 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
         "coordinate_decision_sha256": sha256_file(coordinate_path),
         "representative_bytes": representative.archive_bytes,
         "representative_content_digest": representative.content_digest,
-        "looming_bytes": looming.archive_bytes,
-        "looming_content_digest": looming.content_digest,
+        "looming_bytes": runs_looming.archive_bytes,
+        "looming_content_digest": runs_looming.content_digest,
         "live_profile_sha256": live_sha,
         "game_spec_sha256": game_sha,
     }
     if phase == "submission":
         candidate = ledger.get("m09_execution", {}).get(
-            "attempt_2_candidate_product_sha"
+            "attempt_3_candidate_product_sha"
         )
         operator_report = load_json(evidence / "operator-demo.json")
         operator_paths = sorted((evidence / "operator-demo").glob("*.flyrun"))
@@ -297,7 +389,7 @@ def validate(evidence: Path, *, phase: str) -> dict[str, Any]:
             or operator_report.get("archive_sha256")
             != sha256_file(operator_paths[0])
             or m09_decision.get("milestone") != "M09"
-            or m09_decision.get("review_attempt") != 2
+            or m09_decision.get("review_attempt") != 3
             or m09_decision.get("candidate_product_sha") != candidate
             or m09_decision.get("proposed_outcome") != "PASS_CANDIDATE"
             or m09_decision.get("external_milestone_acceptance") != "PENDING"

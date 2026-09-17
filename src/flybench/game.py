@@ -59,6 +59,7 @@ M08_GAME_SPEC_V02_SHA256 = (
 ACCEPTED_GAME_SPEC_SHA256 = (
     "5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b"
 )
+COORDINATE_QUANTIZATION_ID = "flybench.coordinate-binary64.v1"
 
 
 def sha256_file(path: Path) -> str:
@@ -467,6 +468,31 @@ class GameInputError(ValueError):
         self.code = code
 
 
+def quantize_coordinate_binary64(
+    value: object,
+    *,
+    name: str,
+    arena_min: float,
+    arena_max: float,
+) -> float:
+    """Return the exact finite in-arena binary64 used by the server.
+
+    Python ``float`` is the deployed IEEE-754 binary64 representation.  This
+    function names and fixes the existing application boundary; it deliberately
+    introduces no gameplay-scale decimal grid, clamping, or recorder-only
+    transformation.
+    """
+
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise GameInputError("malformed", f"{name} must be a finite number")
+    number = float(value)
+    if not math.isfinite(number):
+        raise GameInputError("non_finite", f"{name} must be finite")
+    if number < arena_min or number > arena_max:
+        raise GameInputError("out_of_arena", f"{name} is outside the arena")
+    return number
+
+
 class GameSession:
     """One reusable authoritative M08 game session with persistent neural state."""
 
@@ -501,14 +527,12 @@ class GameSession:
         }
 
     def _coordinate(self, value: object, *, name: str) -> float:
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise GameInputError("malformed", f"{name} must be a finite number")
-        number = float(value)
-        if not math.isfinite(number):
-            raise GameInputError("non_finite", f"{name} must be finite")
-        if number < self.spec.arena_min or number > self.spec.arena_max:
-            raise GameInputError("out_of_arena", f"{name} is outside the arena")
-        return number
+        return quantize_coordinate_binary64(
+            value,
+            name=name,
+            arena_min=self.spec.arena_min,
+            arena_max=self.spec.arena_max,
+        )
 
     def _accept_sequence(self, value: object) -> int:
         if (

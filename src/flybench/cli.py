@@ -169,18 +169,28 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "bench":
         try:
             if args.record_dir is not None:
-                from flybench.recording import run_selected_benchmark
+                from flybench.recording import run_selected_benchmark_recording_mode
 
-                summary, result = run_selected_benchmark(
+                mode = run_selected_benchmark_recording_mode(
                     args.profile,
+                    output_directory=args.out,
                     record_directory=args.record_dir,
                 )
-                assert result is not None
+                result = mode["recording"]
+                parity = mode["recorder_parity"]
                 print(
                     json.dumps(
                         {
                             "status": "PASS",
-                            "scope": "M09 selected accepted standard-looming benchmark recording",
+                            "scope": (
+                                "M09 stable selected accepted standard-looming "
+                                "recording/parity fixture; not the full M06 calibration"
+                            ),
+                            "out": str(args.out.resolve()),
+                            "out_files": [
+                                "selected-trial-summary.json",
+                                "recorder-parity.json",
+                            ],
                             "path": str(
                                 (args.record_dir / "looming-seed-0.flyrun").resolve()
                             ),
@@ -193,10 +203,7 @@ def main(argv: list[str] | None = None) -> int:
                             "essential_record_count": result.essential_record_count,
                             "optional_record_count": result.optional_record_count,
                             "optional_trace_status": result.optional_trace_status,
-                            "dnp01_spike_count": summary["dnp01_spike_count"],
-                            "escape_command_control_ticks": summary[
-                                "escape_command_control_ticks"
-                            ],
+                            "parity_checks": parity["checks"],
                         },
                         sort_keys=True,
                     )

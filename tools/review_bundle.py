@@ -241,17 +241,17 @@ def render_review(
         ]
     elif milestone == "M09":
         objective = (
-            "Repair M09-a01 by connecting one observer recorder to demo, benchmark, "
-            "and headless execution while capturing the bounded v0.2 input/state envelope required for later M10 verification."
+            "Repair the three remaining M09-a02 review findings while preserving the "
+            "bounded v0.2 recorder and its scientific capture envelope."
         )
         assumptions = [
-            "This is M09 review attempt 2; M09-a01 received CHANGES REQUIRED and remains preserved as superseded historical evidence.",
+            "M09 attempt 1 received CHANGES REQUIRED; M09 attempt 2 received CHANGES REQUIRED; this is review attempt 3. Both earlier archives remain immutable superseded history.",
             "M09 was implemented AT RISK under D-M08-HUMAN-GATE-DEFER-01; M08 G-GAME remains pending and unmeasured.",
             "M09 implementation and recorder evidence are not evidence that M08 passed usability, and public release remains blocked by the deferred human gate.",
-            "The same observer recorder watches the existing authoritative GameSession/Runner in demo, selected accepted benchmark, and headless paths; it does not create a recorder-specific simulator.",
-            "Applied inputs are coalesced server-applied logical-tick values; raw pointer frequency, browser timestamps, rejected/stale messages, and never-applied intent are excluded from the applied-input hash.",
+            "The M09 bench recording mode runs the stable selected accepted standard-looming fixture with recording disabled and enabled; it is not a rerun or recalibration of the full frozen M06 protocol.",
+            "Accepted coordinates use flybench.coordinate-binary64.v1 before authoritative application, and the recorder copies that exact binary64 without a decimal grid or recorder-only rounding.",
             "Periodic/final hashes capture the declared whole-state envelope without storing full per-neuron arrays; M09 states capture eligibility only, never that exact re-execution has passed.",
-            "Exact re-execution is NOT verified by M09. M10 owns re-execution verification and first-divergence testing.",
+            "Exact re-execution is NOT verified by M09. M10 owns re-execution verification and first-divergence testing, and M10 has not started.",
         ]
     else:
         objective = (
@@ -306,7 +306,17 @@ def render_review(
                 "- Superseded M09-a01 review ZIP SHA-256: `cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66`.",
                 "- M09-a01 external verdict: `CHANGES REQUIRED`.",
             ]
-            if milestone == "M09" and attempt == 2
+            if milestone == "M09" and attempt in {2, 3}
+            else []
+        ),
+        *(
+            [
+                "- M09-a02 candidate product SHA: `d900fd407119ae7289bcbc2170492e7ee057ae6e`.",
+                "- M09-a02 final submission SHA: `057bf62587516bd0e1e12ada0eb0afb454656c1a`.",
+                "- Superseded M09-a02 review ZIP SHA-256: `cf3d09f22427eb30e07937867127f1060beed2abc8a6b0b17473d34df2d3a0b7`.",
+                "- M09-a02 external verdict: `CHANGES REQUIRED`.",
+            ]
+            if milestone == "M09" and attempt == 3
             else []
         ),
         "",
@@ -478,6 +488,8 @@ def render_review(
         coalescing = m09_evidence.get("input-coalescing.json", {})
         ordering = m09_evidence.get("input-ordering.json", {})
         bench = m09_evidence.get("bench-recording.json", {})
+        quantization = m09_evidence.get("coordinate-quantization.json", {})
+        recording_parity = m09_evidence.get("recording-parity.json", {})
         demo = m09_evidence.get("demo-recording-smoke.json", {})
         decision = m09_evidence.get("decision.json", {})
         lines.extend(
@@ -485,11 +497,13 @@ def render_review(
                 f"- Recorder format: `{recorder.get('format_id')}`; fixture bytes `{recorder.get('fixture_bytes')}`; content digest `{recorder.get('content_digest')}`.",
                 f"- Deterministic recording evidence: `{deterministic.get('status')}`; applied-input authority: `{authority.get('status')}`; archive safety: `{safety.get('status')}`; headless/server-recorder parity: `{parity.get('status')}`.",
                 f"- Whole-state digest validation: `{state.get('status')}`; coalescing: `{coalescing.get('status')}`; equal-tick ordering: `{ordering.get('status')}`.",
-                f"- Bench recording integration: `{bench.get('status')}`; bounded demo recording integration: `{demo.get('status')}`.",
-                f"- M09 attempt-2 product candidate SHA: `{decision.get('candidate_product_sha')}`; final submission SHA: `{submitted}`.",
+                f"- Bench recording integration: `{bench.get('status')}`; cross-path recording parity: `{recording_parity.get('status')}`; bounded demo recording integration: `{demo.get('status')}`.",
+                f"- Coordinate quantization: `{quantization.get('quantization_identity')}`; numerical gameplay change: `{quantization.get('numerical_gameplay_change')}`.",
+                f"- M09 attempt-3 product candidate SHA: `{decision.get('candidate_product_sha')}`; final submission SHA: `{submitted}`.",
                 f"- M09 proposed outcome: `{decision.get('proposed_outcome')}`; external milestone acceptance remains `{decision.get('external_milestone_acceptance')}`.",
                 "- The capture envelope is present and eligible for later M10 checking; exact re-execution remains unverified.",
                 "- M08 G-GAME remains `PENDING_UNMEASURED`; this M09 evidence does not establish M08 usability.",
+                "- M10 is `NOT_STARTED`.",
             ]
         )
 
@@ -623,7 +637,7 @@ def render_review(
                                         "- This archive contains the M08 local game/server/frontend implementation, exact lockfiles, automated evidence, operator receipts, bounded media, and compact accepted circuit. Raw MaleCNS and full 166,700-neuron arrays remain excluded."
                                         if milestone == "M08"
                                         else (
-                                            "- This archive contains the M09 attempt-2 v0.2 recorder, demo/bench/headless integration evidence, periodic whole-state digests, valid and malformed review fixtures, the operator demo artifact, and compact accepted circuit. Raw MaleCNS and full graph arrays remain excluded."
+                                            "- This archive contains the M09 attempt-3 v0.2 recorder repair, explicit parity tests, meaningful selected-benchmark output, binary64 coordinate decision/evidence, demo/bench/headless evidence, periodic whole-state digests, safety fixtures, the operator demo artifact, and compact accepted circuit. Raw MaleCNS and full graph arrays remain excluded."
                                             if milestone == "M09"
                                             else "- This archive covers M01 infrastructure only and contains no scientific-result evidence."
                                         )
@@ -1612,7 +1626,7 @@ def m09_material(
     evidence_root: Path,
     entries: dict[str, bytes],
 ) -> list[dict[str, Any]]:
-    """Validate the M09-a02 at-risk submission and include the compact circuit."""
+    """Validate the M09-a03 at-risk submission and include the compact circuit."""
 
     checker = subprocess.run(
         [
@@ -1641,11 +1655,13 @@ def m09_material(
         "archive-safety.json",
         "input-coalescing.json",
         "input-ordering.json",
-        "coordinate-application.json",
+        "coordinate-quantization.json",
         "bench-recording.json",
+        "recording-parity.json",
         "demo-recording-smoke.json",
         "headless-server-recorder-parity.json",
         "attempt-1-superseded.json",
+        "attempt-2-superseded.json",
         "operator-demo.json",
         "decision.json",
         "command-results.json",
@@ -1673,6 +1689,7 @@ def m09_material(
             "decision.json",
             "command-results.json",
             "attempt-1-superseded.json",
+            "attempt-2-superseded.json",
         }
     )
     if any(
@@ -1685,7 +1702,7 @@ def m09_material(
         raise BundleError("M09 acceptance evidence does not pass for the submitted SHA")
     if (
         decision.get("milestone") != "M09"
-        or decision.get("review_attempt") != 2
+        or decision.get("review_attempt") != 3
         or decision.get("proposed_outcome") != "PASS_CANDIDATE"
         or decision.get("external_milestone_acceptance") != "PENDING"
         or decision.get("m09_execution") != "AT_RISK"
@@ -1708,8 +1725,8 @@ def m09_material(
         "last_accepted_code_commit: c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5",
         "M08: BLOCKED",
         "M09: SUBMITTED",
-        "review_attempt: 2",
-        "attempt_2_candidate_product_sha:",
+        "review_attempt: 3",
+        "attempt_3_candidate_product_sha:",
         "PENDING_UNMEASURED",
         "Do not begin M10",
     ):
@@ -1722,6 +1739,9 @@ def m09_material(
         raise BundleError("M09 representative flyrun fixture is missing or changed")
     for relative in (
         "looming-seed-0.flyrun",
+        "runs/looming-seed-0.flyrun",
+        "bench/selected-trial-summary.json",
+        "bench/recorder-parity.json",
         "operator-demo.json",
         "fixture-excerpts.md",
         "review-fixtures/valid-complete.flyrun",
@@ -1731,10 +1751,10 @@ def m09_material(
         "review-fixtures/malformed-integrity.flyrun",
     ):
         if not (evidence_root / relative).is_file():
-            raise BundleError(f"M09 attempt-2 review artifact is missing: {relative}")
+            raise BundleError(f"M09 attempt-3 review artifact is missing: {relative}")
     operator_runs = sorted((evidence_root / "operator-demo").glob("*.flyrun"))
     if len(operator_runs) != 1:
-        raise BundleError("M09-a02 requires exactly one operator demo flyrun")
+        raise BundleError("M09-a03 requires exactly one operator demo flyrun")
 
     circuit_dir = root / "data" / "compiled" / "escape"
     full_dir = root / "data" / "compiled" / "full"
@@ -1797,11 +1817,11 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     if milestone == "M08" and base != "eca1ea5cae5a4805708d4994395e8e5755212b9d":
         raise BundleError("M08 review base must be the reviewer-approved M07 bookkeeping SHA")
     if milestone == "M09":
-        if attempt != 2:
-            raise BundleError("the current M09 review bundle contract is attempt 2")
+        if attempt != 3:
+            raise BundleError("the current M09 review bundle contract is attempt 3")
         if base != "9aaa34515bee2c934f3d90909deff4e4e3fff5b3":
             raise BundleError(
-                "M09-a02 review base must be the M09-start process-deviation commit"
+                "M09-a03 review base must be the M09-start process-deviation commit"
             )
 
     architecture_path = root / "docs" / "architecture.md"
@@ -2003,11 +2023,13 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             "archive-safety.json",
             "input-coalescing.json",
             "input-ordering.json",
-            "coordinate-application.json",
+            "coordinate-quantization.json",
             "bench-recording.json",
+            "recording-parity.json",
             "demo-recording-smoke.json",
             "headless-server-recorder-parity.json",
             "attempt-1-superseded.json",
+            "attempt-2-superseded.json",
             "operator-demo.json",
             "decision.json",
         ):

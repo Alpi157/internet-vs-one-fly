@@ -934,7 +934,7 @@
       ]
     },
     "M09": {
-      "title": "Attempt-2 applied-input capture, whole-state envelope, and real-path bounded flyrun",
+      "title": "Attempt-3 recording parity, honest bench outputs, and binary64 coordinate quantization",
       "commands": [
         {
           "name": "locked-python-environment",
@@ -969,11 +969,11 @@
           "timeout_seconds": 300
         },
         {
-          "name": "m09-attempt2-recorder-contract-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_recording.py"],
+          "name": "m09-attempt3-recording-and-parity-tests",
+          "argv": ["python", "-m", "pytest", "-q", "tests/test_recording.py", "tests/test_recording_parity.py"],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/recording.py", "src/flybench/game.py", "src/flybench/server.py", "tests/test_recording.py", "profiles/live.json", "decisions/D-M09-COORDINATE-APPLICATION-01.json"],
+          "required_paths": ["src/flybench/recording.py", "src/flybench/game.py", "src/flybench/server.py", "tests/test_recording.py", "tests/test_recording_parity.py", "profiles/live.json", "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"],
           "timeout_seconds": 300
         },
         {
@@ -1034,7 +1034,7 @@
         },
         {
           "name": "m09-bench-recording-cli-integration",
-          "argv": ["flybench", "bench", "profiles/looming-controls.json", "--out", "/tmp/flybench-m09-bench-unused", "--record-dir", "/tmp/flybench-m09-bench-smoke"],
+          "argv": ["flybench", "bench", "profiles/looming-controls.json", "--out", "evidence/M09/bench", "--record-dir", "evidence/M09/runs"],
           "cwd": ".",
           "required": true,
           "required_paths": ["src/flybench/cli.py", "src/flybench/recording.py", "profiles/looming-controls.json", "profiles/live.json"],
@@ -1053,7 +1053,7 @@
           "argv": ["python", "tools/check_m09_evidence.py", "--out", "evidence/M09", "--phase", "current"],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/check_m09_evidence.py", "evidence/M09/representative.flyrun", "evidence/M09/looming-seed-0.flyrun", "evidence/M09/review-fixtures/valid-complete.flyrun", "evidence/M09/review-fixtures/valid-optional-truncated.flyrun", "evidence/M09/review-fixtures/malformed-path-traversal.flyrun", "evidence/M09/review-fixtures/malformed-executable-member.flyrun", "evidence/M09/review-fixtures/malformed-integrity.flyrun", "evidence/M09/fixture-excerpts.md", "decisions/D-M08-HUMAN-GATE-DEFER-01.json", "decisions/D-M09-COORDINATE-APPLICATION-01.json"],
+          "required_paths": ["tools/check_m09_evidence.py", "evidence/M09/representative.flyrun", "evidence/M09/bench/selected-trial-summary.json", "evidence/M09/bench/recorder-parity.json", "evidence/M09/runs/looming-seed-0.flyrun", "evidence/M09/coordinate-quantization.json", "evidence/M09/recording-parity.json", "evidence/M09/attempt-2-superseded.json", "evidence/M09/review-fixtures/valid-complete.flyrun", "evidence/M09/review-fixtures/valid-optional-truncated.flyrun", "evidence/M09/review-fixtures/malformed-path-traversal.flyrun", "evidence/M09/review-fixtures/malformed-executable-member.flyrun", "evidence/M09/review-fixtures/malformed-integrity.flyrun", "evidence/M09/fixture-excerpts.md", "decisions/D-M08-HUMAN-GATE-DEFER-01.json", "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"],
           "timeout_seconds": 120
         },
         {

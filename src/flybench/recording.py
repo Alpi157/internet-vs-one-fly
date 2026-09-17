@@ -16,6 +16,7 @@ import zipfile
 import numpy as np
 
 from flybench.game import (
+    COORDINATE_QUANTIZATION_ID,
     GameInputError,
     GameSession,
     ResolvedLiveProfile,
@@ -739,6 +740,11 @@ class FlyRunRecorder:
                 "algorithm": "SHA-256",
                 "encoding": "concatenated UTF-8 canonical JSON records with sorted keys and one LF terminator per record",
                 "included_types": ["accepted_aim", "attack_commit"],
+                "coordinate_quantization": {
+                    "identity": COORDINATE_QUANTIZATION_ID,
+                    "application_boundary": "before authoritative GameSession application",
+                    "recorder_rule": "copy the exact applied binary64; no recorder-side rounding",
+                },
                 "excluded": [
                     "recording_class",
                     "event_ordinal",
@@ -1316,11 +1322,166 @@ def run_selected_benchmark(
         if observer is not None:
             observer.capture_interval(record)
     summary = runner.finish_run()
+    final_scientific_state = scientific_state_digest(
+        runner,
+        bench_state={
+            "scenario": "standard looming",
+            "fixed_interval_count": interval_count,
+            "completed_intervals": interval_count,
+            "result": "trial-complete",
+        },
+    )
+    summary["selected_fixture"] = {
+        "mode": "M09 selected accepted standard-looming recording/parity fixture",
+        "not_full_m06_calibration": True,
+        "scenario": "standard looming",
+        "stimulus_profile_id": stimulus["profile_id"],
+        "stimulus_profile_sha256": sha256_file(stimulus_path.resolve()),
+        "trial_seed": seed,
+        "environment_seed": seed + 1,
+        "runtime_synaptic_scale": scale,
+        "peak_sensory_external_drive": peak_drive,
+        "backend": "reference",
+        "interval_count": interval_count,
+    }
+    summary["dnp01_spike_ticks"] = [
+        int(spike["neural_tick"]) for spike in summary["dnp01_spikes"]
+    ]
+    summary["final_scientific_state"] = final_scientific_state
     if observer is not None:
         recorder_result = observer.finalize()
         assert record_directory is not None
         write_flyrun(record_directory / "looming-seed-0.flyrun", recorder_result)
     return summary, recorder_result
+
+
+def run_selected_benchmark_recording_mode(
+    stimulus_path: Path,
+    *,
+    output_directory: Path,
+    record_directory: Path,
+    code_git_sha: str | None = None,
+) -> dict[str, Any]:
+    """Run the M09 selected fixture recorder-off/on pair and write both outputs."""
+
+    plain, plain_result = run_selected_benchmark(stimulus_path)
+    recorded, recorded_result = run_selected_benchmark(
+        stimulus_path,
+        record_directory=record_directory,
+        code_git_sha=code_git_sha,
+    )
+    if plain_result is not None or recorded_result is None:
+        raise RuntimeError("selected benchmark recorder mode did not produce its pair")
+
+    flyrun_path = record_directory / "looming-seed-0.flyrun"
+    loaded = load_flyrun(flyrun_path)
+    plain_state = plain["final_scientific_state"]
+    recorded_state = recorded["final_scientific_state"]
+    checks = {
+        "same_selected_fixture": plain["selected_fixture"]
+        == recorded["selected_fixture"],
+        "final_neural_state_identical": plain_state["neural_state_sha256"]
+        == recorded_state["neural_state_sha256"],
+        "final_environment_state_identical": plain_state[
+            "environment_state_sha256"
+        ]
+        == recorded_state["environment_state_sha256"],
+        "final_whole_scientific_state_identical": plain_state[
+            "whole_state_sha256"
+        ]
+        == recorded_state["whole_state_sha256"]
+        == recorded_result.summary["final_whole_state_sha256"],
+        "dnp01_spike_ticks_identical": plain["dnp01_spike_ticks"]
+        == recorded["dnp01_spike_ticks"],
+        "decoded_command_ticks_identical": plain[
+            "escape_command_control_ticks"
+        ]
+        == recorded["escape_command_control_ticks"],
+        "impact_outcome_identical": plain["impacts"] == recorded["impacts"],
+        "finite_state_identical": plain["finite_state"]
+        == recorded["finite_state"]
+        is True,
+        "recorded_member_is_valid_flyrun": loaded.content_digest
+        == recorded_result.content_digest,
+    }
+    process_status = {
+        "decision": M08_DEFER_DECISION_ID,
+        "m09_execution": "AT_RISK",
+        "m08_g_game": "PENDING_UNMEASURED",
+        "m09_is_m08_usability_evidence": False,
+        "public_release_blocked": True,
+    }
+    selected_summary = {
+        "schema_version": 1,
+        "status": "PASS" if all(checks.values()) else "FAIL",
+        "mode_id": "flybench.m09-selected-standard-looming-recording-parity.v1",
+        "scope": (
+            "M09 stable selected benchmark fixture only; this is not a rerun or "
+            "recalibration of the frozen M06 12-point protocol"
+        ),
+        "coordinate_quantization_id": COORDINATE_QUANTIZATION_ID,
+        "selected_fixture": recorded["selected_fixture"],
+        "trial": {
+            "dnp01_spikes": recorded["dnp01_spikes"],
+            "dnp01_spike_ticks": recorded["dnp01_spike_ticks"],
+            "decoded_command_ticks": recorded["escape_command_control_ticks"],
+            "impacts": recorded["impacts"],
+            "finite_state": recorded["finite_state"],
+            "final_scientific_state": recorded_state,
+        },
+        "recording": {
+            "filename": "looming-seed-0.flyrun",
+            "bytes": loaded.archive_bytes,
+            "archive_sha256": sha256_file(flyrun_path),
+            "content_digest": loaded.content_digest,
+            "applied_input_sha256": loaded.summary["applied_input_sha256"],
+            "final_whole_state_sha256": loaded.summary[
+                "final_whole_state_sha256"
+            ],
+        },
+        "process_status": process_status,
+    }
+    parity = {
+        "schema_version": 1,
+        "status": "PASS" if all(checks.values()) else "FAIL",
+        "mode_id": "flybench.m09-selected-standard-looming-recording-parity.v1",
+        "scope": selected_summary["scope"],
+        "recording_disabled": {
+            "final_scientific_state": plain_state,
+            "dnp01_spike_ticks": plain["dnp01_spike_ticks"],
+            "decoded_command_ticks": plain["escape_command_control_ticks"],
+            "impacts": plain["impacts"],
+            "finite_state": plain["finite_state"],
+        },
+        "recording_enabled": {
+            "final_scientific_state": recorded_state,
+            "dnp01_spike_ticks": recorded["dnp01_spike_ticks"],
+            "decoded_command_ticks": recorded["escape_command_control_ticks"],
+            "impacts": recorded["impacts"],
+            "finite_state": recorded["finite_state"],
+        },
+        "checks": checks,
+        "process_status": process_status,
+    }
+    _write_json(output_directory / "selected-trial-summary.json", selected_summary)
+    _write_json(output_directory / "recorder-parity.json", parity)
+    if not all(checks.values()):
+        raise RuntimeError(f"selected benchmark recorder parity failed: {checks}")
+    return {
+        "selected_trial_summary": selected_summary,
+        "recorder_parity": parity,
+        "recording": recorded_result,
+    }
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(value, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    os.replace(temporary, path)
 
 
 def write_flyrun(path: Path, result: FlyRunResult) -> None:

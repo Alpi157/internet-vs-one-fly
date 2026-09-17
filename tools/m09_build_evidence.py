@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build deterministic M09 attempt-2 evidence and reviewable flyrun fixtures."""
+"""Build deterministic M09 attempt-3 evidence and reviewable flyrun fixtures."""
 
 from __future__ import annotations
 
@@ -11,10 +11,17 @@ import json
 import os
 from pathlib import Path
 import stat
+import struct
 from typing import Any
 import zipfile
 
-from flybench.game import DemoProtocol, GameInputError, build_live_session
+from flybench.game import (
+    COORDINATE_QUANTIZATION_ID,
+    DemoProtocol,
+    GameInputError,
+    build_live_session,
+    quantize_coordinate_binary64,
+)
 from flybench.recording import (
     EVENT_ORDER_ID,
     FLYRUN_FORMAT_ID,
@@ -28,7 +35,7 @@ from flybench.recording import (
     canonical_applied_input_records,
     load_flyrun,
     run_representative_recording,
-    run_selected_benchmark,
+    run_selected_benchmark_recording_mode,
     scientific_state_digest,
     write_flyrun,
 )
@@ -56,6 +63,13 @@ ATTEMPT_1 = {
     "submission_sha": "d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc",
     "review_zip_path": "reviews/M09-a01.zip",
     "review_zip_sha256": "cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66",
+    "external_verdict": "CHANGES_REQUIRED",
+}
+ATTEMPT_2 = {
+    "candidate_product_sha": "d900fd407119ae7289bcbc2170492e7ee057ae6e",
+    "submission_sha": "057bf62587516bd0e1e12ada0eb0afb454656c1a",
+    "review_zip_path": "reviews/M09-a02.zip",
+    "review_zip_sha256": "cf3d09f22427eb30e07937867127f1060beed2abc8a6b0b17473d34df2d3a0b7",
     "external_verdict": "CHANGES_REQUIRED",
 }
 
@@ -511,65 +525,130 @@ def main(argv: list[str] | None = None) -> int:
         applied_records=list(canonical_applied_input_records(ordering_applied)),
     )
 
-    coordinate_decision_path = ROOT / "decisions/D-M09-COORDINATE-APPLICATION-01.json"
-    coordinate_decision = json.loads(coordinate_decision_path.read_text(encoding="utf-8"))
+    coordinate_decision_path = ROOT / "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"
+    coordinate_decision = json.loads(
+        coordinate_decision_path.read_text(encoding="utf-8")
+    )
     coordinate_subject = build_recorded_live_session(
-        profile, run_id="m09-coordinate-v2"
+        profile, run_id="m09-coordinate-v3"
     )
     x_value = 0.12345678901234566
     y_value = -0.9876543210123456
     coordinate_subject.update_aim(x_value, y_value, 1)
-    coordinate_subject.advance_interval()
-    coordinate_event = coordinate_subject.recorder.applied_input_events[0]
+    coordinate_subject.update_aim(0.10000000000000002, -0.30000000000000004, 2)
+    coordinate_subject.commit_attack(x_value, y_value, 3)
+    coordinate_events = coordinate_subject.recorder.applied_input_events
+    aim_event = coordinate_events[0]
+    commit_event = coordinate_events[1]
+    resolved = coordinate_subject.recorder.resolved
+    quantizer_kwargs = {
+        "name": "x",
+        "arena_min": resolved.game_spec.arena_min,
+        "arena_max": resolved.game_spec.arena_max,
+    }
+    integer_value = quantize_coordinate_binary64(3, **quantizer_kwargs)
+    decimal_value = quantize_coordinate_binary64(x_value, **quantizer_kwargs)
+    json_round_trip = json.loads(
+        json.dumps([integer_value, decimal_value], allow_nan=False)
+    )
+    rejected_codes: list[str] = []
+    for rejected in (float("nan"), float("inf"), -float("inf"), 10.01, -10.01):
+        try:
+            quantize_coordinate_binary64(rejected, **quantizer_kwargs)
+        except GameInputError as exc:
+            rejected_codes.append(exc.code)
+    def pack(value: float) -> str:
+        return struct.pack(">d", value).hex()
     coordinate_checks = {
         "decision_present": coordinate_decision.get("decision_id")
-        == "D-M09-COORDINATE-APPLICATION-01",
+        == "D-M09-COORDINATE-QUANTIZATION-01",
+        "quantization_identity_fixed": coordinate_decision.get("decision", {}).get(
+            "quantization_identity"
+        )
+        == COORDINATE_QUANTIZATION_ID,
         "no_arbitrary_quantum_added": coordinate_decision.get("decision", {}).get(
-            "quantization_added"
+            "decimal_or_gameplay_grid_added"
         )
         is False,
-        "recorder_x_equals_session_x": coordinate_event["aim"]["x"]
-        == coordinate_subject.session.latest_aim[0]
-        == x_value,
-        "recorder_y_equals_session_y": coordinate_event["aim"]["y"]
-        == coordinate_subject.session.latest_aim[1]
-        == y_value,
+        "integer_and_decimal_are_canonical_binary64": pack(integer_value)
+        == pack(float(3))
+        and pack(decimal_value) == pack(float(x_value)),
+        "coalesced_pending_aim_uses_same_quantizer": pack(aim_event["aim"]["x"])
+        == pack(0.10000000000000002)
+        and pack(aim_event["aim"]["y"]) == pack(-0.30000000000000004),
+        "attack_lock_and_recorder_binary64_identical": coordinate_subject.session.active_strike
+        is not None
+        and pack(commit_event["locked_target"]["x"])
+        == pack(coordinate_subject.session.active_strike.target_x)
+        == pack(x_value)
+        and pack(commit_event["locked_target"]["y"])
+        == pack(coordinate_subject.session.active_strike.target_y)
+        == pack(y_value),
+        "canonical_json_round_trip_preserves_binary64": [pack(value) for value in json_round_trip]
+        == [pack(integer_value), pack(decimal_value)],
+        "nonfinite_and_out_of_arena_rejected": rejected_codes
+        == ["non_finite", "non_finite", "non_finite", "out_of_arena", "out_of_arena"],
+        "game_spec_identity_unchanged": resolved.game_spec_sha256
+        == "5bedee08184b6762e9f6a52f435c4494322f34a794c5dd44034acfc7c7856c0b",
+        "no_recorder_side_rounding": commit_event["locked_target"]["x"].hex()
+        == coordinate_subject.session.active_strike.target_x.hex()
+        == x_value.hex(),
+        "no_numerical_gameplay_change": quantize_coordinate_binary64(
+            x_value, **quantizer_kwargs
+        ).hex()
+        == float(x_value).hex(),
     }
     report(
-        output / "coordinate-application.json",
+        output / "coordinate-quantization.json",
         checks=coordinate_checks,
-        decision_path="decisions/D-M09-COORDINATE-APPLICATION-01.json",
+        decision_path="decisions/D-M09-COORDINATE-QUANTIZATION-01.json",
         decision_sha256=sha256_file(coordinate_decision_path),
-        architecture_finding=coordinate_decision["architecture_finding"],
-        authoritative_value=coordinate_decision["decision"]["authoritative_value"],
-        applied_example=coordinate_event,
+        architecture_requirement=coordinate_decision["architecture_requirement"],
+        quantization_identity=COORDINATE_QUANTIZATION_ID,
+        numerical_gameplay_change=False,
+        binary64_examples={
+            "integer": {"input": 3, "float_hex": integer_value.hex(), "bytes_be": pack(integer_value)},
+            "decimal": {"input": x_value, "float_hex": decimal_value.hex(), "bytes_be": pack(decimal_value)},
+        },
+        applied_examples=list(coordinate_events),
+    )
+    write_json(
+        output / "coordinate-application.json",
+        {
+            "schema_version": 1,
+            "status": "SUPERSEDED_CHANGES_REQUIRED",
+            "historical_attempt": 2,
+            "decision_path": "decisions/D-M09-COORDINATE-APPLICATION-01.json",
+            "decision_sha256": "e1ec3bc1b8f00c75184bbfca3aaa5ff4b4f4f98bd7b1479d96c36a7e4ee3ed84",
+            "superseded_by": "decisions/D-M09-COORDINATE-QUANTIZATION-01.json",
+            "interpretation": "Historical attempt-2 provenance only; it did not invalidate the recorded science.",
+            "process_status": PROCESS_STATUS,
+        },
     )
 
     stimulus = ROOT / "profiles/looming-controls.json"
-    plain_bench, no_recording = run_selected_benchmark(stimulus)
-    recorded_bench, bench_result = run_selected_benchmark(
-        stimulus, record_directory=output
+    bench_mode = run_selected_benchmark_recording_mode(
+        stimulus,
+        output_directory=output / "bench",
+        record_directory=output / "runs",
     )
-    assert bench_result is not None
+    bench_result = bench_mode["recording"]
+    bench_parity = bench_mode["recorder_parity"]
+    runs_looming_path = output / "runs" / "looming-seed-0.flyrun"
+    # Preserve the attempt-2 top-level fixture location as superseded provenance
+    # while the attempt-3 CLI contract uses evidence/M09/runs.
     looming_path = output / "looming-seed-0.flyrun"
+    write_flyrun(looming_path, bench_result)
     looming = load_flyrun(looming_path)
     bench_checks = {
-        "disabled_has_no_recorder": no_recording is None,
-        "enabled_vs_disabled_summary_identical": plain_bench == recorded_bench,
-        "neural_response_identical": plain_bench["dnp01_spikes"]
-        == looming.summary["dnp01_spikes"],
-        "command_ticks_identical": plain_bench["escape_command_control_ticks"]
-        == looming.summary["decoded_escape_command_control_ticks"],
-        "impact_identical": plain_bench["impacts"]
-        == [
-            {
-                "control_tick": event["control_tick"],
-                "outcome": event["outcome"],
-                "takeoff_was_active": event["takeoff_was_active"],
-            }
-            for event in looming.events
-            if event["type"] == "impact"
-        ],
+        "bench_out_selected_summary_present": (
+            output / "bench" / "selected-trial-summary.json"
+        ).is_file(),
+        "bench_out_recorder_parity_present": (
+            output / "bench" / "recorder-parity.json"
+        ).is_file(),
+        "record_dir_fixture_present": runs_looming_path.is_file(),
+        **bench_parity["checks"],
         "fixture_is_standard_looming_seed_index_zero": looming.manifest["run"][
             "execution_context"
         ]["scenario"]
@@ -586,12 +665,17 @@ def main(argv: list[str] | None = None) -> int:
             "bench",
             "profiles/looming-controls.json",
             "--out",
-            "evidence/M09/bench-unused",
+            "evidence/M09/bench",
             "--record-dir",
-            "evidence/M09",
+            "evidence/M09/runs",
         ],
-        scenario="existing accepted standard looming",
-        artifact=artifact_metadata(looming_path),
+        scenario="M09 stable selected accepted standard looming; not a rerun or recalibration of the full M06 12-point protocol",
+        out_files=[
+            "evidence/M09/bench/selected-trial-summary.json",
+            "evidence/M09/bench/recorder-parity.json",
+        ],
+        artifact=artifact_metadata(runs_looming_path),
+        preserved_attempt_2_fixture=artifact_metadata(looming_path),
     )
 
     headless = build_recorded_live_session(
@@ -607,9 +691,28 @@ def main(argv: list[str] | None = None) -> int:
     adapted_result = adapted.finalize()
     plain_game = build_live_session(profile)
     complete_round(plain_game)
+    headless_digest = scientific_state_digest(
+        headless.runner, game_session=headless.session
+    )
+    adapted_digest = scientific_state_digest(
+        adapted.runner, game_session=adapted.session
+    )
+    plain_digest = scientific_state_digest(
+        plain_game.runner, game_session=plain_game
+    )
     parity_checks = {
+        "recorded_vs_unrecorded_applied_inputs": list(
+            canonical_applied_input_records(headless.recorder.applied_input_events)
+        )
+        == plain_game.applied_input_records,
+        "recorded_vs_unrecorded_final_scientific_state": headless_digest
+        == plain_digest,
         "headless_vs_protocol_authoritative_state": headless.snapshot()
         == adapted.snapshot(),
+        "headless_vs_protocol_authoritative_inputs": headless.session.applied_input_records
+        == adapted.session.applied_input_records,
+        "headless_vs_protocol_final_scientific_state": headless_digest
+        == adapted_digest,
         "headless_vs_protocol_runner_summary": headless.runner.finish_run()
         == adapted.runner.finish_run(),
         "headless_vs_protocol_archive_bytes": headless_result.archive_bytes
@@ -618,11 +721,25 @@ def main(argv: list[str] | None = None) -> int:
         == plain_game.snapshot(),
         "recorded_vs_unrecorded_runner_state": headless.runner.finish_run()
         == plain_game.runner.finish_run(),
+        "final_recorder_digest_matches_authoritative_object": headless_result.summary[
+            "final_whole_state_sha256"
+        ]
+        == headless_digest["whole_state_sha256"],
     }
     report(
         output / "headless-server-recorder-parity.json",
         checks=parity_checks,
         scope="direct headless calls, DemoProtocol authoritative adapter, and unrecorded GameSession",
+        content_digest=headless_result.content_digest,
+        applied_input_sha256=headless_result.applied_input_digest,
+    )
+    report(
+        output / "recording-parity.json",
+        checks=parity_checks,
+        scope="recorded/unrecorded GameSession, direct/DemoProtocol adapter, and independently computed final state",
+        recorded_final_scientific_state=headless_digest,
+        unrecorded_final_scientific_state=plain_digest,
+        adapter_final_scientific_state=adapted_digest,
         content_digest=headless_result.content_digest,
         applied_input_sha256=headless_result.applied_input_digest,
     )
@@ -805,7 +922,7 @@ def main(argv: list[str] | None = None) -> int:
         "reexecution": representative.summary["reexecution"],
     }
     (output / "fixture-excerpts.md").write_text(
-        "# M09 attempt-2 fixture excerpts\n\n"
+        "# M09 attempt-3 fixture excerpts\n\n"
         "These bounded excerpts make the capture envelope inspectable without treating "
         "M09 as re-execution verification. M10 owns verification.\n\n"
         "```json\n"
@@ -872,6 +989,21 @@ def main(argv: list[str] | None = None) -> int:
             "process_status": PROCESS_STATUS,
         },
     )
+    write_json(
+        output / "attempt-2-superseded.json",
+        {
+            "schema_version": 1,
+            "status": "SUPERSEDED_CHANGES_REQUIRED",
+            **ATTEMPT_2,
+            "interpretation": "M09-a02 substantially repaired the recorder and its scientific capture envelope. The remaining review findings were contract and architecture-wording defects, not invalid science.",
+            "remaining_reason_categories": [
+                "required tests/test_recording_parity.py absent",
+                "bench --record-dir ignored --out and changed CLI mode without an explicit output contract",
+                "coordinate decision contradicted the architecture quantization requirement",
+            ],
+            "process_status": PROCESS_STATUS,
+        },
+    )
 
     required_reports = (
         "recorder-format.json",
@@ -883,8 +1015,9 @@ def main(argv: list[str] | None = None) -> int:
         "archive-safety.json",
         "input-coalescing.json",
         "input-ordering.json",
-        "coordinate-application.json",
+        "coordinate-quantization.json",
         "bench-recording.json",
+        "recording-parity.json",
         "demo-recording-smoke.json",
         "headless-server-recorder-parity.json",
     )

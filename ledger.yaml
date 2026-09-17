@@ -1,6 +1,6 @@
 playbook_version: '0.1'
 current_milestone: M09
-current_attempt: 2
+current_attempt: 3
 last_accepted_milestone: M07
 accepted_milestones:
 - M01
@@ -19,7 +19,7 @@ milestone_status:
   M06: ACCEPTED
   M07: ACCEPTED
   M08: BLOCKED
-  M09: SUBMITTED
+  M09: IN_PROGRESS
 architecture_sha256: bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1
 working_name: FlyBench
 demo_name: Catch the Fly
@@ -1150,7 +1150,18 @@ decisions:
     Python float exactly and record that same value; do not introduce recorder-only
     quantization, clamping, or normalization.
   evidence: decisions/D-M09-COORDINATE-APPLICATION-01.json
-  owner: M09 implementation decision; external milestone acceptance pending
+  owner: historical M09 attempt-2 implementation decision; superseded by D-M09-COORDINATE-QUANTIZATION-01
+  affected_milestones:
+  - M09
+- id: D-M09-COORDINATE-QUANTIZATION-01
+  issue: Architecture explicitly requires accepted quantized coordinate values, while
+    specifying no decimal quantum, grid spacing, or rounding mode.
+  allowed_fallback_or_deviation: Formalize the existing server Python-float application
+    boundary as flybench.coordinate-binary64.v1. Quantize before authoritative application
+    and record exactly the applied IEEE-754 binary64; introduce no gameplay-scale decimal
+    grid, clamping, normalization, or recorder-only transform.
+  evidence: decisions/D-M09-COORDINATE-QUANTIZATION-01.json
+  owner: M09 attempt-3 implementation decision; external milestone acceptance pending
   affected_milestones:
   - M09
 biological_risks: []
@@ -1171,15 +1182,20 @@ m08_integration_baseline:
 m09_execution:
   status: AT_RISK
   predecessor_gate: M08_G_GAME_PENDING_UNMEASURED
-  review_attempt: 2
+  review_attempt: 3
   attempt_1_candidate_product_sha: 067b3c831469ce2475201074ad47b39853694b60
   attempt_1_submission_sha: d15bae9ccc6e8bf2952b5d14adaaaf06a86fd3dc
   attempt_1_review_zip_sha256: cff7e065c6a45aade81e23614e0a00d7eb0ed379d5422531e68ba4f629f9ea66
   attempt_1_external_verdict: CHANGES_REQUIRED
   attempt_2_candidate_product_sha: d900fd407119ae7289bcbc2170492e7ee057ae6e
   attempt_2_submission_tooling_fix_sha: 9ff779a951a116adcb903230a7509509b982ccc4
+  attempt_2_submission_sha: 057bf62587516bd0e1e12ada0eb0afb454656c1a
+  attempt_2_review_zip_sha256: cf3d09f22427eb30e07937867127f1060beed2abc8a6b0b17473d34df2d3a0b7
+  attempt_2_external_verdict: CHANGES_REQUIRED
   recorder_schema: flybench.flyrun.v0.2
-  operator_demo:
+  coordinate_quantization: flybench.coordinate-binary64.v1
+  coordinate_numerical_gameplay_change: false
+  attempt_2_operator_demo:
     path: evidence/M09/operator-demo/demo-round-000001.flyrun
     archive_sha256: 62ac367d5c6a0d6dac573e6fcea52a18de75d06e52a4bdf74661da07817e2321
     content_digest: d28d023b29aa8acd1c99c21af140590f279f42cf72ac858ddc3dff6e0ed4edd4
@@ -1202,4 +1218,4 @@ v02:
   experiment: NOT_STARTED
   reproduction: NOT_STARTED
 deferred_scope: architecture_section_17
-next_action: Submit reviews/M09-a02.zip for external M09 attempt-2 review. Do not begin M10 before the external verdict. M08 G-GAME remains pending and unmeasured; public alpha and release remain blocked on the deferred M08 human gate.
+next_action: Commit the M09 attempt-3 product candidate, then run exactly one complete local recorded operator round bound to that candidate before submission bookkeeping. Do not begin M10. M08 G-GAME remains pending and unmeasured; public alpha and release remain blocked on the deferred M08 human gate.

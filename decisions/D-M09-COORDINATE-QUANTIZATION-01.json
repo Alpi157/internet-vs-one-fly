@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-M09-COORDINATE-QUANTIZATION-01",
+  "classification": "M09 AUTHORITATIVE COORDINATE QUANTIZATION DECISION",
+  "architecture_requirement": "The runner records the accepted, quantized coordinate values and their applied logical ticks.",
+  "finding": "The architecture specifies no decimal quantum, grid spacing, or rounding mode. The deployed server already converts accepted numeric coordinates to Python float, whose representation is IEEE-754 binary64.",
+  "decision": {
+    "quantization_identity": "flybench.coordinate-binary64.v1",
+    "authoritative_rule": "Reject booleans and non-numeric values; convert an accepted integer or float to the server's canonical IEEE-754 binary64 value; reject non-finite and out-of-arena results; apply that exact binary64 to GameSession.",
+    "application_boundary": "Quantization occurs before authoritative pending-aim storage, aim application, attack locking, collision use, and recorder observation.",
+    "recorder_rule": "The recorder copies the exact binary64 value already applied by GameSession. It performs no independent rounding, normalization, clamping, or coordinate conversion.",
+    "decimal_or_gameplay_grid_added": false,
+    "clamping_added": false,
+    "normalization_added": false,
+    "numerical_gameplay_change": false
+  },
+  "implementation": {
+    "identity_constant": "flybench.game.COORDINATE_QUANTIZATION_ID",
+    "quantizer": "flybench.game.quantize_coordinate_binary64",
+    "existing_behavior_formalized": "GameSession previously used the same float(value), finite-value, and arena-bound checks. The named quantizer preserves those numerical semantics.",
+    "scientific_classification": "Implementation plumbing only; not physiology, neuroscience, biomechanics, controller calibration, or a new game mechanic."
+  },
+  "supersedes": {
+    "decision_id": "D-M09-COORDINATE-APPLICATION-01",
+    "reason": "The attempt-2 wording said quantization was not added and therefore did not explicitly satisfy the architecture's accepted-quantized-values requirement.",
+    "historical_file_preserved": true,
+    "historical_sha256": "e1ec3bc1b8f00c75184bbfca3aaa5ff4b4f4f98bd7b1479d96c36a7e4ee3ed84"
+  },
+  "scope": "M09 input representation and recorder provenance only. No GameSpec, strike radius, walking, timing, neural input, encoder, decoder, controller, graph, kernel, or scientific model parameter changes.",
+  "external_milestone_acceptance": "PENDING"
+}
