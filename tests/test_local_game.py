@@ -348,9 +348,22 @@ def test_aim_and_strike_geometry_do_not_change_output_clamped_walking() -> None:
 
 
 def test_ambient_motion_dependency_audit_has_no_hidden_evasion_path() -> None:
+    forbidden_evasion_tokens = FORBIDDEN_AMBIENT_TOKENS + (
+        "aim",
+        "aim_x",
+        "aim_y",
+        "locked_strike",
+        "strike_target",
+        "cursor_position",
+        "attack_bearing",
+        "threat_bearing",
+        "distance_to_attack",
+        "future_collision",
+        "away_from_attack",
+    )
     for function in (ambient_step, apply_game_environment_overrides):
         audit = audit_callable_dependencies(
-            function, forbidden_tokens=FORBIDDEN_AMBIENT_TOKENS
+            function, forbidden_tokens=forbidden_evasion_tokens
         )
         assert audit["status"] == "PASS", audit
         assert audit["closure_variables"]["nonlocals"] == {}
@@ -367,7 +380,7 @@ def test_ambient_motion_dependency_audit_has_no_hidden_evasion_path() -> None:
     ).lower()
     assert {
         token: scanned_source.count(token)
-        for token in FORBIDDEN_AMBIENT_TOKENS
+        for token in forbidden_evasion_tokens
         if token in scanned_source
     } == {}
     assert closure.nonlocals == {}
