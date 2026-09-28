@@ -5,12 +5,13 @@ import importlib
 import json
 from pathlib import Path
 
-import pytest
 import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
 ARCHITECTURE_SHA256 = "bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1"
+PLAN_V2_SHA256 = "ef97902c9393d416bf25007643c09e1410cfde3d92a7130ae847559beee73016"
+SOURCE_LOCK_SHA256 = "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
 
 
 def test_package_imports() -> None:
@@ -27,99 +28,62 @@ def test_architecture_identity() -> None:
     )
 
 
-def test_ledger_lifecycle_consistency() -> None:
+def test_plan_v2_identity() -> None:
+    plan = ROOT / "docs" / "plan-v2.md"
+    assert plan.is_file()
+    assert hashlib.sha256(plan.read_bytes()).hexdigest() == PLAN_V2_SHA256
+
+
+def test_ledger_v2_consistency() -> None:
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
     required_keys = {
-        "playbook_version",
-        "current_milestone",
-        "current_attempt",
-        "last_accepted_milestone",
-        "accepted_milestones",
-        "milestone_status",
-        "architecture_sha256",
-        "working_name",
-        "demo_name",
-        "last_accepted_code_commit",
-        "source_lock_digest",
-        "dataset_release",
-        "source_files",
-        "full_graph",
-        "live_graph",
-        "ports",
-        "profiles",
+        "ledger_version",
+        "authority",
+        "tooling",
+        "source_lock",
+        "graphs",
+        "accepted_gates",
+        "m08",
+        "m09",
+        "stages",
         "measurements",
-        "reviews",
-        "deferred_scope",
+        "launch_blockers",
+        "next_action",
     }
-    allowed_statuses = {
-        "NOT_STARTED",
-        "IN_PROGRESS",
-        "SUBMITTED",
-        "ACCEPTED",
-        "CHANGES_REQUIRED",
-        "BLOCKED",
+    assert set(ledger) == required_keys
+    assert ledger["ledger_version"] == 2
+    assert ledger["authority"] == {
+        "plan_sha256": PLAN_V2_SHA256,
+        "architecture_sha256": ARCHITECTURE_SHA256,
     }
-
-    assert required_keys <= ledger.keys()
-    assert ledger["playbook_version"] == "0.1"
-    assert ledger["architecture_sha256"] == ARCHITECTURE_SHA256
-    assert ledger["working_name"] == "FlyBench"
-    assert ledger["demo_name"] == "Catch the Fly"
-    assert ledger["deferred_scope"] == "architecture_section_17"
-
-    assert type(ledger["current_attempt"]) is int
-    assert ledger["current_attempt"] >= 1
-    assert isinstance(ledger["current_milestone"], str)
-    assert ledger["current_milestone"] in ledger["milestone_status"]
-    assert set(ledger["milestone_status"].values()) <= allowed_statuses
-
-    accepted_milestones = ledger["accepted_milestones"]
-    assert isinstance(accepted_milestones, list)
-    assert "M01" in accepted_milestones
-    assert len(accepted_milestones) == len(set(accepted_milestones))
-    assert ledger["last_accepted_milestone"] == accepted_milestones[-1]
-    assert all(
-        ledger["milestone_status"][milestone] == "ACCEPTED"
-        for milestone in accepted_milestones
-    )
-
-    reviews = ledger["reviews"]
-    assert isinstance(reviews, list)
-    assert any(
-        review["milestone"] == "M01"
-        and review["attempt"] == 1
-        and review["verdict"] == "ACCEPTED"
-        for review in reviews
-    )
-    assert any(
-        review["milestone"] == ledger["last_accepted_milestone"]
-        and review["verdict"] == "ACCEPTED"
-        and review["code_sha"] == ledger["last_accepted_code_commit"]
-        for review in reviews
-    )
-
+    assert ledger["stages"] == {"V2A": "SUBMITTED"}
+    assert ledger["m08"]["status"] == "G-GAME_DEFERRED_SUPERSEDED_BY_PLAN_V2"
+    assert ledger["m09"]["status"] == "SUBMITTED_SUPERSEDED_BY_PLAN_V2"
+    assert set(ledger["accepted_gates"]) == {
+        "G-MAP",
+        "M05-NUMERICAL-SEMANTICS",
+        "G-BIO",
+        "G-FULL",
+    }
     source_lock = ROOT / "profiles" / "source-lock.json"
-    if "M02" in accepted_milestones:
-        assert ledger["source_lock_digest"] == hashlib.sha256(
-            source_lock.read_bytes()
-        ).hexdigest()
-        assert ledger["dataset_release"] == "MaleCNS v1.0"
-        assert len(ledger["source_files"]) == 3
-        assert all(
-            source.get("bytes", source.get("observed_bytes", 0)) > 0
-            for source in ledger["source_files"]
-        )
-        assert all(
-            len(source["observed_sha256"]) == 64
-            for source in ledger["source_files"]
-        )
-        assert all(
-            source["upstream_sha256"] is None for source in ledger["source_files"]
-        )
-    else:
-        assert ledger["source_lock_digest"] is None
-        assert ledger["dataset_release"] is None
-        assert ledger["source_files"] == []
+    assert ledger["source_lock"]["digest"] == SOURCE_LOCK_SHA256
+    assert hashlib.sha256(source_lock.read_bytes()).hexdigest() == SOURCE_LOCK_SHA256
+    assert len(ledger["source_lock"]["files"]) == 3
+    assert ledger["graphs"]["full"] == {
+        "N": 166700,
+        "E": 25582938,
+        "contacts": 124177617,
+        "digest": "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0",
+    }
+    assert ledger["graphs"]["accepted_circuit"] == {
+        "N": 313,
+        "E": 20607,
+        "contacts": 79112,
+        "digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+    }
+    assert hashlib.sha256(
+        (ROOT / "docs/history/ledger-v1.yaml").read_bytes()
+    ).hexdigest() == "83c1b68411cac22edb546078862dc9756a1944d3c91cd13da1b52e5685ec8429"
 
 
 def test_observed_tooling_is_honest() -> None:
@@ -129,7 +93,7 @@ def test_observed_tooling_is_honest() -> None:
     assert commands["git"]["normalized_version"] == "2.43.0"
     assert commands["python"]["normalized_version"] == "3.12.3"
     assert commands["uv"]["normalized_version"] == "0.12.13"
-    if ledger["current_milestone"] in {"M08", "M09"}:
+    if ledger["stages"].get("V2A") == "SUBMITTED":
         assert commands["node"]["available"] is True
         assert commands["node"]["exit_status"] == 0
         assert commands["node"]["normalized_version"] == "24.21.0"
@@ -145,34 +109,18 @@ def test_observed_tooling_is_honest() -> None:
     assert "x86_64" in commands["uname"]["normalized_version"]
 
 
-def test_m09_at_risk_process_state_does_not_claim_m08_acceptance() -> None:
+def test_v2_process_state_does_not_claim_acceptance() -> None:
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
-    if ledger["current_milestone"] != "M09":
-        pytest.skip("M09 at-risk process state is not active")
     decision = json.loads(
-        (ROOT / "decisions/D-M08-HUMAN-GATE-DEFER-01.json").read_text(
-            encoding="utf-8"
-        )
+        (ROOT / "decisions/D-V2-01.json").read_text(encoding="utf-8")
     )
-    assert ledger["milestone_status"]["M08"] == "BLOCKED"
-    assert ledger["milestone_status"]["M09"] in {"IN_PROGRESS", "SUBMITTED"}
-    assert ledger["last_accepted_milestone"] == "M07"
-    assert ledger["accepted_milestones"] == [
-        "M01",
-        "M02",
-        "M03",
-        "M04",
-        "M05",
-        "M06",
-        "M07",
-    ]
-    assert ledger["m08_integration_baseline"]["g_game"] == "PENDING_UNMEASURED"
-    assert ledger["m09_execution"]["status"] == "AT_RISK"
-    assert decision["classification"].startswith("PROCESS DEVIATION")
-    assert decision["m08"]["milestone_acceptance"] == "NOT_ACCEPTED"
-    assert decision["m08"]["unfamiliar_player_evidence_collected"] is False
+    assert ledger["stages"]["V2A"] == "SUBMITTED"
+    assert "ACCEPTED" not in ledger["stages"].values()
+    assert decision["external_stage_acceptance"] == "PENDING"
     assert (
-        decision["m08"]["representative_remote_host_human_smoke_completed"]
+        decision["human_playtest_gate_replacement"][
+            "usability_claim_before_soft_launch"
+        ]
         is False
     )
 
@@ -185,6 +133,8 @@ def test_required_m01_paths_and_registry() -> None:
         "ledger.yaml",
         "tooling.json",
         "docs/architecture.md",
+        "docs/plan-v2.md",
+        "docs/history/ledger-v1.yaml",
         "docs/data-attribution.md",
         "docs/graph-format.md",
         "docs/pathway-card.md",
@@ -229,6 +179,7 @@ def test_required_m01_paths_and_registry() -> None:
         "tools/check_m07_evidence.py",
         "tools/run_acceptance.py",
         "tools/review_bundle.py",
+        "decisions/D-V2-01.json",
         "tests/test_scaffold.py",
         "tests/test_review_tools.py",
         "tests/test_source_fetch.py",

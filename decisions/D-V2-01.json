@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2-01",
+  "classification": "SCIENTIFIC SCOPE AND PROCESS DECISION",
+  "decision": "Adopt docs/plan-v2.md as the authority for all work after M09, with the unchanged docs/architecture.md retained as v1 history.",
+  "superseded_v1_scope": {
+    "architecture_sections": [3, 4, 8, 9, 15],
+    "playbook_milestones": "M10-M24"
+  },
+  "m09_closure": {
+    "status": "SUBMITTED_SUPERSEDED_BY_PLAN_V2",
+    "meaning": "M09 attempt 3 remains submitted history. No M09 acceptance is claimed and the v1 M10 continuation is closed."
+  },
+  "human_playtest_gate_replacement": {
+    "previous_gate": "M08 G-GAME",
+    "replacement": "Plan-v2 scripted bot-player checks with declared human-like limits, followed by soft-launch data as the first human usability evidence.",
+    "usability_claim_before_soft_launch": false
+  },
+  "unchanged_history": "docs/architecture.md remains byte-for-byte unchanged.",
+  "external_stage_acceptance": "PENDING"
+}
