@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.spike-motor-decoder.v2-draft-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "ports_profile": "profiles/ports-v2.json",
+  "input_authority": "spike body IDs only",
+  "control_interval_ms": 10.0,
+  "rate_filter": {
+    "tau_ms": 50.0,
+    "decay_float64_hex": "0x1.a330ad6166159p-1",
+    "empty_group_rate": 0.0
+  },
+  "escape_rule": "true on any escape_left or escape_right spike in the interval",
+  "forward_speed": {
+    "formula": "k_f * (rate(forward) - rate(backward))",
+    "k_f": 0.0005,
+    "clamp_arena_units_per_ms": [-0.02, 0.02]
+  },
+  "turn_rate": {
+    "formula": "k_t * (rate(turn_left) - rate(turn_right))",
+    "k_t": 0.0001,
+    "clamp_radians_per_ms": [-0.005, 0.005],
+    "body_side_to_turn_direction": "MODEL ASSUMPTION. A left-side group contributes positive turn and a right-side group contributes negative turn. This is not a measured fact."
+  },
+  "takeoff_direction": "Current heading, a declared simplification"
+}

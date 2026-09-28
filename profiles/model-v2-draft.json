@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.normalized-lif.v2-draft-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "base_semantics": "flybench.neural-order.v1",
+  "v1_parameter_changes": "none",
+  "state_dtype": "float64",
+  "neuron_model": {
+    "tau_m_ms": 20.0,
+    "tau_s_ms": 5.0,
+    "rest": 0.0,
+    "reset": 0.0,
+    "threshold": 1.0,
+    "refractory_ms": 2.0,
+    "delay_ms": 1.0,
+    "neural_dt_ms": 0.5,
+    "voltage_decay_float64_hex": "0x1.f35bd21f40adcp-1",
+    "current_decay_float64_hex": "0x1.cf46d99d52b3ap-1"
+  },
+  "background_noise": {
+    "algorithm": "flybench.u32.v1",
+    "population": "all circuit neurons",
+    "seed": 2026092802,
+    "stream_id": 17,
+    "probability_per_tick": 0.01,
+    "integer_threshold": 42949673,
+    "current_increment": 0.05,
+    "classification": "PROPOSED MODEL ASSUMPTION"
+  }
+}

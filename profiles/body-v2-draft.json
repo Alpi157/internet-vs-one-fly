@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.body-kinematics.v2-draft-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "state": ["x", "y", "heading_x", "heading_y"],
+  "heading_update": "normalize((hx-delta*hy, hy+delta*hx))",
+  "position_update": "position + heading * forward_speed * dt",
+  "takeoff_direction": "current heading",
+  "runtime_math": "Only +, -, *, /, sqrt, and comparisons through flybench.detmath are used."
+}
