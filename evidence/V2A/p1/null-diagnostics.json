@@ -1,0 +1,3494 @@
+{
+  "graphs": [
+    {
+      "E": 20607,
+      "N": 313,
+      "families": [
+        {
+          "eligible_edges": 20607,
+          "family": "N-FULL",
+          "frozen_edges": 0,
+          "nulls": [
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8582035230746834,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.18849840255591055,
+              "index": 0,
+              "multi_edges": 0,
+              "proposal_attempts": 35310,
+              "requested_swaps": 20607,
+              "seed": 202609281000,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8588343766681225,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.21405750798722048,
+              "index": 1,
+              "multi_edges": 0,
+              "proposal_attempts": 35422,
+              "requested_swaps": 20607,
+              "seed": 202609281001,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8587373222691318,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2204472843450479,
+              "index": 2,
+              "multi_edges": 0,
+              "proposal_attempts": 35328,
+              "requested_swaps": 20607,
+              "seed": 202609281002,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8607754646479352,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.18210862619808305,
+              "index": 3,
+              "multi_edges": 0,
+              "proposal_attempts": 35177,
+              "requested_swaps": 20607,
+              "seed": 202609281003,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8613092638423837,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.21405750798722045,
+              "index": 4,
+              "multi_edges": 0,
+              "proposal_attempts": 35223,
+              "requested_swaps": 20607,
+              "seed": 202609281004,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8598049206580288,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.19808306709265178,
+              "index": 5,
+              "multi_edges": 0,
+              "proposal_attempts": 35123,
+              "requested_swaps": 20607,
+              "seed": 202609281005,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.859513757461057,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.18849840255591055,
+              "index": 6,
+              "multi_edges": 0,
+              "proposal_attempts": 35182,
+              "requested_swaps": 20607,
+              "seed": 202609281006,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8575241422817489,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.19169329073482433,
+              "index": 7,
+              "multi_edges": 0,
+              "proposal_attempts": 35177,
+              "requested_swaps": 20607,
+              "seed": 202609281007,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8588343766681225,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2012779552715655,
+              "index": 8,
+              "multi_edges": 0,
+              "proposal_attempts": 35473,
+              "requested_swaps": 20607,
+              "seed": 202609281008,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8604843014509632,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.1821086261980831,
+              "index": 9,
+              "multi_edges": 0,
+              "proposal_attempts": 35316,
+              "requested_swaps": 20607,
+              "seed": 202609281009,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8640267870141214,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.18530351437699683,
+              "index": 10,
+              "multi_edges": 0,
+              "proposal_attempts": 35257,
+              "requested_swaps": 20607,
+              "seed": 202609281010,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8608725190469259,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.18849840255591055,
+              "index": 11,
+              "multi_edges": 0,
+              "proposal_attempts": 35082,
+              "requested_swaps": 20607,
+              "seed": 202609281011,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8603387198524773,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.22364217252396168,
+              "index": 12,
+              "multi_edges": 0,
+              "proposal_attempts": 35261,
+              "requested_swaps": 20607,
+              "seed": 202609281012,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8555830543019363,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2172523961661342,
+              "index": 13,
+              "multi_edges": 0,
+              "proposal_attempts": 35231,
+              "requested_swaps": 20607,
+              "seed": 202609281013,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8617945358373368,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.19808306709265178,
+              "index": 14,
+              "multi_edges": 0,
+              "proposal_attempts": 35112,
+              "requested_swaps": 20607,
+              "seed": 202609281014,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8561168534963848,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.207667731629393,
+              "index": 15,
+              "multi_edges": 0,
+              "proposal_attempts": 35101,
+              "requested_swaps": 20607,
+              "seed": 202609281015,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8648032222060464,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.1821086261980831,
+              "index": 16,
+              "multi_edges": 0,
+              "proposal_attempts": 35115,
+              "requested_swaps": 20607,
+              "seed": 202609281016,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8594167030620663,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.17891373801916932,
+              "index": 17,
+              "multi_edges": 0,
+              "proposal_attempts": 35213,
+              "requested_swaps": 20607,
+              "seed": 202609281017,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8614548454408696,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.20447284345047928,
+              "index": 18,
+              "multi_edges": 0,
+              "proposal_attempts": 34987,
+              "requested_swaps": 20607,
+              "seed": 202609281018,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8614063182413743,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.20766773162939295,
+              "index": 19,
+              "multi_edges": 0,
+              "proposal_attempts": 35225,
+              "requested_swaps": 20607,
+              "seed": 202609281019,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "eligible_edges": 20296,
+          "family": "N-CONTEXT",
+          "frozen_edges": 311,
+          "nulls": [
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.849565681564517,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11501597444089456,
+              "index": 0,
+              "multi_edges": 0,
+              "proposal_attempts": 34786,
+              "requested_swaps": 20607,
+              "seed": 202609291000,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8493230455670403,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11501597444089456,
+              "index": 1,
+              "multi_edges": 0,
+              "proposal_attempts": 34728,
+              "requested_swaps": 20607,
+              "seed": 202609291001,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8519920415392828,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.12140575079872207,
+              "index": 2,
+              "multi_edges": 0,
+              "proposal_attempts": 34983,
+              "requested_swaps": 20607,
+              "seed": 202609291002,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8499538991604795,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.07987220447284349,
+              "index": 3,
+              "multi_edges": 0,
+              "proposal_attempts": 35086,
+              "requested_swaps": 20607,
+              "seed": 202609291003,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.851118551948367,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.10223642172523967,
+              "index": 4,
+              "multi_edges": 0,
+              "proposal_attempts": 34719,
+              "requested_swaps": 20607,
+              "seed": 202609291004,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8525743679332266,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.13418530351437702,
+              "index": 5,
+              "multi_edges": 0,
+              "proposal_attempts": 34818,
+              "requested_swaps": 20607,
+              "seed": 202609291005,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8473819575872277,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11501597444089456,
+              "index": 6,
+              "multi_edges": 0,
+              "proposal_attempts": 34756,
+              "requested_swaps": 20607,
+              "seed": 202609291006,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8527684767312078,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.12140575079872207,
+              "index": 7,
+              "multi_edges": 0,
+              "proposal_attempts": 34665,
+              "requested_swaps": 20607,
+              "seed": 202609291007,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8527684767312078,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11182108626198084,
+              "index": 8,
+              "multi_edges": 0,
+              "proposal_attempts": 35115,
+              "requested_swaps": 20607,
+              "seed": 202609291008,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8531566943271703,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.13418530351437702,
+              "index": 9,
+              "multi_edges": 0,
+              "proposal_attempts": 35090,
+              "requested_swaps": 20607,
+              "seed": 202609291009,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.850342116756442,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.12140575079872207,
+              "index": 10,
+              "multi_edges": 0,
+              "proposal_attempts": 34626,
+              "requested_swaps": 20607,
+              "seed": 202609291010,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.847430484786723,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11501597444089456,
+              "index": 11,
+              "multi_edges": 0,
+              "proposal_attempts": 34778,
+              "requested_swaps": 20607,
+              "seed": 202609291011,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8506332799534139,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.10862619808306712,
+              "index": 12,
+              "multi_edges": 0,
+              "proposal_attempts": 34724,
+              "requested_swaps": 20607,
+              "seed": 202609291012,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8567962342893192,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.09904153354632589,
+              "index": 13,
+              "multi_edges": 0,
+              "proposal_attempts": 34921,
+              "requested_swaps": 20607,
+              "seed": 202609291013,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8518464599407968,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11182108626198084,
+              "index": 14,
+              "multi_edges": 0,
+              "proposal_attempts": 34956,
+              "requested_swaps": 20607,
+              "seed": 202609291014,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8509729703498811,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.10543130990415339,
+              "index": 15,
+              "multi_edges": 0,
+              "proposal_attempts": 35016,
+              "requested_swaps": 20607,
+              "seed": 202609291015,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8488377735720871,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.10543130990415334,
+              "index": 16,
+              "multi_edges": 0,
+              "proposal_attempts": 34887,
+              "requested_swaps": 20607,
+              "seed": 202609291016,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8516523511428156,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.12460063897763579,
+              "index": 17,
+              "multi_edges": 0,
+              "proposal_attempts": 35040,
+              "requested_swaps": 20607,
+              "seed": 202609291017,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.853108167127675,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.10543130990415339,
+              "index": 18,
+              "multi_edges": 0,
+              "proposal_attempts": 34977,
+              "requested_swaps": 20607,
+              "seed": 202609291018,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 20607,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 313,
+                "ks": 0.0,
+                "maximum_absolute": 0.0,
+                "mean_absolute": 0.0
+              },
+              "fraction_edges_changed": 0.8526714223322172,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.11821086261980834,
+              "index": 19,
+              "multi_edges": 0,
+              "proposal_attempts": 34950,
+              "requested_swaps": 20607,
+              "seed": 202609291019,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "graph_id": "accepted-313",
+      "graph_path": "data/compiled/escape",
+      "semantic_graph_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5"
+    },
+    {
+      "E": 205934,
+      "N": 2113,
+      "families": [
+        {
+          "eligible_edges": 205934,
+          "family": "N-FULL",
+          "frozen_edges": 0,
+          "nulls": [
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.13014671083767157,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18563199570774913
+              },
+              "fraction_edges_changed": 0.8608534773276875,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2607666824420256,
+              "index": 0,
+              "multi_edges": 0,
+              "proposal_attempts": 256029,
+              "requested_swaps": 205934,
+              "seed": 202609381000,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.13109323237103643,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18337243023670452
+              },
+              "fraction_edges_changed": 0.8625579069022113,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26360624704212016,
+              "index": 1,
+              "multi_edges": 0,
+              "proposal_attempts": 256392,
+              "requested_swaps": 205934,
+              "seed": 202609381001,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12068149550402274,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18347058017785803
+              },
+              "fraction_edges_changed": 0.8614556119921917,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2664458116422149,
+              "index": 2,
+              "multi_edges": 0,
+              "proposal_attempts": 256219,
+              "requested_swaps": 205934,
+              "seed": 202609381002,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11926171320397541,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18811794955499053
+              },
+              "fraction_edges_changed": 0.8617275437761613,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2541410317084714,
+              "index": 3,
+              "multi_edges": 0,
+              "proposal_attempts": 256125,
+              "requested_swaps": 205934,
+              "seed": 202609381003,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11878845243729294,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18501299527528242
+              },
+              "fraction_edges_changed": 0.8604601474258743,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25366777094178894,
+              "index": 4,
+              "multi_edges": 0,
+              "proposal_attempts": 256145,
+              "requested_swaps": 205934,
+              "seed": 202609381004,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12588736393752956,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18945640235764746
+              },
+              "fraction_edges_changed": 0.8619557722377073,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2607666824420256,
+              "index": 5,
+              "multi_edges": 0,
+              "proposal_attempts": 256556,
+              "requested_swaps": 205934,
+              "seed": 202609381005,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.1258873639375296,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18668875913994412
+              },
+              "fraction_edges_changed": 0.8612953664766382,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26502602934216757,
+              "index": 6,
+              "multi_edges": 0,
+              "proposal_attempts": 256000,
+              "requested_swaps": 205934,
+              "seed": 202609381006,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12967345007098913,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18451731665347523
+              },
+              "fraction_edges_changed": 0.8617615352491576,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26171320397539044,
+              "index": 7,
+              "multi_edges": 0,
+              "proposal_attempts": 256372,
+              "requested_swaps": 205934,
+              "seed": 202609381007,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11831519167061053,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18597794650582264
+              },
+              "fraction_edges_changed": 0.8613050783260656,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2593469001419782,
+              "index": 8,
+              "multi_edges": 0,
+              "proposal_attempts": 256318,
+              "requested_swaps": 205934,
+              "seed": 202609381008,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11642214860388075,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.19003825340867148
+              },
+              "fraction_edges_changed": 0.8622665514193868,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2621864647420729,
+              "index": 9,
+              "multi_edges": 0,
+              "proposal_attempts": 256516,
+              "requested_swaps": 205934,
+              "seed": 202609381009,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11452910553715095,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18193224056020987
+              },
+              "fraction_edges_changed": 0.8611011294880884,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2664458116422149,
+              "index": 10,
+              "multi_edges": 0,
+              "proposal_attempts": 256205,
+              "requested_swaps": 205934,
+              "seed": 202609381010,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2112,
+                "ks": 0.12405303030303033,
+                "maximum_absolute": 0.9444444444444444,
+                "mean_absolute": 0.18354797411804383
+              },
+              "fraction_edges_changed": 0.8618975011411423,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26549929010885004,
+              "index": 11,
+              "multi_edges": 0,
+              "proposal_attempts": 256409,
+              "requested_swaps": 205934,
+              "seed": 202609381011,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12967345007098913,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.1878140657892042
+              },
+              "fraction_edges_changed": 0.8603581730068857,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26360624704212016,
+              "index": 12,
+              "multi_edges": 0,
+              "proposal_attempts": 256738,
+              "requested_swaps": 205934,
+              "seed": 202609381012,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.130619971604354,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18400172019624167
+              },
+              "fraction_edges_changed": 0.8608534773276875,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.27117841930903935,
+              "index": 13,
+              "multi_edges": 0,
+              "proposal_attempts": 256364,
+              "requested_swaps": 205934,
+              "seed": 202609381013,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12068149550402271,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.186961971146921
+              },
+              "fraction_edges_changed": 0.8611448328105121,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.261239943208708,
+              "index": 14,
+              "multi_edges": 0,
+              "proposal_attempts": 256140,
+              "requested_swaps": 205934,
+              "seed": 202609381014,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.126360624704212,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.1833405491704667
+              },
+              "fraction_edges_changed": 0.8614410442180505,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2574538570752485,
+              "index": 15,
+              "multi_edges": 0,
+              "proposal_attempts": 256620,
+              "requested_swaps": 205934,
+              "seed": 202609381015,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12541410317084714,
+                "maximum_absolute": 0.9856115107913669,
+                "mean_absolute": 0.1892351150785645
+              },
+              "fraction_edges_changed": 0.8620091874095585,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25698059630856607,
+              "index": 16,
+              "multi_edges": 0,
+              "proposal_attempts": 256007,
+              "requested_swaps": 205934,
+              "seed": 202609381016,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12920018930430668,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18831367167824478
+              },
+              "fraction_edges_changed": 0.8604601474258743,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2593469001419783,
+              "index": 17,
+              "multi_edges": 0,
+              "proposal_attempts": 256587,
+              "requested_swaps": 205934,
+              "seed": 202609381017,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.1235210601041174,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.1832897501163999
+              },
+              "fraction_edges_changed": 0.8609991550690999,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2631329862754378,
+              "index": 18,
+              "multi_edges": 0,
+              "proposal_attempts": 256118,
+              "requested_swaps": 205934,
+              "seed": 202609381018,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.1273071462375769,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18920436279084393
+              },
+              "fraction_edges_changed": 0.8611254091116571,
+              "frozen_edges": 0,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26455276857548515,
+              "index": 19,
+              "multi_edges": 0,
+              "proposal_attempts": 255978,
+              "requested_swaps": 205934,
+              "seed": 202609381019,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "eligible_edges": 205623,
+          "family": "N-CONTEXT",
+          "frozen_edges": 311,
+          "nulls": [
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.10790345480359681,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18588299599004
+              },
+              "fraction_edges_changed": 0.8597754620412366,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2640795078088026,
+              "index": 0,
+              "multi_edges": 0,
+              "proposal_attempts": 256533,
+              "requested_swaps": 205934,
+              "seed": 202609391000,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.1268338854708945,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18605927121119972
+              },
+              "fraction_edges_changed": 0.8606835199627065,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25650733554188365,
+              "index": 1,
+              "multi_edges": 0,
+              "proposal_attempts": 256302,
+              "requested_swaps": 205934,
+              "seed": 202609391001,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.10127780407004261,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18500082273389645
+              },
+              "fraction_edges_changed": 0.8603678848563132,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25698059630856607,
+              "index": 2,
+              "multi_edges": 0,
+              "proposal_attempts": 255526,
+              "requested_swaps": 205934,
+              "seed": 202609391002,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12115475627070516,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.1883021898574315
+              },
+              "fraction_edges_changed": 0.8600910971476298,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2607666824420256,
+              "index": 3,
+              "multi_edges": 0,
+              "proposal_attempts": 256262,
+              "requested_swaps": 205934,
+              "seed": 202609391003,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11831519167061053,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18461043541963507
+              },
+              "fraction_edges_changed": 0.8596249283751105,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2560340747752012,
+              "index": 4,
+              "multi_edges": 0,
+              "proposal_attempts": 256369,
+              "requested_swaps": 205934,
+              "seed": 202609391004,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11784193090392805,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.19206005589067499
+              },
+              "fraction_edges_changed": 0.8616789845290239,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26455276857548515,
+              "index": 5,
+              "multi_edges": 0,
+              "proposal_attempts": 256662,
+              "requested_swaps": 205934,
+              "seed": 202609391005,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11831519167061053,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18858398503776158
+              },
+              "fraction_edges_changed": 0.8603047578350346,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26691907240889734,
+              "index": 6,
+              "multi_edges": 0,
+              "proposal_attempts": 255685,
+              "requested_swaps": 205934,
+              "seed": 202609391006,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12399432087079984,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.1870743628104413
+              },
+              "fraction_edges_changed": 0.86088261287597,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2645527685754851,
+              "index": 7,
+              "multi_edges": 0,
+              "proposal_attempts": 256094,
+              "requested_swaps": 205934,
+              "seed": 202609391007,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11594888783719831,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18721079030273755
+              },
+              "fraction_edges_changed": 0.8620334670331271,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25319451017510647,
+              "index": 8,
+              "multi_edges": 0,
+              "proposal_attempts": 256546,
+              "requested_swaps": 205934,
+              "seed": 202609391008,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.13345953620444867,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18368074462468725
+              },
+              "fraction_edges_changed": 0.8603387493080308,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.24988168480832945,
+              "index": 9,
+              "multi_edges": 0,
+              "proposal_attempts": 256186,
+              "requested_swaps": 205934,
+              "seed": 202609391009,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12730714623757688,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18407923885019817
+              },
+              "fraction_edges_changed": 0.861183680208222,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2560340747752012,
+              "index": 10,
+              "multi_edges": 0,
+              "proposal_attempts": 256507,
+              "requested_swaps": 205934,
+              "seed": 202609391010,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.13913866540463798,
+                "maximum_absolute": 0.8947908121410992,
+                "mean_absolute": 0.18833676877824232
+              },
+              "fraction_edges_changed": 0.8595423776549769,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25366777094178894,
+              "index": 11,
+              "multi_edges": 0,
+              "proposal_attempts": 256645,
+              "requested_swaps": 205934,
+              "seed": 202609391011,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11642214860388075,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18783812094886573
+              },
+              "fraction_edges_changed": 0.8610040109938135,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25698059630856607,
+              "index": 12,
+              "multi_edges": 0,
+              "proposal_attempts": 256256,
+              "requested_swaps": 205934,
+              "seed": 202609391012,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11310932323710365,
+                "maximum_absolute": 0.9508196721311475,
+                "mean_absolute": 0.18514885698853967
+              },
+              "fraction_edges_changed": 0.8608486214029738,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26123994320870797,
+              "index": 13,
+              "multi_edges": 0,
+              "proposal_attempts": 255951,
+              "requested_swaps": 205934,
+              "seed": 202609391013,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11405584477046854,
+                "maximum_absolute": 0.8925925925925926,
+                "mean_absolute": 0.1923972710053877
+              },
+              "fraction_edges_changed": 0.859445259160702,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2640795078088026,
+              "index": 14,
+              "multi_edges": 0,
+              "proposal_attempts": 256189,
+              "requested_swaps": 205934,
+              "seed": 202609391014,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.12352106010411737,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18403998795825732
+              },
+              "fraction_edges_changed": 0.8596589198481067,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.25366777094178894,
+              "index": 15,
+              "multi_edges": 0,
+              "proposal_attempts": 256072,
+              "requested_swaps": 205934,
+              "seed": 202609391015,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11594888783719831,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18717732125262018
+              },
+              "fraction_edges_changed": 0.8602270630396146,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2607666824420256,
+              "index": 16,
+              "multi_edges": 0,
+              "proposal_attempts": 256419,
+              "requested_swaps": 205934,
+              "seed": 202609391016,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.1315664931377189,
+                "maximum_absolute": 0.9733333333333334,
+                "mean_absolute": 0.1879520340304126
+              },
+              "fraction_edges_changed": 0.8613973408956268,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.26455276857548515,
+              "index": 17,
+              "multi_edges": 0,
+              "proposal_attempts": 256012,
+              "requested_swaps": 205934,
+              "seed": 202609391017,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.11831519167061053,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18947105935044858
+              },
+              "fraction_edges_changed": 0.8603678848563132,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2626597255087554,
+              "index": 18,
+              "multi_edges": 0,
+              "proposal_attempts": 256117,
+              "requested_swaps": 205934,
+              "seed": 202609391018,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            },
+            {
+              "completed_swaps": 205934,
+              "degree_preservation": {
+                "in_degree_exact": true,
+                "out_degree_exact": true,
+                "per_source_out_strength_exact": true,
+                "per_source_signed_weight_exact": true
+              },
+              "excitatory_inhibitory_input_ratio_shift": {
+                "comparable_neurons": 2113,
+                "ks": 0.13298627543776623,
+                "maximum_absolute": 1.0,
+                "mean_absolute": 0.18764302078599682
+              },
+              "fraction_edges_changed": 0.8602610545126108,
+              "frozen_edges": 311,
+              "frozen_edges_unchanged": true,
+              "in_strength_distribution_shift_ks": 0.2560340747752012,
+              "index": 19,
+              "multi_edges": 0,
+              "proposal_attempts": 256010,
+              "requested_swaps": 205934,
+              "seed": 202609391019,
+              "self_loops": 0,
+              "visual_to_output": {
+                "reachable": {
+                  "10001": true,
+                  "10010": true,
+                  "10360": true,
+                  "10442": true,
+                  "10760": true,
+                  "10763": true,
+                  "11288": true,
+                  "11332": true,
+                  "12348": true,
+                  "523769": true
+                },
+                "shortest_path_lengths": {
+                  "10001": 1,
+                  "10010": 1,
+                  "10360": 1,
+                  "10442": 1,
+                  "10760": 1,
+                  "10763": 1,
+                  "11288": 1,
+                  "11332": 1,
+                  "12348": 1,
+                  "523769": 1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "graph_id": "survey-mid-s10-h1",
+      "graph_path": "data/compiled/v2a-survey/s10-h1",
+      "semantic_graph_digest": "8ce1a64c350baad19c31506fade95fdcff4dbbcd9778f2231a6c2096164c1230"
+    }
+  ],
+  "profile": "profiles/nulls-v1.json",
+  "schema": "flybench.v2a.null-diagnostics",
+  "status": "SUBMITTED",
+  "version": 1
+}

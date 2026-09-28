@@ -143,6 +143,7 @@ def _shortest_paths(
     node_count: int,
     visual_indices: set[int],
     output_indices: set[int],
+    body_id_by_index: dict[int, int],
 ) -> dict[str, int | None]:
     adjacency: list[list[int]] = [[] for _ in range(node_count)]
     for source, target in zip(sources, targets, strict=True):
@@ -160,7 +161,7 @@ def _shortest_paths(
             distance[target] = distance[source] + 1
             queue.append(target)
     return {
-        str(index): None if distance[index] < 0 else int(distance[index])
+        str(body_id_by_index[index]): None if distance[index] < 0 else int(distance[index])
         for index in sorted(output_indices)
     }
 
@@ -174,6 +175,7 @@ def null_diagnostics(
     node_count: int,
     visual_indices: set[int],
     output_indices: set[int],
+    body_id_by_index: dict[int, int] | None = None,
 ) -> dict[str, Any]:
     original_indegree = np.bincount(original_targets, minlength=node_count)
     rewired_indegree = np.bincount(rewired_targets, minlength=node_count)
@@ -189,8 +191,14 @@ def null_diagnostics(
     rewired_ratio = _input_ratio(rewired_targets, weights, node_count)
     finite_ratio = np.isfinite(original_ratio) & np.isfinite(rewired_ratio)
     ratio_shift = np.abs(original_ratio[finite_ratio] - rewired_ratio[finite_ratio])
+    body_ids = body_id_by_index or {index: index for index in output_indices}
     shortest = _shortest_paths(
-        sources, rewired_targets, node_count, visual_indices, output_indices
+        sources,
+        rewired_targets,
+        node_count,
+        visual_indices,
+        output_indices,
+        body_ids,
     )
     return {
         "degree_preservation": {
@@ -265,6 +273,9 @@ def _graph_inputs(directory: Path) -> dict[str, Any]:
         "weights": np.asarray(weights, dtype=np.float64),
         "visual_indices": visual_indices,
         "output_indices": output_indices,
+        "body_id_by_index": {
+            index: int(ids[index]) for index in output_indices
+        },
         "semantic_graph_digest": manifest["semantic_digest"]["value"],
     }
 
@@ -321,6 +332,7 @@ def generate(out: Path) -> dict[str, Any]:
                     graph["ids"].size,
                     graph["visual_indices"],
                     graph["output_indices"],
+                    graph["body_id_by_index"],
                 )
                 diagnostics.update(
                     {

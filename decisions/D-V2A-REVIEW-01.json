@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2A-REVIEW-01",
+  "classification": "EXTERNAL STAGE REVIEW VERDICT",
+  "stage": "V2A",
+  "attempt": 1,
+  "reviewer": "external (operator relay)",
+  "verdict_status": "ACCEPTED WITH CONDITIONS",
+  "verdict": "V2A attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nConditions, fixed in V2B without a new V2A attempt:\nC1 FINDINGS wording: far-corner is a control strategy, not a nondegeneracy\n   failure. The degenerate result is lead-2.0: with the accepted neural escape\n   the catch rate is 0.988 versus 0.696 with no escape, so escaping makes the\n   fly easier to catch and one trivial strategy dominates.\nC2 FINDINGS must state plainly that the accepted neural controller is\n   behaviorally identical to a fixed 30 ms timer in the current game (offset\n   variance zero, 100% paired outcome match). Public claims must not imply\n   that the v1 connectome changes game behavior.\nC3 Null diagnostics must key reachability and path lengths by body ID, not by\n   local index.\nC4 Scaffold tests must not hard-code the exact stage map; they must accept\n   SUBMITTED and ACCEPTED values and require that only the reviewer verdict\n   record can set ACCEPTED.",
+  "conditions_fixed_in": "V2B",
+  "new_v2a_attempt_required": false
+}

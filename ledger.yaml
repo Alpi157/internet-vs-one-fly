@@ -59,7 +59,26 @@ m09:
   attempt_3_applied_input_sha256: b284efcdd13bfdaba7ef94c9fbf641137bcee00d25b522758c6b1e0e5f723ff9
   attempt_3_final_whole_state_sha256: ffd635efab9c97036021601ab667710d0059f87ef16617797bd463eb2053d1ef
 stages:
-  V2A: SUBMITTED
+  V2A: ACCEPTED
+stage_review_records:
+  V2A:
+    decision: decisions/D-V2A-REVIEW-01.json
+    verdict: |-
+      V2A attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).
+      Conditions, fixed in V2B without a new V2A attempt:
+      C1 FINDINGS wording: far-corner is a control strategy, not a nondegeneracy
+         failure. The degenerate result is lead-2.0: with the accepted neural escape
+         the catch rate is 0.988 versus 0.696 with no escape, so escaping makes the
+         fly easier to catch and one trivial strategy dominates.
+      C2 FINDINGS must state plainly that the accepted neural controller is
+         behaviorally identical to a fixed 30 ms timer in the current game (offset
+         variance zero, 100% paired outcome match). Public claims must not imply
+         that the v1 connectome changes game behavior.
+      C3 Null diagnostics must key reachability and path lengths by body ID, not by
+         local index.
+      C4 Scaffold tests must not hard-code the exact stage map; they must accept
+         SUBMITTED and ACCEPTED values and require that only the reviewer verdict
+         record can set ACCEPTED.
 measurements:
   full_graph:
     status: MEASURED_M07_PROVISIONAL
@@ -100,5 +119,5 @@ measurements:
       null_diagnostics_status: PASS
 launch_blockers:
 - Soft-launch evidence required by plan-v2 section 5 has not been collected.
-- V2A external review is pending.
-next_action: Submit V2A attempt 1 for external review. Do not begin Phase 2 before the external verdict.
+- v1 live demo is equivalent to a fixed 30 ms timer; no connectome-behavior claim for v1.
+next_action: Complete V2B review conditions, Phase 1 follow-up, Phase 2 draft and dry run, and initial TypeScript kernel parity.

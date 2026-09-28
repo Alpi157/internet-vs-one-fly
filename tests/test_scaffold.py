@@ -50,13 +50,14 @@ def test_ledger_v2_consistency() -> None:
         "launch_blockers",
         "next_action",
     }
-    assert set(ledger) == required_keys
+    assert required_keys <= set(ledger)
     assert ledger["ledger_version"] == 2
     assert ledger["authority"] == {
         "plan_sha256": PLAN_V2_SHA256,
         "architecture_sha256": ARCHITECTURE_SHA256,
     }
-    assert ledger["stages"] == {"V2A": "SUBMITTED"}
+    assert ledger["stages"]
+    assert set(ledger["stages"].values()) <= {"SUBMITTED", "ACCEPTED"}
     assert ledger["m08"]["status"] == "G-GAME_DEFERRED_SUPERSEDED_BY_PLAN_V2"
     assert ledger["m09"]["status"] == "SUBMITTED_SUPERSEDED_BY_PLAN_V2"
     assert set(ledger["accepted_gates"]) == {
@@ -93,7 +94,7 @@ def test_observed_tooling_is_honest() -> None:
     assert commands["git"]["normalized_version"] == "2.43.0"
     assert commands["python"]["normalized_version"] == "3.12.3"
     assert commands["uv"]["normalized_version"] == "0.12.13"
-    if ledger["stages"].get("V2A") == "SUBMITTED":
+    if ledger["stages"].get("V2A") in {"SUBMITTED", "ACCEPTED"}:
         assert commands["node"]["available"] is True
         assert commands["node"]["exit_status"] == 0
         assert commands["node"]["normalized_version"] == "24.21.0"
@@ -109,20 +110,19 @@ def test_observed_tooling_is_honest() -> None:
     assert "x86_64" in commands["uname"]["normalized_version"]
 
 
-def test_v2_process_state_does_not_claim_acceptance() -> None:
+def test_v2_process_acceptance_requires_reviewer_verdict() -> None:
     ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text(encoding="utf-8"))
-    decision = json.loads(
-        (ROOT / "decisions/D-V2-01.json").read_text(encoding="utf-8")
-    )
-    assert ledger["stages"]["V2A"] == "SUBMITTED"
-    assert "ACCEPTED" not in ledger["stages"].values()
-    assert decision["external_stage_acceptance"] == "PENDING"
-    assert (
-        decision["human_playtest_gate_replacement"][
-            "usability_claim_before_soft_launch"
-        ]
-        is False
-    )
+    review_records = ledger.get("stage_review_records", {})
+    for stage, status in ledger["stages"].items():
+        if status != "ACCEPTED":
+            continue
+        record = review_records[stage]
+        decision_path = ROOT / record["decision"]
+        decision = json.loads(decision_path.read_text(encoding="utf-8"))
+        assert decision["stage"] == stage
+        assert decision["reviewer"] == "external (operator relay)"
+        assert decision["verdict_status"] == "ACCEPTED WITH CONDITIONS"
+        assert record["verdict"] == decision["verdict"]
 
 
 def test_required_m01_paths_and_registry() -> None:
