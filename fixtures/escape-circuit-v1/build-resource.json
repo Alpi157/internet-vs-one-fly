@@ -1,0 +1,49 @@
+{
+  "classification": "M03 build-resource evidence; not runtime session memory",
+  "command": [
+    "flybench",
+    "data",
+    "compile",
+    "--lock",
+    "profiles/source-lock.json",
+    "--selection",
+    "profiles/escape-circuit.json",
+    "--out",
+    "data/compiled/escape"
+  ],
+  "completed_at_utc": "2026-09-16T07:20:34.278555Z",
+  "duration_seconds": 4.810093,
+  "input_source_bytes": {
+    "aggregate_neurotransmitters": 43282834,
+    "connection_weights": 1051241946,
+    "curated_annotations": 14483314
+  },
+  "maximum_material_temporary_bytes": 329712,
+  "output_array_bytes": {
+    "consensus_nt_codes": 441,
+    "counts": 164984,
+    "effective_signs": 441,
+    "ground_truth_nt_codes": 441,
+    "ids": 2632,
+    "nt_record_present": 441,
+    "offsets": 2640,
+    "predicted_nt_codes": 441,
+    "predicted_nt_confidence": 2632,
+    "targets": 82556,
+    "total_nt_predictions": 1380,
+    "weights": 82556
+  },
+  "output_array_total_bytes": 341585,
+  "peak_process_rss_bytes": 1157443584,
+  "peak_process_rss_method": "resource.getrusage(resource.RUSAGE_SELF).ru_maxrss on Linux, reported KiB and converted to bytes",
+  "platform": {
+    "logical_cpu_count": 24,
+    "machine": "x86_64",
+    "python": "3.12.3",
+    "release": "6.18.33.2-microsoft-standard-WSL2",
+    "system": "Linux"
+  },
+  "schema_version": 1,
+  "started_at_utc": "2026-09-16T07:20:29.468462Z",
+  "temporary_artifact": "retained structured source/target/count records; removed after successful array generation"
+}

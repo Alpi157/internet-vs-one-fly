@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 import threading
 import webbrowser
@@ -58,6 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--profile", required=True, type=Path)
     demo.add_argument("--port", type=int, default=8000)
     demo.add_argument("--no-browser", action="store_true")
+    demo.add_argument(
+        "--headless-round",
+        action="store_true",
+        help="run one bounded no-attack round and exit",
+    )
     demo.add_argument(
         "--record-dir",
         type=Path,
@@ -223,7 +229,34 @@ def main(argv: list[str] | None = None) -> int:
             from flybench.game import build_live_session, load_live_profile
             from flybench.server import create_app
 
+            profile_value = json.loads(args.profile.read_text(encoding="utf-8"))
+            graph_path = args.profile.resolve().parent.parent / profile_value["graph"]["path"]
+            fixture_path = args.profile.resolve().parent.parent / "fixtures/escape-circuit-v1"
+            if not graph_path.exists():
+                if not fixture_path.is_dir():
+                    raise FileNotFoundError(
+                        "accepted graph and repository fixture are both missing"
+                    )
+                graph_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copytree(fixture_path, graph_path)
             resolved = load_live_profile(args.profile)
+            preflight = build_live_session(resolved)
+            if args.headless_round:
+                while preflight.result is None:
+                    preflight.advance_interval()
+                print(
+                    json.dumps(
+                        {
+                            "status": "PASS",
+                            "mode": "headless-round",
+                            "result": preflight.result,
+                            "logical_time_ms": preflight.snapshot()["logical_time_ms"],
+                            "graph": preflight.snapshot()["model"],
+                        },
+                        sort_keys=True,
+                    )
+                )
+                return 0
             frontend = resolved.root / "apps" / "web" / "dist"
             if not (frontend / "index.html").is_file():
                 raise FileNotFoundError(
@@ -231,7 +264,6 @@ def main(argv: list[str] | None = None) -> int:
                 )
             # Fail before binding if the compact accepted graph is absent or invalid,
             # and warm the exact scored kernel signature once.
-            preflight = build_live_session(resolved)
             preflight.advance_interval()
             app = create_app(
                 resolved.path,

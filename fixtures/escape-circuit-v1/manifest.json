@@ -1,0 +1,426 @@
+{
+  "arrays": {
+    "consensus_nt_codes": {
+      "bytes": 441,
+      "dtype": "uint8",
+      "filename": "consensus-nt-codes.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "4644ab3b7d8ebfe454d66d5d95ce8d1dbcdcd25c2c2a5ca65154050ec33511ab",
+      "shape": [
+        313
+      ]
+    },
+    "counts": {
+      "bytes": 164984,
+      "dtype": "uint64",
+      "filename": "counts.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": true,
+      "sha256": "f0ca78036ad2fac918f8b9e23e79d9bcaf7a55dc06b568bfb186c32b017dd3ba",
+      "shape": [
+        20607
+      ]
+    },
+    "effective_signs": {
+      "bytes": 441,
+      "dtype": "int8",
+      "filename": "effective-signs.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "ccad976e32e9c44bde9669f46211ded41c91d8173720fa198f1fdcaa4e75b1e9",
+      "shape": [
+        313
+      ]
+    },
+    "ground_truth_nt_codes": {
+      "bytes": 441,
+      "dtype": "uint8",
+      "filename": "ground-truth-nt-codes.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "fb72b4d09f7d3da45a6f413b06349ceea51f190800850a4452be3b1d2c8da486",
+      "shape": [
+        313
+      ]
+    },
+    "ids": {
+      "bytes": 2632,
+      "dtype": "uint64",
+      "filename": "ids.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": true,
+      "sha256": "052f69b5e4615b374c17ce11deae1b8a700fa6d1d05e0abed31e8f0bf345d042",
+      "shape": [
+        313
+      ]
+    },
+    "nt_record_present": {
+      "bytes": 441,
+      "dtype": "uint8",
+      "filename": "nt-record-present.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "4644ab3b7d8ebfe454d66d5d95ce8d1dbcdcd25c2c2a5ca65154050ec33511ab",
+      "shape": [
+        313
+      ]
+    },
+    "offsets": {
+      "bytes": 2640,
+      "dtype": "int64",
+      "filename": "offsets.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": true,
+      "sha256": "14ad2df6ff073ce4d16fa90e31ee2e5305944d67903cc189955fe8703651a667",
+      "shape": [
+        314
+      ]
+    },
+    "predicted_nt_codes": {
+      "bytes": 441,
+      "dtype": "uint8",
+      "filename": "predicted-nt-codes.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "4644ab3b7d8ebfe454d66d5d95ce8d1dbcdcd25c2c2a5ca65154050ec33511ab",
+      "shape": [
+        313
+      ]
+    },
+    "predicted_nt_confidence": {
+      "bytes": 2632,
+      "dtype": "float64",
+      "filename": "predicted-nt-confidence.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "2a70ced0250ae155e07ccfbdf773e7bb59f429ec272433d55cfb3721f8d32fc4",
+      "shape": [
+        313
+      ]
+    },
+    "targets": {
+      "bytes": 82556,
+      "dtype": "int32",
+      "filename": "targets.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": true,
+      "sha256": "a197c90b85029f852ba164568bfb6219167e364d5e42d598834f937a9f85b5cf",
+      "shape": [
+        20607
+      ]
+    },
+    "total_nt_predictions": {
+      "bytes": 1380,
+      "dtype": "int32",
+      "filename": "total-nt-predictions.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": false,
+      "sha256": "107be1fcc8c92e66b4679f2b257ca5e791447ad5ab390786b5396bcad91fce4b",
+      "shape": [
+        313
+      ]
+    },
+    "weights": {
+      "bytes": 82556,
+      "dtype": "float32",
+      "filename": "weights.npy",
+      "read_only_mmap_supported": true,
+      "semantic_digest_member": true,
+      "sha256": "69c6472d415ca805536661dc4184ae72697d6cb8fd17c3947ad750935dc9cc2d",
+      "shape": [
+        20607
+      ]
+    }
+  },
+  "build_resource": {
+    "classification": "M03 build-resource evidence; not runtime session memory",
+    "command": [
+      "flybench",
+      "data",
+      "compile",
+      "--lock",
+      "profiles/source-lock.json",
+      "--selection",
+      "profiles/escape-circuit.json",
+      "--out",
+      "data/compiled/escape"
+    ],
+    "completed_at_utc": "2026-09-16T07:20:34.278555Z",
+    "duration_seconds": 4.810093,
+    "input_source_bytes": {
+      "aggregate_neurotransmitters": 43282834,
+      "connection_weights": 1051241946,
+      "curated_annotations": 14483314
+    },
+    "maximum_material_temporary_bytes": 329712,
+    "output_array_bytes": {
+      "consensus_nt_codes": 441,
+      "counts": 164984,
+      "effective_signs": 441,
+      "ground_truth_nt_codes": 441,
+      "ids": 2632,
+      "nt_record_present": 441,
+      "offsets": 2640,
+      "predicted_nt_codes": 441,
+      "predicted_nt_confidence": 2632,
+      "targets": 82556,
+      "total_nt_predictions": 1380,
+      "weights": 82556
+    },
+    "output_array_total_bytes": 341585,
+    "peak_process_rss_bytes": 1157443584,
+    "peak_process_rss_method": "resource.getrusage(resource.RUSAGE_SELF).ru_maxrss on Linux, reported KiB and converted to bytes",
+    "platform": {
+      "logical_cpu_count": 24,
+      "machine": "x86_64",
+      "python": "3.12.3",
+      "release": "6.18.33.2-microsoft-standard-WSL2",
+      "system": "Linux"
+    },
+    "schema_version": 1,
+    "started_at_utc": "2026-09-16T07:20:29.468462Z",
+    "temporary_artifact": "retained structured source/target/count records; removed after successful array generation"
+  },
+  "compile_transform_profile": {
+    "classification": "MODEL ASSUMPTION",
+    "copied_filename": "compile-transform-profile.json",
+    "global_gain": 1.0,
+    "normalization": "none",
+    "profile_id": "flybench.fast-current-compile.v1",
+    "sha256": "e2a740b868f7e0b0de3738ec33c9f1c70d8cb949fbf8ec0d4afbf5fcec21a623"
+  },
+  "compiler": {
+    "code_git_sha": "621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8",
+    "compiler_id": "flybench.graph-compiler.v1",
+    "module": "flybench.graph",
+    "module_sha256": "617d992bca068a4282f05584e90b3d7c5413f796a149459e2a743035348862c2"
+  },
+  "connection_table_semantics": {
+    "aggregation_rule": "Sum every retained row sharing the same exact biological source-target pair once; this also deterministically handles unexpected duplicate pair rows.",
+    "maximum_source_row_count": 2591,
+    "observed_fields": [
+      "body_pre",
+      "body_post",
+      "weight"
+    ],
+    "roi_partition_columns": [],
+    "source_observation": "The pinned table has one body_pre/body_post/count schema and no ROI partition field."
+  },
+  "endpoint_and_contact_accounting": {
+    "exclusions": [
+      {
+        "contact_mass": 642635,
+        "reason": "source_endpoint_not_accepted_target_accepted",
+        "rows": 167566
+      },
+      {
+        "contact_mass": 535197,
+        "reason": "target_endpoint_not_accepted_source_accepted",
+        "rows": 255603
+      },
+      {
+        "contact_mass": 310576299,
+        "reason": "both_endpoints_not_accepted",
+        "rows": 151412908
+      }
+    ],
+    "rows_both_endpoints_accepted": 20607,
+    "rows_source_endpoint_not_accepted": 151580474,
+    "rows_target_endpoint_not_accepted": 151668511,
+    "source_contact_mass_all_rows": 311833243,
+    "source_contact_mass_excluded": 311754131,
+    "source_contact_mass_retained": 79112,
+    "source_weight_rows_read": 151856684
+  },
+  "graph": {
+    "N": 313,
+    "disabled_zero_weight_contact_mass": 0,
+    "duplicate_input_rows_aggregated": 0,
+    "executable_nonzero_E": 20607,
+    "isolated_accepted_neurons": 0,
+    "maximum_aggregated_count": 86,
+    "pairs_with_multiple_input_rows": 0,
+    "represented_source_contacts": 79112,
+    "retained_input_rows": 20607,
+    "source_accepted_E": 20607,
+    "zero_disabled_E": 0
+  },
+  "operational_metadata": {
+    "completed_at_utc": "2026-09-16T07:20:34.278555Z",
+    "started_at_utc": "2026-09-16T07:20:29.468462Z"
+  },
+  "orientation": {
+    "adjacency": "A[source,target]",
+    "propagation": "A.T @ spike_vector",
+    "row_semantics": "presynaptic/source neuron"
+  },
+  "schema": "flybench.compiled-graph",
+  "selection_accounting": {
+    "accepted_annotation_rows": 313,
+    "accepted_population_rule": {
+      "field": "superclass",
+      "operator": "not_null"
+    },
+    "accepted_unique_ids": 313,
+    "annotation_rows": 211577,
+    "duplicate_requested_ids": 0,
+    "missing_requested_ids": 0,
+    "requested_body_ids": 313,
+    "requested_ids_outside_accepted_population": 0,
+    "selected_soma_side_inventory": {
+      "L": 166,
+      "R": 147
+    },
+    "selected_status_inventory": {
+      "Traced": 313
+    },
+    "selected_status_label_inventory": {
+      "Prelim Roughly traced": 165,
+      "Roughly traced": 148
+    },
+    "selected_type_inventory": {
+      "DNp01": 2,
+      "LC4": 126,
+      "LPLC2": 185
+    },
+    "selection_mode": "explicit_body_ids"
+  },
+  "selection_profile": {
+    "copied_filename": "selection-profile.json",
+    "profile_id": "flybench.escape-circuit.malecns-v1.0.v1",
+    "rule": "Use exactly the union of the pinned LC4, LPLC2, and DNp01 population body-ID lists; verify every ID in curated annotations and the accepted non-null-superclass population.",
+    "semantic_sha256": "2a5fb405c8044a875dcbf8f55a9af052ab33eb24e3dda1d2bd98c4b726bc71cb",
+    "sha256": "29a6b4fb98d29f2fbf76fc031bea2f75d7ed534540666fc50279168358f5232b"
+  },
+  "semantic_digest": {
+    "algorithm": "sha256",
+    "array_order": [
+      "ids",
+      "offsets",
+      "targets",
+      "counts",
+      "weights"
+    ],
+    "binds": [
+      "ordered biological IDs",
+      "source-major offsets and targets",
+      "raw aggregated counts",
+      "executable float32 weights",
+      "accepted-node selection semantic SHA-256",
+      "compile-transform profile SHA-256"
+    ],
+    "canonical_byte_order": "little-endian",
+    "excludes": [
+      "filesystem paths",
+      "timestamps",
+      "temporary filenames",
+      "memory addresses",
+      ".npy container headers"
+    ],
+    "value": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+    "version": 1
+  },
+  "source_files": [
+    {
+      "bytes": 43282834,
+      "filename": "body-neurotransmitters-male-cns-v1.0.feather",
+      "observed_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+      "role": "aggregate_neurotransmitters",
+      "upstream_sha256": null
+    },
+    {
+      "bytes": 1051241946,
+      "filename": "connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+      "observed_sha256": "e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1",
+      "role": "connection_weights",
+      "upstream_sha256": null
+    },
+    {
+      "bytes": 14483314,
+      "filename": "body-annotations-male-cns-v1.0-minconf-0.5.feather",
+      "observed_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+      "role": "curated_annotations",
+      "upstream_sha256": null
+    }
+  ],
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "transmitter_accounting": {
+    "accepted_ids_missing_source_record": 0,
+    "accepted_ids_with_source_record": 313,
+    "consensus_nt_inventory": {
+      "acetylcholine": 313
+    },
+    "effective_sign_inventory": {
+      "-1": 0,
+      "0": 0,
+      "1": 313
+    },
+    "ground_truth_inventory": {
+      "<null>": 2,
+      "acetylcholine": 311
+    },
+    "label_codebook": {
+      "0": {
+        "class": "missing_disabled",
+        "code": 0,
+        "effective_sign": 0,
+        "source_label": null
+      },
+      "1": {
+        "class": "fast_excitatory_candidate",
+        "code": 1,
+        "effective_sign": 1,
+        "source_label": "acetylcholine"
+      },
+      "2": {
+        "class": "fast_inhibitory_candidate",
+        "code": 2,
+        "effective_sign": -1,
+        "source_label": "gaba"
+      },
+      "3": {
+        "class": "candidate_model_inhibitory_only",
+        "code": 3,
+        "effective_sign": -1,
+        "source_label": "glutamate"
+      },
+      "4": {
+        "class": "fast_inhibitory_candidate",
+        "code": 4,
+        "effective_sign": -1,
+        "source_label": "histamine"
+      },
+      "5": {
+        "class": "unknown_disabled",
+        "code": 5,
+        "effective_sign": 0,
+        "source_label": "unclear"
+      },
+      "6": {
+        "class": "modulatory_disabled",
+        "code": 6,
+        "effective_sign": 0,
+        "source_label": "octopamine"
+      },
+      "7": {
+        "class": "modulatory_disabled",
+        "code": 7,
+        "effective_sign": 0,
+        "source_label": "serotonin"
+      },
+      "8": {
+        "class": "modulatory_disabled",
+        "code": 8,
+        "effective_sign": 0,
+        "source_label": "dopamine"
+      }
+    },
+    "predicted_nt_inventory": {
+      "acetylcholine": 313
+    },
+    "source_rows": 1835518,
+    "source_unique_body_ids": 1835518
+  },
+  "version": 1
+}

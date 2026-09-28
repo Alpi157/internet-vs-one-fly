@@ -1,0 +1,164 @@
+{
+  "annotation_source": "data/raw/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+  "finalized_ports": false,
+  "match_rule": {
+    "exact_instance_token": "case-sensitive alphanumeric token equality",
+    "near_match": "case-insensitive equality after removing punctuation from one complete type or instance token",
+    "priority": [
+      "exact type",
+      "exact instance token",
+      "near match"
+    ],
+    "substring_only_matches": "excluded"
+  },
+  "names": {
+    "BPN": [],
+    "DNa01": [
+      {
+        "body_id": "10442",
+        "class": null,
+        "instance": "DNa01(VES006)_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 13,
+        "synapse_contacts_to_other_seeds": 4,
+        "type": "DNa01"
+      },
+      {
+        "body_id": "10760",
+        "class": null,
+        "instance": "DNa01(VES006)_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 33,
+        "synapse_contacts_to_other_seeds": 12,
+        "type": "DNa01"
+      },
+      {
+        "body_id": "11563",
+        "class": null,
+        "instance": "DNae001(DNa01)_R",
+        "match_kind": "exact instance token",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 8,
+        "synapse_contacts_to_other_seeds": 50,
+        "type": "DNae001"
+      },
+      {
+        "body_id": "512071",
+        "class": null,
+        "instance": "DNae001(DNa01)_L",
+        "match_kind": "exact instance token",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 8,
+        "synapse_contacts_to_other_seeds": 21,
+        "type": "DNae001"
+      }
+    ],
+    "DNa02": [
+      {
+        "body_id": "10360",
+        "class": null,
+        "instance": "DNa02_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 55,
+        "synapse_contacts_to_other_seeds": 4,
+        "type": "DNa02"
+      },
+      {
+        "body_id": "523769",
+        "class": null,
+        "instance": "DNa02_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 26,
+        "synapse_contacts_to_other_seeds": 7,
+        "type": "DNa02"
+      }
+    ],
+    "DNp01": [
+      {
+        "body_id": "10001",
+        "class": null,
+        "instance": "DNp01(GF)_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 4801,
+        "synapse_contacts_to_other_seeds": 15,
+        "type": "DNp01"
+      },
+      {
+        "body_id": "10010",
+        "class": null,
+        "instance": "DNp01(GF)_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 6434,
+        "synapse_contacts_to_other_seeds": 40,
+        "type": "DNp01"
+      }
+    ],
+    "MDN": [
+      {
+        "body_id": "10763",
+        "class": null,
+        "instance": "MDN_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 20,
+        "synapse_contacts_to_other_seeds": 46,
+        "type": "MDN"
+      },
+      {
+        "body_id": "11288",
+        "class": null,
+        "instance": "MDN_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 21,
+        "synapse_contacts_to_other_seeds": 28,
+        "type": "MDN"
+      },
+      {
+        "body_id": "11332",
+        "class": null,
+        "instance": "MDN_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 27,
+        "synapse_contacts_to_other_seeds": 34,
+        "type": "MDN"
+      },
+      {
+        "body_id": "12348",
+        "class": null,
+        "instance": "MDN_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 17,
+        "synapse_contacts_to_other_seeds": 31,
+        "type": "MDN"
+      }
+    ],
+    "P9": [],
+    "oDN1": []
+  },
+  "profile_id": "flybench.walking-dn-candidates.v1",
+  "schema_version": 1,
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "status": "CANDIDATE_REVIEW_REQUIRED",
+  "synapse_count_scope": "Raw source contacts to and from all accepted visual seeds and all reported candidate matches, excluding self edges."
+}

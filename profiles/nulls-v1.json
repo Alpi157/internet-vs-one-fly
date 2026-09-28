@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.v2-nulls.v1",
+  "status": "V2A_DIAGNOSTIC_PROTOCOL",
+  "families": {
+    "N-FULL": "All circuit edges are eligible.",
+    "N-CONTEXT": "Direct edges from accepted LC4 or LPLC2 visual ports to declared output ports are frozen. Every other edge is eligible."
+  },
+  "nulls_per_family_graph": 20,
+  "swap_count_multiple_of_E": 1.0,
+  "maximum_proposal_attempt_multiple": 20,
+  "seed_rule": {
+    "algorithm": "PCG64",
+    "base_seed": 202609281000,
+    "formula": "base_seed + graph_index * 100000 + family_index * 10000 + null_index"
+  },
+  "graphs": [
+    {
+      "id": "accepted-313",
+      "path": "data/compiled/escape"
+    },
+    {
+      "id": "survey-mid-s10-h1",
+      "path": "data/compiled/v2a-survey/s10-h1"
+    }
+  ]
+}

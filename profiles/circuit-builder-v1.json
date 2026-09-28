@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.v2-circuit-builder.v1",
+  "status": "PROVISIONAL_SEEDS",
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "accepted_full_graph_semantic_digest": "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0",
+  "accepted_visual_profile": "profiles/escape-circuit.json",
+  "walking_candidate_profile": "profiles/walking-dn-candidates-v1.json",
+  "seed_rule": "Accepted LC4 and LPLC2 visual ports, accepted DNp01 outputs, and all walking candidates whose match kind is exact type. Walking candidates remain provisional and are not finalized ports.",
+  "expansion_rule": "Include seeds, neurons up to the declared hop count upstream of output seeds, and neurons up to the declared hop count downstream of visual seeds when each traversed edge has at least S source contacts.",
+  "synapse_thresholds": [3, 5, 10, 20, 50],
+  "hop_counts": [1, 2],
+  "bundle_output_root": "data/compiled/v2a-survey",
+  "kernel_cost": {
+    "simulated_ms_per_workload": 1000,
+    "workloads": ["quiet", "accepted-looming"],
+    "repeats": 3,
+    "timeout_s_per_circuit": 300,
+    "classification": "DEVELOPMENT-MACHINE NUMBERS"
+  },
+  "null_mid_size_choice": {
+    "synapse_threshold": 10,
+    "hops": 1,
+    "selection_rule": "predeclared middle one-hop threshold in the ordered survey grid"
+  }
+}

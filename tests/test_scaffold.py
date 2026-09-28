@@ -160,6 +160,11 @@ def test_required_m01_paths_and_registry() -> None:
         "profiles/intervention-direct-visual-to-dnp01-zero-v0.1.json",
         "profiles/kernel-parity-v0.1.json",
         "profiles/full-probe.json",
+        "profiles/p0-bots-v1.json",
+        "profiles/circuit-builder-v1.json",
+        "profiles/nulls-v1.json",
+        "profiles/walking-dn-candidates-v1.json",
+        "profiles/visual-ports-sides-v1.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
@@ -174,6 +179,8 @@ def test_required_m01_paths_and_registry() -> None:
         "src/flybench/authority.py",
         "src/flybench/bench.py",
         "src/flybench/kernel.py",
+        "src/flybench/circuit.py",
+        "src/flybench/nulls.py",
         "tools/acceptance.json",
         "tools/check_m06_evidence.py",
         "tools/check_m07_evidence.py",
@@ -191,16 +198,21 @@ def test_required_m01_paths_and_registry() -> None:
         "tests/test_controller_authority.py",
         "tests/test_kernel_parity.py",
         "tests/test_probe_limits.py",
+        "tests/test_p0_truth_checks.py",
+        "tests/test_nulls.py",
         "tests/fixtures/m04-reference.json",
         "tools/build_m04_mapping.py",
         "experiments/numerical_reference.py",
         "experiments/performance_probe.py",
+        "experiments/p0_truth_checks.py",
+        "fixtures/escape-circuit-v1/LICENSE-DATA.md",
+        "fixtures/escape-circuit-v1/manifest.json",
         ".github/workflows/m01-offline.yml",
     ]
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert {"M01", "M02", "M03", "M04", "M05", "M06", "M07"} <= set(
+    assert {"M01", "M02", "M03", "M04", "M05", "M06", "M07", "V2A"} <= set(
         registry["milestones"]
     )
     for milestone in registry["milestones"].values():

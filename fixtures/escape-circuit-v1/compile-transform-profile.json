@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.fast-current-compile.v1",
+  "source_data": {
+    "role": "aggregate_neurotransmitters",
+    "body_id_field": "body",
+    "predicted_label_field": "predicted_nt",
+    "predicted_confidence_field": "predicted_nt_confidence",
+    "prediction_count_field": "total_nt_predictions",
+    "ground_truth_field": "ground_truth",
+    "effective_label_field": "consensus_nt",
+    "classification": "SOURCE DATA"
+  },
+  "model_assumption": {
+    "classification": "MODEL ASSUMPTION",
+    "description": "Provisional fast-current sign transform. These signs and the unit gain are model choices, not MaleCNS measurements.",
+    "labels": {
+      "acetylcholine": {
+        "code": 1,
+        "effective_sign": 1,
+        "class": "fast_excitatory_candidate"
+      },
+      "gaba": {
+        "code": 2,
+        "effective_sign": -1,
+        "class": "fast_inhibitory_candidate"
+      },
+      "glutamate": {
+        "code": 3,
+        "effective_sign": -1,
+        "class": "candidate_model_inhibitory_only"
+      },
+      "histamine": {
+        "code": 4,
+        "effective_sign": -1,
+        "class": "fast_inhibitory_candidate"
+      },
+      "unclear": {
+        "code": 5,
+        "effective_sign": 0,
+        "class": "unknown_disabled"
+      },
+      "octopamine": {
+        "code": 6,
+        "effective_sign": 0,
+        "class": "modulatory_disabled"
+      },
+      "serotonin": {
+        "code": 7,
+        "effective_sign": 0,
+        "class": "modulatory_disabled"
+      },
+      "dopamine": {
+        "code": 8,
+        "effective_sign": 0,
+        "class": "modulatory_disabled"
+      }
+    },
+    "null_or_missing": {
+      "code": 0,
+      "effective_sign": 0,
+      "class": "missing_disabled"
+    },
+    "unrecognized_label_policy": "error",
+    "global_gain": 1.0,
+    "normalization": "none",
+    "weight_formula": "float32(raw_contact_count * presynaptic_effective_sign * global_gain)"
+  }
+}

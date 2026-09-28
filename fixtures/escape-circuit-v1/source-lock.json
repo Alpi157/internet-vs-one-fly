@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "name": "MaleCNS",
+    "release": "MaleCNS v1.0",
+    "official_page": "https://male-cns.janelia.org/download/",
+    "license": "CC-BY"
+  },
+  "files": [
+    {
+      "role": "curated_annotations",
+      "description": "Curated neuron annotations including classes, types, and sides; excludes neurotransmitter properties.",
+      "filename": "body-annotations-male-cns-v1.0-minconf-0.5.feather",
+      "official_url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+      "published_approximate_size": "~13 MB",
+      "download_max_bytes": 67108864,
+      "expected_format": "Apache Arrow Feather",
+      "upstream_sha256": null,
+      "upstream_sha256_provenance": "No SHA-256 observed on the official MaleCNS download page during M02 acquisition.",
+      "observed_bytes": 14483314,
+      "observed_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+      "observed_sha256_provenance": "Locally computed SHA-256 over the complete official HTTPS response during M02 acquisition; not an upstream-published checksum.",
+      "acquired_at_utc": "2026-09-14T12:32:02.628664Z",
+      "acquisition_receipt": "evidence/M02/discovery/source-report.json; bootstrap lock SHA-256 94def5e285aba5f5657a61f6c55c47ff837ac214df2f6e38c83bb3c0054a8438"
+    },
+    {
+      "role": "aggregate_neurotransmitters",
+      "description": "Aggregate neurotransmitter predictions for each neuron.",
+      "filename": "body-neurotransmitters-male-cns-v1.0.feather",
+      "official_url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather",
+      "published_approximate_size": "~42 MB",
+      "download_max_bytes": 134217728,
+      "expected_format": "Apache Arrow Feather",
+      "upstream_sha256": null,
+      "upstream_sha256_provenance": "No SHA-256 observed on the official MaleCNS download page during M02 acquisition.",
+      "observed_bytes": 43282834,
+      "observed_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+      "observed_sha256_provenance": "Locally computed SHA-256 over the complete official HTTPS response during M02 acquisition; not an upstream-published checksum.",
+      "acquired_at_utc": "2026-09-14T12:32:02.628664Z",
+      "acquisition_receipt": "evidence/M02/discovery/source-report.json; bootstrap lock SHA-256 94def5e285aba5f5657a61f6c55c47ff837ac214df2f6e38c83bb3c0054a8438"
+    },
+    {
+      "role": "connection_weights",
+      "description": "Segment-to-segment connection strengths for all segments with synapses; the full connection graph source table.",
+      "filename": "connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+      "official_url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+      "published_approximate_size": "~1.1 GB",
+      "download_max_bytes": 2147483648,
+      "expected_format": "Apache Arrow Feather",
+      "upstream_sha256": null,
+      "upstream_sha256_provenance": "No SHA-256 observed on the official MaleCNS download page during M02 acquisition.",
+      "observed_bytes": 1051241946,
+      "observed_sha256": "e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1",
+      "observed_sha256_provenance": "Locally computed SHA-256 over the complete official HTTPS response during M02 acquisition; not an upstream-published checksum.",
+      "acquired_at_utc": "2026-09-14T12:32:02.628664Z",
+      "acquisition_receipt": "evidence/M02/discovery/source-report.json; bootstrap lock SHA-256 94def5e285aba5f5657a61f6c55c47ff837ac214df2f6e38c83bb3c0054a8438"
+    }
+  ]
+}
