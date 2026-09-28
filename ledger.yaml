@@ -38,6 +38,20 @@ graphs:
     E: 20607
     contacts: 79112
     digest: 53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5
+  v2_candidates:
+    T1a: {status: PROVISIONAL_SEEDS, N: 2461, E: 244345, contacts: 2227343, digest: 58d6cd4463428c753c8d5fb09a651651582b87282542bc28abc74b73aefc1190}
+    T1b: {status: PROVISIONAL_SEEDS, N: 5038, E: 649715, contacts: 6391268, digest: 7ee512cea35a6d183c542e46c8daa74103eb636b3162d39e651183c653ee988f}
+    T2: {status: PROVISIONAL_SEEDS, N: 42845, E: 7091676, contacts: 43697352, digest: 8069495572c0e789892fb4da1a1b828881b575626346a0f0d0c15d6de978315b}
+scientific_profiles_v2b:
+  ports_v2_sha256: 1510d45d8db29739e94d08db55efe8b264099ed0140b5e0657621194a7ca2304
+  walking_candidates_v2_sha256: cddab8a5badbd83fae23f16f79d4f749433bf6e0337ac466a7bf85ba4d36dd8d
+  circuit_builder_v2_sha256: ef15696adce820501226f0b72695e4f0108bc2a953c63e5ae53c68c4774b4f7d
+  detmath_v2_sha256: 4af1bc2e12bc442575add8e3798bfb5da47e0e479e9227852056799526f66a3e
+  model_v2_draft_sha256: c0c59abcd77b0d9d0dcd0294c771be8b943d62cfcb270a2c5c7550b33ff14ff5
+  encoder_v2_draft_sha256: 181d075d0f32aa28b3f1a8cce90749d8a12474c9e7107367052342f8cf758f81
+  decoder_v2_draft_sha256: 9d90c219e2cbfd957fcf6831b75f4b335e3fe469965025d3bf8b1d897ee8124d
+  body_v2_draft_sha256: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
+  calibration_v2_draft_sha256: 51601e75b5822424f6ab84f6deab224c5d48a4569c52ac774472a49b5cdcb423
 accepted_gates:
   G-MAP: "PASS at 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8: exact canonical MaleCNS v1.0 LC4/LPLC2/DNp01 mapping and ports-only induced circuit; see docs/history/ledger-v1.yaml."
   M05-NUMERICAL-SEMANTICS: "PASS at a7041a71e9da2b7de17d47f566f68d975ceec851: accepted numerical reference semantics; see docs/history/ledger-v1.yaml."
@@ -60,6 +74,7 @@ m09:
   attempt_3_final_whole_state_sha256: ffd635efab9c97036021601ab667710d0059f87ef16617797bd463eb2053d1ef
 stages:
   V2A: ACCEPTED
+  V2B: SUBMITTED
 stage_review_records:
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
@@ -117,7 +132,17 @@ measurements:
       circuit_E_range: [58219, 17046389]
       null_graph_count: 80
       null_diagnostics_status: PASS
+  v2b:
+    walking_candidates: {DNp09_exact: 2, DNg13_exact: 2, DNb02_exact: 4, oDN1_matches: 0, DNa01_conflict: UNRESOLVED}
+    context_followup: {outside_circuit_spiking_neurons: 11, DNp01_full_graph_delay_ticks: 1, input_trace_status: EXPLAINED_BY_ACCUMULATED_DIFFERING_INPUT_HISTORY}
+    circuit_candidates: {count: 3, all_provisional: true, audit_status: PASS}
+    deterministic_math: {python_vectors: PASS, rng_sanity: REPORTED}
+    python_numba_noise_parity: {fixture_1s: PASS, T1a_1s: PASS}
+    calibration_dry_run: {status: DRAFT_PIPELINE_DRY_RUN_ONLY, rows: 96, silent_rows: 96, movement_rows: 0, looming_escape_intervals: 0, matched_non_looming_escape_intervals: 48}
+    typescript_parity: {detmath_vectors: PASS, fixture_v2a_bot_log: PASS, T1a_noise_1s: PASS}
 launch_blockers:
 - Soft-launch evidence required by plan-v2 section 5 has not been collected.
 - v1 live demo is equivalent to a fixed 30 ms timer; no connectome-behavior claim for v1.
-next_action: Complete V2B review conditions, Phase 1 follow-up, Phase 2 draft and dry run, and initial TypeScript kernel parity.
+- DNp09, DNg13, and DNb02 ports remain provisional; DNa01 versus DNae001 remains unresolved.
+- The V2B dry run was silent without threat, produced no spontaneous movement, and produced matched non-looming escapes where looming produced none; calibration remains a draft.
+next_action: Submit V2B attempt 1 for external review. Do not freeze calibration or finalize provisional ports.

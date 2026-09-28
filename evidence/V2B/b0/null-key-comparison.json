@@ -1,0 +1,11 @@
+{
+  "identical_after_mapping_body_id_keys_back_to_local_indices": true,
+  "new_report_sha256": "fc5e7a1c7da06a704da42f551e721d6b3102bbbfe7a23d673b8b3c873fdc0ac3",
+  "null_diagnostics_compared": 80,
+  "old_report_sha256": "a26277e698a7b426cec641b5d556c1231905997e590fd2d9adabea7ceee2c3c2",
+  "only_change": "visual_to_output reachable and shortest_path_lengths object keys changed from local indices to biological body IDs",
+  "schema": "flybench.v2b.v2a-null-key-comparison",
+  "seeds_and_all_non_key_fields_identical": true,
+  "status": "PASS",
+  "version": 1
+}

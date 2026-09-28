@@ -67,6 +67,55 @@
   "ports_profile": "profiles/ports-v2.json",
   "schema": "flybench.v2b.circuits",
   "status": "SUBMITTED",
+  "typescript_export": {
+    "E": 244345,
+    "N": 2461,
+    "byte_order": "little-endian",
+    "bytes": 4927368,
+    "format": "flybench.web-graph.v1",
+    "path": "data/compiled/v2/t1a.webbin",
+    "payload_offset": 1080,
+    "sections": {
+      "counts": {
+        "byte_length": 1954760,
+        "byte_offset": 1016768,
+        "dtype": "<u8",
+        "length": 244345,
+        "sha256": "8706995a2afad431d13c958c9b93924edc350b11574d5ce0e6cd8efbb954c14c"
+      },
+      "ids": {
+        "byte_length": 19688,
+        "byte_offset": 0,
+        "dtype": "<u8",
+        "length": 2461,
+        "sha256": "09cb2aa6d82866168947816f52d53ac2d3d982f89cab61e114d99f16345f7736"
+      },
+      "offsets": {
+        "byte_length": 19696,
+        "byte_offset": 19688,
+        "dtype": "<i8",
+        "length": 2462,
+        "sha256": "18cbab7e28a46054cfb9e2509c12b2db6a5876930e6c26d151aed0bdf92e49d3"
+      },
+      "targets": {
+        "byte_length": 977380,
+        "byte_offset": 39384,
+        "dtype": "<i4",
+        "length": 244345,
+        "sha256": "f7c42ea0f19e902cf1b43591e58c3541b8641db860f5bdca628b497838038754"
+      },
+      "weights": {
+        "byte_length": 1954760,
+        "byte_offset": 2971528,
+        "dtype": "<f8",
+        "length": 244345,
+        "sha256": "bae0166036091f246ae6445febb16ebd5200192157f894f5e0b6113812aa4b1b"
+      }
+    },
+    "semantic_graph_digest": "58d6cd4463428c753c8d5fb09a651651582b87282542bc28abc74b73aefc1190",
+    "sha256": "fcdd2ce808e05e3b89b534d7cce6a3a2748c39e1e7bc26b7f9e74d2eafc609f0",
+    "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
+  },
   "version": 1,
   "visual_ports_profile": "profiles/visual-ports-sides-v1.json"
 }

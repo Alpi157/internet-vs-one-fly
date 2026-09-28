@@ -82,6 +82,19 @@ def test_ledger_v2_consistency() -> None:
         "contacts": 79112,
         "digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
     }
+    assert ledger["graphs"]["v2_candidates"] == {
+        "T1a": {"status": "PROVISIONAL_SEEDS", "N": 2461, "E": 244345, "contacts": 2227343, "digest": "58d6cd4463428c753c8d5fb09a651651582b87282542bc28abc74b73aefc1190"},
+        "T1b": {"status": "PROVISIONAL_SEEDS", "N": 5038, "E": 649715, "contacts": 6391268, "digest": "7ee512cea35a6d183c542e46c8daa74103eb636b3162d39e651183c653ee988f"},
+        "T2": {"status": "PROVISIONAL_SEEDS", "N": 42845, "E": 7091676, "contacts": 43697352, "digest": "8069495572c0e789892fb4da1a1b828881b575626346a0f0d0c15d6de978315b"},
+    }
+    for name, digest in {
+        "ports-v2.json": "1510d45d8db29739e94d08db55efe8b264099ed0140b5e0657621194a7ca2304",
+        "walking-dn-candidates-v2.json": "cddab8a5badbd83fae23f16f79d4f749433bf6e0337ac466a7bf85ba4d36dd8d",
+        "circuit-builder-v2.json": "ef15696adce820501226f0b72695e4f0108bc2a953c63e5ae53c68c4774b4f7d",
+        "detmath-v2.json": "4af1bc2e12bc442575add8e3798bfb5da47e0e479e9227852056799526f66a3e",
+        "calibration-v2-draft.json": "51601e75b5822424f6ab84f6deab224c5d48a4569c52ac774472a49b5cdcb423",
+    }.items():
+        assert hashlib.sha256((ROOT / "profiles" / name).read_bytes()).hexdigest() == digest
     assert hashlib.sha256(
         (ROOT / "docs/history/ledger-v1.yaml").read_bytes()
     ).hexdigest() == "83c1b68411cac22edb546078862dc9756a1944d3c91cd13da1b52e5685ec8429"
@@ -165,6 +178,15 @@ def test_required_m01_paths_and_registry() -> None:
         "profiles/nulls-v1.json",
         "profiles/walking-dn-candidates-v1.json",
         "profiles/visual-ports-sides-v1.json",
+        "profiles/walking-dn-candidates-v2.json",
+        "profiles/ports-v2.json",
+        "profiles/circuit-builder-v2.json",
+        "profiles/detmath-v2.json",
+        "profiles/model-v2-draft.json",
+        "profiles/encoder-v2-draft.json",
+        "profiles/decoder-v2-draft.json",
+        "profiles/body-v2-draft.json",
+        "profiles/calibration-v2-draft.json",
         "src/flybench/__init__.py",
         "src/flybench/cli.py",
         "src/flybench/data.py",
@@ -181,6 +203,19 @@ def test_required_m01_paths_and_registry() -> None:
         "src/flybench/kernel.py",
         "src/flybench/circuit.py",
         "src/flybench/nulls.py",
+        "src/flybench/v2_data.py",
+        "src/flybench/detmath.py",
+        "src/flybench/reference_v2.py",
+        "src/flybench/kernel_v2.py",
+        "src/flybench/encoding_v2.py",
+        "src/flybench/decoder_v2.py",
+        "src/flybench/body_v2.py",
+        "src/flybench/web_export.py",
+        "packages/kernel-ts/package.json",
+        "packages/kernel-ts/package-lock.json",
+        "packages/kernel-ts/src/kernel.ts",
+        "packages/kernel-ts/test/parity.test.ts",
+        "tests/vectors/detmath-v1.json",
         "tools/acceptance.json",
         "tools/check_m06_evidence.py",
         "tools/check_m07_evidence.py",
@@ -212,7 +247,7 @@ def test_required_m01_paths_and_registry() -> None:
     assert all((ROOT / path).is_file() for path in required)
 
     registry = json.loads((ROOT / "tools" / "acceptance.json").read_text(encoding="utf-8"))
-    assert {"M01", "M02", "M03", "M04", "M05", "M06", "M07", "V2A"} <= set(
+    assert {"M01", "M02", "M03", "M04", "M05", "M06", "M07", "V2A", "V2B"} <= set(
         registry["milestones"]
     )
     for milestone in registry["milestones"].values():

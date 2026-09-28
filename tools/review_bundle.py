@@ -777,6 +777,130 @@ def render_v2a_review(
     return "\n".join(lines).encode("utf-8")
 
 
+def render_v2b_review(
+    base: str,
+    submitted: str,
+    architecture_sha: str,
+    reports: list[tuple[str, dict[str, Any]]],
+    evidence_root: Path,
+) -> bytes:
+    primary = next((report for path, report in reports if path == "acceptance/command-results.json"), None)
+    try:
+        circuits = json.loads((evidence_root / "p1/circuits.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        circuits = {}
+    try:
+        dry_run = json.loads((evidence_root / "p2/dry-run.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        dry_run = {}
+    try:
+        parity = json.loads((evidence_root / "p3/kernel-ts-parity.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        parity = {}
+    try:
+        comparison = json.loads((evidence_root / "b0/null-key-comparison.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        comparison = {}
+    lines = [
+        "# V2B review submission (attempt 1)",
+        "",
+        "## Status",
+        "",
+        "V2B is SUBMITTED. External review remains pending. This document does not mark V2B accepted.",
+        "",
+        "## Identities",
+        "",
+        f"- BASE_SHA: `{base}`.",
+        f"- Submitted commit SHA: `{submitted}`.",
+        f"- Plan v2 SHA-256: `{PLAN_V2_SHA256}`.",
+        f"- Architecture v1 SHA-256: `{architecture_sha}`.",
+        "",
+        "## Block status",
+        "",
+        "- B0 COMPLETE: recorded the external V2A verdict and conditions, corrected V2A findings, changed null reachability keys to body IDs, and generalized lifecycle tests.",
+        "- B1 COMPLETE: reported round-two walking candidates, the unresolved DNa01 conflict, literature-edge consistency, and the 11-neuron context follow-up.",
+        "- B2 COMPLETE: installed final reviewer-receipt ports and explicitly provisional exact-type ports in `profiles/ports-v2.json`.",
+        "- B3 COMPLETE: built and audited T1a, T1b, and T2 with provisional-seed status.",
+        "- B4 COMPLETE: added the integer RNG, restricted approximations, vectors, and statistical sanity report.",
+        "- B5 COMPLETE: added isolated v2 reference and Numba noise paths, encoder, spike-only decoder, body kinematics, cards, and parity tests.",
+        "- B6 COMPLETE AS DRAFT: wrote the calibration protocol and executed only the declared dry run. The protocol remains DRAFT_REVIEW_REQUIRED.",
+        "- B7 COMPLETE FOR INITIAL KERNEL: added compact export, dependency-free TypeScript kernel, detmath parity, fixture parity, T1a noise parity, and timings. Browser testing remains out of scope.",
+        "",
+        "## Commands and exit codes",
+        "",
+    ]
+    if primary:
+        for command in primary.get("commands", []):
+            argv = json.dumps(command.get("argv", []), ensure_ascii=False)
+            lines.append(
+                f"- `{command.get('name')}`: argv `{argv}`; cwd `{command.get('cwd')}`; exit `{command.get('exit_status')}`; status `{command.get('status')}`."
+            )
+    else:
+        lines.append("- No final acceptance command report was found.")
+    final_failures = [command for command in (primary or {}).get("commands", []) if command.get("exit_status") != 0]
+    lines.extend(["", "## Failures", ""])
+    if final_failures:
+        for command in final_failures:
+            lines.append(f"- Final `{command.get('name')}` exited `{command.get('exit_status')}`: {command.get('failure_reason')}.")
+    else:
+        lines.append("- No failure is recorded in the final acceptance report.")
+    lines.extend(
+        [
+            "- Pre-final scaffold tests exited `1` because the tooling availability branch handled V2A SUBMITTED but not V2A ACCEPTED. The lifecycle test was generalized and passed.",
+            "- Three pre-final `uv run` commands exited `2` because the default user cache was read-only in the sandbox. Subsequent commands used the writable declared temporary cache.",
+            "- The first calibration dry run exited `1` because T1b contains one source self-loop and simple null graphs forbid self-loops. Null generation now performs one deterministic degree-preserving preliminary swap for T1b and records the repair; the real T1b graph is unchanged.",
+            "- Initial Python and Numba noise parity tests exited `1` on bitwise state digests. Float64 executable weights and scalar reference operation order resolved the discrepancy without changing v1 code.",
+            "- The first TypeScript parity run exited `1` because a pre-fix T1a binary placed a uint64 section at an unaligned offset. The exporter now aligns every typed-array section and both parity cases pass.",
+        ]
+    )
+    lines.extend(["", "## Review conditions", ""])
+    lines.append(
+        f"- C3 comparison status: `{comparison.get('status')}` across `{comparison.get('null_diagnostics_compared')}` null diagnostics. All seeds and non-key fields were identical; only reachability and shortest-path keys changed from local indices to body IDs."
+    )
+    lines.extend(["", "## Blockers", ""])
+    lines.extend(
+        [
+            "- DNp09, DNg13, and DNb02 ports remain provisional pending external review.",
+            "- DNa01 versus DNae001 remains unresolved and is excluded from ports.",
+            "- Calibration cannot be frozen: every dry-run row was silent without threat and no row produced spontaneous movement.",
+            "- The dry run produced matched non-looming escape intervals while looming produced none.",
+            "- Soft-launch evidence remains unavailable.",
+        ]
+    )
+    lines.extend(["", "## Surprises", ""])
+    circuit_values = circuits.get("circuits", [])
+    if circuit_values:
+        lines.append(
+            "- Circuit sizes were "
+            + ", ".join(f"{value['candidate']} N={value['N']} E={value['E']}" for value in circuit_values)
+            + "."
+        )
+    rows = dry_run.get("rows", [])
+    if rows:
+        lines.append(f"- All `{sum(bool(row.get('silence')) for row in rows)}` of `{len(rows)}` dry-run rows were silent without threat.")
+        lines.append(
+            f"- Dry-run escape intervals were looming `{sum(row['escape_counts']['looming'] for row in rows)}` and matched non-looming `{sum(row['escape_counts']['matched-non-looming'] for row in rows)}`."
+        )
+    if parity:
+        lines.append(
+            f"- TypeScript parity status was `{parity.get('status')}`; fixture wall seconds per simulated second `{parity.get('fixture_v1_v2a_bot_log', {}).get('wall_seconds_per_simulated_second')}` and T1a `{parity.get('t1a_noise_one_second', {}).get('wall_seconds_per_simulated_second')}`."
+        )
+    lines.extend(
+        [
+            "",
+            "## Scope limits",
+            "",
+            "- No v1 live profile, accepted game, controller, encoder, decoder, or kernel semantics changed.",
+            "- No calibration setting was selected or frozen, and no H1 or H2 conclusion was drawn.",
+            "- No provisional port was finalized and the DNa01 conflict was not resolved.",
+            "- No browser matrix, web UI, hosting, or server change is included.",
+            "- Full MaleCNS sources and generated graph arrays are excluded from this review ZIP.",
+            "",
+        ]
+    )
+    return "\n".join(lines).encode("utf-8")
+
+
 def add_evidence(
     entries: dict[str, bytes],
     evidence_root: Path,
@@ -1997,7 +2121,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         entries,
         evidence_root,
         omitted,
-        preview_limit=2 * 1024 * 1024 if milestone == "V2A" else MAX_INCLUDED_FILE_BYTES,
+        preview_limit=2 * 1024 * 1024 if milestone in {"V2A", "V2B"} else MAX_INCLUDED_FILE_BYTES,
     )
     if milestone == "M02":
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
@@ -2179,14 +2303,16 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone == "V2A":
+    if milestone in {"V2A", "V2B"}:
         plan_path = root / "docs/plan-v2.md"
         if not plan_path.is_file() or sha256(plan_path.read_bytes()) != PLAN_V2_SHA256:
             raise BundleError("docs/plan-v2.md identity mismatch")
         if attempt != 1:
-            raise BundleError("V2A review bundle contract requires attempt 1")
-        entries["REVIEW.md"] = render_v2a_review(
-            base, submitted, architecture_sha, reports, evidence_root
+            raise BundleError(f"{milestone} review bundle contract requires attempt 1")
+        entries["REVIEW.md"] = (
+            render_v2a_review(base, submitted, architecture_sha, reports, evidence_root)
+            if milestone == "V2A"
+            else render_v2b_review(base, submitted, architecture_sha, reports, evidence_root)
         )
     else:
         entries["REVIEW.md"] = render_review(
