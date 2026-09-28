@@ -328,6 +328,12 @@ def build_bundle(
     output_dir: Path,
     threshold: int,
     hops: int,
+    *,
+    profile_id: str | None = None,
+    seed_status: str = "PROVISIONAL_SEEDS",
+    selection_rule: str | None = None,
+    build_command: list[str] | None = None,
+    compiler_id: str = "flybench.v2-circuit-builder.v1",
 ) -> dict[str, Any]:
     started = time.monotonic()
     if output_dir.exists():
@@ -376,8 +382,8 @@ def build_bundle(
     selected_ids = [str(int(value)) for value in arrays["ids"][selected_indices]]
     selection_profile = {
         "schema_version": 1,
-        "profile_id": f"flybench.v2a-provisional.s{threshold}.h{hops}",
-        "status": "PROVISIONAL_SEEDS",
+        "profile_id": profile_id or f"flybench.v2a-provisional.s{threshold}.h{hops}",
+        "status": seed_status,
         "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
         "annotation_source_role": "curated_annotations",
         "selection": {
@@ -388,7 +394,8 @@ def build_bundle(
             "invalid_id_policy": "error",
             "duplicate_id_policy": "error",
             "missing_id_policy": "error",
-            "rule": f"V2A provisional plan-v2 expansion with S={threshold} and hops={hops}",
+            "rule": selection_rule
+            or f"V2A provisional plan-v2 expansion with S={threshold} and hops={hops}",
         },
         "compile_transform": {
             "path": "compile-transform-v1.json",
@@ -441,7 +448,7 @@ def build_bundle(
         "schema": MANIFEST_SCHEMA,
         "version": MANIFEST_VERSION,
         "compiler": {
-            "compiler_id": "flybench.v2-circuit-builder.v1",
+            "compiler_id": compiler_id,
             "module": "flybench.circuit",
             "module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             "code_git_sha": None,
@@ -479,7 +486,7 @@ def build_bundle(
         "selection_accounting": {
             "selection_mode": "explicit_body_ids",
             "requested_body_ids": int(selected_indices.size),
-            "status": "PROVISIONAL_SEEDS",
+            "status": seed_status,
         },
         "transmitter_accounting": {
             "unknown_sign_nodes": int(np.count_nonzero(signs == 0)),
@@ -496,12 +503,13 @@ def build_bundle(
         "arrays": inventory,
         "build_resource": {
             "classification": "V2A provisional circuit build; not runtime session memory",
-            "command": ["python", "-m", "flybench.circuit", "survey"],
+            "command": build_command
+            or ["python", "-m", "flybench.circuit", "survey"],
             "duration_seconds": time.monotonic() - started,
             "output_array_total_bytes": sum(entry["bytes"] for entry in inventory.values()),
         },
         "operational_metadata": {"completed_at_utc": utc_now()},
-        "v2a_audit": {
+        "circuit_builder_audit": {
             "synapse_threshold": threshold,
             "hops": hops,
             "cut_incoming_contact_mass": cut_incoming,
@@ -521,7 +529,7 @@ def build_bundle(
         "cut_incoming_contact_mass": cut_incoming,
         "cut_outgoing_contact_mass": cut_outgoing,
         "isolated_nodes": graph["isolated_accepted_neurons"],
-        "unknown_sign_nodes": manifest["v2a_audit"]["unknown_sign_nodes"],
+        "unknown_sign_nodes": manifest["circuit_builder_audit"]["unknown_sign_nodes"],
         "unknown_sign_edges": unknown_source_edges,
         "unknown_sign_contact_mass": graph["disabled_zero_weight_contact_mass"],
         "audit_status": report["status"],
@@ -744,9 +752,22 @@ def main() -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     survey = commands.add_parser("survey")
     survey.add_argument("--out", type=Path, required=True)
+    build_v2_parser = commands.add_parser("build-v2")
+    build_v2_parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "survey":
         result = run_survey(args.out.resolve())
+        print(
+            json.dumps(
+                {"status": "PASS", "circuits": len(result["circuits"]), "out": str(args.out.resolve())},
+                sort_keys=True,
+            )
+        )
+        return 0
+    if args.command == "build-v2":
+        from flybench.v2_data import build_v2
+
+        result = build_v2(args.out.resolve())
         print(
             json.dumps(
                 {"status": "PASS", "circuits": len(result["circuits"]), "out": str(args.out.resolve())},

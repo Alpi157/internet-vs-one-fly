@@ -1,0 +1,155 @@
+{
+  "excluded": {
+    "BPN": "Excluded because BPN are higher brain interneurons and no connectome type name is known to this project.",
+    "DNa01": "Excluded until the DNa01 versus DNae001 annotation conflict is resolved.",
+    "oDN1": "Excluded because no annotation match was found."
+  },
+  "groups": {
+    "backward": [
+      {
+        "annotation_type": "MDN",
+        "body_id": "10763",
+        "instance": "MDN_R",
+        "somaSide": "R",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "MDN",
+        "body_id": "11288",
+        "instance": "MDN_L",
+        "somaSide": "L",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "MDN",
+        "body_id": "11332",
+        "instance": "MDN_R",
+        "somaSide": "R",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "MDN",
+        "body_id": "12348",
+        "instance": "MDN_L",
+        "somaSide": "L",
+        "status": "FINAL"
+      }
+    ],
+    "escape_left": [
+      {
+        "annotation_type": "DNp01",
+        "body_id": "10010",
+        "instance": "DNp01(GF)_L",
+        "somaSide": "L",
+        "status": "FINAL"
+      }
+    ],
+    "escape_right": [
+      {
+        "annotation_type": "DNp01",
+        "body_id": "10001",
+        "instance": "DNp01(GF)_R",
+        "somaSide": "R",
+        "status": "FINAL"
+      }
+    ],
+    "forward": [
+      {
+        "annotation_type": "DNp09",
+        "body_id": "10783",
+        "instance": "DNp09_L",
+        "somaSide": "L",
+        "status": "PROVISIONAL"
+      },
+      {
+        "annotation_type": "DNp09",
+        "body_id": "11177",
+        "instance": "DNp09_R",
+        "somaSide": "R",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "turn_left": [
+      {
+        "annotation_type": "DNg13",
+        "body_id": "11074",
+        "instance": "DNg13_L",
+        "somaSide": "L",
+        "status": "PROVISIONAL"
+      },
+      {
+        "annotation_type": "DNb02",
+        "body_id": "12767",
+        "instance": "DNb02_L",
+        "somaSide": "L",
+        "status": "PROVISIONAL"
+      },
+      {
+        "annotation_type": "DNa02",
+        "body_id": "523769",
+        "instance": "DNa02_L",
+        "somaSide": "L",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "DNb02",
+        "body_id": "529488",
+        "instance": "DNb02_L",
+        "somaSide": "L",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "turn_right": [
+      {
+        "annotation_type": "DNa02",
+        "body_id": "10360",
+        "instance": "DNa02_R",
+        "somaSide": "R",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "DNb02",
+        "body_id": "10805",
+        "instance": "DNb02_R",
+        "somaSide": "R",
+        "status": "PROVISIONAL"
+      },
+      {
+        "annotation_type": "DNb02",
+        "body_id": "13922",
+        "instance": "DNb02_R",
+        "somaSide": "R",
+        "status": "PROVISIONAL"
+      },
+      {
+        "annotation_type": "DNg13",
+        "body_id": "512006",
+        "instance": "DNg13_R",
+        "somaSide": "R",
+        "status": "PROVISIONAL"
+      }
+    ]
+  },
+  "profile_id": "flybench.ports.v2-draft-1",
+  "reviewer_receipt": {
+    "DNa02": [
+      "10360",
+      "523769"
+    ],
+    "DNp01": [
+      "10001",
+      "10010"
+    ],
+    "MDN": [
+      "10763",
+      "11332",
+      "11288",
+      "12348"
+    ]
+  },
+  "schema_version": 1,
+  "side_rule": "Left and right groups are assigned from annotation somaSide only.",
+  "status": "FINAL_AND_PROVISIONAL_PORTS",
+  "turn_direction_assumption": "Whether a right-side descending neuron turns the fly right is a model assumption for the decoder card, not a measured fact.",
+  "visual_ports_profile": "profiles/visual-ports-sides-v1.json"
+}

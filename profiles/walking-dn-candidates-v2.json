@@ -1,0 +1,136 @@
+{
+  "annotation_source": "data/raw/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+  "exclusions": {
+    "BPN": "Excluded because the supplied literature fact identifies BPN as higher brain interneurons, not descending neurons, and this project has no known connectome type name."
+  },
+  "finalized_ports": false,
+  "names": {
+    "DNb02": [
+      {
+        "body_id": "10805",
+        "class": null,
+        "instance": "DNb02_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 34,
+        "synapse_contacts_to_other_seeds": 17,
+        "type": "DNb02"
+      },
+      {
+        "body_id": "12767",
+        "class": null,
+        "instance": "DNb02_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 61,
+        "synapse_contacts_to_other_seeds": 13,
+        "type": "DNb02"
+      },
+      {
+        "body_id": "13922",
+        "class": null,
+        "instance": "DNb02_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 36,
+        "synapse_contacts_to_other_seeds": 29,
+        "type": "DNb02"
+      },
+      {
+        "body_id": "529488",
+        "class": null,
+        "instance": "DNb02_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 71,
+        "synapse_contacts_to_other_seeds": 31,
+        "type": "DNb02"
+      }
+    ],
+    "DNg13": [
+      {
+        "body_id": "11074",
+        "class": null,
+        "instance": "DNg13_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 0,
+        "synapse_contacts_to_other_seeds": 0,
+        "type": "DNg13"
+      },
+      {
+        "body_id": "512006",
+        "class": null,
+        "instance": "DNg13_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 5,
+        "synapse_contacts_to_other_seeds": 3,
+        "type": "DNg13"
+      }
+    ],
+    "DNp09": [
+      {
+        "body_id": "10783",
+        "class": null,
+        "instance": "DNp09_L",
+        "match_kind": "exact type",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 105,
+        "synapse_contacts_to_other_seeds": 90,
+        "type": "DNp09"
+      },
+      {
+        "body_id": "11177",
+        "class": null,
+        "instance": "DNp09_R",
+        "match_kind": "exact type",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 9,
+        "synapse_contacts_to_other_seeds": 17,
+        "type": "DNp09"
+      },
+      {
+        "body_id": "11159",
+        "class": null,
+        "instance": "DNp71(DNp09)_R",
+        "match_kind": "exact instance token",
+        "somaSide": "R",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 401,
+        "synapse_contacts_to_other_seeds": 3,
+        "type": "DNp71"
+      },
+      {
+        "body_id": "519771",
+        "class": null,
+        "instance": "DNp71(DNp09)_L",
+        "match_kind": "exact instance token",
+        "somaSide": "L",
+        "superclass": "descending_neuron",
+        "synapse_contacts_from_other_seeds": 799,
+        "synapse_contacts_to_other_seeds": 4,
+        "type": "DNp71"
+      }
+    ],
+    "oDN1": []
+  },
+  "profile_id": "flybench.walking-dn-candidates.v2",
+  "reviewer_search_hints": {
+    "DNb02": "Reported as a direct DNp09 target.",
+    "DNg13": "Reported as strongly correlated with rotational velocity.",
+    "P9": "Search DNp09 as the MaleCNS annotation name.",
+    "oDN1": "No connectome alias is assumed."
+  },
+  "schema_version": 1,
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "status": "CANDIDATE_REVIEW_REQUIRED"
+}

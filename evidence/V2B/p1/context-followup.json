@@ -1,0 +1,6720 @@
+{
+  "dnp01_input_trace": [
+    {
+      "circuit_first_spike_tick": 1135,
+      "circuit_local_index": 0,
+      "differing_presynaptic_inputs": [
+        {
+          "circuit_source_spike_ticks": [
+            1130,
+            1165,
+            1189
+          ],
+          "contacts": 1,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1133,
+            1168,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            1131,
+            1166,
+            1190
+          ],
+          "signed_weight": 1.0,
+          "source_body_id": "10010",
+          "source_in_accepted_circuit": true,
+          "type": "DNp01"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 143,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1163,
+            1205
+          ],
+          "full_source_spike_ticks": [
+            1161,
+            1203
+          ],
+          "signed_weight": 143.0,
+          "source_body_id": "10283",
+          "source_in_accepted_circuit": false,
+          "type": "DNp103"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 4,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1202
+          ],
+          "full_source_spike_ticks": [
+            1200
+          ],
+          "signed_weight": 4.0,
+          "source_body_id": "11677",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP151"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 140,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1198
+          ],
+          "full_source_spike_ticks": [
+            1196
+          ],
+          "signed_weight": 140.0,
+          "source_body_id": "12275",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP151"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "14465",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 10,
+          "effective_sign": -1,
+          "full_arrival_boundary_ticks": [
+            970,
+            1033,
+            1077,
+            1112,
+            1139,
+            1163,
+            1183,
+            1201
+          ],
+          "full_source_spike_ticks": [
+            968,
+            1031,
+            1075,
+            1110,
+            1137,
+            1161,
+            1181,
+            1199
+          ],
+          "signed_weight": -10.0,
+          "source_body_id": "16659",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP011"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1121,
+            1158,
+            1183
+          ],
+          "contacts": 37,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1124,
+            1161,
+            1185
+          ],
+          "full_source_spike_ticks": [
+            1122,
+            1159,
+            1183
+          ],
+          "signed_weight": 37.0,
+          "source_body_id": "17054",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 37,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 37.0,
+          "source_body_id": "17551",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1122,
+            1159,
+            1183
+          ],
+          "contacts": 46,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1124,
+            1162,
+            1186
+          ],
+          "full_source_spike_ticks": [
+            1122,
+            1160,
+            1184
+          ],
+          "signed_weight": 46.0,
+          "source_body_id": "18189",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "18672",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 5,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 5.0,
+          "source_body_id": "18929",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 28,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 28.0,
+          "source_body_id": "19034",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 34,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 34.0,
+          "source_body_id": "19229",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 1,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 1.0,
+          "source_body_id": "19249",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 1,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 1.0,
+          "source_body_id": "19549",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "19589",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 49,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 49.0,
+          "source_body_id": "19608",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 5,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 5.0,
+          "source_body_id": "19842",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 47,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 47.0,
+          "source_body_id": "20047",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 45,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 45.0,
+          "source_body_id": "20162",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 59,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 59.0,
+          "source_body_id": "20182",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 53,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 53.0,
+          "source_body_id": "20269",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 14,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 14.0,
+          "source_body_id": "20334",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "20471",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1126,
+            1150,
+            1171,
+            1189
+          ],
+          "contacts": 37,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 37.0,
+          "source_body_id": "20535",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 8,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 8.0,
+          "source_body_id": "20584",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "20694",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "20749",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "21045",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 4,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 4.0,
+          "source_body_id": "21318",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 47,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 47.0,
+          "source_body_id": "21562",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 14,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 14.0,
+          "source_body_id": "21703",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "21769",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 38,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 38.0,
+          "source_body_id": "21808",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 30,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 30.0,
+          "source_body_id": "21862",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 15,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 15.0,
+          "source_body_id": "21899",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 14,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 14.0,
+          "source_body_id": "22218",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 37,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 37.0,
+          "source_body_id": "22261",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 9,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 9.0,
+          "source_body_id": "22677",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1122,
+            1160,
+            1184
+          ],
+          "contacts": 61,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 61.0,
+          "source_body_id": "22966",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "23497",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 33,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 33.0,
+          "source_body_id": "23590",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 46,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 46.0,
+          "source_body_id": "23878",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 35,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 35.0,
+          "source_body_id": "24118",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 48,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 48.0,
+          "source_body_id": "24187",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 29,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 29.0,
+          "source_body_id": "24268",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 47,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 47.0,
+          "source_body_id": "24401",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "24800",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 32,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 32.0,
+          "source_body_id": "25253",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 7,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 7.0,
+          "source_body_id": "25267",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 6,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 6.0,
+          "source_body_id": "25316",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 32,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 32.0,
+          "source_body_id": "25497",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "25511",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1122,
+            1160,
+            1184
+          ],
+          "contacts": 30,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 30.0,
+          "source_body_id": "25584",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "25636",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 42,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 42.0,
+          "source_body_id": "26147",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "26393",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 3,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 3.0,
+          "source_body_id": "26730",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "26915",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 17,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 17.0,
+          "source_body_id": "27471",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 10,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 10.0,
+          "source_body_id": "27566",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 25,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 25.0,
+          "source_body_id": "28003",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "28044",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 28,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 28.0,
+          "source_body_id": "28741",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "28871",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 31,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 31.0,
+          "source_body_id": "29014",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 13,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 13.0,
+          "source_body_id": "29183",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 17,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 17.0,
+          "source_body_id": "29216",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 29,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 29.0,
+          "source_body_id": "29287",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 32,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 32.0,
+          "source_body_id": "29391",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 14,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 14.0,
+          "source_body_id": "29598",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 16,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 16.0,
+          "source_body_id": "29873",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 18,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 18.0,
+          "source_body_id": "29986",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "30041",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 3,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 3.0,
+          "source_body_id": "30207",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 23,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 23.0,
+          "source_body_id": "30938",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "31257",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 44,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 44.0,
+          "source_body_id": "31964",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 24,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 24.0,
+          "source_body_id": "31988",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "32507",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "33185",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "33396",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "33439",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 11,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 11.0,
+          "source_body_id": "33694",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 16,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 16.0,
+          "source_body_id": "34110",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 9,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 9.0,
+          "source_body_id": "34372",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "34681",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 4,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 4.0,
+          "source_body_id": "35632",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "35680",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 38,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 38.0,
+          "source_body_id": "35889",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "37431",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 5,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 5.0,
+          "source_body_id": "37613",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 9,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 9.0,
+          "source_body_id": "37925",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "39620",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 17,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 17.0,
+          "source_body_id": "50287",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        }
+      ],
+      "explanation_found": true,
+      "first_differing_arrival": {
+        "circuit_arrival_increment": 0.0,
+        "delta_full_minus_circuit": -0.01,
+        "end_tick": 971,
+        "full_arrival_increment": -0.01
+      },
+      "full_first_spike_tick": 1136,
+      "full_local_index": 0,
+      "state_at_circuit_first_spike_tick": {
+        "circuit": {
+          "arrival_increment": 0.0,
+          "end_tick": 1135,
+          "spike": true,
+          "synaptic_current": 2.4919933621553723,
+          "voltage": 0.0
+        },
+        "full": {
+          "arrival_increment": 0.0,
+          "end_tick": 1135,
+          "spike": false,
+          "synaptic_current": 2.7387546257795914,
+          "voltage": 0.9678246486367901
+        }
+      },
+      "target_body_id": "10001"
+    },
+    {
+      "circuit_first_spike_tick": 1130,
+      "circuit_local_index": 1,
+      "differing_presynaptic_inputs": [
+        {
+          "circuit_source_spike_ticks": [
+            1135,
+            1178,
+            1206
+          ],
+          "contacts": 1,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1138,
+            1181,
+            1207
+          ],
+          "full_source_spike_ticks": [
+            1136,
+            1179,
+            1205
+          ],
+          "signed_weight": 1.0,
+          "source_body_id": "10001",
+          "source_in_accepted_circuit": true,
+          "type": "DNp01"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1163,
+            1205
+          ],
+          "full_source_spike_ticks": [
+            1161,
+            1203
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "10283",
+          "source_in_accepted_circuit": false,
+          "type": "DNp103"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 128,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1199
+          ],
+          "full_source_spike_ticks": [
+            1197
+          ],
+          "signed_weight": 128.0,
+          "source_body_id": "10417",
+          "source_in_accepted_circuit": false,
+          "type": "DNp103"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 2,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 2.0,
+          "source_body_id": "11498",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 164,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1202
+          ],
+          "full_source_spike_ticks": [
+            1200
+          ],
+          "signed_weight": 164.0,
+          "source_body_id": "11677",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP151"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 4,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1198
+          ],
+          "full_source_spike_ticks": [
+            1196
+          ],
+          "signed_weight": 4.0,
+          "source_body_id": "12275",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP151"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1123,
+            1160,
+            1184
+          ],
+          "contacts": 62,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 62.0,
+          "source_body_id": "12349",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "12384",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 8,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 8.0,
+          "source_body_id": "13132",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "13726",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 6,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 6.0,
+          "source_body_id": "13764",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 4,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 4.0,
+          "source_body_id": "14030",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "14102",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 33,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 33.0,
+          "source_body_id": "15804",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "17059",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1123,
+            1160,
+            1184
+          ],
+          "contacts": 63,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 63.0,
+          "source_body_id": "17270",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 9,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 9.0,
+          "source_body_id": "17544",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "17774",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 44,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 44.0,
+          "source_body_id": "17775",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 38,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 38.0,
+          "source_body_id": "18900",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 40,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 40.0,
+          "source_body_id": "18936",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 55,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 55.0,
+          "source_body_id": "19787",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 12,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 12.0,
+          "source_body_id": "19830",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "20240",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "20329",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 46,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 46.0,
+          "source_body_id": "20799",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 8,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 8.0,
+          "source_body_id": "21299",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1126,
+            1150,
+            1171,
+            1189
+          ],
+          "contacts": 60,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 60.0,
+          "source_body_id": "22253",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 54,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 54.0,
+          "source_body_id": "22557",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 41,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 41.0,
+          "source_body_id": "23349",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "23665",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "24308",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1122,
+            1159,
+            1183
+          ],
+          "contacts": 42,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1124,
+            1162,
+            1186
+          ],
+          "full_source_spike_ticks": [
+            1122,
+            1160,
+            1184
+          ],
+          "signed_weight": 42.0,
+          "source_body_id": "24523",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 39,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 39.0,
+          "source_body_id": "24568",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "25027",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 15,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 15.0,
+          "source_body_id": "25136",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 28,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 28.0,
+          "source_body_id": "25209",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 6,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 6.0,
+          "source_body_id": "25286",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "25524",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 30,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 30.0,
+          "source_body_id": "25572",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 24,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 24.0,
+          "source_body_id": "25575",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 38,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 38.0,
+          "source_body_id": "26528",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 11,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 11.0,
+          "source_body_id": "27023",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 30,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 30.0,
+          "source_body_id": "27355",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 25,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 25.0,
+          "source_body_id": "27399",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 30,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 30.0,
+          "source_body_id": "27716",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "28011",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "28188",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 17,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 17.0,
+          "source_body_id": "29319",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 29,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 29.0,
+          "source_body_id": "29753",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "29815",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 29,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 29.0,
+          "source_body_id": "29955",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 18,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 18.0,
+          "source_body_id": "30512",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 19,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 19.0,
+          "source_body_id": "32237",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 33,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 33.0,
+          "source_body_id": "32737",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 35,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 35.0,
+          "source_body_id": "33406",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "33965",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 40,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 40.0,
+          "source_body_id": "34407",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1155,
+            1176,
+            1194
+          ],
+          "contacts": 11,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1022,
+            1068,
+            1104,
+            1133,
+            1158,
+            1179,
+            1197
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1020,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "signed_weight": 11.0,
+          "source_body_id": "35294",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 17,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 17.0,
+          "source_body_id": "40811",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 23,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 23.0,
+          "source_body_id": "40841",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 39,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 39.0,
+          "source_body_id": "41097",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 11,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 11.0,
+          "source_body_id": "95241",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "100103",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 6,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 6.0,
+          "source_body_id": "111903",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 21,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 21.0,
+          "source_body_id": "112292",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 22,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 22.0,
+          "source_body_id": "129687",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 18,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 18.0,
+          "source_body_id": "134521",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1123,
+            1160,
+            1184
+          ],
+          "contacts": 54,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 54.0,
+          "source_body_id": "511914",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1126,
+            1150,
+            1171,
+            1189
+          ],
+          "contacts": 37,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 37.0,
+          "source_body_id": "514670",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1123,
+            1160,
+            1184
+          ],
+          "contacts": 47,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 47.0,
+          "source_body_id": "516909",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 15,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 15.0,
+          "source_body_id": "517078",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 43,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 43.0,
+          "source_body_id": "517079",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 44,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 44.0,
+          "source_body_id": "517819",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 48,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "signed_weight": 48.0,
+          "source_body_id": "518731",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 46,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 46.0,
+          "source_body_id": "520764",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 40,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 40.0,
+          "source_body_id": "521115",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 4,
+          "effective_sign": -1,
+          "full_arrival_boundary_ticks": [
+            1075,
+            1135,
+            1166,
+            1192
+          ],
+          "full_source_spike_ticks": [
+            1073,
+            1133,
+            1164,
+            1190
+          ],
+          "signed_weight": -4.0,
+          "source_body_id": "523564",
+          "source_in_accepted_circuit": false,
+          "type": "PVLP011"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "contacts": 20,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1067,
+            1103,
+            1132,
+            1157,
+            1178,
+            1196
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1065,
+            1101,
+            1130,
+            1155,
+            1176,
+            1194
+          ],
+          "signed_weight": 20.0,
+          "source_body_id": "524366",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 27,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 27.0,
+          "source_body_id": "525844",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1122,
+            1159,
+            1183
+          ],
+          "contacts": 32,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1124,
+            1162,
+            1186
+          ],
+          "full_source_spike_ticks": [
+            1122,
+            1160,
+            1184
+          ],
+          "signed_weight": 32.0,
+          "source_body_id": "526286",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 23,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 23.0,
+          "source_body_id": "531014",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [],
+          "contacts": 2,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1131,
+            1166,
+            1188,
+            1203
+          ],
+          "full_source_spike_ticks": [
+            1129,
+            1164,
+            1186,
+            1201
+          ],
+          "signed_weight": 2.0,
+          "source_body_id": "531898",
+          "source_in_accepted_circuit": false,
+          "type": "DNp04"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            1123,
+            1160,
+            1184
+          ],
+          "contacts": 69,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            1125,
+            1163,
+            1187
+          ],
+          "full_source_spike_ticks": [
+            1123,
+            1161,
+            1185
+          ],
+          "signed_weight": 69.0,
+          "source_body_id": "533129",
+          "source_in_accepted_circuit": true,
+          "type": "LC4"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1098,
+            1127,
+            1151,
+            1172,
+            1190
+          ],
+          "contacts": 50,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1020,
+            1065,
+            1101,
+            1130,
+            1154,
+            1175,
+            1193
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1018,
+            1063,
+            1099,
+            1128,
+            1152,
+            1173,
+            1191
+          ],
+          "signed_weight": 50.0,
+          "source_body_id": "533895",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        },
+        {
+          "circuit_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1153,
+            1174,
+            1192
+          ],
+          "contacts": 36,
+          "effective_sign": 1,
+          "full_arrival_boundary_ticks": [
+            956,
+            1021,
+            1066,
+            1102,
+            1131,
+            1156,
+            1177,
+            1195
+          ],
+          "full_source_spike_ticks": [
+            954,
+            1019,
+            1064,
+            1100,
+            1129,
+            1154,
+            1175,
+            1193
+          ],
+          "signed_weight": 36.0,
+          "source_body_id": "536444",
+          "source_in_accepted_circuit": true,
+          "type": "LPLC2"
+        }
+      ],
+      "explanation_found": true,
+      "first_differing_arrival": {
+        "circuit_arrival_increment": 0.0,
+        "delta_full_minus_circuit": -0.004,
+        "end_tick": 1076,
+        "full_arrival_increment": -0.004
+      },
+      "full_first_spike_tick": 1131,
+      "full_local_index": 6,
+      "state_at_circuit_first_spike_tick": {
+        "circuit": {
+          "arrival_increment": 0.8480000000000002,
+          "end_tick": 1130,
+          "spike": true,
+          "synaptic_current": 3.375333952179063,
+          "voltage": 0.0
+        },
+        "full": {
+          "arrival_increment": 0.315,
+          "end_tick": 1130,
+          "spike": false,
+          "synaptic_current": 2.8185705415772517,
+          "voltage": 0.9931638358746774
+        }
+      },
+      "target_body_id": "10010"
+    }
+  ],
+  "outside_accepted_circuit_spiking_neurons": [
+    {
+      "body_id": "10283",
+      "contacts_from_dnp01": 20,
+      "contacts_from_visual_ports": 3050,
+      "contacts_to_dnp01": 155,
+      "contacts_to_visual_ports": 27,
+      "instance": "DNp103(PVLP119)_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        1161,
+        1203
+      ],
+      "type": "DNp103"
+    },
+    {
+      "body_id": "10417",
+      "contacts_from_dnp01": 10,
+      "contacts_from_visual_ports": 2350,
+      "contacts_to_dnp01": 128,
+      "contacts_to_visual_ports": 14,
+      "instance": "DNp103(PVLP119)_L",
+      "somaSide": "L",
+      "spike_ticks": [
+        1197
+      ],
+      "type": "DNp103"
+    },
+    {
+      "body_id": "10943",
+      "contacts_from_dnp01": 0,
+      "contacts_from_visual_ports": 3034,
+      "contacts_to_dnp01": 0,
+      "contacts_to_visual_ports": 0,
+      "instance": "AVLP531_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        1160,
+        1204
+      ],
+      "type": "AVLP531"
+    },
+    {
+      "body_id": "11137",
+      "contacts_from_dnp01": 0,
+      "contacts_from_visual_ports": 6227,
+      "contacts_to_dnp01": 0,
+      "contacts_to_visual_ports": 21,
+      "instance": "DNp04_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        1134,
+        1169,
+        1192
+      ],
+      "type": "DNp04"
+    },
+    {
+      "body_id": "11677",
+      "contacts_from_dnp01": 6,
+      "contacts_from_visual_ports": 2420,
+      "contacts_to_dnp01": 168,
+      "contacts_to_visual_ports": 60,
+      "instance": "PVLP151_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        1200
+      ],
+      "type": "PVLP151"
+    },
+    {
+      "body_id": "12275",
+      "contacts_from_dnp01": 3,
+      "contacts_from_visual_ports": 2530,
+      "contacts_to_dnp01": 144,
+      "contacts_to_visual_ports": 539,
+      "instance": "PVLP151_L",
+      "somaSide": "L",
+      "spike_ticks": [
+        1196
+      ],
+      "type": "PVLP151"
+    },
+    {
+      "body_id": "12427",
+      "contacts_from_dnp01": 2,
+      "contacts_from_visual_ports": 4858,
+      "contacts_to_dnp01": 0,
+      "contacts_to_visual_ports": 0,
+      "instance": "PVLP069_L",
+      "somaSide": "L",
+      "spike_ticks": [
+        1072,
+        1133,
+        1164,
+        1194
+      ],
+      "type": "PVLP069"
+    },
+    {
+      "body_id": "12951",
+      "contacts_from_dnp01": 0,
+      "contacts_from_visual_ports": 4198,
+      "contacts_to_dnp01": 0,
+      "contacts_to_visual_ports": 0,
+      "instance": "PVLP069_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        1080,
+        1138,
+        1180,
+        1207
+      ],
+      "type": "PVLP069"
+    },
+    {
+      "body_id": "16659",
+      "contacts_from_dnp01": 0,
+      "contacts_from_visual_ports": 7400,
+      "contacts_to_dnp01": 10,
+      "contacts_to_visual_ports": 5656,
+      "instance": "PVLP011_R",
+      "somaSide": "R",
+      "spike_ticks": [
+        968,
+        1031,
+        1075,
+        1110,
+        1137,
+        1161,
+        1181,
+        1199
+      ],
+      "type": "PVLP011"
+    },
+    {
+      "body_id": "523564",
+      "contacts_from_dnp01": 0,
+      "contacts_from_visual_ports": 5234,
+      "contacts_to_dnp01": 4,
+      "contacts_to_visual_ports": 4674,
+      "instance": "PVLP011_L",
+      "somaSide": "L",
+      "spike_ticks": [
+        1073,
+        1133,
+        1164,
+        1190
+      ],
+      "type": "PVLP011"
+    },
+    {
+      "body_id": "531898",
+      "contacts_from_dnp01": 3,
+      "contacts_from_visual_ports": 8768,
+      "contacts_to_dnp01": 2,
+      "contacts_to_visual_ports": 18,
+      "instance": "DNp04_L",
+      "somaSide": "L",
+      "spike_ticks": [
+        1129,
+        1164,
+        1186,
+        1201
+      ],
+      "type": "DNp04"
+    }
+  ],
+  "schedule": "The unchanged V2A standard looming schedule and accepted parameters."
+}

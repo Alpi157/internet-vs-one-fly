@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from flybench.nulls import directed_double_edge_swap
+from flybench.nulls import directed_double_edge_swap, null_diagnostics
 
 
 def synthetic() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -67,3 +67,20 @@ def test_invalid_simple_graphs_are_rejected(
 ) -> None:
     with pytest.raises(ValueError, match=message):
         directed_double_edge_swap(sources, targets, swap_count=0, seed=1)
+
+
+def test_reachability_diagnostics_use_body_ids() -> None:
+    sources, targets, counts, weights = synthetic()
+    diagnostics = null_diagnostics(
+        sources,
+        targets,
+        targets,
+        counts,
+        weights,
+        6,
+        {0},
+        {3, 5},
+        {3: 10001, 5: 10010},
+    )
+    assert set(diagnostics["visual_to_output"]["reachable"]) == {"10001", "10010"}
+    assert set(diagnostics["visual_to_output"]["shortest_path_lengths"]) == {"10001", "10010"}

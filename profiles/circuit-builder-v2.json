@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.circuit-builder.v2-draft-1",
+  "status": "V2B_CANDIDATE_BUILD",
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c",
+  "full_graph_semantic_digest": "429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0",
+  "ports_profile": "profiles/ports-v2.json",
+  "visual_ports_profile": "profiles/visual-ports-sides-v1.json",
+  "bundle_output_root": "data/compiled/v2",
+  "selection_rule": "Seeds plus upstream context of output ports and downstream context of visual ports at or above the declared contact threshold.",
+  "candidates": [
+    {
+      "id": "T1a",
+      "synapse_threshold": 10,
+      "hops": 1,
+      "purpose": "browser main candidate"
+    },
+    {
+      "id": "T1b",
+      "synapse_threshold": 50,
+      "hops": 2,
+      "purpose": "browser deeper candidate"
+    },
+    {
+      "id": "T2",
+      "synapse_threshold": 10,
+      "hops": 2,
+      "purpose": "offline"
+    }
+  ]
+}
