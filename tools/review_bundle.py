@@ -719,6 +719,12 @@ def render_v2a_review(
             )
     else:
         lines.append("- No failure is recorded in the final acceptance report.")
+    lines.extend(
+        [
+            "- Pre-final full regression exited `1`: the v1 lifecycle assertion did not recognize ledger schema 2, and six source-fetch tests could not bind a loopback port inside the restricted sandbox. The lifecycle assertion was updated for v2, and the final suite passed with loopback permission.",
+            "- Pre-final fresh-clone setup exited `1` because restricted sandbox DNS blocked the locked dependency download. The approved rerun and the final acceptance command passed.",
+        ]
+    )
     lines.extend(["", "## Blockers", ""])
     lines.extend(
         [
