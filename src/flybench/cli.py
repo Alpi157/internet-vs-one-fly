@@ -75,6 +75,11 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--profile", required=True, type=Path)
     record.add_argument("--out", required=True, type=Path)
     record.add_argument("--run-id", default="m09-representative-v1")
+    export_web = commands.add_parser(
+        "export-web", help="Export a compiled graph as the compact TypeScript-kernel format"
+    )
+    export_web.add_argument("graph", type=Path)
+    export_web.add_argument("--out", required=True, type=Path)
     return parser
 
 
@@ -324,6 +329,16 @@ def main(argv: list[str] | None = None) -> int:
                 sort_keys=True,
             )
         )
+        return 0
+    if args.command == "export-web":
+        try:
+            from flybench.web_export import export_web_graph
+
+            result = export_web_graph(args.graph, args.out)
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            print(f"web export failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return 1
+        print(json.dumps({"status": "PASS", **result}, sort_keys=True))
         return 0
     parser.error("unsupported command")
     return 2

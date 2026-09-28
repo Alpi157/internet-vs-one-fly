@@ -666,5 +666,14 @@ def build_v2(out: Path) -> dict[str, Any]:
         "visual_ports_profile": str(VISUAL_SIDES.relative_to(ROOT)),
         "circuits": circuits,
     }
+    from flybench.web_export import export_t1a_noise_parity, export_web_graph
+
+    t1a_directory = ROOT / builder["bundle_output_root"] / "t1a"
+    report["typescript_export"] = export_web_graph(
+        t1a_directory, ROOT / builder["bundle_output_root"] / "t1a.webbin"
+    )
+    export_t1a_noise_parity(
+        t1a_directory, ROOT / builder["bundle_output_root"] / "t1a-parity.json"
+    )
     write_json(out / "circuits.json", report)
     return report

@@ -1,0 +1,49 @@
+{
+  "E": 20607,
+  "N": 313,
+  "byte_order": "little-endian",
+  "bytes": 418216,
+  "format": "flybench.web-graph.v1",
+  "path": "packages/kernel-ts/test/fixtures/escape.webbin",
+  "payload_offset": 1056,
+  "sections": {
+    "counts": {
+      "byte_length": 164856,
+      "byte_offset": 87448,
+      "dtype": "<u8",
+      "length": 20607,
+      "sha256": "abd1d2ad311d0b9f174450dbaeada4de7fbe53400c1def00a214c352dcb59d14"
+    },
+    "ids": {
+      "byte_length": 2504,
+      "byte_offset": 0,
+      "dtype": "<u8",
+      "length": 313,
+      "sha256": "bbc39bf679eefcdc0ef62f1ecf43ab509bdd35e8957e1b2845deba50fe50e396"
+    },
+    "offsets": {
+      "byte_length": 2512,
+      "byte_offset": 2504,
+      "dtype": "<i8",
+      "length": 314,
+      "sha256": "afdedb212f0042e555ca936997093b60d6168a65a9978978dcd14409ac8892e4"
+    },
+    "targets": {
+      "byte_length": 82428,
+      "byte_offset": 5016,
+      "dtype": "<i4",
+      "length": 20607,
+      "sha256": "396f033d9b21b8c827d191fa94aa4fe9cd38359d66707c5e9b37b8aff4bcdff5"
+    },
+    "weights": {
+      "byte_length": 164856,
+      "byte_offset": 252304,
+      "dtype": "<f8",
+      "length": 20607,
+      "sha256": "6d0a90e32a0817257f0ae7c6fc762674ad595e5482a0b995d9fc7bc97fa61e6d"
+    }
+  },
+  "semantic_graph_digest": "53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5",
+  "sha256": "3acf8150a1f4a65f49dea78467f257c4e28004b3a74fe8c97e0b58bff8b558f8",
+  "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
+}
