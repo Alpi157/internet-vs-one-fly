@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.detmath.v2-1",
+  "status": "V2B_DETERMINISTIC_MATH",
+  "rng": {
+    "algorithm": "flybench.u32.v1",
+    "arithmetic": "unsigned 32-bit multiply, xor, shifts, and additions only",
+    "python_reduction": "mask with 0xffffffff after every arithmetic operation",
+    "typescript_reduction": "Math.imul for multiplication and >>> 0 after every arithmetic operation",
+    "event_rule": "u32(seed, stream, tick, index) < threshold",
+    "threshold_rule": "round-half-up(p * 2**32), computed once when the profile is loaded"
+  },
+  "approximations": {
+    "atan": {
+      "domain": [-8.0, 8.0],
+      "formula": "sign(x) * reduce(abs(x)); core(y)=y*(pi/4+0.273*(1-y)); reduce(a)=core(a) for a<=1 else pi/2-core(1/a)",
+      "runtime_operations": ["+", "-", "*", "/", "comparisons"]
+    },
+    "rotate_unit_step": {
+      "delta_domain_radians": [-0.05, 0.05],
+      "formula": "normalize((hx-delta*hy, hy+delta*hx))",
+      "runtime_operations": ["+", "-", "*", "/", "sqrt", "comparisons"]
+    }
+  },
+  "decay_constants": {
+    "voltage_decay_float64_hex": "0x1.f35bd21f40adcp-1",
+    "current_decay_float64_hex": "0x1.cf46d99d52b3ap-1",
+    "decoder_rate_decay_float64_hex": "0x1.a330ad6166159p-1"
+  }
+}

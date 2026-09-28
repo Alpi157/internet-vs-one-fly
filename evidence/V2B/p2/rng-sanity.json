@@ -1,0 +1,49 @@
+{
+  "algorithm": "flybench.u32.v1",
+  "approximation_error": {
+    "atan": {
+      "domain": [
+        -8.0,
+        8.0
+      ],
+      "maximum_absolute_error_radians": 0.0037602607373847796,
+      "measured_grid_points": 2000001
+    },
+    "rotate_unit_step": {
+      "delta_domain_radians": [
+        -0.05,
+        0.05
+      ],
+      "maximum_angular_error_radians": 4.16042780572376e-05,
+      "measured_grid_points": 1000001
+    }
+  },
+  "bernoulli": [
+    {
+      "empirical_rate": 0.00101,
+      "p": 0.001,
+      "successes": 1010,
+      "threshold": 4294967,
+      "trials": 1000000
+    },
+    {
+      "empirical_rate": 0.009962,
+      "p": 0.01,
+      "successes": 9962,
+      "threshold": 42949673,
+      "trials": 1000000
+    },
+    {
+      "empirical_rate": 0.099871,
+      "p": 0.1,
+      "successes": 99871,
+      "threshold": 429496730,
+      "trials": 1000000
+    }
+  ],
+  "cross_correlation_neighboring_indices": -0.000643320341331464,
+  "lag_1_autocorrelation_over_ticks": -0.0005315212276201408,
+  "sample_count": 1000000,
+  "schema": "flybench.v2b.rng-sanity",
+  "version": 1
+}
