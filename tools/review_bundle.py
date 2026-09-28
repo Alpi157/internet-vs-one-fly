@@ -17,6 +17,7 @@ from typing import Any
 
 
 ARCHITECTURE_SHA256 = "bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1"
+PLAN_V2_SHA256 = "ef97902c9393d416bf25007643c09e1410cfde3d92a7130ae847559beee73016"
 EMPTY_TREE_SHA = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
 MAX_INCLUDED_FILE_BYTES = 5 * 1024 * 1024
 MAX_ARCHIVE_BYTES = 15 * 1024 * 1024
@@ -654,8 +655,127 @@ def render_review(
     return "\n".join(lines).encode("utf-8")
 
 
+def render_v2a_review(
+    base: str,
+    submitted: str,
+    architecture_sha: str,
+    reports: list[tuple[str, dict[str, Any]]],
+    evidence_root: Path,
+) -> bytes:
+    primary = next((report for path, report in reports if path == "acceptance/command-results.json"), None)
+    if primary is None:
+        primary = next((report for path, report in reports if path == "command-results.json"), None)
+    try:
+        p0 = json.loads((evidence_root / "p0/findings.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        p0 = {}
+    try:
+        p1 = json.loads(
+            (evidence_root / "p1/circuit-size-survey.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        p1 = {}
+    lines = [
+        "# V2A review submission (attempt 1)",
+        "",
+        "## Status",
+        "",
+        "V2A is SUBMITTED. External review remains pending. This document does not mark the stage accepted.",
+        "",
+        "## Identities",
+        "",
+        f"- BASE_SHA: `{base}`.",
+        f"- Submitted commit SHA: `{submitted}`.",
+        f"- Plan v2 SHA-256: `{PLAN_V2_SHA256}`.",
+        f"- Architecture v1 SHA-256: `{architecture_sha}`.",
+        "",
+        "## Work completed",
+        "",
+        "- A0: committed plan v2 unchanged as the first stage commit, preserved the v1 ledger under docs/history, installed ledger schema 2, rewrote repository instructions, updated scaffold checks, and recorded D-V2-01.",
+        "- A1: measured the unchanged accepted game with declared bot limits, accepted-neural, fixed-latency, and no-escape controllers, then ran the accepted circuit and full graph context check.",
+        "- A2: inventoried annotations, reported walking DN candidates without finalizing ports, split visual ports by somaSide, surveyed deterministic provisional circuits, measured kernel cost, generated null diagnostics, and added the licensed compact fixture.",
+        "",
+        "## Commands and exit codes",
+        "",
+    ]
+    if primary:
+        for command in primary.get("commands", []):
+            argv = json.dumps(command.get("argv", []), ensure_ascii=False)
+            lines.append(
+                f"- `{command.get('name')}`: argv `{argv}`; cwd `{command.get('cwd')}`; exit `{command.get('exit_status')}`; status `{command.get('status')}`."
+            )
+    else:
+        lines.append("- No final acceptance command report was found.")
+    failures = [
+        command
+        for command in (primary or {}).get("commands", [])
+        if command.get("exit_status") != 0
+    ]
+    lines.extend(["", "## Failures", ""])
+    if failures:
+        for command in failures:
+            lines.append(
+                f"- `{command.get('name')}` failed with exit `{command.get('exit_status')}`: {command.get('failure_reason')}."
+            )
+    else:
+        lines.append("- No failure is recorded in the final acceptance report.")
+    lines.extend(["", "## Blockers", ""])
+    lines.extend(
+        [
+            "- External review of walking DN candidate identities is required before any walking port is finalized.",
+            "- V2A external review is pending.",
+            "- Soft-launch evidence required by plan v2 has not been collected.",
+        ]
+    )
+    lines.extend(["", "## Surprises", ""])
+    bot_checks = p0.get("bot_checks", {})
+    fixed_latency = bot_checks.get("fixed_latency_ms_from_global_neural_median")
+    if fixed_latency is not None:
+        lines.append(
+            f"- The accepted-neural global median command offset was `{fixed_latency}` ms before impact."
+        )
+    degenerate = []
+    for name, value in bot_checks.get("strategies", {}).items():
+        rate = value.get("controllers", {}).get("accepted-neural", {}).get("catch", {}).get("catch_rate")
+        if rate in {0.0, 1.0}:
+            degenerate.append(f"{name}={rate}")
+    lines.append(
+        "- Accepted-neural degenerate catch rates were observed: "
+        + (", ".join(degenerate) if degenerate else "none")
+        + "."
+    )
+    context = p0.get("context_check", {})
+    circuit_context = context.get("accepted_circuit", {})
+    full_context = context.get("full_graph", {})
+    lines.append(
+        f"- Context status was circuit `{circuit_context.get('status')}` and full graph `{full_context.get('status')}`; full-graph outside-circuit spiking neurons were `{full_context.get('outside_accepted_circuit_spiking_neurons')}`."
+    )
+    circuits = p1.get("circuits", [])
+    if circuits:
+        lines.append(
+            f"- The provisional survey ranged from N `{min(item['N'] for item in circuits)}` to `{max(item['N'] for item in circuits)}` and E `{min(item['E'] for item in circuits)}` to `{max(item['E'] for item in circuits)}`."
+        )
+    lines.extend(
+        [
+            "",
+            "## Scope limits",
+            "",
+            "- No encoder, decoder, accepted controller, accepted model, accepted game profile, or kernel semantic was changed.",
+            "- No behavior run was performed on a surveyed circuit or null graph.",
+            "- Walking DN matches remain candidates and are not finalized mappings.",
+            "- Raw MaleCNS sources and full graph arrays are excluded from this review ZIP.",
+            "",
+        ]
+    )
+    return "\n".join(lines).encode("utf-8")
+
+
 def add_evidence(
-    entries: dict[str, bytes], evidence_root: Path, omitted: list[dict[str, Any]]
+    entries: dict[str, bytes],
+    evidence_root: Path,
+    omitted: list[dict[str, Any]],
+    *,
+    preview_limit: int = MAX_INCLUDED_FILE_BYTES,
 ) -> None:
     if not evidence_root.is_dir():
         entries["evidence/README.txt"] = b"No generated evidence directory was present at bundle time.\n"
@@ -667,14 +787,22 @@ def add_evidence(
         relative = PurePosixPath(path.relative_to(evidence_root).as_posix())
         reason = exclusion_reason(relative)
         size = path.stat().st_size
-        if reason or size > MAX_INCLUDED_FILE_BYTES:
+        if reason or size > preview_limit:
             data = path.read_bytes() if not reason else b""
+            preview_path = None
+            if data:
+                preview_path = f"evidence-previews/{relative.as_posix()}.preview.txt"
+                preview = data[:65536]
+                if len(data) > 131072:
+                    preview += b"\n\n[... middle omitted ...]\n\n" + data[-65536:]
+                entries[preview_path] = preview
             omitted.append(
                 {
                     "path": f"evidence/{relative.as_posix()}",
                     "reason": reason or "file exceeds bounded per-file review size",
                     "bytes": size,
                     "sha256": sha256(data) if data else None,
+                    "preview_path": preview_path,
                 }
             )
             continue
@@ -1858,7 +1986,12 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
 
     add_base(entries, root, base, submitted)
     evidence_root = root / "evidence" / milestone
-    add_evidence(entries, evidence_root, omitted)
+    add_evidence(
+        entries,
+        evidence_root,
+        omitted,
+        preview_limit=2 * 1024 * 1024 if milestone == "V2A" else MAX_INCLUDED_FILE_BYTES,
+    )
     if milestone == "M02":
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
     if milestone == "M03":
@@ -2039,37 +2172,47 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    entries["REVIEW.md"] = render_review(
-        milestone,
-        attempt,
-        base,
-        submitted,
-        architecture_sha,
-        reports,
-        tooling_value,
-        (evidence_root / "manual-source-review.txt").is_file(),
-        m03_audit,
-        m03_determinism,
-        m04_mapping,
-        m04_decision,
-        m04_audit,
-        m05_decision,
-        m05_convergence,
-        m05_analytical,
-        m05_boundary,
-        m06_decision,
-        m06_calibration,
-        m06_authority,
-        m06_dependencies,
-        m07_decision,
-        m07_candidate,
-        m07_circuit_performance,
-        m07_full_performance,
-        m08_decision,
-        m08_identity,
-        m08_smoke,
-        m09_evidence,
-    )
+    if milestone == "V2A":
+        plan_path = root / "docs/plan-v2.md"
+        if not plan_path.is_file() or sha256(plan_path.read_bytes()) != PLAN_V2_SHA256:
+            raise BundleError("docs/plan-v2.md identity mismatch")
+        if attempt != 1:
+            raise BundleError("V2A review bundle contract requires attempt 1")
+        entries["REVIEW.md"] = render_v2a_review(
+            base, submitted, architecture_sha, reports, evidence_root
+        )
+    else:
+        entries["REVIEW.md"] = render_review(
+            milestone,
+            attempt,
+            base,
+            submitted,
+            architecture_sha,
+            reports,
+            tooling_value,
+            (evidence_root / "manual-source-review.txt").is_file(),
+            m03_audit,
+            m03_determinism,
+            m04_mapping,
+            m04_decision,
+            m04_audit,
+            m05_decision,
+            m05_convergence,
+            m05_analytical,
+            m05_boundary,
+            m06_decision,
+            m06_calibration,
+            m06_authority,
+            m06_dependencies,
+            m07_decision,
+            m07_candidate,
+            m07_circuit_performance,
+            m07_full_performance,
+            m08_decision,
+            m08_identity,
+            m08_smoke,
+            m09_evidence,
+        )
 
     manifest = {
         "schema": "flybench-review-manifest",

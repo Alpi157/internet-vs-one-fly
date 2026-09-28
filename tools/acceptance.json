@@ -1073,6 +1073,59 @@
           "timeout_seconds": 30
         }
       ]
+    },
+    "V2A": {
+      "title": "Process v2 migration, Phase 0 truth checks, and Phase 1 data and circuit infrastructure",
+      "commands": [
+        {
+          "name": "locked-development-environment",
+          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["pyproject.toml", "uv.lock"],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "full-python-regression",
+          "argv": ["uv", "run", "python", "-m", "pytest", "-q"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["tests", "src/flybench"],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2a-phase0-truth-checks",
+          "argv": ["uv", "run", "python", "experiments/p0_truth_checks.py", "--out", "evidence/V2A/p0", "--rounds", "500", "--full-graph", "data/compiled/full", "--timeout-s", "1800"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["experiments/p0_truth_checks.py", "profiles/p0-bots-v1.json", "data/compiled/full/manifest.json"],
+          "timeout_seconds": 2400
+        },
+        {
+          "name": "v2a-circuit-survey",
+          "argv": ["uv", "run", "python", "-m", "flybench.circuit", "survey", "--out", "evidence/V2A/p1"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["src/flybench/circuit.py", "profiles/circuit-builder-v1.json", "data/compiled/full/manifest.json"],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "v2a-null-diagnostics",
+          "argv": ["uv", "run", "python", "-m", "flybench.nulls", "generate", "--out", "evidence/V2A/p1"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["src/flybench/nulls.py", "profiles/nulls-v1.json", "data/compiled/escape/manifest.json"],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "fresh-clone-scaffold-and-demo",
+          "argv": ["bash", "-lc", "git clone . /tmp/flybench-clean && cd /tmp/flybench-clean && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv sync --extra dev --locked && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run python -m pytest -q tests/test_scaffold.py && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run flybench demo --profile profiles/live.json --headless-round"],
+          "cwd": ".",
+          "required": true,
+          "required_paths": ["fixtures/escape-circuit-v1/manifest.json", "tests/test_scaffold.py"],
+          "timeout_seconds": 600
+        }
+      ]
     }
   }
 }

@@ -90,8 +90,8 @@ def run_command(index: int, raw: object, root: Path) -> dict[str, Any]:
         return failure_result(index, name, argv, cwd, f"missing required path(s): {', '.join(missing)}")
 
     timeout = raw.get("timeout_seconds", 300)
-    if not isinstance(timeout, (int, float)) or timeout <= 0 or timeout > 600:
-        return failure_result(index, name, argv, cwd, "timeout_seconds must be greater than 0 and at most 600")
+    if not isinstance(timeout, (int, float)) or timeout <= 0 or timeout > 2400:
+        return failure_result(index, name, argv, cwd, "timeout_seconds must be greater than 0 and at most 2400")
 
     started_at = utc_now()
     started = time.monotonic()
