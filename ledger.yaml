@@ -52,6 +52,8 @@ m08:
 m09:
   status: SUBMITTED_SUPERSEDED_BY_PLAN_V2
   attempt_3_candidate_product_sha: 35b16caeb625257ea0a9bead1118f53da9ea9589
+  attempt_3_submission_sha: 7c11d306b5f925e5b26d78e323fef5bb5feb586b
+  attempt_3_review_zip_sha256: a13f80c1280c6f6f1c42d2ab35f2563c63386e54b1e144d2f10f9653adab2ff9
   attempt_3_operator_demo_archive_sha256: 45ff45b86ddb45bacefd925c2d2383f398a2288bc4c13d490babb44f1b572183
   attempt_3_operator_demo_content_digest: 3b4cbbf17efcdacd19acce7e6a177c0f7b2c148ab143a2569b4a4f8186b2046a
   attempt_3_applied_input_sha256: b284efcdd13bfdaba7ef94c9fbf641137bcee00d25b522758c6b1e0e5f723ff9
@@ -74,6 +76,28 @@ measurements:
   session_memory: UNMEASURED
   recorder_overhead: UNMEASURED
   host_capacity: UNMEASURED
+  v2a:
+    phase_0:
+      rounds_per_strategy_controller: 500
+      fixed_latency_ms_from_global_neural_median: 30.0
+      catch_rates:
+        current-position: {accepted-neural: 0.028, fixed-latency-control: 0.028, no-escape: 0.478}
+        lead-0.5: {accepted-neural: 0.034, fixed-latency-control: 0.034, no-escape: 0.298}
+        lead-1.0: {accepted-neural: 0.022, fixed-latency-control: 0.022, no-escape: 0.04}
+        lead-2.0: {accepted-neural: 0.988, fixed-latency-control: 0.988, no-escape: 0.696}
+        far-corner: {accepted-neural: 0.0, fixed-latency-control: 0.0, no-escape: 0.002}
+      context:
+        accepted_circuit_dnp01_first_spike_ticks: {R: 1135, L: 1130}
+        full_graph_dnp01_first_spike_ticks: {R: 1136, L: 1131}
+        accepted_circuit_dnp01_spike_counts: {R: 3, L: 3}
+        full_graph_dnp01_spike_counts: {R: 3, L: 3}
+        full_graph_outside_circuit_spiking_neurons: 11
+    phase_1:
+      circuit_survey_count: 10
+      circuit_N_range: [816, 100259]
+      circuit_E_range: [58219, 17046389]
+      null_graph_count: 80
+      null_diagnostics_status: PASS
 launch_blockers:
 - Soft-launch evidence required by plan-v2 section 5 has not been collected.
 - V2A external review is pending.
