@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "profile_id": "flybench.p0-bots.v1",
+  "classification": "V2A PHASE 0 MEASUREMENT PROTOCOL; NOT A PRODUCT CONTROLLER",
+  "minimum_rounds_per_strategy_controller": 500,
+  "seed_rule": {
+    "algorithm": "PCG64",
+    "base_seed": 202609280000,
+    "formula": "base_seed + strategy_index * 1000000 + round_index",
+    "pairing": "The accepted neural run defines each action schedule. Fixed-latency and no-escape controls replay the same reaction delays and locked target coordinates with the same environment seed."
+  },
+  "reaction_delay": {
+    "distribution": "normal clipped to closed bounds, then rounded to the nearest 10 ms control interval",
+    "mean_ms": 180.0,
+    "sigma_ms": 45.0,
+    "minimum_ms": 80.0,
+    "maximum_ms": 300.0
+  },
+  "aim_noise": {
+    "distribution": "independent Gaussian per arena axis",
+    "sigma_arena_units": 0.12,
+    "arena_boundary_rule": "clip to the declared game arena"
+  },
+  "strategies": [
+    {
+      "id": "current-position",
+      "kind": "current_position"
+    },
+    {
+      "id": "lead-0.5",
+      "kind": "heading_lead",
+      "k_arena_units": 0.5
+    },
+    {
+      "id": "lead-1.0",
+      "kind": "heading_lead",
+      "k_arena_units": 1.0
+    },
+    {
+      "id": "lead-2.0",
+      "kind": "heading_lead",
+      "k_arena_units": 2.0
+    },
+    {
+      "id": "far-corner",
+      "kind": "far_corner"
+    }
+  ],
+  "controllers": [
+    {
+      "id": "accepted-neural",
+      "implementation": "profiles/live.json through the existing Runner and GameSession"
+    },
+    {
+      "id": "fixed-latency-control",
+      "implementation": "experiment-only control that requests escape at the median accepted-neural command offset before impact",
+      "product_reachable": false
+    },
+    {
+      "id": "no-escape",
+      "implementation": "existing Runner output clamp"
+    }
+  ],
+  "context_check": {
+    "duration_ms": 1000,
+    "stimulus_schedule": "game-v0.3 standard looming from 200 ms inclusive to 600 ms exclusive",
+    "runtime_synaptic_scale": 0.001,
+    "peak_sensory_external_drive": 4.0
+  }
+}
