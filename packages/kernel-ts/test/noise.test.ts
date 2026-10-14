@@ -1,0 +1,10 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {readGraph,KernelState} from '../src/kernel.ts';
+const bytes=readFileSync(new URL('./fixtures/escape.webbin',import.meta.url));
+const graph=readGraph(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));
+const log=JSON.parse(readFileSync(new URL('./fixtures/v2d-runner.json',import.meta.url),'utf8'));
+const state=new KernelState(graph,{...log.config.model,runtime_synaptic_scale:0},{...log.config.noise,threshold:2**32,current_increment:1});
+for(let t=0;t<100;t++)state.step(new Float64Array(graph.header.N));
+for(let i=0;i<graph.header.N;i++)if(!log.config.noise.population_mask[i])assert.equal(state.synapticCurrent[i],0);
+console.log('PASS no noise on excluded visual and output ports');

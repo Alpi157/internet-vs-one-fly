@@ -2099,9 +2099,9 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
-        if milestone == "V2C" and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"}):
+        if milestone in {"V2C", "V2D"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"}):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
-                            "reason": "V2C operator exclusion of graph arrays; unchanged fixture binaries can be restored from BASE_SHA"})
+                            "reason": "V2C/V2D operator exclusion of graph arrays; unchanged fixture binaries can be restored from BASE_SHA"})
             continue
         if reason:
             raise BundleError(f"tracked forbidden path {path!r}: {reason}")
@@ -2307,9 +2307,9 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone == "V2C":
+    if milestone in {"V2C", "V2D"}:
         if attempt != 1 or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
-            raise BundleError("V2C requires attempt 1 and the pinned plan")
+            raise BundleError(f"{milestone} requires attempt 1 and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.
         narrative = (evidence_root / "REVIEW.md").read_text(encoding="utf-8")
         entries["REVIEW.md"] = narrative.replace("{{BASE_SHA}}", base).replace("{{SUBMITTED_SHA}}", submitted).encode("utf-8")

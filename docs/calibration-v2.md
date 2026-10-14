@@ -1,16 +1,16 @@
 # Calibration protocol v2 draft
 
-Status: DRAFT_REVIEW_REQUIRED. Not frozen. V2C executes pipeline and sanity only.
+Status: DRAFT_REVIEW_REQUIRED. Not frozen. V2D dry run 3 executes pipeline and sanity only before S4.
 
 | Criterion | Condition | Pass |
 |---|---|---|
 | not_silent | 20 s no-threat | whole-circuit mean rate >= 0.5 Hz and at least one decoder group rate > 0 |
 | not_saturated | all calibration trials | whole-circuit mean rate < 50 Hz and fewer than 5% of neurons above 150 Hz |
-| spontaneous_movement | 20 s no-threat | speed or turn nonzero in 10% to 90% of control intervals |
+| spontaneous_movement | 20 s no-threat | abs(speed) >= 0.002 units/ms or abs(turn) >= 0.0005 rad/ms in 10% to 90% of control intervals |
 | false_escapes | 20 s no-threat | at most 0.05 escape onsets per second |
 | escape_standard | aimed at the fly, standard speed | escape onset before impact in 20% to 90% of strikes |
 
-Grid: s {0.005, 0.01, 0.02, 0.039, 0.06}; kappa {0.02, 0.05, 0.10}; nu0 {0.5, 2, 5} Hz; input gain {1, 2, 4, 8}. Weights are contact count times sign, normalization none. Noise uses all neurons, stream 17, flybench.u32.v2. The isolated table uses 200 s per evaluation and no circuit output.
+Grid: s {0.005, 0.01, 0.02, 0.039, 0.06}; kappa {0.02, 0.05, 0.10}; nu0 {0.5, 2, 5} Hz; input gain {1, 2, 4, 8}. Weights are contact count times sign, normalization none. Noise excludes visual and all output ports, including DNb02, using stream 17, flybench.u32.v2. E3 fits pooled counts from four fixed seeds x 1000 s and validates on two new seeds x 2000 s; tolerance is max(5%, 3 Poisson standard errors) on the pooled validation rate. Failed rows leave the grid. See profiles/noise-v2.json and profiles/noise-table-v2.json.
 
 lowest no-threat whole-circuit rate; ties broken by s, kappa, nu0, gain in grid order.
 
@@ -26,4 +26,4 @@ Strike timeline: 200 ms baseline, approach from height 8, impact, then zero visu
 
 Draft dry run: T1a and T1b, real plus two nulls per family, s {0.01, 0.039}, kappa 0.05, nu0 {0.5, 5}, gain {2, 8}, two seeds. Each seed receives 20 s no-threat and four standard plus four held-out strikes. Standard fraction pools eight strikes; no-threat criteria must pass each seed and saturation each calibration trial. Held-out trials are reported as pipeline observations only and never enter pass criteria. Sensory pose is fixed to keep aimed conditions controlled; commanded motion is recorded. C9 separately exercises the coupled body runner.
 
-No full calibration, protocol freeze or H1/H2 conclusion is authorized in this stage.
+Full calibration and protocol freeze require all V2D S4 gates to pass.

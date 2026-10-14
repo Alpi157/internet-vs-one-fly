@@ -94,54 +94,60 @@ m09:
 stages:
   V2A: ACCEPTED
   V2B: ACCEPTED
-  V2C: SUBMITTED
+  V2C: ACCEPTED
+  V2D: SUBMITTED
 stage_review_records:
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
-    verdict: |-
-      V2A attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).
-      Conditions, fixed in V2B without a new V2A attempt:
-      C1 FINDINGS wording: far-corner is a control strategy, not a nondegeneracy
-         failure. The degenerate result is lead-2.0: with the accepted neural escape
-         the catch rate is 0.988 versus 0.696 with no escape, so escaping makes the
-         fly easier to catch and one trivial strategy dominates.
-      C2 FINDINGS must state plainly that the accepted neural controller is
-         behaviorally identical to a fixed 30 ms timer in the current game (offset
-         variance zero, 100% paired outcome match). Public claims must not imply
-         that the v1 connectome changes game behavior.
-      C3 Null diagnostics must key reachability and path lengths by body ID, not by
-         local index.
-      C4 Scaffold tests must not hard-code the exact stage map; they must accept
-         SUBMITTED and ACCEPTED values and require that only the reviewer verdict
-         record can set ACCEPTED.
+    verdict: "V2A attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nConditions, fixed in\
+      \ V2B without a new V2A attempt:\nC1 FINDINGS wording: far-corner is a control strategy, not a nondegeneracy\n\
+      \   failure. The degenerate result is lead-2.0: with the accepted neural escape\n   the catch rate is 0.988\
+      \ versus 0.696 with no escape, so escaping makes the\n   fly easier to catch and one trivial strategy dominates.\n\
+      C2 FINDINGS must state plainly that the accepted neural controller is\n   behaviorally identical to a fixed\
+      \ 30 ms timer in the current game (offset\n   variance zero, 100% paired outcome match). Public claims must\
+      \ not imply\n   that the v1 connectome changes game behavior.\nC3 Null diagnostics must key reachability and\
+      \ path lengths by body ID, not by\n   local index.\nC4 Scaffold tests must not hard-code the exact stage map;\
+      \ they must accept\n   SUBMITTED and ACCEPTED values and require that only the reviewer verdict\n   record\
+      \ can set ACCEPTED."
   V2B:
     decision: decisions/D-V2B-REVIEW-01.json
-    verdict: |-
-      V2B attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).
-      B0, B1, B2, B3, B5 (reference, kernel, noise parity, decoder, body) and B7 are
-      accepted. B4 and the B5 encoder are accepted with required fixes. The B6 dry
-      run is recorded as a FAILED DRY RUN THAT FOUND DEFECTS, not as model evidence.
-      Its "inverted looming control" and "all rows silent" outcomes are caused by
-      implementation and design defects, not by the circuit:
-      D1 encoding_v2.py swaps the populations: LC4 receives angular size and LPLC2
-         receives expansion. Plan v2 and Ache et al. 2019 require LC4 = expansion
-         (angular velocity) and LPLC2 = angular size.
-      D2 Expansion is not normalized. It is in rad/ms and about 50 times smaller
-         than angular size in rad, so expansion contributes almost nothing.
-      D3 The dry-run looming stimulus continues at full size after impact for the rest
-         of the trial, and the matched non-looming control applies full final size
-         from t = 0. The control therefore receives more drive for longer.
-      D4 Noise and synaptic scale grids are orders of magnitude too small. With
-         p = 0.01 per tick and w = 0.05 the steady free membrane potential is about
-         0.005 of threshold. One contact at scale 0.003 gives a peak PSP of about
-         0.0005 of threshold, so multi-hop signals cannot propagate.
-      D5 The draft criterion "looming escape exceeds non-looming by 0.10" is also an
-         H1 outcome metric. Calibrating on an outcome is circular.
-      D6 The draft criteria contain no false-escape limit.
-      D7 atan_approx has about 5.8% relative error at small angles (slope 1.058 at 0).
-      D8 The u32 mixer combines all counters linearly before a single finalizer, so
-         (tick, index) pairs can collide along lattice lines.
-      Reviewer decisions on V2B questions are in C1, C2 and C4 of the V2C prompt.
+    verdict: "V2B attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nB0, B1, B2, B3, B5\
+      \ (reference, kernel, noise parity, decoder, body) and B7 are\naccepted. B4 and the B5 encoder are accepted\
+      \ with required fixes. The B6 dry\nrun is recorded as a FAILED DRY RUN THAT FOUND DEFECTS, not as model evidence.\n\
+      Its \"inverted looming control\" and \"all rows silent\" outcomes are caused by\nimplementation and design\
+      \ defects, not by the circuit:\nD1 encoding_v2.py swaps the populations: LC4 receives angular size and LPLC2\n\
+      \   receives expansion. Plan v2 and Ache et al. 2019 require LC4 = expansion\n   (angular velocity) and LPLC2\
+      \ = angular size.\nD2 Expansion is not normalized. It is in rad/ms and about 50 times smaller\n   than angular\
+      \ size in rad, so expansion contributes almost nothing.\nD3 The dry-run looming stimulus continues at full\
+      \ size after impact for the rest\n   of the trial, and the matched non-looming control applies full final\
+      \ size\n   from t = 0. The control therefore receives more drive for longer.\nD4 Noise and synaptic scale\
+      \ grids are orders of magnitude too small. With\n   p = 0.01 per tick and w = 0.05 the steady free membrane\
+      \ potential is about\n   0.005 of threshold. One contact at scale 0.003 gives a peak PSP of about\n   0.0005\
+      \ of threshold, so multi-hop signals cannot propagate.\nD5 The draft criterion \"looming escape exceeds non-looming\
+      \ by 0.10\" is also an\n   H1 outcome metric. Calibrating on an outcome is circular.\nD6 The draft criteria\
+      \ contain no false-escape limit.\nD7 atan_approx has about 5.8% relative error at small angles (slope 1.058\
+      \ at 0).\nD8 The u32 mixer combines all counters linearly before a single finalizer, so\n   (tick, index)\
+      \ pairs can collide along lattice lines.\nReviewer decisions on V2B questions are in C1, C2 and C4 of the\
+      \ V2C prompt."
+  V2C:
+    decision: decisions/D-V2C-REVIEW-01.json
+    verdict: "V2C attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nC0 to C9 are accepted.\
+      \ The C7 dry run is recorded as a FAILED DRY RUN THAT\nFOUND DESIGN DEFECTS, not as model evidence. Conditions\
+      \ for V2D:\nE1 Noise population. Noise on every neuron makes the criteria unreachable and\n   weakens H2:\
+      \ DNp01 receiving its own noise fires at about nu0, so false onsets\n   are at least about 2 x nu0 per second\
+      \ (1 per second at nu0 = 0.5 Hz) against\n   a 0.05 per second ceiling, and noise on walking DNs makes movement\
+      \ mostly\n   injected noise, collapsing H2 into the noise-to-decoder control. Visual port\n   input is defined\
+      \ by the encoder. New rule: background noise goes to every\n   circuit neuron except visual ports (LC4, LPLC2)\
+      \ and all decoder output ports\n   in ports-v2.1 (including DNb02). Spontaneous output must arise in the\n\
+      \   interior and reach the outputs through the wiring.\nE2 Movement definition. A control interval is moving\
+      \ when |speed| >= 0.002\n   units/ms (10% of maximum forward speed) or |turn| >= 0.0005 rad/ms (10% of\n \
+      \  maximum turn rate). The same deadband defines bouts and pauses.\nE3 Noise fitting. Fit p by bisection on\
+      \ the pooled spike count of 4 fixed seeds\n   x 1000 s (common random numbers through the bisection); validate\
+      \ on 2 new\n   seeds x 2000 s each; pass when within max(5%, 3 Poisson standard errors) of\n   nu0. Failing\
+      \ rows leave the grid and are reported.\nE4 Pre-registration details are fixed by the reviewer in the V2D\
+      \ prompt.\nE5 The operator installs browser system libraries; V2D reruns the matrix.\nE6 analysis_v2.py segmentation\
+      \ uses 0.001 / 0.0001; it must use the E2\n   deadband.\nConfirmed: fixed sensory pose and independent reset\
+      \ per calibration and H1\ntrial; escape onset = rising edge of the escape request."
 measurements:
   full_graph:
     status: MEASURED_M07_PROVISIONAL
@@ -278,17 +284,39 @@ measurements:
       checks: 18
       failures: kappa 0.10, nu0 0.5 and 2 Hz, both seeds. C7 subset kappa 0.05 passes. Reference agrees for checked
         2000 s failed case.
+  v2d:
+    status: SUBMITTED_NOT_ACCEPTED
+    base_sha: 0d5eabb45ece10c42efb79f2b7d18049dc2be5cb
+    noise_validation: 9/9 pooled independent E3 rows pass
+    dry_run:
+      rows: 80
+      passing_points: 1
+      passing_circuit: T1b
+      interpretation: Pipeline only; full-grid calibratability unknown
+    gates:
+      G1: PASS
+      G2: PASS
+      G3: PASS
+      G4: 'FAIL: deterministic C-SIMPLE cannot match fractional standard-strike escape with identical geometry'
+    protocol_frozen: false
+    freeze_commit: null
+    H1: NOT_RUN
+    H2: NOT_RUN
+    game:
+      profile: flybench.game.v2.2
+      model: PROVISIONAL first dry-run grid point
+      bot_strategies: 10
+      bot_strikes_per_strategy: 60
+      bot_rate_range:
+      - 0.1
+      - 0.43333333333333335
+    browser_parity: PASS Chromium, Firefox, WebKit, fixture/T1a/T1b
 launch_blockers:
-- Soft-launch evidence required by plan-v2 has not been collected.
-- v1 live demo is equivalent to a fixed 30 ms timer; no connectome-behavior claim for v1.
-- 'Draft calibration: no V2C subset point passes; exact nonzero movement criterion conflicts with exponential decoder
-  tails. No protocol freeze.'
-- The 200 s isolated fit at kappa 0.10, nu0 0.5 and 2 Hz fails independent rate checks. No parameters were retuned.
-  Review before protocol freeze.
-- Chromium, Firefox and WebKit parity and timings are unmeasured because host system dependencies cannot be installed
-  without sudo authentication.
-- V2C external review remains pending.
-next_action: Submit V2C attempt 1 for external review. Stop here. Do not freeze calibration or run H1/H2.
+- No public hosting or human usability evidence.
+- 'V2D S4 G4: C-SIMPLE exact probability match is impossible under fixed standard geometry; reviewer decision required
+  before a later freeze.'
+- Game uses provisional T1a parameters; no H1/H2 or biological superiority claim.
+next_action: External review of V2D attempt 1. Resolve S4 G4 before any later protocol freeze. Do not mark V2D accepted.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -302,3 +330,8 @@ scientific_profiles_v2c:
   profiles/noise-table-v1.json: 6cf8d416ad3a755e4be3a314651b87a35cb3af5f9dba4d0b6b23b776324d9341
   profiles/turn-directions-v1.json: 56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7
   docs/plan-v2-amendments.md: d0479520ef0edae36d74963a9a39f7aecffbb88fea689d69a67b5bd082bd1b46
+scientific_profiles_v2d:
+  profiles/model-v2d-provisional.json: 2d4c3ad34120af9479c168d8bed7d880797a0ad7f7445a23fd8faae11247ed57
+  profiles/noise-v2.json: 74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e
+  profiles/noise-table-v2.json: b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4
+  profiles/calibration-v2d-draft.json: 03770353725e059cd4122577f952fcf3875689aa805b7ac89fed04d6bf21e92b

@@ -1,8 +1,7 @@
 """Synthetic-tested analysis primitives. No real-graph H1/H2 analysis in V2C.
 
 Durations use integer neural ticks (0.5 ms). Movement segmentation uses absolute
-speed > 0.001 units/ms OR absolute turn > 0.0001 rad/ms. These analysis thresholds
-are distinct from the exact-nonzero calibration criterion. Gaps split segments;
+speed >= 0.002 units/ms OR absolute turn >= 0.0005 rad/ms, shared with calibration. Gaps split segments;
 edge and gap-touching segments are explicitly censored. No missing values are
 interpolated. Rank percentiles use midranks; tail p-values include ties.
 """
@@ -31,7 +30,7 @@ def permutation_rank(real: float, null: list[float]) -> dict[str, Any]:
 
 
 def segment_bouts(records: list[dict], *, interval_ticks: int=20,
-                  speed_threshold: float=.001, turn_threshold: float=.0001) -> dict:
+                  speed_threshold: float=.002, turn_threshold: float=.0005) -> dict:
     if interval_ticks<1 or speed_threshold<0 or turn_threshold<0:
         raise ValueError('invalid segmentation thresholds')
     segments=[]; current=None; previous=None; gaps=[]; after_gap=True
@@ -48,7 +47,7 @@ def segment_bouts(records: list[dict], *, interval_ticks: int=20,
             gaps.append(dict(after_tick=previous,before_tick=tick,reason='missing command' if not valid else 'trace gap'))
             after_gap=True
         if valid:
-            moving=abs(command[1])>speed_threshold or abs(command[2])>turn_threshold
+            moving=abs(command[1])>=speed_threshold or abs(command[2])>=turn_threshold
             if current is not None and moving!=current['moving']:
                 segments.append(current);current=None
             if current is None:
@@ -94,7 +93,7 @@ def trial_metrics(trial: dict, *, interval_ticks: int=20) -> dict:
         # Cannot invent an onset on the far side of a trace gap.
         if escape and prior is False:onset_ticks.append(row['tick']-interval_ticks)
         prior=escape; previous_tick=row['tick']
-        moving=abs(command[1])>.001 or abs(command[2])>.0001
+        moving=abs(command[1])>=.002 or abs(command[2])>=.0005
         if moving:speed_values.append(abs(command[1]))
         turn_values.append(command[2])
         counts=row.get('group_counts')

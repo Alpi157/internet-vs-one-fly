@@ -4,6 +4,7 @@ import {createServer} from 'node:http';
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {gzipSync} from 'node:zlib';
+const v2d=process.argv.includes('--v2d');
 const root=resolve(import.meta.dirname,'../../..');
 const bundled=await build({entryPoints:[resolve(root,'packages/kernel-ts/src/worker.ts')],bundle:true,write:false,format:'iife',platform:'browser',target:'es2022',minify:true});
 const worker=bundled.outputFiles[0].contents;
@@ -11,7 +12,7 @@ const files=new Map([['/',{type:'text/html',bytes:Buffer.from('<!doctype html><t
 const logs=new Map();
 const bundles=[];
 for(const name of ['fixture','t1a','t1b']) {
- const stem=name==='fixture'?resolve(root,'packages/kernel-ts/test/fixtures/v2c-runner'):resolve(root,'data/compiled/v2',name+'-runner');
+ const stem=name==='fixture'?resolve(root,`packages/kernel-ts/test/fixtures/${v2d?'v2d':'v2c'}-runner`):resolve(root,'data/compiled/v2',name+(v2d?'-v2d-runner':'-runner'));
  if(!existsSync(stem+'.json'))continue;
  const log=JSON.parse(readFileSync(stem+'.json','utf8'));
  const graph=readFileSync(name==='fixture'?resolve(root,'packages/kernel-ts/test/fixtures/escape.webbin'):stem+'.webbin');logs.set(name,log);
@@ -27,7 +28,7 @@ try {
  for(const [name,engine] of Object.entries({chromium,firefox,webkit})) {
   let browser;
   try {browser=await engine.launch({headless:true});}
-  catch(error){reports.push({browser:name,status:'UNAVAILABLE',reason:String(error)});continue;}
+  catch(error){const install='sudo '+process.execPath+' '+resolve(root,'packages/kernel-ts/node_modules/playwright/cli.js')+' install-deps chromium firefox webkit';console.log(install);reports.push({browser:name,status:'UNAVAILABLE',reason:String(error),operator_command:install});continue;}
   try {
    const page=await browser.newPage();await page.goto(url);
    const cases=[];
@@ -43,7 +44,7 @@ try {
      });
      const parity=await run(true);
      const timings=[];
-     if(graph!=='fixture')for(let i=0;i<3;i++)timings.push((await run(false)).wall_seconds_per_simulated_second);
+     for(let i=0;i<3;i++)timings.push((await run(false)).wall_seconds_per_simulated_second);
      return {parity,timings};
     },{graph});
     const log=logs.get(graph);
@@ -56,6 +57,6 @@ try {
  }
 } finally {await new Promise(resolve=>server.close(resolve));}
 const report={schema:'flybench.v2c.browser-parity',status:reports.some(r=>r.status==='FAIL')?'FAIL':reports.every(r=>r.status==='PASS')?'PASS':'INCOMPLETE',browser_reports:reports,bundles,timing_definition:'Three fresh workers, 2 simulated seconds each, same active C7 grid point and strike log; interval hashing disabled for timing. Cold worker initialization excluded. Development machine only.'};
-const out=resolve(root,'evidence/V2C/p3');mkdirSync(out,{recursive:true});writeFileSync(resolve(out,'browser-parity.json'),JSON.stringify(report,null,2)+'\n');
+const out=resolve(root,v2d?'evidence/V2D/browser':'evidence/V2C/p3');mkdirSync(out,{recursive:true});writeFileSync(resolve(out,'browser-parity.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({status:report.status,browsers:reports.map(r=>({browser:r.browser,status:r.status,cases:r.cases?.map(({digests,...c})=>c)})),bundles}));
 if(report.status==='FAIL')process.exitCode=1;

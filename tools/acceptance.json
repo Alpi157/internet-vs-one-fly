@@ -1368,6 +1368,29 @@
           "timeout_seconds": 600
         }
       ]
+    },
+    "V2D": {
+      "description": "V2D: S4 G4 scientific stop, provisional game slice; no S5-S7 execution",
+      "commands": [
+        {"name": "locked-development-environment", "argv": ["uv", "sync", "--extra", "dev", "--locked"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 300},
+        {"name": "full-python-regression", "argv": ["uv", "run", "python", "-m", "pytest", "-q"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "v2d-noise-table", "argv": ["uv", "run", "python", "-m", "flybench.calibration_v2", "--v2", "--out", "profiles/noise-table-v2.json"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "v2d-control-feasibility", "argv": ["uv", "run", "python", "experiments/v2d_control_probe.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "v2d-noise-decoder-control", "argv": ["uv", "run", "python", "experiments/v2d_noise_control.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "v2d-dry-run-3", "argv": ["uv", "run", "python", "experiments/v2d_dry_run.py", "--out", "evidence/V2D/dry-run-3"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 1200},
+        {"name": "v2d-python-parity-export", "argv": ["uv", "run", "python", "experiments/v2d_parity.py", "--out", "evidence/V2D/browser"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "kernel-ts-install", "argv": ["npm", "--prefix", "packages/kernel-ts", "ci"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "node-parity", "argv": ["node", "packages/kernel-ts/test/runner.test.ts", "--v2d"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "node-port-noise-exclusion", "argv": ["node", "packages/kernel-ts/test/noise.test.ts"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "browser-matrix", "argv": ["node", "packages/kernel-ts/test/browser-parity.mjs", "--v2d"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-data-export", "argv": ["uv", "run", "python", "experiments/v2d_game_export.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-install", "argv": ["npm", "--prefix", "apps/play", "ci"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-build", "argv": ["npm", "--prefix", "apps/play", "run", "build"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-authority-replay-tests", "argv": ["npm", "--prefix", "apps/play", "test"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-e2e", "argv": ["node", "apps/play/test/e2e.mjs"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "game-bots", "argv": ["node", "apps/play/test/bots.ts"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
+        {"name": "fresh-clone-offline-fixture-smoke", "argv": ["uv", "run", "python", "-c", "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2d-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['uv','run','python','experiments/v2d_game_export.py','--fixture'],['npm','--prefix','apps/play','ci'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600}
+      ]
     }
   }
 }

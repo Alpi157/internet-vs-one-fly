@@ -1,0 +1,12 @@
+{
+  "decision_id": "D-V2D-MODEL-01",
+  "classification": "REVIEWER AUTHORIZED SCIENTIFIC REPAIR",
+  "authorization": "D-V2C-REVIEW-01 and V2D prompt",
+  "changes": [
+    "Interior-only noise excluding all visual and output ports including DNb02",
+    "Shared inclusive E2 movement deadband",
+    "E3 pooled isolated fitting and independent validation",
+    "C-NOISE-DEC independent stream 29 matched output rates"
+  ],
+  "protocol_frozen": false
+}

@@ -1,0 +1,9 @@
+{
+  "decision_id": "D-V2D-GATE-01",
+  "classification": "SCIENTIFIC STOP REQUIRED BY S4 G4",
+  "evidence": "evidence/V2D/gate-report.json",
+  "finding": "C-SIMPLE cannot exactly match a calibrated real standard-strike escape fraction: deterministic threshold plus identical fixed sensory geometry gives only 0 or 1, whereas passing escape_standard requires 0.2 to 0.9. No random threshold, random stimulus, nearest-match substitution, or criterion change is authorized.",
+  "protocol_frozen": false,
+  "hypothesis_results": "NONE",
+  "next_scientific_action": "External reviewer must specify a matchable control, or explicitly allow descriptive mismatch, before a later protocol freeze."
+}

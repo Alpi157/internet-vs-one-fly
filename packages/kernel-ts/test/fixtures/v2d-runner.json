@@ -1,0 +1,4898 @@
+{
+  "config": {
+    "body_enabled": true,
+    "decoder": {
+      "decay": 0.8187307530779818,
+      "forward_gain": 0.001,
+      "maximum_speed": 0.02,
+      "maximum_turn_rate": 0.005,
+      "minimum_speed": -0.01,
+      "turn_gain": 0.00025
+    },
+    "gain": 2,
+    "groups": [
+      [
+        10010
+      ],
+      [
+        10001
+      ],
+      [],
+      [],
+      [],
+      []
+    ],
+    "model": {
+      "current_coupling_factor": 0.02349083133079103,
+      "current_decay": 0.9048374180359595,
+      "delay_ticks": 2,
+      "held_drive_factor": 0.024690087971667385,
+      "refractory_ticks": 4,
+      "reset": 0.0,
+      "rest": 0.0,
+      "runtime_synaptic_scale": 0.01,
+      "threshold": 1.0,
+      "voltage_decay": 0.9753099120283326
+    },
+    "noise": {
+      "current_increment": 0.3175750723556395,
+      "population_mask": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "seed": 2026092802,
+      "stream_id": 17,
+      "threshold": 881374312
+    },
+    "visual": {
+      "LC4_left": [
+        3,
+        4,
+        6,
+        13,
+        14,
+        19,
+        20,
+        24,
+        25,
+        27,
+        31,
+        32,
+        43,
+        44,
+        45,
+        79,
+        83,
+        91,
+        93,
+        94,
+        107,
+        121,
+        123,
+        127,
+        128,
+        146,
+        178,
+        180,
+        182,
+        190,
+        197,
+        198,
+        199,
+        209,
+        220,
+        221,
+        222,
+        229,
+        231,
+        245,
+        246,
+        248,
+        254,
+        265,
+        266,
+        269,
+        270,
+        271,
+        276,
+        277,
+        278,
+        279,
+        281,
+        282,
+        283,
+        285,
+        288,
+        290,
+        291,
+        292,
+        293,
+        295,
+        296,
+        297,
+        298,
+        302,
+        304,
+        306,
+        308,
+        309,
+        311
+      ],
+      "LC4_right": [
+        16,
+        17,
+        18,
+        21,
+        23,
+        26,
+        29,
+        33,
+        36,
+        38,
+        39,
+        41,
+        42,
+        54,
+        55,
+        56,
+        58,
+        61,
+        63,
+        67,
+        68,
+        75,
+        78,
+        82,
+        85,
+        86,
+        90,
+        92,
+        96,
+        97,
+        98,
+        99,
+        101,
+        103,
+        109,
+        113,
+        114,
+        118,
+        122,
+        124,
+        125,
+        126,
+        131,
+        136,
+        139,
+        144,
+        163,
+        166,
+        189,
+        200,
+        211,
+        213,
+        219,
+        257,
+        305
+      ],
+      "LPLC2_left": [
+        2,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        15,
+        22,
+        28,
+        34,
+        35,
+        37,
+        40,
+        47,
+        49,
+        62,
+        64,
+        66,
+        73,
+        76,
+        89,
+        100,
+        104,
+        116,
+        119,
+        129,
+        130,
+        133,
+        135,
+        138,
+        143,
+        147,
+        148,
+        150,
+        151,
+        152,
+        153,
+        156,
+        160,
+        161,
+        162,
+        165,
+        169,
+        170,
+        173,
+        174,
+        175,
+        179,
+        181,
+        184,
+        186,
+        195,
+        202,
+        203,
+        204,
+        206,
+        212,
+        214,
+        215,
+        217,
+        223,
+        226,
+        227,
+        230,
+        233,
+        235,
+        238,
+        239,
+        242,
+        243,
+        247,
+        260,
+        261,
+        262,
+        267,
+        268,
+        272,
+        273,
+        274,
+        275,
+        280,
+        284,
+        286,
+        287,
+        289,
+        294,
+        299,
+        300,
+        301,
+        303,
+        307,
+        310,
+        312
+      ],
+      "LPLC2_right": [
+        12,
+        30,
+        46,
+        48,
+        50,
+        51,
+        52,
+        53,
+        57,
+        59,
+        60,
+        65,
+        69,
+        70,
+        71,
+        72,
+        74,
+        77,
+        80,
+        81,
+        84,
+        87,
+        88,
+        95,
+        102,
+        105,
+        106,
+        108,
+        110,
+        111,
+        112,
+        115,
+        117,
+        120,
+        132,
+        134,
+        137,
+        140,
+        141,
+        142,
+        145,
+        149,
+        154,
+        155,
+        157,
+        158,
+        159,
+        164,
+        167,
+        168,
+        171,
+        172,
+        176,
+        177,
+        183,
+        185,
+        187,
+        188,
+        191,
+        192,
+        193,
+        194,
+        196,
+        201,
+        205,
+        207,
+        208,
+        210,
+        216,
+        218,
+        224,
+        225,
+        228,
+        232,
+        234,
+        236,
+        237,
+        240,
+        241,
+        244,
+        249,
+        250,
+        251,
+        252,
+        253,
+        255,
+        256,
+        258,
+        259,
+        263,
+        264
+      ]
+    }
+  },
+  "graph": "fixture",
+  "intervals": [
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5c2919d8eed31ba7bcef9245e2f631c05ae7416f74e9319375ba78c5b4911f4a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b3f5038dc7bc3c11566c91c784f07f0f21c7b06cfac1d5c351f887fb6e3ab6bf",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "74851a1fa96cb094bb61b37e471edccadb8b37e978cc89817ca8966c86bc6231",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5b86ffb05a3883c34ef016fa797a8a2f487b6bb2d41df62a535056c4424e1e27",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8e36102a13d9c69ae84cbf147854eae0821341f4b3800e79d5cfc63346e0442d",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5ad87045aea3190bcccef5638027fcb008b5fa7ca0a0573c7d5b730d2cff120a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b7520471e183b58ac65b1bd040bb3e0432099e9272885f71cd4d75de3d8ebf1f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "7af6530df188e15322c6c87d110abcc0754dbef580c3e06261e912045db43bd5",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2ddb0a3b4c704bc622afc744e47e8fb364d6dc3e778b8cd58631ed7c6e743eab",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "65d4ff5325420d32ffc23f9f824b3fbe21b9c0d9518da0ff442be5b48c7fde6b",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0ce667e1ec23b98d843597f65f627f5885acc47f2155e404832816ca8650b7d9",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "32a483f209e95b9c4f12041d5d0c8f4fddbaf42393852273ebfa722961212c6f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5e0d828091d7947b7059db41f56528201d9cd276b404ab447e2fc94c26c01bf0",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ccfcedf1e99a020a3d46bed81ac18b98cbdcf65ed4bf1a009bedb5d2175cfa87",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "13f24cd2a772f88f1b1cc1cf9afc9180cb17f2db014bb1907fe2fc661c91ce2a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3b1a7dc703b40d6fadfea5b4cc169225b140be797cb754e4ad6209a3789ea89c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1cf1b9c31ef9a7d60617c942db2ed7cc680286e16949f9ba033bc774037c410a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "89d44954603ee29290af7fd8e12d960e09d0315387979dc9f6c5bb3024326417",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f53e60128cdf3d681fd07068ad83c3d0086fb758849d4b85ed2534aa86c9c975",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "92bc700a074d31e562dadaf3ac5e8dd363a631df20d4e670912c8189dfc3256a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0f0135a5d98ed1ad3c122534cb6a8748bcf3049be8136c74f1dcbf3160df45e5",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2e2b972d67c32bc6f44ac266dbbe8a4a09e24ff0052ca05e200ceed6abae364f",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 10
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8579d868c057144e66a6ecc217e24d2ea516f8abe2a2e062a43b7e6a5e849762",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 20
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ac6666e9887cb740e48e0f233a5441f3180e7d837a069bdc44a5bd061fee3215",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 30
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "74705c35a933e498d7f8036c5491372c8603d0091bb98607a55b8d70927b3dc4",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 40
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "26b0db3b45caab50a36b3c0a9b4eac59ec31f41fe458dce07c495b9f4b6d35ea",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 50
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9161ae534f00b23d45e283ea885012c79184727823982b777f098d2449482f71",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 60
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "38171c7f9fe440b8dba5f026bcc38a94622e0483666b7d892916bbf558c557c5",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 70
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "31110fd6edf112949ad00e402ef5e04d2a98aa0eec621fa766e921cfbe2b2e27",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 80
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "04871ff3256a3bf25e740a2a54f793cd56fc15da7c1ea6e73aabbe9d24e33449",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 90
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "36641f3eea529073d461615a14c8a2e61a6db16aaeae45a9c27b8a081ba17e0e",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 100
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "857d4364d547c156688515c4fdde41401cc64ca90dcfc137b168730489cf7316",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 110
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8ef8643f55034b6103018ad260dd8f6e549fbcbc91f9afda1c3bd0a36c91959e",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 120
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2d267e435963903de8505ffeb31051cdf646431d05205eb95065c91a3871ca37",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 130
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b0dd91ad43485e0eefafc788970accd9d313d3ade8d76a96582f44d1fd50cfc8",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 140
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b4b0b4e73a0f08a8cb7f462dc00e14750a9cd6df8c03ccba90aea722ac37ba02",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 150
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "502a5f814166db1b0a750ebcb23402d73be6d00854e2c095475a04ef4bc1577b",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 1.5,
+        "downward_speed_per_ms": 0.05,
+        "elapsed_ms": 160
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0aede195439cd959052fc5bd00ad9c860fce2aab99e4ecf46ae6bcf9b4d686c5",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8bbd611f94b409a179184e7bcfcb0284e16b5e53212acb0d2b88f3a27e04131b",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c9ef40aead23dafffaebd7e1593efb6ec6994def7bb1399fcd0d321328172645",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ed4a6c86b4cf0b861385a1a1478ebc2339a35f654ef68e162cfa25f82c42787f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "36a1cbfbf2a918018895c5eb263e95e7c9e70b305a54a8c5eee64ea876718836",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2773fe9134d4ba46749607bbb9164e16ce9d0be63b369e2892fbce9911bf2649",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0ed01e210744c8f862b01ff4028d1a314c20d31fb0957f00c19defe086265b01",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f90313e2c3be2830cf243e1905a32f2556de00d46a3151421721ede010c359cb",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a08d4b59d537a2dd7eea3d20b7ca7242bdd6f9c232b925e37b312d0659e75465",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "fc932f980f36e3abeeee8bd8f8a315fb1780c8c71e8ea3e84f7c1b03b8ad9168",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f1261efaa30b060615563288044ec85deb2a8480c66152661099961c0a061ecd",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "993501cd156375a73f2fe3df2f9eeb97e24d9b83e19a506801db0f2eac2e6bb6",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a20b7cf92469866d2c74c61b57333a19480ee7741319579ed4ce187ac56d2964",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f04ffb45d337efc23ff70b242cc80123917743f734234b3935a25bc92026dce7",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1dc7cf9bff26435981a12bf5995bd240c1206b03e8d6f5cfe18229ad57e55a53",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8623ac3cbda59f957dab8abbfed235421a04b7941faab00837583c31df244c5a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9b0a3e4e31cda0f441ed36a1757e648bc191d6057f65853578d75a6128883b36",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "806d1f551d6581b0b5b35fa30a67040091c8db30a3e239706ff87e566d0a30bc",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "25106a86f84e96a97867dc30fc13f35901a7528ba49f099e350319801a44ce9d",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8d3e1c2acf9b5d97c8cf98b3674b706fed4a1234bbdba6c2ceb185445e17633e",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "33d9c71ca09163b8bf0aedc8c2f640b128caa0e3593b93ad945e1da4ccbce769",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "d21263bb3ee27c01bf2af347d992d43b692bb00629a3d04a909ebc265810b44e",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "6b3c1cb0dfd05ac0343a4e0c96f4cb9981c90ca11bea3cec674a25f4d1605a71",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9bcb6c276d26e15772c806575918aae59d99e04c96e9e769396449cae6d61ea2",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f97d5ca3fcc03c05e6971fccf4251229d58cde6d4c113d53c5d5fff96d45168f",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 10
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "95826ade434f5c636f54b57440033822a45357ee9ee24020397f5cee0db58fba",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 20
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "448fb721b0134765679976550108c2dfc297f5c8d5eea5cea7135bdbf25783c3",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 30
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3dbc60d2e589d7f079c81c2eb070b843af8bed22f5e837cd321bff4d785431db",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 40
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "e90b833e934e2b1eb96412a47a05a26302fead9807945ccaea4b36cfb534be3d",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 50
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "52bb97976b595228b6e231e9351093880a8384fd94b3b9a749c2d4c7da6a1018",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 60
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1491e403f067981e9ab929558baedb730813d0fe63b028289dcca3e8d70704fb",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 70
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b07d5f353b6efe4df6b99ec6de65b2cea878d4334e057645f64073f94b8f129a",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 80
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "122853165773067b8a46078b178d5799dcea538a1acd45a1a61b5b1e1ef829cd",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 90
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3f628b292d2815a9b7fe0ed4283ce668637ce0acc62cef84b26ab990a64bc001",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 100
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c66da8a5acb169bd0f6367d8a1481750046be5dea1995345e1a57615a628eb0d",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 110
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "bdd69c040295e54f4350443f01702fefaa8f931ffdbd28b7a5f342bf2169c889",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 120
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2634845e58ef79449ee2e0729ab1b556bb6cf748dacfd72600e3ec7aa66761d3",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 130
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "fcef5d15ae11d38fd41d806252a43e021a2ac85608bdfefc692e73543461bdb5",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 140
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9015a8c088104ed357028b6aae364535a3af51984b423eded3c78c40eed2ae97",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 150
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "fd2e609aa6c87b21ec3fbf4fb0992eee2468876df1b1cda89b8e975843d5e243",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 160
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b9643a6502fde9079fdb8321e45dcefcde2e72a902b8eef525c494e67dd406b6",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 170
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8060226585b2d33c907c1f6f379fd1c30cbacff2b68cf561fe3bfb67c5fe96c2",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 180
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "de77adda10bc01ad10863f904b03b975dbc771aa93f30167d9c33145370504c1",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 190
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "be88ffb4aa5360369dff8a36ac03830a5dac3c989845a1020adec5b034ef5322",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 200
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a6cffac3d474e33c36fa7b0bb48be1beaffc7691742be643fffd4b0d75c54a43",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 210
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "cca57c2a096e81bd5822e4b6d0341e7f8cc2f9f9fd0c1badbf9ba0ec1af58d29",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 220
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a512a79e38e58899c3283481707bc7da6611cda3b7b3bc1ba38e7323f5a03e9d",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 230
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "60d9c5402c28b0bab371cf29b7f5740c078bc4b2dd7e3d3901fbd86bfa37298e",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 240
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8ee59b86af723872e3dd3fd6b94deb403b4dbd86b6ac9bf5d4880273d5a71d76",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 250
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2fa6a1afde4f84289f89c2f8645a349fe404a8b26dafba4a9e45af6a458a4419",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 260
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8a0466cce4c94ed43dcbc5b2684829f0ee2ebb0687153b20891e5c2a672015e2",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 270
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2512bc53c4bee6ada20ced1d317fb026ac6167952b78de8d97ce9dc1ca29d4ab",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 280
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5f842880868c417583d5a70e6bba3984e5ed86e7ecd96416a621eb9b3b1d1f7a",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 290
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1f9f9c507b3221e4e9e2b83a229ea5c35448a4ed61fb6b2332a4b4f3bffc069d",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 300
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3ea32587f9d655f54a49d5771b3af039f73c62ee94947fd54bbbbddc9cabd552",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 310
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "aa3c0f864a97e7cb78c18475cc30cb87174fa26aefd7ef876935e8ea62813320",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": -1.5,
+        "downward_speed_per_ms": 0.025,
+        "elapsed_ms": 320
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ef623c2fa734c652ba3db798a57d6a8a023899a131483d38bd84e6ad7e329bb5",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "51d647807aec4492f0e5d771be82e667b242baa321bcf2233b143b441723e838",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9c70ed11f33a633127ee11ca6c12e1fd2dfb926fb7a4331d7966f46dbd5e492f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0723a14e52cc1e08fe6ed5698747ae3aee3a6b9effb7a83284b1465a65b29b89",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c475178ee031b08e288a53d0d6ca86fb2f06ce61e9fc4a8d4b1ca4c46c5ff75f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9e34212deb34d127cdeb76430333638c4dcf38a2ec40255409d7d16f9c0cc489",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f0a799a102038e69962e00c2814862e4f08b003ac5b1bc51cd3e8b97798a2439",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9f32bbbcf2602d5e726a958b33b871e22a1ddcb041483f11f423fbef657756ad",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ae569376fed9ed8bfd467aa67952e78c25ea3b04d09689ac79913b3ff85335f1",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "e7b393eeca45e448852fe9c49e3f4f9d720c705de826dc547722a9d330885b68",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "7900a8af8060d1fe8ad347266e992cbafdabfaaef5d10dac75482bd4cf63c88d",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a2915a2dce37eda40b4b0dfdb143b514c054bee9adbb1d1e3b1785b670264e77",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "099b36c2b8cbe1589255639f12e7627367f9a1a84ed13bb8d00d3f09c694e7a7",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c7824ef2cf32e99dad19152e0c06723e31bd639f33657cc8130c66f55121b386",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "4189240a97a399e13cb95daa79fb70d4c768ca42c657da30ad4aa1e3ee8a15a1",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "eceb17927e428a4442190879b041eb68c2b84cda040e6ca938805c3d7704f10d",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a80ef528c023746ebd06202638ab185e7277bea4ab8bd6e603f9445133234fcd",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "78ca77f48bd7127d49d4a9b95218dd689f37d1bf880526b1a44a60defc23fdf4",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "d21b5fe1bcc810cfe3c7bdc51a78bcc5369c1e1c3244968cdb1f27351e25e633",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "e1c725ae999c8c6aa1b845faff503b68375b664ce0cbce45d305711c4c5a3d02",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a3142f6ef95266bfcf1bf1b03ec2c57ecac7a84501b16116c6b39528cde3e5db",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b8ff519928b865c2b788386b381b5c4714e1c423c96a0b841b2a3e92ea762546",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ded0d904ff071deef7ba640f2acd8140d38c5b7ba3dc80211a828bcaea95c7ef",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "287eb77c7732014002cae976d1ff448d91cb37cfcf6cc739a2d26ed16273a1b1",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "6f99596869fe1a92574144128de2cb0e31fc693df9b8fe753efa742c75c56617",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a249915490065b71f7c700dab9b4820b5ffa2b61212336a2bd6e2c3bfebb6ddb",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a94b2dbf3388ae898e72ee90f20ca77580195b3db06251d4aaf17a2493066566",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c0c4a0d42208a83c33c57c3a064d8ec9b201407c1106feb0112167464830ea3b",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "e9dbe85c195c7a75fb75602bfc1a9bdcbce5fa989b4f54ebc1f7ad0547be79d2",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 10
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3834aacbecbc971bfa90cdddf53fc6776afb8715d64c1d49e775363ec7938e2a",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 20
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "dae2675b15fdd51222bc3a1dc30b838809ae0ca5e8b7e3f3379921eb43ccd308",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 30
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b019e28c0eecc4ab51e36fb05ac5e7682e1f5936b68651e1894f67ea8ab14170",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 40
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "771a15ac1ffaee45abfdf8db83ab2f309769eb3f8eeb7d37dd9ca50a51d0ad3c",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 50
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "245af453b816030d71bfcd03660cff9cacc5733a5568e83742653571a4188215",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 60
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9bd8486823c7e72b879ca1f4526b0afb430f364e712e06aab326a81c3ffcdbcd",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 70
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "939b5a49287ad8b47d77f2f1f1fdda296af1373cd55e889fafab9420adcbc2df",
+      "strike": {
+        "active": true,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.1,
+        "elapsed_ms": 80
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "d542b4794e941c82b2a3f46560f6d1ac5e94cbb3ccd6b92e0f3cb68f0f15b452",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8e6d142118630d56806b71f42973e9a71b1cb47a7fcf1b49f45fb6fdc2683076",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1de5920d162ec15d0e8b18b8b635a2e663e190fb02750371853be93f0465a6f6",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ecdf14bf2246945dc383fb63b90d17c11b9b16ee75d6e67b384ac42b48174f2f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b49b65716f55c8701dc1750fc176bde4b0ac43e267e21056f7cb231e260c184c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0bd80f757a7ab65a8e12b94591b27f51e1adcdf8f83bca92ad12e2aa4f93a2c8",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "9587c2871b1db9beba7c7f788d258f2255fb212d92a702290cba96e19abd5531",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "bdbbad53fbf027a225cf197c5501b7f9b245df35b073d2628636fd4580a27b86",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "441547ef486542933023408f6426c4bd1aadf3708adc73fd99764110a717c2a5",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "65305d58139c12ae1f483d5aaa05c9cd53e1f6b3d985dd9eacd0d5c69d6b834a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "c7953fabdfbc46b9508e4d8279f47c6b8c16ddced99315ccf16d413501d78ceb",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5effb23fb4ba51376f6b05f753f42143b8a3c0db036fbf211a2cbc8316058c86",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5a023eeb31e4963b777903f497a489d04cd4044c0faeafe5eb42fd716bff16b0",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5113320e60ad828cceb92e94127ea038674599dda8809e4a483c5b9fcf5c965e",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "0dd31ed3da1e9b00ca69e5cbb077989c9fe7d6dc9e419a66ae15665e40ac08f0",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a92c50ecc920f3307336698f6fcea6beb40a0d0848e99f21b0a4562b511d7b61",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b73e7fe159284a24466f8104d47092aeeed92f1429c046c630aeaccc1892ccc2",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "709b4a601c5b7244a02d4a45985df8b5cfd402f441027a3cd8e970a0becf35a7",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "32e911761b6288fc137f6b0dd4fa32719e2d5cca5eb343fc53d5580e1a6a1aa7",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "96884c03d25072d9ab79560db1addc2dabc7fb1f2945625aaa2e5072a26548e2",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "dd937025be1d04260e5e702712f44334e64ed1f68a79fcb1478bb5262b07fd25",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "75cc1345350aedd83a000a14c51174b0dc148174ab72eceaf0c6c9897a94a1f9",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "cf9ebd6505258a09c6119db20c30d4c682b0608dac68f107c284099963199dda",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ae7721c180810c6fc8da6b2b643ea917e750360ab90477d7cb7622e662354817",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "45f83a52fbd659aca1b37a05e21bae9c64bd7cdbf4f7a2f08734b105afd95f12",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1375adca669a5b74e319dc1972cbda8222e0875b1ba690215544997d8511e069",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3fa5304a304421ba2789a5143fd6699ce7e6041641407c9c769cfd4c90aa4698",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "fa3babd09b34e258c173a4d54beafc97e0709abc44784c79b0afb1b534feb01c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "615e65d41df009acc8a1ba9af97ec17935098a1453b0bd544f08bf8d93556623",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "74af08b6ef1cd2a5132d70d60d4ff17c66ec7bfafb5253e3ff5a3ed0e342d4ad",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "06c5085cfbbb3ea6b6a9ddff5b587a928005ac2c8af45f0d7a2ddd8c10d27563",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "55c74c2768c414be7783ff7b3e711c86906eb8b42b1a8183e529ad2048376f24",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "5aa315ea7198173b14d2cd59fe25475cdae397154e9674876ec247092f7e6219",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a8058fda1a4ee97250cad9a1a3d2bea91a5691c78fe48daa20a458b48f7ec08a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2a0458d9234259d558cbf3c4c2610c58576764f6839550c57745d11677a99e3b",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "639f489d3bd10b7ea2419c295a116a6b5b252a6d0c5aaf412e19bce9d93c8f48",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "72278ff8e81ec3c4004239e8d44f6b4332e1c88971cb0a6a045633bac369954c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a688c65de5011ff84c82c7086a213d031ce4d2cf3502fa5f43b51917481c5ff8",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a80ad6d76abbfbf352cd9e8096485242f51d5bb0aa0d1ef968cc2b970fc411c9",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "e02f6cd7dc410842f9e131947bd462f956cf79d101f4d475c1072b2064ec391c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "b4bbe0320394f390f53bece199178fb586332080ca662a27ec1d73a99f932b35",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "99ebf4de1d59afee62b0aebd218c14a89b3d44ed193086217f7d37ebd7449ba1",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "13bf5b6d408a91099c55bf929fce4215d244b0106c6cadc000fb1b0e0cbef7bb",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "4193ccf5319e1d2e2b67cfb6cbed84288fae08ba45af232aed5eea0941d4110a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "728a41262525535cb7da8445b623af9aeb9a4f1b5ed4130568941252d127cb30",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "41aab79e7bd66aa2a4c07cc289d1d06b2bcc4f199620bf125ba9b310fe789be8",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "34ab6e69cc95763c23b429c088556f5d20aec16e011498b663a16f3069fd064a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "1dfb8ceb470b0adbd3fcb0dbe17736bc7de3daee6384fb767864135de5a7d53b",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ecccbe929b19e1c3fb6842a78e6e927deba2cd9613849907c0fd5b13d17d48a8",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8c245440ac0b3731872da7fa6146f0f132792875d83b2b85ab631286efffce42",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2f3daf7881d58bbc4cdf0cd512db35194ae700643a8bb899130a45a83334bcb6",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "92a698b9637f232262a87af7ebd29d0a514f1845161306dc6efdf87a34e6b910",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "8430f510292e89557ea942e3e0fe3fadc4da66a4c72e89a3bed1724f58b61ac3",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "f16cb1a5b755d5aa352cab16faa9c3a7fd5c32b570ffcd7c887ee3842aa729bc",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2822fd8e6d0689ac3b05ea612abea73331030e786e8849ea14eae8462845dc5a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "46a4bda3a61651918225e3e68a3aedf8be110b2dea01031e93969ca5456f9141",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "3ed71b7ea3b77c4dec258f39701adbb314e85a4854186a596f8aa015c69fe995",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "28b4b44ec2118d234b77a59978c07b847122973b4eaa4ccc70c7d804866125e8",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "a906f908a4bc30a57b550f5e3c2556e0703e6a83162051e21e31bb9a0aceab5f",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "ce646b3628000eb2cd384c4e27bfff948cd771f297e9cd1c125168c61417e08a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2da5127c5e35519aff7937c42f48c3f6e30fe8779fd4630cd6439daa7c797668",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "d69a06e4f41ad3482ac7a2aeb47ee2674df37ea5580da10050ae1a8c2979b25c",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "10b334e110d8d0945f7a1744aafd75b88bd9ed30c5c0880d64af302f57b72dad",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "135942f535538e9029ad206c8e4f92c3e41e92a723b7fc0f459ef0bebe51c263",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "98261b7e17515717402a6ac9c71df4d79db6cee63116eb4e305339cd5532781e",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "be2afe3dbae542e78489be73c922c670ccbfd4c9fcb5fa6bbfaa17aaaac5c46b",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "167c2c1ad6c43ec038db6b5a09530872e64fdea59ef306d6e39ab56b7478ed15",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "163139124a9e7739c9b3d3b139c6e936a82b28a1cb28d93c8c03cb6f036bfc77",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "56c895600a8db41932c110bbff49c5afb803fa72336f33136bae1d502f66d718",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "26f73f3f166624d0432fff423a081844a2c0ea5dd378f162fef10499511558bf",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    },
+    {
+      "expected_body": {
+        "heading_x": 1.0,
+        "heading_y": 0.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "expected_command": [
+        false,
+        0.0,
+        0.0
+      ],
+      "expected_state_sha256": "2e15a4a5c3aab66565d4695b0ab18e824971419813c362c8957fbe111294a86a",
+      "strike": {
+        "active": false,
+        "aim_x": 0.0,
+        "aim_y": 0.0,
+        "downward_speed_per_ms": 0.0,
+        "elapsed_ms": 0.0
+      }
+    }
+  ],
+  "parameters": {
+    "gain": 2,
+    "s": 0.01,
+    "threshold_int": 881374312,
+    "w_noise": 0.3175750723556395
+  },
+  "profile_identities": {
+    "decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",
+    "encoder-v2-draft.json": "f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8",
+    "noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
+    "ports-v2.json": "0eb28f41195107a5f59e947bc37d8e29d168c351e77efa1238d8f2361d47b751",
+    "turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7"
+  },
+  "rng_algorithm": "flybench.u32.v2",
+  "schema": "flybench.v2c.runner-parity"
+}

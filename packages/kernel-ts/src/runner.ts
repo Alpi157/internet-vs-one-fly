@@ -22,11 +22,14 @@ export class RunnerV2 {
     for(const [name,indices] of Object.entries(this.config.visual))for(const i of indices)drive[i]=encoded[name.toLowerCase()+'_drive'];
     const output=new Set(this.config.groups.flat());
     const spikes:number[]=[];
+    const recordedSpikes:{tick:number;indices:number[]}[]=[];
     const zero=new Float64Array(drive.length);
     for(let tick=0;tick<20;tick++) {
       const afterImpact=strike.active && strike.downward_speed_per_ms>0 && strike.downward_speed_per_ms*(strike.elapsed_ms+tick*.5)>=8;
       const fired=this.state.step(afterImpact?zero:drive);
-      for(let i=0;i<fired.length;i++)if(fired[i]){const body=Number(this.state.graph.ids[i]);if(output.has(body))spikes.push(body);}
+      const indices:number[]=[];
+      for(let i=0;i<fired.length;i++)if(fired[i]){indices.push(i);const body=Number(this.state.graph.ids[i]);if(output.has(body))spikes.push(body);}
+      if(indices.length)recordedSpikes.push({tick:this.state.tick,indices});
     }
     const p=this.config.decoder;
     const result=decodeSpikes(spikes,this.rates,this.config.groups,p.decay,p.forward_gain,p.turn_gain,p.minimum_speed,p.maximum_speed,p.maximum_turn_rate);
@@ -35,7 +38,7 @@ export class RunnerV2 {
     this.held=this.config.output_clamp ? [false,0,0]:result.command;
     const onset=this.held[0]&&!this.previousEscape;
     this.previousEscape=this.held[0];
-    return {applied,command:this.held,onset,encoded};
+    return {applied,command:this.held,onset,encoded,recordedSpikes};
   }
   async digest(){
     const floats=new Uint8Array(4*8+6*8+1+8+8+1);

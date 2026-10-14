@@ -35,3 +35,11 @@ search keeps the closest evaluated rate and records residual errors.
 
 Input gain {1, 2, 4, 8} multiplies normalized geometry features. The decoder gains
 and speed bounds are declared in its profile before the circuit dry run.
+
+V2D amendment: profiles/noise-v2.json excludes visual ports and every declared
+output port including DNb02. profiles/noise-table-v2.json supersedes the 200 s
+fit for V2D only. Four fixed seeds each run 1000 s per bisection evaluation; two
+new seeds each run 2000 s for validation. The pooled validation tolerance is
+max(0.05*nu0, 3*sqrt(nu0/4000)) Hz. All evaluated thresholds and counts are retained.
+No validation failure is refitted. Movement classification uses inclusive
+0.002 units/ms and 0.0005 rad/ms thresholds on the applied command.

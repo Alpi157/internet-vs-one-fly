@@ -1,0 +1,13 @@
+{
+  "profile_id": "flybench.noise.v2",
+  "rng": "flybench.u32.v2",
+  "stream": 17,
+  "population": "all circuit neurons except LC4, LPLC2 and all ports-v2.1 outputs, including DNb02",
+  "ports": "profiles/ports-v2.json",
+  "visual": "profiles/visual-ports-sides-v1.json",
+  "table": "profiles/noise-table-v2.json",
+  "decoder_control": {
+    "stream": 29,
+    "rule": "independent Bernoulli spikes per output neuron per tick at measured no-threat group mean rates; no network"
+  }
+}

@@ -95,11 +95,63 @@ def build_noise_table(output: Path) -> dict:
     return result
 
 
+FIT_SEEDS = (2026101401, 2026101402, 2026101403, 2026101404)
+VALIDATION_SEEDS = (2026101411, 2026101412)
+
+
+def build_noise_table_v2(output: Path) -> dict:
+    """E3: common random numbers, pooled fit, independent pooled validation."""
+    import math
+    import time
+    started = time.perf_counter()
+    peak, peak_tick = unit_psp()
+    rows = []
+    for kappa in (.02, .05, .10):
+        increment = kappa / peak
+        for target in (.5, 2., 5.):
+            low, high = 0, 2**32
+            evaluated = {}
+            for _ in range(32):
+                mid = (low + high) // 2
+                counts = [int(isolated_count(mid, increment, seed, 2_000_000)) for seed in FIT_SEEDS]
+                rate = sum(counts) / 4000
+                evaluated[mid] = counts
+                if rate < target:
+                    low = mid + 1
+                else:
+                    high = mid
+            threshold = min(evaluated, key=lambda t: (abs(sum(evaluated[t])/4000-target), t))
+            counts = [int(isolated_count(threshold, increment, seed, 4_000_000)) for seed in VALIDATION_SEEDS]
+            rate = sum(counts) / 4000
+            tolerance = max(.05*target, 3*math.sqrt(target/4000))
+            passed = abs(rate-target) <= tolerance
+            row = dict(kappa=kappa, nu0_hz=target, w_noise=increment,
+                threshold_int=threshold, p_per_tick=threshold/2**32,
+                fit_counts=evaluated[threshold], fit_rate_hz=sum(evaluated[threshold])/4000,
+                validation_counts=counts, validation_rate_hz=rate,
+                tolerance_hz=tolerance, passes=passed,
+                evaluations=[dict(threshold_int=t, counts=c) for t,c in evaluated.items()])
+            rows.append(row)
+            print(kappa, target, rate, passed, flush=True)
+    result = dict(schema='flybench.noise-table.v2', profile_id='flybench.noise-table.v2',
+        rng='flybench.u32.v2', stream=17, noise_profile='profiles/noise-v2.json',
+        fit_seeds=FIT_SEEDS, fit_seconds_per_seed=1000, validation_seeds=VALIDATION_SEEDS,
+        validation_seconds_per_seed=2000, psp_unit=peak, peak_end_tick=peak_tick,
+        tolerance='pooled validation rate within max(0.05*nu0, 3*sqrt(nu0/4000)) Hz',
+        method='32 integer bisections; closest pooled fit count; ascending threshold ties; common random numbers; no refit after validation',
+        rows=rows)
+    write_json(output, result)
+    print('wall_seconds', time.perf_counter()-started, flush=True)
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--out', type=Path, default=Path('profiles/noise-table-v1.json'))
+    parser.add_argument('--out', type=Path)
+    parser.add_argument('--v2', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(build_noise_table(args.out)))
+    output=args.out or Path('profiles/noise-table-v2.json' if args.v2 else 'profiles/noise-table-v1.json')
+    print(json.dumps((build_noise_table_v2 if args.v2 else build_noise_table)(output)))
 
 
 if __name__ == '__main__':

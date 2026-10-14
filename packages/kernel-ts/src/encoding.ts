@@ -1,7 +1,8 @@
 import { atanApprox } from './kernel.ts';
-export type Strike = { active:boolean; aim_x:number; aim_y:number; elapsed_ms:number; downward_speed_per_ms:number };
+export type Strike = { active:boolean; aim_x:number; aim_y:number; elapsed_ms:number; downward_speed_per_ms:number; hand_radius?:number };
 export function encodeHand(strike: Strike, x:number,y:number,hx:number,hy:number,gain:number): Record<string,number> {
-  const r=.75,H=8,dt=.5;
+  const r=strike.hand_radius ?? .75,H=8,dt=.5;
+  if(!Number.isFinite(r)||r<=0||r>64)throw new Error("hand radius domain");
   const zero={angular_radius:0,angular_expansion_per_ms:0,size_feature:0,expansion_feature:0,left_fraction:.5,right_fraction:.5,lc4_left_drive:0,lc4_right_drive:0,lplc2_left_drive:0,lplc2_right_drive:0};
   if (![x,y,hx,hy,gain,strike.aim_x,strike.aim_y,strike.elapsed_ms,strike.downward_speed_per_ms].every(Number.isFinite) || gain<0 || strike.elapsed_ms<0 || strike.downward_speed_per_ms<0) throw new Error('encoder domain');
   if (!strike.active || strike.downward_speed_per_ms*strike.elapsed_ms>=H) return zero;

@@ -21,6 +21,7 @@ export type Model = {
 };
 
 export type Noise = {
+  population_mask?: boolean[];
   seed: number;
   stream_id: number;
   threshold: number;
@@ -119,6 +120,7 @@ export class KernelState {
     this.model = model;
     this.noise = noise;
     if (noise) {
+      if (noise.population_mask && noise.population_mask.length !== graph.header.N) throw new Error("noise mask size mismatch");
       u32(noise.seed,noise.stream_id,0,0);
       if (!Number.isInteger(noise.threshold) || noise.threshold<0 || noise.threshold>2**32 || !Number.isFinite(noise.current_increment) || noise.current_increment<0) throw new Error("invalid noise");
     }
@@ -157,7 +159,7 @@ export class KernelState {
     const endTick = this.tick + 1;
     const arrivalSlot = (endTick + this.model.delay_ticks) % ringSize;
     for (let neuron = 0; neuron < count; neuron += 1) {
-      if (this.noise !== null && u32(this.noise.seed, this.noise.stream_id, this.tick, neuron) < this.noise.threshold) {
+      if (this.noise !== null && (this.noise.population_mask === undefined || this.noise.population_mask[neuron]) && u32(this.noise.seed, this.noise.stream_id, this.tick, neuron) < this.noise.threshold) {
         this.arrivalIncrement[neuron] += this.noise.current_increment;
       }
       const currentAtBoundary = this.synapticCurrent[neuron] + this.arrivalIncrement[neuron];
@@ -205,6 +207,6 @@ export function concatBytes(parts: Uint8Array[]): Uint8Array {
   let offset=0;for (const part of parts) {out.set(part,offset);offset+=part.byteLength;}return out;
 }
 export async function sha256(bytes: Uint8Array): Promise<string> {
-  const result=await crypto.subtle.digest("SHA-256",bytes);
+  const result=await crypto.subtle.digest("SHA-256",new Uint8Array(bytes).buffer);
   return Array.from(new Uint8Array(result),v=>v.toString(16).padStart(2,"0")).join("");
 }
