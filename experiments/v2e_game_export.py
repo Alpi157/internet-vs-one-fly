@@ -6,6 +6,8 @@ import argparse
 import hashlib
 import json
 import shutil
+import gzip
+import struct
 import numpy as np
 import pyarrow.feather as feather
 from experiments.v2d_parity import export
@@ -13,6 +15,30 @@ from flybench.graph import write_json
 from flybench.web_export import export_web_graph
 
 ROOT=Path(__file__).resolve().parents[1]
+
+def pack_graph(path):
+    raw=path.read_bytes();size=struct.unpack('<I',raw[8:12])[0];header=json.loads(raw[12:12+size]);payload=12+size;payload+=(-payload)%8
+    def array(name):
+        section=header['sections'][name]
+        return np.frombuffer(raw,dtype=section['dtype'],count=section['length'],offset=payload+section['byte_offset'])
+    ids,offsets,targets,counts,weights=[array(name) for name in ('ids','offsets','targets','counts','weights')]
+    packed=bytearray(b'FLYPACK1'+raw[8:12]+raw[12:12+size]);packed.extend(ids.tobytes())
+    def varint(n):
+        n=int(n)
+        if n<0:raise ValueError('negative delta')
+        while n>=128:packed.append((n&127)|128);n>>=7
+        packed.append(n)
+    for degree in np.diff(offsets):varint(degree)
+    for source in range(len(ids)):
+        prior=0
+        for target in targets[offsets[source]:offsets[source+1]]:varint(target-prior);prior=int(target)
+    for count in counts:varint(count)
+    for source in range(len(ids)):
+        a,b=offsets[source:source+2];sign=int(np.sign(weights[a])) if b>a else 0
+        if not np.array_equal(weights[a:b],counts[a:b].astype(float)*sign):raise ValueError('weights are not exact source-sign times contacts')
+        packed.append(sign+1)
+    output=path.with_name('circuit.flygraph.gz');output.write_bytes(gzip.compress(bytes(packed),mtime=0))
+    return dict(packed_bytes=output.stat().st_size,unpacked_sha256=hashlib.sha256(raw).hexdigest(),packed_sha256=hashlib.sha256(output.read_bytes()).hexdigest())
 
 def run(fixture=False,selection=None):
     out=ROOT/'apps/play/public/data';out.mkdir(parents=True,exist_ok=True)
@@ -56,10 +82,24 @@ def run(fixture=False,selection=None):
         elif int(body) in sum(runtime['config']['groups'][2:],[]):groups[i]='walking DNs'
     nodes=[dict(index=i,body_id=str(int(body)),group=groups.get(i,'interior'),somaLocation=positions[i],position=None if positions[i] is None else [float((positions[i][0]-low[0])/span),float((positions[i][2]-low[1])/span)]) for i,body in enumerate(ids)]
     brain=dict(nodes=nodes,missing=sum(p is None for p in positions),projection='x horizontal, z vertical; front display convention, anatomical camera orientation unverified',units='Relative positions only. Official page specifies 8 nm for synapse coordinates and SWC skeletons, but does not explicitly specify somaLocation units.',source='https://male-cns.janelia.org/download/',source_sha256='2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2')
+    from flybench.nulls import directed_double_edge_swap
+    sources=np.repeat(np.arange(len(ids)),np.diff(np.load(directory/'offsets.npy')))
+    targets=np.load(directory/'targets.npy')
+    scramble=directed_double_edge_swap(sources,targets,swap_count=len(targets),seed=202710159999,maximum_attempt_multiple=100)
+    (out/'lab-targets.json.gz').write_bytes(gzip.compress(json.dumps(scramble.targets.tolist(),separators=(',',':')).encode(),mtime=0))
+    runtime['lab_identity']=hashlib.sha256(scramble.targets.astype('<i4').tobytes()).hexdigest()
+    runtime['lab_seed']=202710159999
+    runtime['transport']=pack_graph(out/'circuit.webbin')
+    runtime['graph_url']='data/circuit.flygraph.gz'
+    (out/'circuit.webbin').unlink()
+    (out/'circuit.webbin.json').unlink()
     write_json(out/'runtime.json',runtime);write_json(out/'brain.json',brain)
+    (out/'LICENSE-DATA.md').write_text('# MaleCNS data attribution\n\nDerived from MaleCNS v1.0, Janelia FlyEM, CC-BY. Source: https://male-cns.janelia.org/download/ . Original IDs and biological contact counts are preserved. Source and graph hashes appear in runtime.json and HASHES.json. Relative soma x/z positions have unverified units and anatomical orientation.\n')
     shutil.copyfile(ROOT/'profiles/game-v2.json',out/'game.json')
     (ROOT/'apps/play/public/model.html').write_text(f'<!doctype html><meta name="viewport" content="width=device-width"><title>What is real here?</title><h1>What is real here?</h1><p>MaleCNS v1.0 measured wiring, CC-BY. This export executes {runtime["counts"]["N"]} neurons and {runtime["counts"]["source_accepted_E"]} directed connections representing {runtime["counts"]["represented_source_contacts"]} contacts. Uniform LIF neurons, feature-level vision, assumed signs and turn directions, abstract heading-based takeoff. Model status: {status}. No biological superiority claim.</p><p>Unknown signs are disabled. Missing soma positions appear in a labeled group band. Soma units and anatomical camera orientation are unverified; only relative x/z positions are shown.</p><a href="https://male-cns.janelia.org/download/">MaleCNS source and attribution</a>')
     (ROOT/'apps/play/public/preregistration.html').write_text('<!doctype html><meta name="viewport" content="width=device-width"><title>Protocol status</title><h1>'+status+'</h1><p>Hypothesis results are pending. See the frozen protocol and limitations.</p><a href="https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2">Pre-registration</a>')
+    hashes={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in out.iterdir() if p.name!='HASHES.json'}
+    write_json(out/'HASHES.json',hashes)
     write_json(ROOT/'evidence/V2E/game/export.json',dict(fixture=fixture,parameters=params,graph=runtime['graph_identity'],counts=runtime['counts'],brain_missing=brain['missing'],coordinate_provenance={k:v for k,v in brain.items() if k!='nodes'},files={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in out.iterdir()}))
 
 if __name__=='__main__':

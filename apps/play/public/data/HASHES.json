@@ -1,0 +1,26 @@
+{
+  "LICENSE-DATA.md": {
+    "bytes": 326,
+    "sha256": "21659f46f8da2d23b91be0c532fe05ee6b5830c55d60bc3be2526c4210ac3de8"
+  },
+  "brain.json": {
+    "bytes": 1370790,
+    "sha256": "e5eddf587c546261ac2b85ecd23aa5d5fa56df50b7fe0785494fce5574941b68"
+  },
+  "circuit.flygraph.gz": {
+    "bytes": 1079079,
+    "sha256": "078924efb86db5a60fac5fc397c16b5db611765a8671114eccdd51bfb684c24b"
+  },
+  "game.json": {
+    "bytes": 1367,
+    "sha256": "a254fc68d12f321b80982d02b1eb17bd9d4f810eead9eef982498fdc1d132c77"
+  },
+  "lab-targets.json.gz": {
+    "bytes": 1481741,
+    "sha256": "5c9c65e0414ef28de8b1b17345594e9f8bc0bdeb6ce8d809e701719e4bee39d3"
+  },
+  "runtime.json": {
+    "bytes": 87137,
+    "sha256": "9c0c3d4dec0f6b54177176d06801e5beb69ca370cc01ca52e0abb5dff54938cb"
+  }
+}

@@ -1,5 +1,17 @@
 {
-  "name": "@flybench/play", "version": "0.1.0-v2d", "private": true, "type": "module",
-  "scripts": {"dev":"vite --host 127.0.0.1", "build":"tsc --noEmit && vite build", "test":"node test/game.test.ts", "test:e2e":"node test/e2e.mjs", "bots":"node test/bots.ts"},
-  "devDependencies": {"typescript":"5.9.3", "vite":"7.3.6"}
+  "name": "@flybench/play",
+  "version": "0.2.0-v2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "../../.venv/bin/python build-og.py && tsc --noEmit && vite build",
+    "test": "node test/game.test.ts && node test/lab.test.ts",
+    "test:e2e": "node test/e2e.mjs",
+    "bots": "node test/bots.ts"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "7.3.6"
+  }
 }

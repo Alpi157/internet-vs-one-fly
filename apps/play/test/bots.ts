@@ -1,12 +1,15 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import {unpackGraph} from '../../../packages/kernel-ts/src/transport.ts';
+import {gunzipSync} from 'node:zlib';
 import { Game } from '../src/game.ts';
 import { u32 } from '../../../packages/kernel-ts/src/kernel.ts';
 const root = resolve(import.meta.dirname, '../../..'), data = resolve(root, 'apps/play/public/data');
 const runtime = JSON.parse(readFileSync(resolve(data, 'runtime.json'), 'utf8')), profile = JSON.parse(readFileSync(resolve(root, 'profiles/game-v2.json'), 'utf8'));
-const raw = readFileSync(resolve(data, 'circuit.webbin'));
-const buffer = raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength);
-const out = resolve(root, 'evidence/V2D/game');
+const raw = readFileSync(resolve(data, 'circuit.flygraph.gz'));
+const packed = gunzipSync(raw);
+const buffer = unpackGraph(packed.buffer.slice(packed.byteOffset, packed.byteOffset + packed.byteLength));
+const out = resolve(root, 'evidence/V2E/game');
 mkdirSync(out, { recursive: true });
 const rounds = Number(process.env.FLYBENCH_BOT_ROUNDS ?? 10), strategies: any[] = [];
 for (const type of [0, 1, 2])
@@ -47,6 +50,7 @@ for (const strategy of strategies) {
                 game.step();
             records.push({ seed, environment_seed: 2026500000 + r, strike: n, ...game.lastImpact });
         }
+        if(game.impacts.length!==6)throw new Error('Every scripted strike must resolve an impact');
         catches += game.catches;
         strikes += game.strikes;
     }
@@ -56,3 +60,5 @@ for (const strategy of strategies) {
 }
 const report = { profile_id: profile.profile_id, profile, rounds_per_strategy: rounds, reaction_delay_ms: 180, interval_method: '95% percentile bootstrap of independent six-strike rounds, 10000 resamples, stream 79 seed 2026600001; descriptive only, ten rounds per strategy', aim_noise: 'independent uniform +/-0.8 arena units on each axis, RNG stream 71, fixed across game versions', neural_profile: runtime.status, parameters: runtime.parameters, status: results.every(r => r.target_pass) ? 'PASS' : 'TARGET_MISSED', wall_seconds: (performance.now() - started) / 1000, results };
 writeFileSync(resolve(out, `bots-v${profile.version}.json`), JSON.stringify(report, null, 2) + '\n');
+
+if(report.status!=='PASS')process.exitCode=1;

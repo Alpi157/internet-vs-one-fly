@@ -1,20 +1,29 @@
 import './style.css';
+import {fetchGraph} from '../../../packages/kernel-ts/src/transport.ts';
 import type { Frame } from './game.ts';
 const app = document.querySelector<HTMLDivElement>('#app')!;
-app.innerHTML = `<main><header><a class="brand" href="/">FLYBENCH <span>FIELD NOTES / 002</span></a><span class="model-tag">provisional model</span></header>
+app.innerHTML = `<main><header><a class="brand" href="./">FLYBENCH <span>FIELD NOTES / 002</span></a><span class="model-tag">provisional model</span></header>
 <section class="title"><div><p class="eyebrow">MEET YOUR VERY SMALL OPPONENT</p><h1>Catch the <i>Fly.</i></h1></div><p>A tiny brain.<br>A big attitude.</p></section>
 <div class="status"><span id="time">30.0 <small>SECONDS</small></span><span id="score">0 <small>CAUGHT</small></span><span id="strikes">6 <small>STRIKES LEFT</small></span></div>
 <section class="play-layout"><div class="table-wrap"><canvas id="table" width="700" height="700" tabindex="0" aria-label="Fly arena. Hold to charge, release to strike. Enter strikes the center."></canvas><div id="intro"><span class="stamp">WANTED<br>ALIVE & BUZZING</span><h2>Six chances.<br>One little show-off.</h2><p>Tap for a flick. Hold for a slap.<br>Hold longer for a mighty swat.</p><button id="start" disabled>Waking the fly…</button><small>No account. No tracking. Just you and a fly.</small></div><div id="impact-label" aria-live="polite"></div><span class="table-note">SPECIMEN 01 / HANDLE WITH CURIOSITY</span></div>
-<aside id="brain-panel"><div class="panel-top"><span class="eyebrow">BRAIN-CAM</span><b id="replay-badge">WAITING FOR YOUR MOVE</b></div><h2 id="brain-title">A look inside<br>the little troublemaker.</h2><canvas id="brain" width="560" height="420" aria-label="Recorded neuron activity map"></canvas><p id="caption">After each strike, watch the recorded neurons flash at quarter speed.</p><div class="legend"><span style="--dot:#0072b2">LC4</span><span style="--dot:#e69f00">LPLC2</span><span style="--dot:#cc79a7">Giant fiber</span><span style="--dot:#009e73">Walking DNs</span><span style="--dot:#74808b">Interior</span></div><small id="map-note">Relative soma positions. Missing coordinates appear in the side band.</small><div class="replay-actions" hidden><button id="again">Replay 0.25×</button><button id="continue">Next strike →</button></div></aside></section>
+<aside id="brain-panel"><div class="panel-top"><span class="eyebrow">BRAIN-CAM</span><b id="replay-badge">WAITING FOR YOUR MOVE</b></div><h2 id="brain-title">A look inside<br>the little troublemaker.</h2><canvas id="brain" width="560" height="420" aria-label="Recorded neuron activity map"></canvas><canvas id="timeline" width="560" height="120" aria-label="Recorded hand height, population rates, giant-fiber spikes and impact"></canvas><p id="caption">After each strike, watch the recorded neurons flash at quarter speed.</p><div class="legend"><span style="--dot:#0072b2">LC4</span><span style="--dot:#e69f00">LPLC2</span><span style="--dot:#cc79a7">Giant fiber</span><span style="--dot:#009e73">Walking DNs</span><span style="--dot:#74808b">Interior</span></div><small id="map-note">Relative soma positions. Missing coordinates appear in the side band.</small><div class="replay-actions" hidden><button id="again">Replay 0.25×</button><button id="continue">Next strike →</button></div></aside></section>
 <div class="instruction"><strong id="charge-text">TAP: FLICK · HOLD: SLAP · LONG HOLD: SWAT</strong><span>The growing hand shadow is the looming stimulus the fly sees.</span></div>
-<section class="bottom"><details><summary>What is real here? <span>+</span></summary><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p>No calibrated model or wiring-superiority result is claimed. The science track stopped before pre-registration.</p><a href="/model.html">Model card</a> · <a href="/preregistration.html">Pre-registration status</a> · <a href="https://male-cns.janelia.org/download/">MaleCNS v1.0, CC-BY</a></details><div class="settings"><label><input id="reduce" type="checkbox"> Reduced motion</label><label><input id="sound" type="checkbox" checked> Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button><button id="video" disabled>Save replay video</button></div></section><p id="notice" role="status"></p><footer>A real wiring diagram. An imaginary fly. A very personal rivalry.</footer></main>`;
+<section class="bottom"><details><summary>What is real here? <span>+</span></summary><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p><span id="science-status">Calibration status loading.</span> No wiring-superiority or human usability result is claimed.</p><a href="./model.html">Model card</a> · <a href="./preregistration.html">Pre-registration status</a> · <a href="https://male-cns.janelia.org/download/">MaleCNS v1.0, CC-BY</a></details><div class="settings"><button id="lab">Open lesion lab</button><span id="activity">0.0 Hz · circuit activity</span><label><input id="reduce" type="checkbox"> Reduced motion</label><label><input id="sound" type="checkbox" checked> Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button><button id="video" disabled>Save replay video</button></div></section><div id="lab-panel" hidden></div><p id="notice" role="status"></p><footer>A real wiring diagram. An imaginary fly. A very personal rivalry.</footer></main>`;
 const $ = (id: string) => document.getElementById(id)!;
+document.querySelector('.table-wrap')!.prepend(document.querySelector('.status')!);
+document.querySelector('.replay-actions')!.append($('card'),$('video'));
 const table = $('table') as HTMLCanvasElement, brainCanvas = $('brain') as HTMLCanvasElement;
+const timeline = $('timeline') as HTMLCanvasElement;
+const base = import.meta.env.BASE_URL;
+const shareURL = 'https://alpi157.github.io/internet-vs-one-fly/';
+const history: Frame[] = [];
 const ctx = table.getContext('2d')!, bc = brainCanvas.getContext('2d')!;
 const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+let displayStatus='';
 let runtime: any, profile: any, brain: any, buffer: ArrayBuffer;
-let frame: Frame = { tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, air: false, strike: null, impact: null, onset: false, spikes: [] };
+let frame: Frame = { tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, air: false, applied: [false,0,0], gait: 0, activity_hz: 0, strike: null, impact: null, onset: false, spikes: [] };
 let ready = false, started = false, replaying = false, paused = false, finished = false, catches = 0, used = 0;
+let replayPinned: number|null=null;
 let replay: Frame[] = [], lastImpact: any = null, replayIndex = 0, replayStart = 0;
 let aim = { x: 0, y: 0 }, holdStart: number | null = null, reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let sound: AudioContext | null = null, lastSoundTick = -1, frames = 0, rafStart = performance.now(), simSpeed = 0;
@@ -46,16 +55,6 @@ function fly(c: CanvasRenderingContext2D, f: Frame) {
     c.save();
     c.translate(x, y);
     c.rotate(-Math.atan2(f.body.heading_y, f.body.heading_x));
-    if (f.air && !reduced) {
-        c.strokeStyle = '#fff9df';
-        c.lineWidth = 5;
-        for (let i = 0; i < 3; i++) {
-            c.beginPath();
-            c.moveTo(-28 - i * 15, -7 + i * 6);
-            c.lineTo(-58 - i * 15, -7 + i * 6);
-            c.stroke();
-        }
-    }
     c.fillStyle = '#23352e22';
     c.beginPath();
     c.ellipse(4, 7, 22, 10, 0, 0, Math.PI * 2);
@@ -66,7 +65,8 @@ function fly(c: CanvasRenderingContext2D, f: Frame) {
         for (let i = 0; i < 3; i++) {
             c.beginPath();
             c.moveTo(-8 + i * 9, sign * 6);
-            c.lineTo(-18 + i * 12, sign * (18 + (i % 2) * 3));
+            const stride = reduced ? 0 : Math.sin(f.gait*12+i*Math.PI)*5;
+            c.lineTo(-18 + i * 12 + stride, sign * (18 + (i % 2) * 3));
             c.lineTo(-12 + i * 12, sign * 23);
             c.stroke();
         }
@@ -75,7 +75,7 @@ function fly(c: CanvasRenderingContext2D, f: Frame) {
     c.lineWidth = 1.5;
     for (const sign of [-1, 1]) {
         c.beginPath();
-        c.ellipse(-8, sign * 14, 22, 10, sign * .45, 0, Math.PI * 2);
+        c.ellipse(-8, sign * (f.air ? 20 : 14), f.air ? 30 : 22, f.air ? 17 : 10, sign * .45, 0, Math.PI * 2);
         c.fill();
         c.stroke();
     }
@@ -143,8 +143,11 @@ function drawTable(f: Frame, c = ctx) {
         c.ellipse(0, 0, radius * (.2 + .8 * progress), radius * (.2 + .8 * progress), 0, 0, Math.PI * 2);
         c.fill();
         c.save();
-        c.scale(radius * (.2 + .8 * progress) / 50, radius * (.2 + .8 * progress) / 50);
-        c.fillStyle = `rgba(30,32,26,${.1 + .25 * progress})`;
+        c.translate(0,-85*(1-progress));
+        c.scale((50+radius*.4)/50,(50+radius*.4)/50);
+        c.fillStyle = '#bd754c';
+        c.strokeStyle = '#74482d';
+        c.lineWidth = 2;
         c.beginPath();
         c.ellipse(0, 12, 22, 24, 0, 0, Math.PI * 2);
         c.fill();
@@ -165,9 +168,15 @@ function drawTable(f: Frame, c = ctx) {
         c.stroke();
         c.restore();
     }
+    if(f.air && !reduced) {
+        const path=(replaying?replay:history).filter(v=>v.tick<=f.tick && v.tick>=f.tick-160 && v.air);
+        c.strokeStyle='#fff9dfaa';c.lineWidth=6;c.beginPath();
+        path.forEach((v,i)=>{const [x,y]=world(v.body.x,v.body.y);if(i===0)c.moveTo(x,y);else c.lineTo(x,y);});c.stroke();
+    }
     fly(c, f);
     const impact = f.impact || (lastImpact && f.tick >= lastImpact.tick && f.tick <= lastImpact.tick + 400 ? lastImpact : null);
     if (impact) {
+        if(!reduced && f.tick-impact.tick<60){c.fillStyle='#fff5ce55';c.fillRect(0,0,700,700);}
         const [x, y] = world(impact.position.x, impact.position.y);
         c.save();
         c.translate(x, y - 45);
@@ -195,7 +204,11 @@ function drawBrain(f: Frame, c = bc) {
     c.fillRect(0, 0, 560, 420);
     if (!brain)
         return;
-    const active = new Set(f.spikes.flatMap(s => s.indices));
+    const observed = (replaying?replay:history).filter(v=>v.tick<=f.tick && v.tick>=f.tick-100);
+    const last = new Map<number,number>();
+    for(const v of observed)for(const event of v.spikes)for(const i of event.indices)last.set(i,event.tick);
+    for(const event of f.spikes)for(const i of event.indices)last.set(i,event.tick);
+    const active = new Set(last.keys());
     c.fillStyle = '#bbd2bf';
     c.font = '12px system-ui';
     c.fillText('RELATIVE x/z PROJECTION', 18, 24);
@@ -219,24 +232,54 @@ function drawBrain(f: Frame, c = bc) {
             x = 463 + (k % 7) * 11;
             y = 62 + gi * 64 + Math.floor(k / 7) * 8;
         }
-        c.globalAlpha = active.has(n.index) ? 1 : .2;
+        c.globalAlpha = active.has(n.index) ? Math.max(.15,1-(f.tick-last.get(n.index)!)/120) : .22;
+        c.shadowBlur=0;
+        if(active.has(n.index)){const alpha=c.globalAlpha;c.fillStyle=colors[n.group];c.globalAlpha=alpha*.25;c.beginPath();c.arc(x,y,n.group==='interior'?8:14,0,Math.PI*2);c.fill();c.globalAlpha=alpha;}
         c.fillStyle = colors[n.group];
         c.beginPath();
-        c.arc(x, y, active.has(n.index) ? (n.group === 'giant fiber' ? 5 : 2.6) : 1.25, 0, Math.PI * 2);
+        c.arc(x, y, active.has(n.index) ? (n.group === 'giant fiber' ? 8 : n.group==='interior'?3.5:5) : 1.25, 0, Math.PI * 2);
         c.fill();
     }
-    c.globalAlpha = 1;
+    c.globalAlpha = 1;c.shadowBlur=0;
 }
-function beginReplay() { replaying = true; paused = true; replayIndex = 0; replayStart = performance.now(); $('brain-panel').classList.add('active'); $('replay-badge').textContent = 'RECORDED / 0.25×'; $('brain-title').textContent = lastImpact?.caught ? 'A very close encounter.' : 'Gone in a buzz.'; $('caption').textContent = lastImpact?.lead_ms !== null ? `Giant fiber fired ${lastImpact.lead_ms} ms before your hand landed.` : 'Giant fiber never fired before your hand landed during this strike.'; document.querySelector<HTMLElement>('.replay-actions')!.hidden = false; ($('video') as HTMLButtonElement).disabled = !('MediaRecorder' in window) || !('captureStream' in table); $('continue').textContent = finished ? 'Play another round →' : 'Next strike →'; }
+function drawTimeline(f:Frame) {
+    const c=timeline.getContext('2d')!, data=replaying?replay:history.slice(-65);
+    c.fillStyle='#10251f';c.fillRect(0,0,560,120);
+    if(!data.length || !brain)return;
+    const first=data[0].tick,last=data.at(-1)!.tick,span=Math.max(20,last-first);
+    const x=(tick:number)=>100+(tick-first)/span*445;
+    const indexGroups=new Map<number,string>(brain.nodes.map((n:any)=>[n.index,n.group]));
+    const groups=['LC4','LPLC2'];
+    const rates=data.map(v=>groups.map(group=>v.spikes.reduce((n,e)=>n+e.indices.filter(i=>indexGroups.get(i)===group).length,0)/Math.max(1,brain.nodes.filter((n:any)=>n.group===group).length)/.01));
+    c.font='10px monospace';
+    for(let row=0;row<4;row++) {
+        const y=19+row*25;c.fillStyle='#d7e7d4';
+        const label=row===0?'HAND HEIGHT':row===3?'GIANT FIBER':groups[row-1]+' Hz';c.fillText(label,6,y);
+        c.strokeStyle=row===0?'#f0ca81':row===3?colors['giant fiber']:colors[groups[row-1]];
+        const maximum=row===0?8:row===3?1:Math.max(1,...rates.map(v=>v[row-1]));
+        c.beginPath();
+        for(let i=0;i<data.length;i++) {
+            const v=data[i];const value=row===0?(v.strike && v.tick<=v.strike.impact_tick?Math.max(0,8-(v.tick-v.strike.start_tick)*.5*v.strike.speed):0):row===3?0:rates[i][row-1];
+            const yy=y+3-value/maximum*18;
+            if(i===0)c.moveTo(x(v.tick),yy);else {c.lineTo(x(v.tick),y+3-(row===0?(data[i-1].strike && data[i-1].tick<=data[i-1].strike.impact_tick?Math.max(0,8-(data[i-1].tick-data[i-1].strike.start_tick)*.5*data[i-1].strike.speed):0):row===3?0:rates[i-1][row-1])/maximum*18);c.lineTo(x(v.tick),yy);}
+            if(row===3)for(const event of v.spikes)if(event.indices.some(j=>indexGroups.get(j)==='giant fiber')){c.moveTo(x(event.tick),y+3);c.lineTo(x(event.tick),y-15);}
+        }
+        c.stroke();
+    }
+    if(lastImpact && lastImpact.tick>=first && lastImpact.tick<=last){c.strokeStyle='#fff';c.setLineDash([3,3]);c.beginPath();c.moveTo(x(lastImpact.tick),0);c.lineTo(x(lastImpact.tick),120);c.stroke();c.setLineDash([]);}
+    c.strokeStyle='#e69f00';c.beginPath();c.moveTo(x(f.tick),0);c.lineTo(x(f.tick),120);c.stroke();
+}
+function beginReplay() { replayPinned=null; replaying = true; paused = true; replayIndex = 0; replayStart = performance.now(); $('brain-panel').classList.add('active'); $('replay-badge').textContent = 'RECORDED / 0.25×'; $('brain-title').textContent = lastImpact?.caught ? 'A very close encounter.' : 'Gone in a buzz.'; $('caption').textContent = lastImpact?.lead_ms !== null ? `Giant fiber fired ${lastImpact.lead_ms} ms before your hand landed.` : 'Giant fiber never fired before your hand landed during this strike.'; document.querySelector<HTMLElement>('.replay-actions')!.hidden = false; ($('video') as HTMLButtonElement).disabled = !('MediaRecorder' in window) || !('captureStream' in table); $('continue').textContent = finished ? 'Play another round →' : 'Skip / next strike →'; }
 function animate(now: number) {
     frames++;
     let shown = frame;
     if (replaying && replay.length) {
-        replayIndex = Math.max(0, Math.min(replay.length - 1, Math.floor((now - replayStart) / 40)));
+        replayIndex = replayPinned ?? Math.max(0, Math.min(replay.length - 1, Math.floor((now - replayStart) / 40)));
         shown = replay[replayIndex];
     }
     drawTable(shown);
     drawBrain(shown);
+    drawTimeline(shown);
     if (holdStart !== null) {
         const ms = now - holdStart;
         $('charge-text').textContent = ms < 180 ? 'FLICK / QUICK & SMALL' : ms < 500 ? 'SLAP / A LITTLE MORE HAND' : 'SWAT / SLOW & MIGHTY';
@@ -256,6 +299,8 @@ worker.onmessage = event => {
     }
     if (m.kind === 'frame') {
         frame = m.frame;
+        history.push(frame);if(history.length>3000)history.shift();
+        $('activity').textContent=frame.activity_hz.toFixed(1)+' Hz · circuit activity';
         catches = m.catches;
         used = m.strikes;
         finished = m.done;
@@ -295,6 +340,13 @@ worker.onmessage = event => {
 function start() { if (!ready)
     return; started = true; paused = false; $('intro').hidden = true; send('start'); }
 $('start').onclick = start;
+$('lab').onclick = async()=>{const {openLab}=await import('./lab.ts');openLab($('lab-panel'),async(mode:string)=>{
+    paused=true;replaying=false;started=false;ready=false;history.length=0;replay=[];catches=0;used=0;finished=false;$('brain-panel').classList.remove('active');
+    const {configureLab}=await import('./lab.ts');const selected=await configureLab(mode,buffer,runtime,base);
+    $('intro').hidden=false;send('init',{buffer:selected.buffer,runtime:selected.runtime,profile,neuralSeed:2026092802,environmentSeed:8128,manual});
+    displayStatus=selected.label;document.querySelector('.model-tag')!.textContent=displayStatus.toLowerCase();
+    $('notice').textContent=selected.label+'; new round, explicit reset.';
+});};
 function point(event: PointerEvent) { const rect = table.getBoundingClientRect(), b = profile.arena_half_size; return { x: Math.max(-b, Math.min(b, ((event.clientX - rect.left) / rect.width * 2 - 1) * b)), y: Math.max(-b, Math.min(b, (1 - (event.clientY - rect.top) / rect.height * 2) * b)) }; }
 table.onpointerdown = e => { if (!started || paused || finished || frame.strike)
     return; table.setPointerCapture(e.pointerId); aim = point(e); holdStart = performance.now(); };
@@ -306,14 +358,26 @@ table.onkeydown = e => { if (e.code === 'Enter' && started && !paused && !finish
     e.preventDefault();
     send('strike', { x: 0, y: 0, hold_ms: 250 });
 } };
-$('again').onclick = () => { replayStart = performance.now(); replaying = true; };
+$('again').onclick = () => { replayPinned=null; replayStart = performance.now(); replaying = true; };
 $('continue').onclick = () => { if (finished) {
     location.reload();
     return;
-} replaying = false; paused = false; document.querySelector<HTMLElement>('.replay-actions')!.hidden = true; $('charge-text').textContent = 'TAP: FLICK · HOLD: SLAP · LONG HOLD: SWAT'; send('resume'); };
+} replaying = false; paused = false; $('brain-panel').classList.remove('active'); document.querySelector<HTMLElement>('.replay-actions')!.hidden = true; $('charge-text').textContent = 'TAP: FLICK · HOLD: SLAP · LONG HOLD: SWAT'; send('resume'); };
 function save(blob: Blob, name: string) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); }
 $('save-log').onclick = async () => save(new Blob([JSON.stringify(await request('log'), null, 2)], { type: 'application/json' }), 'flybench-round.json');
-function composite() { const c = document.createElement('canvas'); c.width = 1200; c.height = 800; const g = c.getContext('2d')!; g.fillStyle = '#f6edd9'; g.fillRect(0, 0, 1200, 800); g.fillStyle = '#183c31'; g.font = 'bold 54px Georgia'; g.fillText('Catch the Fly.', 35, 66); g.font = '22px system-ui'; g.fillText(`${catches} caught / ${used} strikes · provisional model`, 35, 105); g.drawImage(table, 30, 135, 620, 620); g.drawImage(brainCanvas, 670, 180, 500, 375); g.font = '19px system-ui'; g.fillText('Recorded brain-cam · MaleCNS v1.0 wiring', 670, 610); g.fillText('Simplified neurons, vision and takeoff', 670, 644); return c; }
+function composite(portrait=false) {
+    const c=document.createElement('canvas');c.width=portrait?720:1200;c.height=portrait?1280:630;
+    const g=c.getContext('2d')!;g.fillStyle='#f6edd9';g.fillRect(0,0,c.width,c.height);g.fillStyle='#183c31';
+    g.font='bold 46px Georgia';g.fillText('Catch the Fly.',28,56);g.font='18px system-ui';
+    g.fillText(`${catches} caught / ${used} strikes · ${displayStatus.toLowerCase()}`,28,88);
+    if(portrait){g.drawImage(table,20,110,680,680);g.drawImage(brainCanvas,20,806,490,367);g.drawImage(timeline,20,1178,680,60);}
+    else {g.drawImage(table,25,110,490,490);g.drawImage(brainCanvas,540,115,630,390);g.drawImage(timeline,540,510,630,80);}
+    g.fillStyle='#183c31';g.font='16px system-ui';
+    const caption=$('caption').textContent??'Recorded brain-cam';
+    if(portrait){const words=caption.split(' ');let line='',y=850;for(const word of words){if(g.measureText(line+word).width>155){g.fillText(line,530,y);line='';y+=24;}line+=word+' ';}g.fillText(line,530,y);}
+    g.font='14px monospace';g.fillText(shareURL,portrait?20:540,portrait?1260:618);
+    return c;
+}
 $('card').onclick = () => composite().toBlob(blob => { if (blob)
     save(blob, 'catch-the-fly.png'); });
 $('video').onclick = async () => {
@@ -324,20 +388,24 @@ $('video').onclick = async () => {
         $('notice').textContent = 'Video export unavailable in this browser. Save a result card instead.';
         return;
     }
-    const canvas = composite(), g = canvas.getContext('2d')!, stream = canvas.captureStream(25), recorder = new MediaRecorder(stream, { mimeType: mime });
+    const canvas = composite(true), g = canvas.getContext('2d')!, stream = canvas.captureStream(25), recorder = new MediaRecorder(stream, { mimeType: mime });
     const chunks: Blob[] = [];
     recorder.ondataavailable = e => chunks.push(e.data);
     recorder.onstop = () => { save(new Blob(chunks, { type: mime }), mime.includes('mp4') ? 'fly-replay.mp4' : 'fly-replay.webm'); stream.getTracks().forEach(t => t.stop()); $('notice').textContent = 'Replay video saved.'; };
     $('notice').textContent = 'Recording your replay…';
+    replayPinned=null;
     replaying = true;
     replayStart = performance.now();
     recorder.start();
-    const timer = setInterval(() => g.drawImage(composite(), 0, 0), 40);
+    const timer = setInterval(() => g.drawImage(composite(true), 0, 0), 40);
     setTimeout(() => { clearInterval(timer); recorder.stop(); }, replay.length * 40 + 100);
 };
 (async () => {
     try {
-        [runtime, profile, brain, buffer] = await Promise.all([fetch('/data/runtime.json').then(r => r.json()), fetch('/data/game.json').then(r => r.json()), fetch('/data/brain.json').then(r => r.json()), fetch('/data/circuit.webbin').then(r => r.arrayBuffer())]);
+        [runtime, profile, brain, buffer] = await Promise.all([fetch(base+'data/runtime.json').then(r => r.json()), fetch(base+'data/game.json').then(r => r.json()), fetch(base+'data/brain.json').then(r => r.json()), fetchGraph(base+'data/circuit.flygraph.gz')]);
+        displayStatus=runtime.status;
+        document.querySelector('.model-tag')!.textContent = displayStatus.toLowerCase();
+        $('science-status').textContent = runtime.status + '. Hypothesis results pending.';
         $('model-counts').textContent = `Executed scope: ${runtime.counts.N.toLocaleString()} neurons, ${runtime.counts.source_accepted_E.toLocaleString()} connections, ${runtime.counts.represented_source_contacts.toLocaleString()} biological contacts. ${runtime.counts.zero_disabled_E.toLocaleString()} connections have disabled unknown signs.`;
         $('map-note').textContent = `Relative x/z soma projection; ${brain.missing} neurons without somaLocation are grouped in the side band. Anatomical camera orientation is unverified.`;
         const random = new Uint32Array(2);
@@ -351,4 +419,4 @@ $('video').onclick = async () => {
 })();
 requestAnimationFrame(animate);
 if (manual)
-    (window as any).flyTest = { ready: () => ready, start, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: () => ($('continue') as HTMLButtonElement).click(), log: () => request('log'), state: () => ({ frame, catches, used, finished, replaying, simSpeed, fps: frames / ((performance.now() - rafStart) / 1000) }), showReplay: () => beginReplay() };
+    (window as any).flyTest = { ready: () => ready, start, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: () => ($('continue') as HTMLButtonElement).click(), log: () => request('log'), state: () => ({ frame, catches, used, finished, replaying, simSpeed, fps: frames / ((performance.now() - rafStart) / 1000) }), showReplay: () => beginReplay(), showRecorded: (kind:string)=>{const index=kind==='takeoff'?replay.findIndex(f=>f.air):replay.reduce((best,f,i)=>f.spikes.reduce((n,e)=>n+e.indices.length,0)>(replay[best]?.spikes.reduce((n,e)=>n+e.indices.length,0)??-1)?i:best,0);if(index<0)return false;replayPinned=index;drawTable(replay[index]);drawBrain(replay[index]);drawTimeline(replay[index]);return true;} };

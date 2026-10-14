@@ -1,12 +1,13 @@
 import {readFileSync,existsSync,mkdirSync,writeFileSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {runCase} from '../src/runner.ts';
-const v2d=process.argv.includes('--v2d');
+const v2e=process.argv.includes('--v2e');
+const v2d=v2e||process.argv.includes('--v2d');
 const root=resolve(import.meta.dirname,'../../..');
 const fixtureOnly=process.argv.includes('--fixture-only');
 const reports:any[]=[];
 for(const name of fixtureOnly ? ['fixture'] : ['fixture','t1a','t1b']) {
-  const stem=name==='fixture' ? resolve(root,`packages/kernel-ts/test/fixtures/${v2d?'v2d':'v2c'}-runner`) : resolve(root,'data/compiled/v2',name+(v2d?'-v2d-runner':'-runner'));
+  const stem=name==='fixture' ? resolve(root,`packages/kernel-ts/test/fixtures/${v2d?'v2d':'v2c'}-runner`) : resolve(root,'data/compiled/v2',name+(v2e?'-v2e-runner':v2d?'-v2d-runner':'-runner'));
   if(!existsSync(stem+'.json')) {if(fixtureOnly)throw new Error('fixture absent');reports.push({name,status:'UNAVAILABLE'});continue;}
   const log=JSON.parse(readFileSync(stem+'.json','utf8'));
   const bytes=readFileSync(name==='fixture' ? resolve(root,'packages/kernel-ts/test/fixtures/escape.webbin') : stem+'.webbin');

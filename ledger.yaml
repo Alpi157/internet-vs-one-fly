@@ -96,7 +96,7 @@ stages:
   V2B: ACCEPTED
   V2C: ACCEPTED
   V2D: ACCEPTED
-  V2E: IN_PROGRESS
+  V2E: SUBMITTED
 stage_review_records:
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
@@ -328,12 +328,32 @@ measurements:
       - 0.1
       - 0.43333333333333335
     browser_parity: PASS Chromium, Firefox, WebKit, fixture/T1a/T1b
+  v2e:
+    status: RUN_IN_PROGRESS
+    base_sha: f2b202c00a175f3654a14573b83cd3e1418af8d5
+    freeze_commit: 1a853f40007dcf10fb113c29a8400a7f99a3addb
+    protocol_sha256: f684489801ec3d5d9af4c9fd845019c79f4daef97cb3533d023b6baf4fce4c8a
+    public_refs:
+    - prereg-v2
+    - prereg/v2
+    gates: S3 G1-G4 PASS
+    dry_run_rows: 96
+    primary_circuit: T1b
+    selected_parameters:
+      s: 0.01
+      kappa: 0.05
+      nu0_hz: 5
+      gain: 8
+    H0: RUN_IN_PROGRESS
+    H1: PENDING
+    H2: PENDING
+    game_profile: flybench.game.v2.6
+    measurement_record: docs/measurements-v2e.json
 launch_blockers:
-- No public hosting or human usability evidence.
-- 'V2D S4 G4: C-SIMPLE exact probability match is impossible under fixed standard geometry; reviewer decision required
-  before a later freeze.'
-- Game uses provisional T1a parameters; no H1/H2 or biological superiority claim.
-next_action: Implement V2E; gates before freeze; external review pending.
+- V2E scientific run and S6 analysis remain in progress.
+- No enabled public hosting or human usability evidence.
+- Software license awaits owner decision.
+next_action: External review of V2E attempt 1 as RUN_IN_PROGRESS; follow CONTINUE.md after S5. Do not mark V2E accepted.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56

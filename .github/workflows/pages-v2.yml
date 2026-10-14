@@ -1,0 +1,40 @@
+name: Build and deploy Catch the Fly
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.13'
+      - run: uv sync --extra dev --locked
+      - run: npm --prefix apps/play ci
+      - run: npm --prefix apps/play run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/play/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy static artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

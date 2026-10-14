@@ -4,7 +4,8 @@ import {createServer} from 'node:http';
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {gzipSync} from 'node:zlib';
-const v2d=process.argv.includes('--v2d');
+const v2e=process.argv.includes('--v2e');
+const v2d=v2e||process.argv.includes('--v2d');
 const root=resolve(import.meta.dirname,'../../..');
 const bundled=await build({entryPoints:[resolve(root,'packages/kernel-ts/src/worker.ts')],bundle:true,write:false,format:'iife',platform:'browser',target:'es2022',minify:true});
 const worker=bundled.outputFiles[0].contents;
@@ -12,7 +13,7 @@ const files=new Map([['/',{type:'text/html',bytes:Buffer.from('<!doctype html><t
 const logs=new Map();
 const bundles=[];
 for(const name of ['fixture','t1a','t1b']) {
- const stem=name==='fixture'?resolve(root,`packages/kernel-ts/test/fixtures/${v2d?'v2d':'v2c'}-runner`):resolve(root,'data/compiled/v2',name+(v2d?'-v2d-runner':'-runner'));
+ const stem=name==='fixture'?resolve(root,`packages/kernel-ts/test/fixtures/${v2d?'v2d':'v2c'}-runner`):resolve(root,'data/compiled/v2',name+(v2e?'-v2e-runner':v2d?'-v2d-runner':'-runner'));
  if(!existsSync(stem+'.json'))continue;
  const log=JSON.parse(readFileSync(stem+'.json','utf8'));
  const graph=readFileSync(name==='fixture'?resolve(root,'packages/kernel-ts/test/fixtures/escape.webbin'):stem+'.webbin');logs.set(name,log);

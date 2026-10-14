@@ -1391,6 +1391,249 @@
         {"name": "game-bots", "argv": ["node", "apps/play/test/bots.ts"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
         {"name": "fresh-clone-offline-fixture-smoke", "argv": ["uv", "run", "python", "-c", "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2d-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['uv','run','python','experiments/v2d_game_export.py','--fixture'],['npm','--prefix','apps/play','ci'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600}
       ]
+    },
+    "V2E": {
+      "description": "V2E engineering acceptance; frozen scientific run is external, resumable and not registered here. Review status RUN_IN_PROGRESS until S5/S6 complete.",
+      "commands": [
+        {
+          "name": "locked-development-environment",
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "full-python-regression",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "N-SIGN-and-control-unit-tests",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_v2e.py",
+            "tests/test_v2e_freeze.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "dry-run-4",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2e_dry_run.py",
+            "--out",
+            "evidence/V2E/acceptance-dry-run-4"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "control-feasibility-and-workers",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2e_preflight.py",
+            "--out",
+            "evidence/V2E/acceptance-control-feasibility.json",
+            "--dry",
+            "evidence/V2E/acceptance-dry-run-4/dry-run.json"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "selected-python-parity-export",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "from pathlib import Path; import json; from experiments.v2d_parity import export; p=json.load(open('apps/play/public/data/runtime.json'))['parameters']; [export(n,Path('data/compiled/v2')/n.lower(),Path('data/compiled/v2')/(n.lower()+'-v2e-runner.json'),p) for n in ('T1a','T1b')]"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "kernel-ts-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "ci"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-legacy-and-runner-parity",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2E/acceptance-browser",
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-selected-parity",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2E/acceptance-browser",
+            "node",
+            "packages/kernel-ts/test/runner.test.ts",
+            "--v2e"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "browser-matrix",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2E/acceptance-browser",
+            "node",
+            "packages/kernel-ts/test/browser-parity.mjs",
+            "--v2e"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "committed-game-data-identities",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "from pathlib import Path; import json,hashlib; p=Path('apps/play/public/data'); rows=json.loads((p/'HASHES.json').read_text()); assert sum(f.stat().st_size for f in p.iterdir())<=8000000; assert all((p/n).stat().st_size==r['bytes'] and hashlib.sha256((p/n).read_bytes()).hexdigest()==r['sha256'] for n,r in rows.items()); print('PASS data identities and 8 MB budget')"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "ci"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-build",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "run",
+            "build"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-authority-replay-and-lesions",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-e2e-and-share",
+          "argv": [
+            "node",
+            "apps/play/test/e2e.mjs"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-bots",
+          "argv": [
+            "node",
+            "apps/play/test/bots.ts"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "fresh-clone-offline-smoke",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2e-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py','tests/test_v2e.py','tests/test_v2e_freeze.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['npm','--prefix','apps/play','ci'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        }
+      ]
     }
   }
 }

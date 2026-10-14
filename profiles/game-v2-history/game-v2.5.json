@@ -1,0 +1,41 @@
+{
+  "profile_id": "flybench.game.v2.5",
+  "version": 5,
+  "classification": "Game parameters only; selected frozen neural profile separate",
+  "arena_half_size": 6,
+  "render_size": 700,
+  "round_ms": 30000,
+  "max_strikes": 6,
+  "hold_thresholds_ms": [
+    180,
+    500
+  ],
+  "strikes": [
+    {
+      "name": "flick",
+      "speed": 0.06,
+      "radius": 0.8
+    },
+    {
+      "name": "slap",
+      "speed": 0.05,
+      "radius": 0.8
+    },
+    {
+      "name": "swat",
+      "speed": 0.025,
+      "radius": 1.4
+    }
+  ],
+  "takeoff_speed": 0.018,
+  "takeoff_duration_ms": 120,
+  "takeoff_jitter_tangent": 1,
+  "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+  "environment_stream": 43,
+  "replay_post_ms": 200,
+  "replay_pre_ms": 200,
+  "replay_speed": 0.25,
+  "recording_max_intervals": 3000,
+  "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+  "change_reason": "Version 4 radius 0.9 alone gave flick current aim 56/60 and long lead 4/60. Test speed 0.06 and radius 0.8 with identical development bot rules and seeds. Neural parameters remain frozen."
+}

@@ -12,6 +12,9 @@ export type Frame = {
     tick: number;
     body: Body;
     air: boolean;
+    applied: [boolean,number,number];
+    gait: number;
+    activity_hz: number;
     strike: any;
     impact: any;
     onset: boolean;
@@ -56,11 +59,17 @@ export class Game {
         number,
         number
     ] = [1, 0];
+    gait = 0;
     strikes = 0;
     catches = 0;
     done = false;
     lastImpact: any = null;
     constructor(buffer: ArrayBuffer, runtime: any, profile: any, neuralSeed: number, environmentSeed: number) {
+        for (const strike of profile.strikes) {
+            const ticks = 8 / strike.speed / .5;
+            if (!Number.isFinite(ticks) || Math.abs(ticks - Math.round(ticks / 20) * 20) > 1e-8)
+                throw new Error('Strike impact must align with a 10 ms control boundary');
+        }
         this.runtime = structuredClone(runtime);
         this.profile = structuredClone(profile);
         this.neuralSeed = neuralSeed;
@@ -126,7 +135,8 @@ export class Game {
             this.airDirection = takeoff(body.heading_x, body.heading_y, this.environmentSeed, this.tick, this.profile.takeoff_jitter_tangent);
             this.airUntil = this.tick + this.profile.takeoff_duration_ms * 2;
         }
-        const frame = { tick: this.tick, body: { ...body }, air: this.tick < this.airUntil, strike: s ? { ...s } : null, impact, onset: value.onset, spikes: value.recordedSpikes };
+        this.gait += Math.abs(value.applied[1])*10 + Math.abs(value.applied[2])*10;
+        const frame = { applied: value.applied, gait: this.gait, activity_hz: value.recordedSpikes.reduce((n,e)=>n+e.indices.length,0)/this.runner.state.graph.header.N/.01, tick: this.tick, body: { ...body }, air: this.tick < this.airUntil, strike: s ? { ...s } : null, impact, onset: value.onset, spikes: value.recordedSpikes };
         this.frames.push(frame);
         if (this.frames.length > this.profile.recording_max_intervals)
             throw new Error('Declared recording bound exceeded');

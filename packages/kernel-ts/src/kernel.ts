@@ -107,7 +107,8 @@ export class KernelState {
   readonly noise: Noise | null;
   readonly voltage: Float64Array;
   readonly synapticCurrent: Float64Array;
-  readonly refractoryUntilTick: BigInt64Array;
+  readonly refractoryUntilTick: Float64Array;
+  readonly firedIndices: number[] = [];
   readonly pendingSpikeLists: number[][];
   readonly pendingSpikeSets: Set<number>[];
   readonly pendingInputs: Float64Array[];
@@ -127,7 +128,7 @@ export class KernelState {
     this.voltage = new Float64Array(graph.header.N);
     this.voltage.fill(model.rest);
     this.synapticCurrent = new Float64Array(graph.header.N);
-    this.refractoryUntilTick = new BigInt64Array(graph.header.N);
+    this.refractoryUntilTick = new Float64Array(graph.header.N);
     const ringSize = model.delay_ticks + 1;
     this.pendingSpikeLists = Array.from({ length: ringSize }, () => []);
     this.pendingSpikeSets = Array.from({ length: ringSize }, () => new Set<number>());
@@ -146,6 +147,7 @@ export class KernelState {
     this.arrivalIncrement.set(inputs);
     inputs.fill(0);
     this.spikes.fill(0);
+    this.firedIndices.length=0;
     for (const source of this.pendingSpikeLists[slot]) {
       const start = Number(this.graph.offsets[source]);
       const stop = Number(this.graph.offsets[source + 1]);
@@ -158,13 +160,15 @@ export class KernelState {
     this.pendingSpikeSets[slot].clear();
     const endTick = this.tick + 1;
     const arrivalSlot = (endTick + this.model.delay_ticks) % ringSize;
+    // Counter prefix is shared by all neurons at this integer tick. Same fmix order.
+    const noisePrefix=this.noise===null?0:fmix32(fmix32(fmix32(this.noise.seed+0x9e3779b9)^this.noise.stream_id)+this.tick);
     for (let neuron = 0; neuron < count; neuron += 1) {
-      if (this.noise !== null && (this.noise.population_mask === undefined || this.noise.population_mask[neuron]) && u32(this.noise.seed, this.noise.stream_id, this.tick, neuron) < this.noise.threshold) {
+      if (this.noise !== null && (this.noise.population_mask === undefined || this.noise.population_mask[neuron]) && fmix32(noisePrefix ^ neuron) < this.noise.threshold) {
         this.arrivalIncrement[neuron] += this.noise.current_increment;
       }
       const currentAtBoundary = this.synapticCurrent[neuron] + this.arrivalIncrement[neuron];
       this.synapticCurrent[neuron] = currentAtBoundary * this.model.current_decay;
-      if (this.tick >= Number(this.refractoryUntilTick[neuron])) {
+      if (this.tick >= this.refractoryUntilTick[neuron]) {
         const evolvedVoltage =
           this.model.rest
           + (this.voltage[neuron] - this.model.rest) * this.model.voltage_decay
@@ -173,8 +177,9 @@ export class KernelState {
         this.voltage[neuron] = evolvedVoltage;
         if (evolvedVoltage >= this.model.threshold) {
           this.spikes[neuron] = 1;
+          this.firedIndices.push(neuron);
           this.voltage[neuron] = this.model.reset;
-          this.refractoryUntilTick[neuron] = BigInt(endTick + this.model.refractory_ticks);
+          this.refractoryUntilTick[neuron] = endTick + this.model.refractory_ticks;
           if (this.pendingSpikeSets[arrivalSlot].has(neuron)) {
             throw new Error("fixed-delay ring collision");
           }
@@ -195,7 +200,7 @@ export class KernelState {
     const pending = new Uint8Array(this.graph.header.N*this.pendingSpikeLists.length);
     for (let slot=0;slot<this.pendingSpikeLists.length;slot++) for (const neuron of this.pendingSpikeLists[slot]) pending[slot*this.graph.header.N+neuron]=1;
     return concatBytes([tick,new Uint8Array(this.voltage.buffer),new Uint8Array(this.synapticCurrent.buffer),
-      new Uint8Array(this.refractoryUntilTick.buffer),pending,...this.pendingInputs.map(v=>new Uint8Array(v.buffer))]);
+      new Uint8Array(BigInt64Array.from(this.refractoryUntilTick, v=>BigInt(v)).buffer),pending,...this.pendingInputs.map(v=>new Uint8Array(v.buffer))]);
   }
   async digest(domain: string): Promise<string> {
     return sha256(concatBytes([new TextEncoder().encode(domain+"\0"),this.neuralBytes()]));

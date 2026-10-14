@@ -107,7 +107,7 @@ const report = {
   t1a_noise_one_second: t1a,
 };
 if (!fixtureOnly) {
-  const output = resolve(root, "evidence/V2C/p3/kernel-ts-legacy-parity.json");
+  const output = resolve(root, process.env.FLYBENCH_EVIDENCE_OUT ? process.env.FLYBENCH_EVIDENCE_OUT+"/kernel-ts-legacy-parity.json" : "evidence/V2C/p3/kernel-ts-legacy-parity.json");
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
 }

@@ -26,9 +26,9 @@ export class RunnerV2 {
     const zero=new Float64Array(drive.length);
     for(let tick=0;tick<20;tick++) {
       const afterImpact=strike.active && strike.downward_speed_per_ms>0 && strike.downward_speed_per_ms*(strike.elapsed_ms+tick*.5)>=8;
-      const fired=this.state.step(afterImpact?zero:drive);
-      const indices:number[]=[];
-      for(let i=0;i<fired.length;i++)if(fired[i]){indices.push(i);const body=Number(this.state.graph.ids[i]);if(output.has(body))spikes.push(body);}
+      this.state.step(afterImpact?zero:drive);
+      const indices=this.state.firedIndices.slice();
+      for(const i of indices){const body=Number(this.state.graph.ids[i]);if(output.has(body))spikes.push(body);}
       if(indices.length)recordedSpikes.push({tick:this.state.tick,indices});
     }
     const p=this.config.decoder;

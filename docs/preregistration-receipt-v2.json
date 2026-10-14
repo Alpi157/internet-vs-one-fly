@@ -1,0 +1,11 @@
+{
+  "status": "PUSHED",
+  "freeze_commit": "1a853f40007dcf10fb113c29a8400a7f99a3addb",
+  "push_verified_utc": "2026-10-14T12:21:43.195776+00:00",
+  "protocol_sha256": "f684489801ec3d5d9af4c9fd845019c79f4daef97cb3533d023b6baf4fce4c8a",
+  "refs": [
+    "refs/tags/prereg-v2",
+    "refs/heads/prereg/v2"
+  ],
+  "main_pushed": false
+}
