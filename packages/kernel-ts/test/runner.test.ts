@@ -16,5 +16,5 @@ for(const name of fixtureOnly ? ['fixture'] : ['fixture','t1a','t1b']) {
   if(mismatches.length)throw new Error(`${name} parity mismatch at ${mismatches[0]}`);
 }
 const report={schema:'flybench.v2c.node-runner-parity',status:reports.every(r=>r.status==='PASS')?'PASS':'INCOMPLETE',cases:reports};
-if(!fixtureOnly){const out=resolve(root,v2d?'evidence/V2D/browser/kernel-ts-parity.json':'evidence/V2C/p3/kernel-ts-parity.json');mkdirSync(dirname(out),{recursive:true});writeFileSync(out,JSON.stringify(report,null,2)+'\n');}
+if(!fixtureOnly){const out=resolve(root,process.env.FLYBENCH_EVIDENCE_OUT ? process.env.FLYBENCH_EVIDENCE_OUT+'/kernel-ts-parity.json' : v2d?'evidence/V2D/browser/kernel-ts-parity.json':'evidence/V2C/p3/kernel-ts-parity.json');mkdirSync(dirname(out),{recursive:true});writeFileSync(out,JSON.stringify(report,null,2)+'\n');}
 console.log(JSON.stringify({status:report.status,cases:reports.map(({digests,...r})=>r)}));

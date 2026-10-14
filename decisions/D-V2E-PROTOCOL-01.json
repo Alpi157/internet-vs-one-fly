@@ -1,0 +1,17 @@
+{
+  "decision_id": "D-V2E-PROTOCOL-01",
+  "classification": "REVIEWER AUTHORIZED SCIENTIFIC REPAIR AND PREFLIGHT SPECIFICATION",
+  "authorization": "V2E prompt and operator-relayed exact V2D metrics with C1-C9 clarifications",
+  "changes": [
+    "N-SIGN swaps within negative, disabled and positive effective source signs; contact counts and signed weights stay on their original source edges. Each stratum requests its original edge count in completed swaps, with autapses frozen.",
+    "Stochastic C-SIMPLE uses independent stream 37 and the identical LIF recurrence, kappa and p. LC4/LPLC2 fractions use their combined measured direct DNp01 contact count as denominator, pooled sides. All evaluated gain values and fit mismatches are retained.",
+    "C-SIMPLE bounded search evaluates 0 and 64 then 32 bisections. Lowest gain among closest evaluated fractions wins. At most one standard trial of mismatch is allowed. Failure at a selected point stops the run; no refit or revised bound.",
+    "C-NOISE-DEC matches expected group rates; finite observations use the declared max(5%, three Poisson standard errors) reporting bound. Lesions match zero named-neuron activity, not a behavioral outcome. C-TIMER retains its exact 30 ms lead target.",
+    "The existing onset convention is preserved: control-boundary rising edges strictly after strike start and strictly before impact. DNp01 spike counts for H1c include neural spike boundaries after strike start and before impact; a spike at impact is excluded.",
+    "H2 uses the previously decoded command applied during each control interval for movement, turn and segmentation. Positive turn means decoded left-group rate exceeds right-group rate. Pairs never cross trial boundaries.",
+    "H0 censored critical values tie at the top for ranking. A 0.11 sentinel is only a computational rank encoding; effects involving a censored real or null median are reported as not point identifiable.",
+    "Fresh confirmatory null seeds and a separate predeclared game scramble seed exclude all pilot seeds. H0 is pilot-motivated and no null H0 sweep is run before freeze."
+  ],
+  "scientific_results_at_decision": "NONE; pipeline observations only",
+  "external_acceptance": "PENDING"
+}

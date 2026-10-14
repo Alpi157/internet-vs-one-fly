@@ -28,6 +28,46 @@ class SwapResult:
     proposal_attempts: int
 
 
+def sign_stratified_swap(sources, targets, weights, *, seed, multiple=1):
+    """N-SIGN: independent swaps within negative, disabled and positive sources.
+
+    A source's sign is its effective executable sign, including zero for unknown.
+    Request multiple times the number of edges in each stratum, loops included
+    in that budget but frozen. Counts and weights are never permuted.
+    """
+    sources = np.asarray(sources, dtype=np.int64)
+    targets = np.asarray(targets, dtype=np.int64)
+    weights = np.asarray(weights, dtype=np.float64)
+    if weights.shape != sources.shape or not np.all(np.isfinite(weights)):
+        raise ValueError('finite edge weights required')
+    if type(multiple) is not int or multiple < 0:
+        raise ValueError('nonnegative integer swap multiple required')
+    validate_simple_directed_graph(sources, targets)
+    signs = np.sign(weights).astype(np.int8)
+    width = int(sources.max(initial=0)) + 1
+    low, high = np.full(width, 2), np.full(width, -2)
+    np.minimum.at(low, sources, signs)
+    np.maximum.at(high, sources, signs)
+    if np.any((low <= 1) & (low != high)):
+        raise ValueError('presynaptic effective sign must be consistent')
+    rewired = targets.copy()
+    strata = {}
+    for sign in (-1, 0, 1):
+        mask = signs == sign
+        requested = int(mask.sum()) * multiple
+        if not requested:
+            strata[str(sign)] = dict(completed_swaps=0, proposal_attempts=0)
+            continue
+        result = directed_double_edge_swap(sources[mask], targets[mask],
+            swap_count=requested, seed=seed + sign + 1, maximum_attempt_multiple=100)
+        rewired[mask] = result.targets
+        strata[str(sign)] = dict(completed_swaps=result.completed_swaps,
+            proposal_attempts=result.proposal_attempts,
+            fraction_changed=float(np.mean(result.targets != targets[mask])))
+    validate_simple_directed_graph(sources, rewired)
+    return rewired, strata
+
+
 def validate_simple_directed_graph(sources: np.ndarray, targets: np.ndarray) -> None:
     if sources.shape != targets.shape or sources.ndim != 1:
         raise ValueError("sources and targets must be matching one-dimensional arrays")
@@ -213,6 +253,10 @@ def null_diagnostics(
     return {
         "self_loops_identical": bool(np.array_equal(sources == original_targets, sources == rewired_targets)),
         "no_new_self_loops": bool(not np.any((sources == rewired_targets) & (sources != original_targets))),
+        "in_degree_by_effective_sign_exact": all(
+                np.array_equal(np.bincount(original_targets[np.sign(weights) == sign], minlength=node_count),
+                               np.bincount(rewired_targets[np.sign(weights) == sign], minlength=node_count))
+                for sign in (-1, 0, 1)),
         "degree_preservation": {
             "out_degree_exact": bool(np.array_equal(original_outdegree, rewired_outdegree)),
             "in_degree_exact": bool(np.array_equal(original_indegree, rewired_indegree)),

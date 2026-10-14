@@ -1,0 +1,220 @@
+{
+  "circularity_rule": "A quantity used as a calibration criterion cannot be a primary H1 or H2 outcome. Primary outcomes are measured on held-out conditions.",
+  "controls": {
+    "C-SIMPLE": {
+      "stream": 37,
+      "drive": "g*(a*LC4 expansion feature + b*LPLC2 expansion-gated size feature); unsplit population features",
+      "fractions": "LC4 and LPLC2 direct contacts onto DNp01 divided by their combined contact count, pooled sides",
+      "noise": "selected kappa and p; isolated LIF with identical constants",
+      "fit": "g endpoints 0 and 64, then 32 bisections; same standard trial seeds; closest evaluated fraction, lowest g on ties",
+      "mismatch_bound": "at most one standard trial / number of standard trials; fail feasibility if exceeded; retain every evaluation"
+    },
+    "C-TIMER": {
+      "target": "fixed 30 ms before impact, exact; deliberately geometry-informed descriptive control, never a game controller"
+    },
+    "C-NOISE-DEC": {
+      "stream": 29,
+      "target": "expected per-neuron output group rates equal measured real rates",
+      "observed_bound": "max(5% of target rate, 3*sqrt(target/(seconds*group size))); all deviations reported; no refit"
+    },
+    "lesions": {
+      "target": "named neuron input/output/noise and visual drive are zero; no behavioral matching target",
+      "names": [
+        "LC4",
+        "LPLC2",
+        "giant-fiber",
+        "turning-DN"
+      ]
+    },
+    "output_clamp": {
+      "target": "commands zero; neural trajectory unchanged with fixed sensory pose"
+    }
+  },
+  "dry_run_subset": {
+    "circuits": [
+      "T1a",
+      "T1b"
+    ],
+    "held_out_strikes_per_seed": 4,
+    "input_gain": [
+      2,
+      8
+    ],
+    "kappa": [
+      0.05
+    ],
+    "no_threat_seconds": 20,
+    "nu0_hz": [
+      0.5,
+      5
+    ],
+    "nulls_per_family": 2,
+    "purpose": "pipeline and sanity only, no H1 or H2 analysis",
+    "runtime_synaptic_scale": [
+      0.01,
+      0.039
+    ],
+    "seeds": [
+      2026092802,
+      2026092803
+    ],
+    "standard_strikes_per_seed": 4,
+    "N-SIGN_nulls_per_circuit": 1
+  },
+  "grid": {
+    "classification": "Reviewer-set; no circuit outcome tuning",
+    "input_gain": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "kappa": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "nu0_hz": [
+      0.5,
+      2,
+      5
+    ],
+    "runtime_synaptic_scale": [
+      0.005,
+      0.01,
+      0.02,
+      0.039,
+      0.06
+    ]
+  },
+  "hypotheses": {
+    "H1": {
+      "azimuth_degrees": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "exclude": "standard aimed condition, speed 0.05 and offset 0 at every azimuth",
+      "lateral_offsets": [
+        0,
+        1.5,
+        3
+      ],
+      "metrics": [
+        "escape probability",
+        "escape onset time before impact",
+        "left/right escape-group asymmetry for lateral strikes"
+      ],
+      "speeds": [
+        0.025,
+        0.05,
+        0.1
+      ]
+    },
+    "H2": {
+      "excluded_primary": "moving fraction",
+      "metrics": [
+        "walking bout and pause duration distributions",
+        "speed distribution while moving",
+        "turn autocorrelation",
+        "left/right turn asymmetry"
+      ]
+    },
+    "H0": {
+      "disclosure": "H0 was motivated by a V2D pilot with 2 nulls per family; those nulls are excluded from this test.",
+      "circuits": [
+        "T1a primary",
+        "T1b secondary"
+      ],
+      "s": [
+        0.005,
+        0.0075,
+        0.01,
+        0.015,
+        0.02,
+        0.03,
+        0.039,
+        0.05,
+        0.06,
+        0.08,
+        0.1
+      ],
+      "kappa": 0.05,
+      "nu0_hz": 2,
+      "seeds": [
+        2027101401,
+        2027101402
+      ],
+      "seconds_per_seed": 10,
+      "H0a": "smallest s with seed-mean whole-circuit rate >=50 Hz; above 0.1 censored and tied at top",
+      "H0b": "whole-circuit no-threat rate at s=0.039",
+      "statistics": "analysis_v2.permutation_rank two-sided; Holm across H0a/H0b within family; alpha .05; real minus null median; 2.5 to 97.5 percentile band",
+      "secondary": "Spearman correlation of s* and mean absolute per-target E/I input-ratio shift"
+    }
+  },
+  "noise_table": "profiles/noise-table-v2.json",
+  "nulls": {
+    "autapses": "frozen",
+    "calibration_rule": "same grid, seeds, criteria, budget and selection rule. No passing point: uncalibratable, retained in summary.",
+    "count_per_family": 20,
+    "families": [
+      "N-FULL",
+      "N-CONTEXT",
+      "N-SIGN"
+    ],
+    "swap_count_multiple_of_E": 1,
+    "count_per_circuit": {
+      "T1a": 499,
+      "T1b": 199
+    },
+    "fresh_seed_rule": "202710140000 + circuit_index*100000 + family_index*10000 + index; families in listed order",
+    "excluded_seeds": "all V2A/V2B/V2C/V2D pilot seeds, including V2C 202610140000 + circuit_index*100000 + family_index*10000 + indices 0..19; V2E N-SIGN pilot seeds 202610149000 and 202610149100",
+    "sign_rule": "swap only equal presynaptic effective signs; disabled sign zero is a distinct stratum; request E_sign swaps per stratum; autapses frozen"
+  },
+  "profile_id": "flybench.calibration.v2e-draft-4",
+  "protocol_frozen": false,
+  "schema_version": 1,
+  "selection_rule": "lowest no-threat whole-circuit rate; ties broken by s, kappa, nu0, gain in grid order",
+  "status": "DRAFT_PREFLIGHT",
+  "target_criteria": {
+    "escape_standard": {
+      "condition": "aimed at the fly, standard speed",
+      "pass": "escape onset before impact in 20% to 90% of strikes"
+    },
+    "false_escapes": {
+      "condition": "20 s no-threat",
+      "pass": "at most 0.05 escape onsets per second"
+    },
+    "not_saturated": {
+      "condition": "all calibration trials",
+      "pass": "whole-circuit mean rate < 50 Hz and fewer than 5% of neurons above 150 Hz"
+    },
+    "not_silent": {
+      "condition": "20 s no-threat",
+      "pass": "whole-circuit mean rate >= 0.5 Hz and at least one decoder group rate > 0"
+    },
+    "spontaneous_movement": {
+      "condition": "20 s no-threat",
+      "pass": "E2 movement in 10% to 90% of control intervals"
+    }
+  },
+  "trial_design": {
+    "baseline_ms": 200,
+    "criteria_aggregation": "all no-threat criteria must pass for each seed; saturation per trial; standard escape fraction over all strikes and seeds; held-out trials excluded from calibration criteria",
+    "dry_run_pose": "sensory pose fixed at trial origin to keep standard strikes aimed; locomotor commands recorded; body runtime checked separately in C9",
+    "escape_onset": "rising edge of escape request; each consecutive run counts once; previous-held command drives current interval",
+    "hand_radius": 0.75,
+    "impact": "integer neural ticks; no retroactive command application",
+    "movement": "abs(speed) >= 0.002 units/ms or abs(turn) >= 0.0005 rad/ms; previous-held applied command",
+    "post_impact_ms": 200,
+    "standard_speed": 0.05,
+    "start_height": 8,
+    "strike_reset": "independent trial reset including neural state, body and decoder; state persists throughout each trial"
+  },
+  "model_profile": "profiles/model-v2d-provisional.json",
+  "noise_profile": "profiles/noise-v2.json",
+  "primary_circuit_rule": "T1a if at least one full-grid passing point; else T1b if passing; else no H1/H2: real graphs uncalibratable under these criteria",
+  "minimum_calibratable_nulls": 149,
+  "budget_rule": "Before null data, measured total projection above 16 hours defers secondary circuit; full primary retained"
+}

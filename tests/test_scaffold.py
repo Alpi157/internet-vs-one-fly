@@ -57,7 +57,7 @@ def test_ledger_v2_consistency() -> None:
         "architecture_sha256": ARCHITECTURE_SHA256,
     }
     assert ledger["stages"]
-    assert set(ledger["stages"].values()) <= {"SUBMITTED", "ACCEPTED"}
+    assert set(ledger["stages"].values()) <= {"IN_PROGRESS", "SUBMITTED", "ACCEPTED"}
     assert ledger["m08"]["status"] == "G-GAME_DEFERRED_SUPERSEDED_BY_PLAN_V2"
     assert ledger["m09"]["status"] == "SUBMITTED_SUPERSEDED_BY_PLAN_V2"
     assert set(ledger["accepted_gates"]) == {
@@ -99,7 +99,7 @@ def test_observed_tooling_is_honest() -> None:
     assert commands["git"]["normalized_version"] == "2.43.0"
     assert commands["python"]["normalized_version"] == "3.12.3"
     assert commands["uv"]["normalized_version"] == "0.12.13"
-    if ledger["stages"].get("V2A") in {"SUBMITTED", "ACCEPTED"}:
+    if ledger["stages"].get("V2A") in {"IN_PROGRESS", "SUBMITTED", "ACCEPTED"}:
         assert commands["node"]["available"] is True
         assert commands["node"]["exit_status"] == 0
         assert commands["node"]["normalized_version"] == "24.21.0"

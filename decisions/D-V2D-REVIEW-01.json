@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2D-REVIEW-01",
+  "classification": "EXTERNAL STAGE REVIEW VERDICT",
+  "stage": "V2D",
+  "attempt": 1,
+  "reviewer": "external (operator relay)",
+  "verdict_status": "ACCEPTED WITH CONDITIONS",
+  "verdict": "V2D attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nS0 to S3 and G1 to G5 are accepted. The S4 G4 stop was correct: the V2D prompt\ndefined C-SIMPLE as a deterministic threshold, which cannot match a fractional\nescape rate when standard trajectories are identical. This is recorded as a\nreviewer design defect, not an implementation failure. The pooled E3\nvalidation is accepted. The relative x/z brain map with disclosed unverified\nunits and orientation is accepted. Bot results are development evidence only.\nConditions for V2E:\nF1 C-SIMPLE becomes a stochastic one-neuron baseline (defined in V2E).\nF2 Pilot observation: in dry run 3 at s = 0.039, every pilot null (2 per family\n   per circuit) exceeded 96 Hz whole-circuit no-threat rate while the real T1a\n   and T1b graphs stayed below 20 Hz. This motivates a new confirmatory\n   hypothesis H0 (dynamic stability), tested only on fresh nulls. The pilot\n   nulls are excluded. H0 is disclosed as pilot-motivated.\nF3 A sign-stratified null family N-SIGN is added.\nF4 Primary-circuit fallback rule for H1 and H2 (no real T1a subset point passed\n   in dry run 3; one real T1b point passed).\nF5 The game must use a calibrated point; provisional-model issues: the fly\n   never escaped and barely moved, the hand was not visible in the mid-strike\n   capture, the board is not the hero on phones, brain-cam flashes are faint,\n   and the repository has no README.",
+  "conditions_fixed_in": "V2E"
+}

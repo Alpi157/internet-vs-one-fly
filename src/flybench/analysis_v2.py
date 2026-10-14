@@ -130,3 +130,82 @@ def matched_calibration_summary(graph_rows: list[dict], expected_graph_ids: list
             expected_points=expected_points,unique_points=len(points),grid_complete=complete,
             status=('CALIBRATED' if passing else 'UNCALIBRATABLE') if complete else 'INCOMPLETE_GRID' if candidates else 'NOT_RUN',selected=selected))
     return output
+
+
+def h0_metrics(data: dict) -> dict:
+    scales=sorted({r['s'] for r in data['rows']})
+    means={s:float(np.mean([r['total_spikes']/r['neurons']/r['seconds'] for r in data['rows'] if r['s']==s])) for s in scales}
+    critical=next((s for s in scales if means[s]>=50),None)
+    # 0.11 is a ranking sentinel, never a measured critical coupling.
+    return dict(H0a=.11 if critical is None else critical,H0b=means[.039],critical_coupling=critical,
+        censor='above 0.1' if critical is None else None,curve=[dict(s=s,rate_hz=means[s]) for s in scales])
+
+
+def h1_metrics(data: dict) -> dict:
+    trials=data['trials'];leads=[];by_speed={.025:[],.1:[]};lateral=[];equal=0
+    for trial in trials:
+        c=trial['condition'];impact=trial['impact_tick'];start=trial['strike_start_tick']
+        # Existing calibration onset convention: boundary must be after start.
+        onsets=[r['tick'] for r in trial['records'] if r['onset'] and start<r['tick']<impact]
+        if onsets:leads.append((impact-onsets[0])*.5)
+        if c['offset']==0 and c['speed'] in by_speed:by_speed[c['speed']].append(bool(onsets))
+        if c['offset']==3 and c['azimuth'] in (90,270):
+            drive=np.sum([r['side_drive'] for r in trial['records']],axis=0)
+            counts=np.sum([r['window_counts'] for r in trial['records']],axis=0)
+            if drive[0]==drive[1]:equal+=1;continue
+            side=0 if drive[0]>drive[1] else 1
+            lateral.append(0. if counts.sum()==0 else float((counts[side]-counts[1-side])/counts.sum()))
+    return dict(H1a=float(np.mean(by_speed[.1])-np.mean(by_speed[.025])) if all(by_speed.values()) else None,
+        H1b=float(np.median(leads)) if len(leads)>=10 else None,H1c=float(np.mean(lateral)) if lateral else None,
+        escape_count=len(leads),H1a_counts={str(s):dict(trials=len(v),escapes=sum(v)) for s,v in by_speed.items()},
+        H1c_count=len(lateral),H1c_equal_drive_excluded=equal)
+
+
+def h2_metrics(data: dict) -> dict:
+    bouts=[];censored=0;left=[];right=[];turns=[];pauses=[]
+    for trial in data['trials']:
+        records=trial['records'];segments=segment_bouts(records)['segments']
+        for seg in segments:
+            if seg['moving']:
+                if seg['left_censored'] or seg['right_censored']:censored+=1
+                else:bouts.append(seg['duration_ms'])
+            elif not seg['left_censored'] and not seg['right_censored']:pauses.append(seg['duration_ms'])
+        commands=np.asarray([r['applied'] for r in records],dtype=float)
+        moving=(np.abs(commands[:,1])>=.002)|(np.abs(commands[:,2])>=.0005)
+        turns.extend(commands[moving,2].tolist())
+        mask=moving[:-10]&moving[10:]
+        left.extend(commands[:-10,2][mask].tolist());right.extend(commands[10:,2][mask].tolist())
+    denominator=0. if len(left)<30 else float(np.sqrt(np.sum((np.array(left)-np.mean(left))**2)*np.sum((np.array(right)-np.mean(right))**2)))
+    ac=None if not denominator else float(np.sum((np.array(left)-np.mean(left))*(np.array(right)-np.mean(right)))/denominator)
+    absolute=float(np.mean(np.abs(turns))) if turns else 0.
+    return dict(H2a=float(np.mean(bouts)) if bouts else None,H2b=ac,H2c=float(np.mean(turns)/absolute) if absolute else None,
+        uncensored_bouts=len(bouts),censored_bouts=censored,autocorrelation_pairs=len(left),moving_intervals=len(turns),
+        bout_durations_ms=bouts,pause_durations_ms=pauses)
+
+
+def holm(pvalues: list[float | None]) -> list[float | None]:
+    """Family size includes non-computable metrics, conservatively p=1."""
+    order=sorted(range(len(pvalues)),key=lambda i:1 if pvalues[i] is None else pvalues[i])
+    adjusted=[None]*len(pvalues);prior=0.
+    for rank,i in enumerate(order):
+        value=1. if pvalues[i] is None else pvalues[i]
+        prior=max(prior,min(1.,(len(order)-rank)*value))
+        if pvalues[i] is not None:adjusted[i]=prior
+    return adjusted
+
+
+def compare_family(real: dict, nulls: list[dict], keys: list[str],minimum: int=149) -> list[dict]:
+    rows=[]
+    for key in keys:
+        values=[n[key] for n in nulls if n[key] is not None]
+        row=dict(metric=key,real=real[key],n_null=len(values),NA_excluded=len(nulls)-len(values),p=None)
+        if values:
+            row.update(null_median=float(np.median(values)),null_band=np.percentile(values,[2.5,97.5]).tolist(),
+                effect=None if real[key] is None else real[key]-float(np.median(values)))
+        if real[key] is None:row['status']='not computable'
+        elif len(values)<minimum:row['status']='insufficient calibratable nulls'
+        else:
+            rank=permutation_rank(real[key],values);row.update(status='COMPUTED',p=rank['two_sided_p'],percentile=rank['lower_percentile'])
+        rows.append(row)
+    for row,adjusted in zip(rows,holm([r['p'] for r in rows])):row['holm_p']=adjusted
+    return rows

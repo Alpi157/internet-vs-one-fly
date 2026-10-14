@@ -95,7 +95,8 @@ stages:
   V2A: ACCEPTED
   V2B: ACCEPTED
   V2C: ACCEPTED
-  V2D: SUBMITTED
+  V2D: ACCEPTED
+  V2E: IN_PROGRESS
 stage_review_records:
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
@@ -148,6 +149,22 @@ stage_review_records:
       \ prompt.\nE5 The operator installs browser system libraries; V2D reruns the matrix.\nE6 analysis_v2.py segmentation\
       \ uses 0.001 / 0.0001; it must use the E2\n   deadband.\nConfirmed: fixed sensory pose and independent reset\
       \ per calibration and H1\ntrial; escape onset = rising edge of the escape request."
+  V2D:
+    decision: decisions/D-V2D-REVIEW-01.json
+    verdict: "V2D attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nS0 to S3 and G1 to\
+      \ G5 are accepted. The S4 G4 stop was correct: the V2D prompt\ndefined C-SIMPLE as a deterministic threshold,\
+      \ which cannot match a fractional\nescape rate when standard trajectories are identical. This is recorded\
+      \ as a\nreviewer design defect, not an implementation failure. The pooled E3\nvalidation is accepted. The\
+      \ relative x/z brain map with disclosed unverified\nunits and orientation is accepted. Bot results are development\
+      \ evidence only.\nConditions for V2E:\nF1 C-SIMPLE becomes a stochastic one-neuron baseline (defined in V2E).\n\
+      F2 Pilot observation: in dry run 3 at s = 0.039, every pilot null (2 per family\n   per circuit) exceeded\
+      \ 96 Hz whole-circuit no-threat rate while the real T1a\n   and T1b graphs stayed below 20 Hz. This motivates\
+      \ a new confirmatory\n   hypothesis H0 (dynamic stability), tested only on fresh nulls. The pilot\n   nulls\
+      \ are excluded. H0 is disclosed as pilot-motivated.\nF3 A sign-stratified null family N-SIGN is added.\nF4\
+      \ Primary-circuit fallback rule for H1 and H2 (no real T1a subset point passed\n   in dry run 3; one real\
+      \ T1b point passed).\nF5 The game must use a calibrated point; provisional-model issues: the fly\n   never\
+      \ escaped and barely moved, the hand was not visible in the mid-strike\n   capture, the board is not the hero\
+      \ on phones, brain-cam flashes are faint,\n   and the repository has no README."
 measurements:
   full_graph:
     status: MEASURED_M07_PROVISIONAL
@@ -285,7 +302,7 @@ measurements:
       failures: kappa 0.10, nu0 0.5 and 2 Hz, both seeds. C7 subset kappa 0.05 passes. Reference agrees for checked
         2000 s failed case.
   v2d:
-    status: SUBMITTED_NOT_ACCEPTED
+    status: ACCEPTED_WITH_CONDITIONS
     base_sha: 0d5eabb45ece10c42efb79f2b7d18049dc2be5cb
     noise_validation: 9/9 pooled independent E3 rows pass
     dry_run:
@@ -316,7 +333,7 @@ launch_blockers:
 - 'V2D S4 G4: C-SIMPLE exact probability match is impossible under fixed standard geometry; reviewer decision required
   before a later freeze.'
 - Game uses provisional T1a parameters; no H1/H2 or biological superiority claim.
-next_action: External review of V2D attempt 1. Resolve S4 G4 before any later protocol freeze. Do not mark V2D accepted.
+next_action: Implement V2E; gates before freeze; external review pending.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56

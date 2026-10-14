@@ -1,0 +1,66 @@
+"""Export selected runtime and measured soma positions for local play."""
+from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+import argparse
+import hashlib
+import json
+import shutil
+import numpy as np
+import pyarrow.feather as feather
+from experiments.v2d_parity import export
+from flybench.graph import write_json
+from flybench.web_export import export_web_graph
+
+ROOT=Path(__file__).resolve().parents[1]
+
+def run(fixture=False,selection=None):
+    out=ROOT/'apps/play/public/data';out.mkdir(parents=True,exist_ok=True)
+    choice=json.loads(selection.read_text()) if selection else None
+    if choice and choice['primary_circuit']:
+        name=choice['primary_circuit'];params=choice['selected'][name]['parameters'];status='CALIBRATED MODEL / prereg-v2'
+    else:
+        dry=json.loads((ROOT/'evidence/V2E/dry-run-4/dry-run.json').read_text()) if not fixture else None
+        candidates=[] if dry is None else [r for r in dry['rows'] if r['family']=='REAL']
+        best=min(candidates,key=lambda r:(-sum(r['aggregate_pass_flags'].values()),sum(v['no_threat']['mean_rate_hz'] for v in r['replicates']))) if candidates else None
+        name=best['circuit'] if best else 'fixture';params=best['parameters'] if best else None;status='PROVISIONAL MODEL / no frozen calibration selection'
+    directory=ROOT/('fixtures/escape-circuit-v1' if fixture else 'data/compiled/v2/'+name.lower())
+    noise=json.loads((ROOT/'profiles/noise-table-v2.json').read_text())
+    nr=next(r for r in noise['rows'] if r['kappa']==.05 and r['nu0_hz']==.5)
+    params=params or dict(s=.01,kappa=.05,nu0_hz=.5,gain=2,threshold_int=nr['threshold_int'],w_noise=nr['w_noise'])
+    export(name,directory,out/'runtime.json',params)
+    export_web_graph(directory,out/'circuit.webbin')
+    for redundant in ('runtime.webbin','runtime.webbin.json'):(out/redundant).unlink(missing_ok=True)
+    runtime=json.loads((out/'runtime.json').read_text());runtime.pop('intervals');runtime['config']['body_enabled']=False
+    runtime['status']=status
+    runtime['circuit']=name
+    runtime['parameters']=params
+    runtime['protocol_tag']='prereg-v2' if choice else None
+    runtime['selection_rule']='Lowest no-threat mean rate among full-grid passing points, grid-order ties' if choice else 'Most dry-run criteria passed, lowest no-threat rate, grid order; provisional only'
+    m=json.loads((directory/'manifest.json').read_text());runtime['graph_identity']=m['semantic_digest']['value'];runtime['counts']=m['graph']
+    runtime['profile_hashes']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'profiles'/n for n in ('game-v2.json','noise-v2.json','noise-table-v2.json','model-v2d-provisional.json','encoder-v2-draft.json','decoder-v2-draft.json','ports-v2.json','turn-directions-v1.json')]}
+    for code in [*sorted((ROOT/'packages/kernel-ts/src').glob('*.ts')),ROOT/'apps/play/src/game.ts']:
+        runtime['profile_hashes'][str(code.relative_to(ROOT))]=hashlib.sha256(code.read_bytes()).hexdigest()
+    ids=np.load(directory/'ids.npy');coords={}
+    if not fixture:
+        table=feather.read_table(ROOT/'data/raw/body-annotations-male-cns-v1.0-minconf-0.5.feather',columns=['bodyId','somaLocation'])
+        coords={int(r['bodyId']):r['somaLocation'] for r in table.to_pylist()}
+    positions=[coords.get(int(body)) for body in ids];valid=[p for p in positions if p is not None]
+    # Display x/z projection. Coordinates remain relative, no unverified soma units.
+    low=np.min(np.array(valid)[:,[0,2]],axis=0) if valid else np.array([0,0]);high=np.max(np.array(valid)[:,[0,2]],axis=0) if valid else np.array([1,1]);span=max(high-low)
+    groups={}
+    for key,indices in runtime['config']['visual'].items():
+        for i in indices:groups[i]=key.split('_')[0]
+    for i,body in enumerate(ids):
+        if int(body) in sum(runtime['config']['groups'][:2],[]):groups[i]='giant fiber'
+        elif int(body) in sum(runtime['config']['groups'][2:],[]):groups[i]='walking DNs'
+    nodes=[dict(index=i,body_id=str(int(body)),group=groups.get(i,'interior'),somaLocation=positions[i],position=None if positions[i] is None else [float((positions[i][0]-low[0])/span),float((positions[i][2]-low[1])/span)]) for i,body in enumerate(ids)]
+    brain=dict(nodes=nodes,missing=sum(p is None for p in positions),projection='x horizontal, z vertical; front display convention, anatomical camera orientation unverified',units='Relative positions only. Official page specifies 8 nm for synapse coordinates and SWC skeletons, but does not explicitly specify somaLocation units.',source='https://male-cns.janelia.org/download/',source_sha256='2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2')
+    write_json(out/'runtime.json',runtime);write_json(out/'brain.json',brain)
+    shutil.copyfile(ROOT/'profiles/game-v2.json',out/'game.json')
+    (ROOT/'apps/play/public/model.html').write_text(f'<!doctype html><meta name="viewport" content="width=device-width"><title>What is real here?</title><h1>What is real here?</h1><p>MaleCNS v1.0 measured wiring, CC-BY. This export executes {runtime["counts"]["N"]} neurons and {runtime["counts"]["source_accepted_E"]} directed connections representing {runtime["counts"]["represented_source_contacts"]} contacts. Uniform LIF neurons, feature-level vision, assumed signs and turn directions, abstract heading-based takeoff. Model status: {status}. No biological superiority claim.</p><p>Unknown signs are disabled. Missing soma positions appear in a labeled group band. Soma units and anatomical camera orientation are unverified; only relative x/z positions are shown.</p><a href="https://male-cns.janelia.org/download/">MaleCNS source and attribution</a>')
+    (ROOT/'apps/play/public/preregistration.html').write_text('<!doctype html><meta name="viewport" content="width=device-width"><title>Protocol status</title><h1>'+status+'</h1><p>Hypothesis results are pending. See the frozen protocol and limitations.</p><a href="https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2">Pre-registration</a>')
+    write_json(ROOT/'evidence/V2E/game/export.json',dict(fixture=fixture,parameters=params,graph=runtime['graph_identity'],counts=runtime['counts'],brain_missing=brain['missing'],coordinate_provenance={k:v for k,v in brain.items() if k!='nodes'},files={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in out.iterdir()}))
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--fixture',action='store_true');p.add_argument('--selection',type=Path);a=p.parse_args();run(a.fixture,a.selection)

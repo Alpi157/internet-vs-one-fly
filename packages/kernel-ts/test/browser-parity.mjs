@@ -57,6 +57,6 @@ try {
  }
 } finally {await new Promise(resolve=>server.close(resolve));}
 const report={schema:'flybench.v2c.browser-parity',status:reports.some(r=>r.status==='FAIL')?'FAIL':reports.every(r=>r.status==='PASS')?'PASS':'INCOMPLETE',browser_reports:reports,bundles,timing_definition:'Three fresh workers, 2 simulated seconds each, same active C7 grid point and strike log; interval hashing disabled for timing. Cold worker initialization excluded. Development machine only.'};
-const out=resolve(root,v2d?'evidence/V2D/browser':'evidence/V2C/p3');mkdirSync(out,{recursive:true});writeFileSync(resolve(out,'browser-parity.json'),JSON.stringify(report,null,2)+'\n');
+const out=resolve(root,process.env.FLYBENCH_EVIDENCE_OUT ?? (v2d?'evidence/V2D/browser':'evidence/V2C/p3'));mkdirSync(out,{recursive:true});writeFileSync(resolve(out,'browser-parity.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({status:report.status,browsers:reports.map(r=>({browser:r.browser,status:r.status,cases:r.cases?.map(({digests,...c})=>c)})),bundles}));
 if(report.status==='FAIL')process.exitCode=1;
