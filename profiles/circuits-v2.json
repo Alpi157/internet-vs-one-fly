@@ -1,0 +1,320 @@
+{
+  "T1a": {
+    "semantic_digest": {
+      "algorithm": "sha256",
+      "array_order": [
+        "ids",
+        "offsets",
+        "targets",
+        "counts",
+        "weights"
+      ],
+      "canonical_byte_order": "little-endian",
+      "value": "c157802c70bfeb71548b71159ff297525136d3d58f31d91e91937fddc738e3d2",
+      "version": 1
+    },
+    "graph": {
+      "N": 2641,
+      "disabled_zero_weight_contact_mass": 44662,
+      "executable_nonzero_E": 268156,
+      "isolated_accepted_neurons": 0,
+      "represented_source_contacts": 2511756,
+      "source_accepted_E": 275162,
+      "zero_disabled_E": 7006
+    },
+    "arrays": {
+      "consensus_nt_codes": {
+        "bytes": 2769,
+        "dtype": "uint8",
+        "filename": "consensus-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "451ed403c08307c7666e7e942931c14a67b1cdd0269689999bd53449e90544c6",
+        "shape": [
+          2641
+        ]
+      },
+      "counts": {
+        "bytes": 2201424,
+        "dtype": "uint64",
+        "filename": "counts.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "b7c1e2218dd927113516a329c60f72b4320538aa6f66568946cec02dd97b2fc4",
+        "shape": [
+          275162
+        ]
+      },
+      "effective_signs": {
+        "bytes": 2769,
+        "dtype": "int8",
+        "filename": "effective-signs.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "4545f3db2acb31af61eba10a6f9628b6e5a4f5de0e964262b1cf933f07dff178",
+        "shape": [
+          2641
+        ]
+      },
+      "ground_truth_nt_codes": {
+        "bytes": 2769,
+        "dtype": "uint8",
+        "filename": "ground-truth-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "a56bb5ff67de763da1c6a5876898d059ed2b57d9ca14d5f294237744ea211c53",
+        "shape": [
+          2641
+        ]
+      },
+      "ids": {
+        "bytes": 21256,
+        "dtype": "uint64",
+        "filename": "ids.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "fa40cfcee055888b217ed5484c5271f8de7afb6e4eb9de8eab51beae4bffb6f8",
+        "shape": [
+          2641
+        ]
+      },
+      "nt_record_present": {
+        "bytes": 2769,
+        "dtype": "uint8",
+        "filename": "nt-record-present.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "d02ffae9d98c815db6582257dd9f6282f93de2306b1243f69bb62c71a677b895",
+        "shape": [
+          2641
+        ]
+      },
+      "offsets": {
+        "bytes": 21264,
+        "dtype": "int64",
+        "filename": "offsets.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "a005bb6007cc79b3144cd73b83755546e0e1452ae4aa52f34123aa7d57d8ba1f",
+        "shape": [
+          2642
+        ]
+      },
+      "predicted_nt_codes": {
+        "bytes": 2769,
+        "dtype": "uint8",
+        "filename": "predicted-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "35e9f4a2356b3359c95076f11dd3f5cd5886a05eb1611994430f67d663127a73",
+        "shape": [
+          2641
+        ]
+      },
+      "predicted_nt_confidence": {
+        "bytes": 21256,
+        "dtype": "float64",
+        "filename": "predicted-nt-confidence.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "6f2953861c9dc99bf30f3cd6993f3001d5f6475bc6f57de98aad40085218d3ab",
+        "shape": [
+          2641
+        ]
+      },
+      "targets": {
+        "bytes": 1100776,
+        "dtype": "int32",
+        "filename": "targets.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "7832666cafa9e286d6b5b63c8a0e6d2046c7769e0df9e57ee9c2e2ad224f7e61",
+        "shape": [
+          275162
+        ]
+      },
+      "total_nt_predictions": {
+        "bytes": 10692,
+        "dtype": "int32",
+        "filename": "total-nt-predictions.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "9d1aa4732bda2234919712551815d5594033197059d4e28e45dd7b740aa8d3b1",
+        "shape": [
+          2641
+        ]
+      },
+      "weights": {
+        "bytes": 1100776,
+        "dtype": "float32",
+        "filename": "weights.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "382802f4ef5c2fe62d2361920a66e8e1815142204ef52c1f9330e6533cd0ebe7",
+        "shape": [
+          275162
+        ]
+      }
+    },
+    "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
+  },
+  "T1b": {
+    "semantic_digest": {
+      "algorithm": "sha256",
+      "array_order": [
+        "ids",
+        "offsets",
+        "targets",
+        "counts",
+        "weights"
+      ],
+      "canonical_byte_order": "little-endian",
+      "value": "52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858",
+      "version": 1
+    },
+    "graph": {
+      "N": 5555,
+      "disabled_zero_weight_contact_mass": 123708,
+      "executable_nonzero_E": 739678,
+      "isolated_accepted_neurons": 0,
+      "represented_source_contacts": 7397244,
+      "source_accepted_E": 759305,
+      "zero_disabled_E": 19627
+    },
+    "arrays": {
+      "consensus_nt_codes": {
+        "bytes": 5683,
+        "dtype": "uint8",
+        "filename": "consensus-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "e79638ab3f159f7e5c2961ff28de5eb7d5bcf2b8c032eaa5c6df102430a9e73d",
+        "shape": [
+          5555
+        ]
+      },
+      "counts": {
+        "bytes": 6074568,
+        "dtype": "uint64",
+        "filename": "counts.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "f1e6f8dea4c5553a2870213e8a8a96a2f9512f207e590e2ff66ec0029a1d263a",
+        "shape": [
+          759305
+        ]
+      },
+      "effective_signs": {
+        "bytes": 5683,
+        "dtype": "int8",
+        "filename": "effective-signs.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "ab15f77ea0f04126406a1cb27c3aa078275504048cee0027e7a6b37fabd55394",
+        "shape": [
+          5555
+        ]
+      },
+      "ground_truth_nt_codes": {
+        "bytes": 5683,
+        "dtype": "uint8",
+        "filename": "ground-truth-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "74f90f442911039b232c6cff2a0813a93c3f64f3e698e46161e12035a20efb71",
+        "shape": [
+          5555
+        ]
+      },
+      "ids": {
+        "bytes": 44568,
+        "dtype": "uint64",
+        "filename": "ids.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "e576da4bf5d905eaa33b449e962ab7545147129d19ff219808d5f5a899c2fcc1",
+        "shape": [
+          5555
+        ]
+      },
+      "nt_record_present": {
+        "bytes": 5683,
+        "dtype": "uint8",
+        "filename": "nt-record-present.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "96faa95181ffe6e1810db372160f1a497cf7b09acd1600c728ffdeb53b93008d",
+        "shape": [
+          5555
+        ]
+      },
+      "offsets": {
+        "bytes": 44576,
+        "dtype": "int64",
+        "filename": "offsets.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "dd74e5d37b781f4f19d439adccfc3e2dbea6ceb6cd3c0b4f324e221641b5f840",
+        "shape": [
+          5556
+        ]
+      },
+      "predicted_nt_codes": {
+        "bytes": 5683,
+        "dtype": "uint8",
+        "filename": "predicted-nt-codes.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "0cc90a8dfe6ae57c4a64d24b689aac2c996ef1d893accf7f486016c9d1fa3736",
+        "shape": [
+          5555
+        ]
+      },
+      "predicted_nt_confidence": {
+        "bytes": 44568,
+        "dtype": "float64",
+        "filename": "predicted-nt-confidence.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "8c5c7a4785c7a2209cc462282a0b418c501394b3ae6924b6c98f480af80318bc",
+        "shape": [
+          5555
+        ]
+      },
+      "targets": {
+        "bytes": 3037348,
+        "dtype": "int32",
+        "filename": "targets.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "e5808643febad6d0960ec22001f9ed5d419eb1216d3d12fccc484d74dd3f621d",
+        "shape": [
+          759305
+        ]
+      },
+      "total_nt_predictions": {
+        "bytes": 22348,
+        "dtype": "int32",
+        "filename": "total-nt-predictions.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": false,
+        "sha256": "02e7b788a8fc48a91e58a28ef067ef423d5f33967206a0911fdc2da254b646b4",
+        "shape": [
+          5555
+        ]
+      },
+      "weights": {
+        "bytes": 3037348,
+        "dtype": "float32",
+        "filename": "weights.npy",
+        "read_only_mmap_supported": true,
+        "semantic_digest_member": true,
+        "sha256": "677f79288f90fb115210393376ae839c75eed2a7b1abb9209a434985b9f9a414",
+        "shape": [
+          759305
+        ]
+      }
+    },
+    "source_lock_sha256": "2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c"
+  }
+}

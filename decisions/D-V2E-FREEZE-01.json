@@ -1,0 +1,16 @@
+{
+  "decision_id": "D-V2E-FREEZE-01",
+  "classification": "PUBLIC PREREGISTRATION FREEZE",
+  "authorization": "V2E S4 after outcome-neutral S3 gates",
+  "gates": "evidence/V2E/gate-report.json",
+  "protocol": "profiles/calibration-v2.json",
+  "manifest": "profiles/freeze-v2.json",
+  "metric_definitions": "docs/v2e-metrics.md",
+  "pilot_disclosure": "H0 was motivated by a V2D pilot with 2 nulls per family; those nulls are excluded from this test.",
+  "confirmatory_results_at_freeze": "NONE",
+  "refs": ["refs/tags/prereg-v2", "refs/heads/prereg/v2"],
+  "public_push_receipt": "evidence/V2E/preregistration-receipt.json records commit, UTC completion time and observed remote refs before the run",
+  "frozen_changes_permitted": false,
+  "defect_action": "Stop, preserve output, report; never repair frozen files in this attempt",
+  "external_stage_acceptance": "PENDING"
+}

@@ -1,0 +1,28 @@
+{
+  "background_noise": {
+    "algorithm": "flybench.u32.v2",
+    "classification": "MODEL ASSUMPTION, isolated neuron only",
+    "population": "all circuit neurons except visual and all output ports including DNb02",
+    "stream_id": 17,
+    "table": "profiles/noise-table-v2.json",
+    "profile": "profiles/noise-v2.json"
+  },
+  "base_semantics": "flybench.neural-order.v1",
+  "neuron_model": {
+    "current_decay_float64_hex": "0x1.cf46d99d52b3ap-1",
+    "delay_ms": 1.0,
+    "neural_dt_ms": 0.5,
+    "refractory_ms": 2.0,
+    "reset": 0.0,
+    "rest": 0.0,
+    "tau_m_ms": 20.0,
+    "tau_s_ms": 5.0,
+    "threshold": 1.0,
+    "voltage_decay_float64_hex": "0x1.f35bd21f40adcp-1"
+  },
+  "profile_id": "flybench.normalized-lif.v2",
+  "schema_version": 1,
+  "state_dtype": "float64",
+  "status": "FROZEN_BY_PREREG_V2_COMMIT",
+  "v1_parameter_changes": "none"
+}
