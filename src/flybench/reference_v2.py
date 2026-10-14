@@ -24,9 +24,9 @@ class NoiseSpec:
         mask = np.array(self.population_mask, dtype=np.bool_, copy=True)
         if mask.ndim != 1:
             raise ValueError("noise population mask must be one-dimensional")
-        if type(self.seed) is not int or self.seed < 0:
+        if type(self.seed) is not int or not 0 <= self.seed < 2**32:
             raise ValueError("noise seed must be a nonnegative integer")
-        if type(self.stream_id) is not int or self.stream_id < 0:
+        if type(self.stream_id) is not int or not 0 <= self.stream_id < 2**32:
             raise ValueError("noise stream must be a nonnegative integer")
         if type(self.threshold) is not int or not 0 <= self.threshold <= 2**32:
             raise ValueError("noise threshold must be within [0, 2**32]")
@@ -77,6 +77,8 @@ class ReferenceStateV2:
             drive = np.full(self.n, float(drive), dtype=np.float64)
         if drive.shape != (self.n,) or not np.all(np.isfinite(drive)):
             raise ValueError("external drive must be finite and match graph size")
+        if not 0 <= self.tick < 2**32 - 1:
+            raise ValueError("u32 clock exhausted")
         start_tick = self.tick
         slot = start_tick % self._ring_size
         scheduled = self.pending_spikes[slot].copy()

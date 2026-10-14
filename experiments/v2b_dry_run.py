@@ -34,38 +34,6 @@ def _sources(offsets: np.ndarray) -> np.ndarray:
     return np.repeat(np.arange(offsets.size - 1, dtype=np.int64), np.diff(offsets))
 
 
-def _simple_null_start(sources: np.ndarray, targets: np.ndarray) -> tuple[np.ndarray, int]:
-    rewired = np.asarray(targets, dtype=np.int64).copy()
-    pairs = {(int(source), int(target)) for source, target in zip(sources, rewired, strict=True)}
-    repaired = 0
-    for first_edge in np.flatnonzero(sources == rewired):
-        first_source = int(sources[first_edge])
-        first_target = int(rewired[first_edge])
-        for second_edge in range(rewired.size):
-            second_source = int(sources[second_edge])
-            second_target = int(rewired[second_edge])
-            first_new = (first_source, second_target)
-            second_new = (second_source, first_target)
-            if first_source == second_source or first_new[0] == first_new[1] or second_new[0] == second_new[1]:
-                continue
-            old_first = (first_source, first_target)
-            old_second = (second_source, second_target)
-            if (first_new in pairs and first_new not in {old_first, old_second}) or (
-                second_new in pairs and second_new not in {old_first, old_second}
-            ):
-                continue
-            pairs.remove(old_first)
-            pairs.remove(old_second)
-            pairs.add(first_new)
-            pairs.add(second_new)
-            rewired[first_edge] = second_target
-            rewired[second_edge] = first_target
-            repaired += 1
-            break
-        else:
-            raise RuntimeError("could not remove source self-loop for null generation")
-    return rewired, repaired
-
 
 def _load_graph(candidate: str) -> dict[str, Any]:
     directory = ROOT / "data/compiled/v2" / candidate.lower()
@@ -105,7 +73,7 @@ def _indices(ids: np.ndarray) -> tuple[dict[str, np.ndarray], set[int], set[int]
 
 def _null_targets(graph: dict[str, Any], count: int, multiple: float) -> tuple[dict[str, list[np.ndarray]], int]:
     sources = _sources(graph["offsets"])
-    null_start, repaired_self_loops = _simple_null_start(sources, graph["targets"])
+    null_start, repaired_self_loops = graph["targets"], 0
     indices, visual_ids, output_ids = _indices(graph["ids"])
     index_by_id = {int(value): index for index, value in enumerate(graph["ids"])}
     visual_indices = {index_by_id[value] for value in visual_ids if value in index_by_id}

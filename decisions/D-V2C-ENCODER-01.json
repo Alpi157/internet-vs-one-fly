@@ -1,0 +1,15 @@
+{
+  "H1_H2_data_existed": false,
+  "authorization": "External reviewer V2C C3",
+  "citations": [
+    "https://doi.org/10.1038/nature24626",
+    "https://doi.org/10.1016/j.cub.2019.01.079"
+  ],
+  "classification": "SCIENTIFIC ENCODER ASSUMPTION AND CLAIMS AMENDMENT",
+  "decision": "LC4 encodes normalized expansion; LPLC2 encodes normalized size gated by strictly positive expansion. Looming selectivity is assumed by the encoder and is not produced by the circuit. Static objects supply no visual drive. Remove looming versus static differences as H1 metrics.",
+  "decision_id": "D-V2C-ENCODER-01",
+  "prompted_by": "Inspection of the FAILED V2B DRY RUN THAT FOUND DEFECTS, before any protocol was frozen and before any H1 or H2 data existed.",
+  "protocol_frozen": false,
+  "schema_version": 1,
+  "stage": "V2C"
+}

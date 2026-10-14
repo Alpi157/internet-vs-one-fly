@@ -32,7 +32,7 @@ def decode_spikes_v2(
             count = sum(1 for value in spike_body_ids if value in group)
             next_rates.append(
                 decay * prior_rates[group_index]
-                + (1.0 - decay) * count / interval_seconds
+                + (1.0 - decay) * count / len(group) / interval_seconds
             )
     escape = any(value in fired for value in groups[0]) or any(
         value in fired for value in groups[1]

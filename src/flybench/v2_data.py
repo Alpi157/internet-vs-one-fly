@@ -275,61 +275,39 @@ def dna01_conflict(
     }
 
 
+FINAL_PORTS = {
+    "DNp01": (10001, 10010), "MDN": FINAL_MDN,
+    "DNp09": (11177, 10783), "DNa02": FINAL_DNA02,
+    "DNa01": (10760, 10442), "DNg13": (512006, 11074),
+    "DNb02": (10805, 13922, 12767, 529488),
+}
+
+
 def ports_v2(candidates: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str, Any]:
     annotations = _annotation_by_id(rows)
-
-    def entry(body_id: int, status: str) -> dict[str, Any]:
-        row = annotations[body_id]
-        return {
-            "body_id": str(body_id),
-            "status": status,
-            "annotation_type": row.get("type"),
-            "instance": row.get("instance"),
-            "somaSide": row.get("somaSide"),
-        }
-
-    groups: dict[str, list[dict[str, Any]]] = {
-        "escape_left": [entry(10010, "FINAL")],
-        "escape_right": [entry(10001, "FINAL")],
-        "backward": [entry(value, "FINAL") for value in FINAL_MDN],
-        "turn_left": [entry(523769, "FINAL")],
-        "turn_right": [entry(10360, "FINAL")],
-        "forward": [],
-    }
-    for match in candidates["names"]["DNp09"]:
-        if match["match_kind"] == "exact type":
-            groups["forward"].append(entry(int(match["body_id"]), "PROVISIONAL"))
-    for name in ("DNg13", "DNb02"):
-        for match in candidates["names"][name]:
-            if match["match_kind"] != "exact type":
-                continue
-            side = match["somaSide"]
-            if side not in {"L", "R"}:
-                continue
-            groups["turn_left" if side == "L" else "turn_right"].append(
-                entry(int(match["body_id"]), "PROVISIONAL")
-            )
+    groups = {name: [] for name in ("escape_left", "escape_right", "backward", "forward", "turn_left", "turn_right")}
+    for name, body_ids in FINAL_PORTS.items():
+        for body_id in body_ids:
+            row = annotations[body_id]
+            if row["type"] != name or row["somaSide"] not in {"L", "R"}:
+                raise ValueError(f"reviewed exact-type receipt disagrees for {body_id}")
+            side = "left" if row["somaSide"] == "L" else "right"
+            group = "backward" if name == "MDN" else "forward" if name == "DNp09" else ("escape_" if name == "DNp01" else "turn_") + side
+            groups[group].append({"body_id": str(body_id), "status": "FINAL", "annotation_type": name,
+                "instance": row["instance"], "somaSide": row["somaSide"], "flywireType": row["flywireType"],
+                "rootSide": _json_value(row.get("rootSide")), "entryNerve": row.get("entryNerve"), "exitNerve": row.get("exitNerve"),
+                "projection_side": "UNKNOWN", "projection_midline_crossing": "UNKNOWN",
+                "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table."})
     for values in groups.values():
-        values.sort(key=lambda value: int(value["body_id"]))
-    return {
-        "schema_version": 1,
-        "profile_id": "flybench.ports.v2-draft-1",
-        "status": "FINAL_AND_PROVISIONAL_PORTS",
-        "visual_ports_profile": "profiles/visual-ports-sides-v1.json",
-        "reviewer_receipt": {
-            "DNp01": ["10001", "10010"],
-            "MDN": [str(value) for value in FINAL_MDN],
-            "DNa02": [str(value) for value in FINAL_DNA02],
-        },
-        "groups": groups,
-        "excluded": {
-            "DNa01": "Excluded until the DNa01 versus DNae001 annotation conflict is resolved.",
-            "BPN": "Excluded because BPN are higher brain interneurons and no connectome type name is known to this project.",
-            "oDN1": "Excluded because no annotation match was found.",
-        },
-        "side_rule": "Left and right groups are assigned from annotation somaSide only.",
-        "turn_direction_assumption": "Whether a right-side descending neuron turns the fly right is a model assumption for the decoder card, not a measured fact.",
-    }
+        values.sort(key=lambda x: int(x["body_id"]))
+    return {"schema_version": 1, "profile_id": "ports-v2.1", "status": "FINAL_REVIEWER_RECEIPT",
+        "visual_ports_profile": "profiles/visual-ports-sides-v1.json", "groups": groups,
+        "reviewer_receipt": {k: [str(v) for v in values] for k, values in FINAL_PORTS.items()},
+        "excluded": {"DNp71": ["11159", "519771"], "DNae001": ["11563", "512071"],
+            "BPN": "higher brain interneurons, not a descending neuron", "oDN1": "no annotation match"},
+        "match_rule": "Exact type in MaleCNS v1.0 required. Instance token alone is insufficient.",
+        "side_rule": "somaSide only; projection side and crossing unknown from the annotation data for every port.",
+        "turn_direction_assumption": "Turn direction is a model assumption in profiles/turn-directions-v1.json, not a MaleCNS measurement."}
 
 
 def _simulate_context(bundle: Any, model_spec: Any, game_spec: Any) -> dict[str, Any]:
@@ -602,78 +580,59 @@ def _context_markdown(context: dict[str, Any]) -> str:
 
 
 def build_v2(out: Path) -> dict[str, Any]:
+    from flybench.graph import audit_graph
+    import hashlib
+    import yaml
+    lock = json.loads((ROOT / "profiles/source-lock.json").read_text())
+    ledger = yaml.safe_load((ROOT / "ledger.yaml").read_text())
+    assert hashlib.sha256((ROOT / "profiles/source-lock.json").read_bytes()).hexdigest() == ledger["source_lock"]["digest"]
+    for entry in lock["files"]:
+        path = ROOT / "data/raw" / entry["filename"]
+        assert path.stat().st_size == entry["observed_bytes"]
+        with path.open("rb") as stream:
+            assert hashlib.file_digest(stream, "sha256").hexdigest() == entry["observed_sha256"]
+    audit = audit_graph(FULL_GRAPH, out / "full-identity-audit.json")
+    assert audit["status"] == "PASS" and audit["semantic_graph_digest"] == ledger["graphs"]["full"]["digest"]
     arrays = _full_arrays()
     rows = _annotation_rows()
-    candidates = walking_candidates(rows, arrays)
-    conflict = dna01_conflict(rows, arrays, candidates)
+    candidates = json.loads(CANDIDATES_V2.read_text())
     ports = ports_v2(candidates, rows)
-    context = context_followup(rows, arrays)
-    write_json(CANDIDATES_V2, candidates)
     write_json(PORTS_V2, ports)
-    out.mkdir(parents=True, exist_ok=True)
-    (out / "walking-dn-candidates.md").write_text(_candidate_markdown(candidates), encoding="utf-8")
-    (out / "dna01-conflict.md").write_text(_conflict_markdown(conflict), encoding="utf-8")
-    write_json(out / "dna01-conflict.json", conflict)
-    write_json(out / "context-followup.json", context)
-    (out / "context-followup.md").write_text(_context_markdown(context), encoding="utf-8")
-    builder = json.loads(BUILDER_V2.read_text(encoding="utf-8"))
-    visual_profile = json.loads(VISUAL_SIDES.read_text(encoding="utf-8"))["populations"]
-    visual_ids = {
-        int(value)
-        for population in visual_profile.values()
-        for field in ("left_body_ids_decimal", "right_body_ids_decimal")
-        for value in population[field]
-    }
-    output_ids = {
-        int(entry["body_id"])
-        for entries in ports["groups"].values()
-        for entry in entries
-    }
+    conflict = dna01_conflict(rows, arrays, candidates)
+    conflict.update(status="RESOLVED_EXACT_TYPE_RULE", selection_made=True,
+        selected_type="DNa01", flywire_type_agrees=all(v["flywireType"]=="DNa01" for values in ports["groups"].values() for v in values if v["annotation_type"]=="DNa01"),
+        interpretation="MDN input totals 30 contacts on DNa01 10760, 13 on 10442, versus 3 on DNae001 11563 and zero on 512071. DNp09 to ipsilateral DNa02 has 45 contacts (10783 to 523769) and 9 (11177 to 10360), consistent with reported P9 ipsiversive turning. This is a consistency check, not mapping evidence.")
+    write_json(out / "port-resolution.json", conflict)
+    write_json(out / "port-side-audit.json", {"ports": [v for values in ports["groups"].values() for v in values],
+        "visual_ports": json.loads(VISUAL_SIDES.read_text()),
+        "visual_port_side_entries": [{"body_id": str(v), "population": pop, "somaSide": side,
+            "projection_side": "UNKNOWN", "projection_midline_crossing": "UNKNOWN"}
+            for pop,population in json.loads(VISUAL_SIDES.read_text())["populations"].items()
+            for side,field in (("L","left_body_ids_decimal"),("R","right_body_ids_decimal"))
+            for v in population[field]],
+        "visual_side_interpretation": "All visual ports use somaSide. Axonal projection side and crossing UNKNOWN in these annotations; no arbor trajectories supplied.",
+        "literature_distinction": "Yang et al. preprint 2023 reports DNg13 axons cross the midline and DNa02 axons do not. This is type-level literature, not a reconstruction of these MaleCNS bodies."})
+    builder = json.loads(BUILDER_V2.read_text())
+    visual_profile = json.loads(VISUAL_SIDES.read_text())["populations"]
+    visual_ids = {int(v) for pop in visual_profile.values() for field in ("left_body_ids_decimal", "right_body_ids_decimal") for v in pop[field]}
+    output_ids = {int(v["body_id"]) for values in ports["groups"].values() for v in values}
     circuits = []
     for candidate in builder["candidates"]:
-        threshold = int(candidate["synapse_threshold"])
-        hops = int(candidate["hops"])
+        threshold, hops = int(candidate["synapse_threshold"]), int(candidate["hops"])
         selected = select_indices(arrays, visual_ids, output_ids, threshold, hops)
         directory = ROOT / builder["bundle_output_root"] / candidate["id"].lower()
-        value = build_bundle(
-            arrays,
-            selected,
-            directory,
-            threshold,
-            hops,
-            profile_id=f"flybench.v2-circuit.{candidate['id'].lower()}.draft-1",
-            seed_status="PROVISIONAL_SEEDS",
-            selection_rule=f"Plan-v2 seed expansion candidate {candidate['id']} with S={threshold} and hops={hops}",
-            build_command=["python", "-m", "flybench.circuit", "build-v2"],
-            compiler_id="flybench.v2-circuit-builder.v2",
-        )
-        value.update(
-            {
-                "candidate": candidate["id"],
-                "purpose": candidate["purpose"],
-                "synapse_threshold": threshold,
-                "hops": hops,
-                "seed_status": "PROVISIONAL_SEEDS",
-                "seed_count": len(visual_ids | output_ids),
-            }
-        )
+        value = build_bundle(arrays, selected, directory, threshold, hops,
+            profile_id=f"flybench.v2-circuit.{candidate['id'].lower()}.2.1", seed_status="FINAL_SEEDS",
+            selection_rule=f"Plan-v2 final seed expansion {candidate['id']} with S={threshold} and hops={hops}",
+            build_command=["python", "-m", "flybench.circuit", "build-v2"], compiler_id="flybench.v2-circuit-builder.v2.1")
+        write_json(out / f"{candidate['id']}-manifest.json", json.loads((directory / "manifest.json").read_text()))
+        write_json(out / f"{candidate['id']}-audit.json", json.loads((directory / "audit.json").read_text()))
+        offsets = np.load(directory / "offsets.npy", allow_pickle=False)
+        targets = np.load(directory / "targets.npy", allow_pickle=False)
+        value.update(candidate=candidate["id"], purpose=candidate["purpose"], synapse_threshold=threshold, hops=hops,
+            seed_status="FINAL_SEEDS", seed_count=len(visual_ids | output_ids),
+            self_loops=int(np.count_nonzero(np.repeat(np.arange(selected.size), np.diff(offsets)) == targets)))
         circuits.append(value)
-    report = {
-        "schema": "flybench.v2b.circuits",
-        "version": 1,
-        "status": "SUBMITTED",
-        "ports_profile": str(PORTS_V2.relative_to(ROOT)),
-        "visual_ports_profile": str(VISUAL_SIDES.relative_to(ROOT)),
-        "circuits": circuits,
-    }
-    from flybench.web_export import export_t1a_noise_parity, export_web_graph
-
-    t1a_directory = ROOT / builder["bundle_output_root"] / "t1a"
-    report["typescript_export"] = export_web_graph(
-        t1a_directory, ROOT / builder["bundle_output_root"] / "t1a.webbin"
-    )
-    export_t1a_noise_parity(
-        t1a_directory, ROOT / builder["bundle_output_root"] / "t1a-parity.json"
-    )
+    report = {"schema": "flybench.v2c.circuits", "version": 1, "status": "SUBMITTED", "circuits": circuits}
     write_json(out / "circuits.json", report)
     return report

@@ -1,22 +1,4 @@
-"""Deterministic 32-bit random values and restricted-runtime approximations.
-
-The u32 mixer is evaluated in this exact order, with every arithmetic result
-reduced modulo 2**32:
-
-1. x = seed + 0x9E3779B9
-2. x = x xor (stream * 0x85EBCA6B)
-3. x = x + (tick * 0xC2B2AE35)
-4. x = x xor (index * 0x27D4EB2F)
-5. x = x xor (x unsigned-shift-right 16)
-6. x = x * 0x7FEB352D
-7. x = x xor (x unsigned-shift-right 15)
-8. x = x * 0x846CA68B
-9. x = x xor (x unsigned-shift-right 16)
-
-TypeScript uses Math.imul for multiplication and >>> 0 for reduction. Random
-events compare the resulting integer to a threshold stored in the profile.
-"""
-
+"""Deterministic counter RNGs and restricted-operation approximations."""
 from __future__ import annotations
 
 import argparse
@@ -41,10 +23,10 @@ def _u32(value: int) -> int:
     return value & MASK32
 
 
-def u32(seed: int, stream: int, tick: int, index: int) -> int:
+def u32_v1(seed: int, stream: int, tick: int, index: int) -> int:
     """Return one counter-based unsigned 32-bit value without float arithmetic."""
 
-    if any(type(value) is not int or value < 0 for value in (seed, stream, tick, index)):
+    if any(type(value) is not int or not 0 <= value < UINT32_SCALE for value in (seed, stream, tick, index)):
         raise ValueError("u32 counters must be nonnegative integers")
     value = _u32(seed + 0x9E3779B9)
     value = _u32(value ^ _u32(stream * 0x85EBCA6B))
@@ -56,6 +38,25 @@ def u32(seed: int, stream: int, tick: int, index: int) -> int:
     value = _u32(value * 0x846CA68B)
     return _u32(value ^ (value >> 16))
 
+
+
+def fmix32(value: int) -> int:
+    value &= MASK32
+    value ^= value >> 16
+    value = (value * 0x85EBCA6B) & MASK32
+    value ^= value >> 13
+    value = (value * 0xC2B2AE35) & MASK32
+    return (value ^ (value >> 16)) & MASK32
+
+
+def u32(seed: int, stream: int, tick: int, index: int) -> int:
+    """flybench.u32.v2; every input is a u32 counter, no implicit wrapping."""
+    if any(type(v) is not int or not 0 <= v < UINT32_SCALE for v in (seed, stream, tick, index)):
+        raise ValueError("u32 counters must be integers in [0, 2**32)")
+    h = fmix32(seed + 0x9E3779B9)
+    h = fmix32(h ^ stream)
+    h = fmix32(h + tick)
+    return fmix32(h ^ index)
 
 def probability_threshold(probability: float) -> int:
     """Build a profile threshold once using round-half-up semantics."""
@@ -78,8 +79,19 @@ def atan_approx(value: float) -> float:
         raise ValueError("atan approximation input must be within [-8, 8]")
     sign = -1.0 if value < 0.0 else 1.0
     magnitude = -value if value < 0.0 else value
+    # Two half-angle reductions put |z| <= tan(pi/8) after reciprocal
+    # reduction, then <= tan(pi/16). Alternating Taylor remainder <=
+    # 4*z**19/19 < 1.0e-13 rad. Fixed order is shared with TypeScript.
     reduced = 1.0 / magnitude if magnitude > 1.0 else magnitude
-    core = reduced * (PI_OVER_4 + ATAN_CURVATURE * (1.0 - reduced))
+    for _ in range(2):
+        reduced = reduced / (1.0 + math.sqrt(1.0 + reduced * reduced))
+    square = reduced * reduced
+    term = reduced
+    core = term
+    for k in range(1, 9):
+        term = -term * square
+        core = core + term / (2 * k + 1)
+    core = 4.0 * core
     result = PI_OVER_2 - core if magnitude > 1.0 else core
     return sign * result
 
@@ -107,12 +119,14 @@ def _hex(value: float) -> str:
 
 def build_vectors() -> dict[str, Any]:
     rng = []
+    legacy_rng = []
     for vector_index in range(1000):
         seed = 17 + vector_index * 104729
         stream = vector_index % 19
         tick = vector_index * 37
         index = (vector_index * 101) % 4096
         result = u32(seed, stream, tick, index)
+        legacy_rng.append({"seed":seed,"stream":stream,"tick":tick,"index":index,"output_u32":u32_v1(seed,stream,tick,index)})
         rng.append(
             {
                 "seed_hex": _hex(seed),
@@ -145,9 +159,10 @@ def build_vectors() -> dict[str, Any]:
         )
     return {
         "schema": "flybench.detmath-vectors",
-        "version": 1,
-        "algorithm": "flybench.u32.v1",
+        "version": 2,
+        "algorithm": "flybench.u32.v2",
         "rng": rng,
+        "rng_v1_reproduction_only": legacy_rng,
         "approximations": {"atan": atan_vectors, "rotate_unit_step": rotation_vectors},
     }
 
@@ -163,6 +178,7 @@ def approximation_errors() -> dict[str, Any]:
             "domain": [-8.0, 8.0],
             "measured_grid_points": int(atan_inputs.size),
             "maximum_absolute_error_radians": float(atan_error),
+            "maximum_relative_error": float(max(abs(atan_approx(float(v))-math.atan(float(v)))/math.atan(float(v)) for v in np.geomspace(1e-4,8.0,100001))),
         },
         "rotate_unit_step": {
             "delta_domain_radians": [-0.05, 0.05],
@@ -198,9 +214,9 @@ def rng_sanity(sample_count: int = 1_000_000) -> dict[str, Any]:
             }
         )
     return {
-        "schema": "flybench.v2b.rng-sanity",
-        "version": 1,
-        "algorithm": "flybench.u32.v1",
+        "schema": "flybench.v2c.basic-rng-sanity",
+        "version": 2,
+        "algorithm": "flybench.u32.v2",
         "sample_count": sample_count,
         "bernoulli": rates,
         "lag_1_autocorrelation_over_ticks": float(np.corrcoef(scaled[:-1], scaled[1:])[0, 1]),

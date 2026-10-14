@@ -82,4 +82,4 @@ def test_final_port_receipt_is_exact() -> None:
         for entry in entries
         if entry["status"] == "FINAL"
     }
-    assert final_ids == {10001, 10010, 10763, 11332, 11288, 12348, 10360, 523769}
+    assert final_ids == {10001,10010,10763,11332,11288,12348,11177,10783,10360,523769,10760,10442,512006,11074,10805,13922,12767,529488}

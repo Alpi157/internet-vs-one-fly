@@ -1,36 +1,71 @@
 {
   "excluded": {
-    "BPN": "Excluded because BPN are higher brain interneurons and no connectome type name is known to this project.",
-    "DNa01": "Excluded until the DNa01 versus DNae001 annotation conflict is resolved.",
-    "oDN1": "Excluded because no annotation match was found."
+    "BPN": "higher brain interneurons, not a descending neuron",
+    "DNae001": [
+      "11563",
+      "512071"
+    ],
+    "DNp71": [
+      "11159",
+      "519771"
+    ],
+    "oDN1": "no annotation match"
   },
   "groups": {
     "backward": [
       {
         "annotation_type": "MDN",
         "body_id": "10763",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "MDN",
         "instance": "MDN_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
         "status": "FINAL"
       },
       {
         "annotation_type": "MDN",
         "body_id": "11288",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "MDN",
         "instance": "MDN_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
         "status": "FINAL"
       },
       {
         "annotation_type": "MDN",
         "body_id": "11332",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "MDN",
         "instance": "MDN_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
         "status": "FINAL"
       },
       {
         "annotation_type": "MDN",
         "body_id": "12348",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "MDN",
         "instance": "MDN_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
         "status": "FINAL"
       }
@@ -39,7 +74,14 @@
       {
         "annotation_type": "DNp01",
         "body_id": "10010",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNp01",
         "instance": "DNp01(GF)_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
         "status": "FINAL"
       }
@@ -48,7 +90,14 @@
       {
         "annotation_type": "DNp01",
         "body_id": "10001",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNp01",
         "instance": "DNp01(GF)_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
         "status": "FINAL"
       }
@@ -57,88 +106,205 @@
       {
         "annotation_type": "DNp09",
         "body_id": "10783",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNp09",
         "instance": "DNp09_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       },
       {
         "annotation_type": "DNp09",
         "body_id": "11177",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNp09",
         "instance": "DNp09_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       }
     ],
     "turn_left": [
       {
+        "annotation_type": "DNa01",
+        "body_id": "10442",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNa01",
+        "instance": "DNa01(VES006)_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
+        "somaSide": "L",
+        "status": "FINAL"
+      },
+      {
         "annotation_type": "DNg13",
         "body_id": "11074",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNg13",
         "instance": "DNg13_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       },
       {
         "annotation_type": "DNb02",
         "body_id": "12767",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNb02",
         "instance": "DNb02_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       },
       {
         "annotation_type": "DNa02",
         "body_id": "523769",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNa02",
         "instance": "DNa02_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
         "status": "FINAL"
       },
       {
         "annotation_type": "DNb02",
         "body_id": "529488",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNb02",
         "instance": "DNb02_L",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "L",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       }
     ],
     "turn_right": [
       {
         "annotation_type": "DNa02",
         "body_id": "10360",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNa02",
         "instance": "DNa02_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
+        "somaSide": "R",
+        "status": "FINAL"
+      },
+      {
+        "annotation_type": "DNa01",
+        "body_id": "10760",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNa01",
+        "instance": "DNa01(VES006)_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
         "status": "FINAL"
       },
       {
         "annotation_type": "DNb02",
         "body_id": "10805",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNb02",
         "instance": "DNb02_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       },
       {
         "annotation_type": "DNb02",
         "body_id": "13922",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNb02",
         "instance": "DNb02_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       },
       {
         "annotation_type": "DNg13",
         "body_id": "512006",
+        "entryNerve": null,
+        "exitNerve": null,
+        "flywireType": "DNg13",
         "instance": "DNg13_R",
+        "projection_midline_crossing": "UNKNOWN",
+        "projection_side": "UNKNOWN",
+        "rootSide": null,
+        "side_evidence": "somaSide is explicit; rootSide and nerve labels do not establish axonal laterality or a trajectory in this annotation table.",
         "somaSide": "R",
-        "status": "PROVISIONAL"
+        "status": "FINAL"
       }
     ]
   },
-  "profile_id": "flybench.ports.v2-draft-1",
+  "match_rule": "Exact type in MaleCNS v1.0 required. Instance token alone is insufficient.",
+  "profile_id": "ports-v2.1",
   "reviewer_receipt": {
+    "DNa01": [
+      "10760",
+      "10442"
+    ],
     "DNa02": [
       "10360",
       "523769"
     ],
+    "DNb02": [
+      "10805",
+      "13922",
+      "12767",
+      "529488"
+    ],
+    "DNg13": [
+      "512006",
+      "11074"
+    ],
     "DNp01": [
       "10001",
       "10010"
+    ],
+    "DNp09": [
+      "11177",
+      "10783"
     ],
     "MDN": [
       "10763",
@@ -148,8 +314,8 @@
     ]
   },
   "schema_version": 1,
-  "side_rule": "Left and right groups are assigned from annotation somaSide only.",
-  "status": "FINAL_AND_PROVISIONAL_PORTS",
-  "turn_direction_assumption": "Whether a right-side descending neuron turns the fly right is a model assumption for the decoder card, not a measured fact.",
+  "side_rule": "somaSide only; projection side and crossing unknown from the annotation data for every port.",
+  "status": "FINAL_REVIEWER_RECEIPT",
+  "turn_direction_assumption": "Turn direction is a model assumption in profiles/turn-directions-v1.json, not a MaleCNS measurement.",
   "visual_ports_profile": "profiles/visual-ports-sides-v1.json"
 }

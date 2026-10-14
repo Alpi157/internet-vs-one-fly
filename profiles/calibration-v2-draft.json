@@ -1,54 +1,6 @@
 {
-  "schema_version": 1,
-  "profile_id": "flybench.calibration.v2-draft-1",
-  "status": "DRAFT_REVIEW_REQUIRED",
-  "protocol_frozen": false,
-  "grid": {
-    "runtime_synaptic_scale": [0.0001, 0.0003, 0.001, 0.003],
-    "noise_probability_per_tick": [0.0005, 0.001, 0.005, 0.01],
-    "noise_current_increment": [0.01, 0.02, 0.05, 0.1],
-    "input_gain": [1.0, 2.0, 4.0, 8.0],
-    "classification": "PROPOSED values, not tuned or measured"
-  },
-  "dry_run_subset": {
-    "runtime_synaptic_scale": [0.0003, 0.001],
-    "noise_probability_per_tick": [0.001, 0.01],
-    "noise_current_increment": [0.02, 0.05],
-    "input_gain": [2.0, 4.0],
-    "circuits": ["T1a", "T1b"],
-    "nulls_per_family": 2,
-    "seeds": [2026092802, 2026092803],
-    "trial_duration_ms": 40.0,
-    "null_swap_count_multiple_of_E": 0.25,
-    "purpose": "Pipeline exercise only. These values cannot select or freeze a model."
-  },
-  "target_criteria": {
-    "no_silence": {
-      "proposed_range": "At least one output-port spike in no-threat trials across the calibration seed panel.",
-      "justification": "Walking cannot emerge from a network that never activates an output port."
-    },
-    "no_saturation": {
-      "proposed_range": "Whole-population mean rate below 100 Hz in every control.",
-      "justification": "Persistent near-ceiling activity would erase event timing and graph differences."
-    },
-    "spontaneous_movement": {
-      "proposed_range": "Movement command present in 0.05 to 0.80 of no-threat control intervals.",
-      "justification": "The model needs spontaneous walking without continuous maximum motion."
-    },
-    "looming_escape_probability": {
-      "proposed_range": [0.1, 0.9],
-      "justification": "A nondegenerate response leaves room for wiring and strike-speed comparisons."
-    },
-    "looming_exceeds_non_looming": {
-      "proposed_range": "Looming escape probability exceeds matched non-looming by at least 0.10.",
-      "justification": "Expansion should add information beyond matched final angular size."
-    }
-  },
-  "selection_rule": "Before outcomes are inspected, retain settings passing every criterion, then choose the lowest no-threat whole-population mean rate; break ties lexicographically by synaptic scale, noise probability, noise increment, and input gain.",
+  "circularity_rule": "A quantity used as a calibration criterion cannot be a primary H1 or H2 outcome. Primary outcomes are measured on held-out conditions.",
   "controls": [
-    "no threat",
-    "looming",
-    "matched non-looming with the same final size",
     "output clamp",
     "LC4 lesion",
     "LPLC2 lesion",
@@ -57,20 +9,146 @@
     "C-SIMPLE single threshold on angular size fitted with the same calibration budget",
     "C-TIMER fixed 30 ms latency from V2A"
   ],
-  "nulls": {
-    "families": ["N-FULL", "N-CONTEXT"],
-    "count_per_family": 20,
-    "swap_count_multiple_of_E": 1.0,
-    "calibration_rule": "Every null uses the same grid, seed budget, controls, criteria, and selection rule as the real graph."
+  "dry_run_subset": {
+    "circuits": [
+      "T1a",
+      "T1b"
+    ],
+    "held_out_strikes_per_seed": 4,
+    "input_gain": [
+      2,
+      8
+    ],
+    "kappa": [
+      0.05
+    ],
+    "no_threat_seconds": 20,
+    "nu0_hz": [
+      0.5,
+      5
+    ],
+    "nulls_per_family": 2,
+    "purpose": "pipeline and sanity only, no H1 or H2 analysis",
+    "runtime_synaptic_scale": [
+      0.01,
+      0.039
+    ],
+    "seeds": [
+      2026092802,
+      2026092803
+    ],
+    "standard_strikes_per_seed": 4
+  },
+  "grid": {
+    "classification": "Reviewer-set; no circuit outcome tuning",
+    "input_gain": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "kappa": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "nu0_hz": [
+      0.5,
+      2,
+      5
+    ],
+    "runtime_synaptic_scale": [
+      0.005,
+      0.01,
+      0.02,
+      0.039,
+      0.06
+    ]
   },
   "hypotheses": {
     "H1": {
-      "metrics": ["first escape command offset before impact", "escape probability versus strike speed", "looming versus non-looming difference"],
-      "comparison": "Real graph percentile within at least 20 degree- and sign-preserving null graphs per family using a permutation test."
+      "azimuth_degrees": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "exclude": "standard aimed condition, speed 0.05 and offset 0 at every azimuth",
+      "lateral_offsets": [
+        0,
+        1.5,
+        3
+      ],
+      "metrics": [
+        "escape probability",
+        "escape onset time before impact",
+        "left/right escape-group asymmetry for lateral strikes"
+      ],
+      "speeds": [
+        0.025,
+        0.05,
+        0.1
+      ]
     },
     "H2": {
-      "metrics": ["speed distribution", "bout duration distribution", "pause duration distribution", "turn autocorrelation", "left/right asymmetry"],
-      "comparison": "Real graph percentile within null distributions and the same noise fed straight to the decoder, using permutation tests."
+      "excluded_primary": "moving fraction",
+      "metrics": [
+        "walking bout and pause duration distributions",
+        "speed distribution while moving",
+        "turn autocorrelation",
+        "left/right turn asymmetry"
+      ]
     }
+  },
+  "noise_table": "profiles/noise-table-v1.json",
+  "nulls": {
+    "autapses": "frozen",
+    "calibration_rule": "same grid, seeds, criteria, budget and selection rule. No passing point: uncalibratable, retained in summary.",
+    "count_per_family": 20,
+    "families": [
+      "N-FULL",
+      "N-CONTEXT"
+    ],
+    "swap_count_multiple_of_E": 1
+  },
+  "profile_id": "flybench.calibration.v2-draft-2",
+  "protocol_frozen": false,
+  "schema_version": 1,
+  "selection_rule": "lowest no-threat whole-circuit rate; ties broken by s, kappa, nu0, gain in grid order",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "target_criteria": {
+    "escape_standard": {
+      "condition": "aimed at the fly, standard speed",
+      "pass": "escape onset before impact in 20% to 90% of strikes"
+    },
+    "false_escapes": {
+      "condition": "20 s no-threat",
+      "pass": "at most 0.05 escape onsets per second"
+    },
+    "not_saturated": {
+      "condition": "all calibration trials",
+      "pass": "whole-circuit mean rate < 50 Hz and fewer than 5% of neurons above 150 Hz"
+    },
+    "not_silent": {
+      "condition": "20 s no-threat",
+      "pass": "whole-circuit mean rate >= 0.5 Hz and at least one decoder group rate > 0"
+    },
+    "spontaneous_movement": {
+      "condition": "20 s no-threat",
+      "pass": "speed or turn nonzero in 10% to 90% of control intervals"
+    }
+  },
+  "trial_design": {
+    "baseline_ms": 200,
+    "criteria_aggregation": "all no-threat criteria must pass for each seed; saturation per trial; standard escape fraction over all strikes and seeds; held-out trials excluded from calibration criteria",
+    "dry_run_pose": "sensory pose fixed at trial origin to keep standard strikes aimed; locomotor commands recorded; body runtime checked separately in C9",
+    "escape_onset": "rising edge of escape request; each consecutive run counts once; previous-held command drives current interval",
+    "hand_radius": 0.75,
+    "impact": "integer neural ticks; no retroactive command application",
+    "movement": "exact nonzero speed or turn, no added deadband",
+    "post_impact_ms": 200,
+    "standard_speed": 0.05,
+    "start_height": 8,
+    "strike_reset": "independent trial reset including neural state, body and decoder; state persists throughout each trial"
   }
 }

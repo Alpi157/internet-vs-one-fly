@@ -14,7 +14,7 @@ from flybench.reference_v2 import NoiseSpec
 
 
 @njit(cache=True)
-def _counter_u32(seed: int, stream: int, tick: int, index: int) -> np.uint32:
+def _counter_u32_v1(seed: int, stream: int, tick: int, index: int) -> np.uint32:
     value = np.uint32(seed) + np.uint32(0x9E3779B9)
     value = np.uint32(value ^ np.uint32(np.uint32(stream) * np.uint32(0x85EBCA6B)))
     value = np.uint32(value + np.uint32(np.uint32(tick) * np.uint32(0xC2B2AE35)))
@@ -24,6 +24,24 @@ def _counter_u32(seed: int, stream: int, tick: int, index: int) -> np.uint32:
     value = np.uint32(value ^ np.uint32(value >> np.uint32(15)))
     value = np.uint32(value * np.uint32(0x846CA68B))
     return np.uint32(value ^ np.uint32(value >> np.uint32(16)))
+
+
+@njit(cache=True)
+def _fmix32(value: int) -> np.uint32:
+    x = np.uint32(value)
+    x = np.uint32(x ^ (x >> np.uint32(16)))
+    x = np.uint32(x * np.uint32(0x85EBCA6B))
+    x = np.uint32(x ^ (x >> np.uint32(13)))
+    x = np.uint32(x * np.uint32(0xC2B2AE35))
+    return np.uint32(x ^ (x >> np.uint32(16)))
+
+
+@njit(cache=True)
+def _counter_u32(seed: int, stream: int, tick: int, index: int) -> np.uint32:
+    h = _fmix32(np.uint32(seed) + np.uint32(0x9E3779B9))
+    h = _fmix32(np.uint32(h ^ np.uint32(stream)))
+    h = _fmix32(np.uint32(h + np.uint32(tick)))
+    return _fmix32(np.uint32(h ^ np.uint32(index)))
 
 
 @njit(cache=True)
@@ -147,6 +165,8 @@ class KernelStateV2:
             raise ValueError("external drive must be finite and match graph size")
         if not drive.flags.c_contiguous:
             drive = np.ascontiguousarray(drive)
+        if not 0 <= self.tick < 2**32 - 1:
+            raise ValueError("u32 clock exhausted")
         start_tick = self.tick
         collision = _serial_step_v2(
             self.graph.offsets,
@@ -186,3 +206,40 @@ class KernelStateV2:
             self._arrival_increment.copy(),
             self._spikes.copy(),
         )
+
+
+@njit(cache=True)
+def _interval_counts(offsets, targets, weights, voltage, current, refractory,
+                     pending_spikes, pending_inputs, arrivals, spikes, drive, tick,
+                     scale, current_decay, voltage_decay, held_factor, coupling,
+                     rest, reset, threshold, refractory_ticks, delay_ticks,
+                     seed, stream, noise_threshold, noise_increment, population, steps):
+    counts = np.zeros(voltage.size, dtype=np.int64)
+    for i in range(steps):
+        collision = _serial_step_v2(offsets, targets, weights, voltage, current, refractory,
+            pending_spikes, pending_inputs, arrivals, spikes, drive, tick+i, scale,
+            current_decay, voltage_decay, held_factor, coupling, rest, reset, threshold,
+            refractory_ticks, delay_ticks, seed, stream, noise_threshold, noise_increment, population)
+        if collision:
+            raise RuntimeError('fixed-delay ring collision')
+        for neuron in range(voltage.size):
+            counts[neuron] += int(spikes[neuron])
+    return counts
+
+
+def interval_counts(state: KernelStateV2, drive: np.ndarray, steps: int = 20) -> np.ndarray:
+    """Advance using precisely the same serial step, counting spikes per neuron."""
+    if type(steps) is not int or steps < 1 or state.tick + steps >= 2**32:
+        raise ValueError('invalid interval or exhausted u32 clock')
+    if drive.shape != (state.n,) or not np.all(np.isfinite(drive)):
+        raise ValueError('invalid drive')
+    s = state.spec
+    result = _interval_counts(state.graph.offsets, state.graph.targets, state.graph.weights,
+        state.voltage, state.synaptic_current, state.refractory_until_tick,
+        state.pending_spikes, state.pending_inputs, state._arrival_increment, state._spikes,
+        drive, state.tick, s.runtime_synaptic_scale, state._current_decay, state._voltage_decay,
+        state._held_drive_factor, state._current_coupling_factor, s.rest, s.reset, s.threshold,
+        s.refractory_ticks, s.delay_ticks, state.noise.seed, state.noise.stream_id,
+        state.noise.threshold, state.noise.current_increment, state.noise.population_mask, steps)
+    state.tick += steps
+    return result

@@ -21,6 +21,8 @@ class HandStrikeV2:
 class EncoderOutputV2:
     angular_radius: float
     angular_expansion_per_ms: float
+    size_feature: float
+    expansion_feature: float
     left_fraction: float
     right_fraction: float
     lc4_left_drive: float
@@ -59,8 +61,10 @@ def encode_hand_v2(
         raise ValueError("encoder inputs must be finite")
     if hand_radius <= 0.0 or initial_height <= 0.0 or dt_ms <= 0.0 or input_gain < 0.0:
         raise ValueError("encoder scale values are outside their declared domains")
-    if not strike.active:
-        return EncoderOutputV2(0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0)
+    if strike.elapsed_ms < 0.0 or strike.downward_speed_per_ms < 0.0:
+        raise ValueError("strike elapsed time and speed must be nonnegative")
+    if not strike.active or strike.downward_speed_per_ms * strike.elapsed_ms >= initial_height:
+        return EncoderOutputV2(0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0)
     height = initial_height - strike.downward_speed_per_ms * strike.elapsed_ms
     if height < 0.0:
         height = 0.0
@@ -92,16 +96,35 @@ def encode_hand_v2(
         cross = 0.0
     left_fraction = 0.5 * (1.0 + cross)
     right_fraction = 1.0 - left_fraction
-    size_drive = input_gain * angular_radius
-    expansion_drive = input_gain * expansion
+    theta_peak, expansion_peak = standard_feature_peaks(hand_radius, initial_height)
+    size_feature = min(1.0, max(0.0, angular_radius / theta_peak))
+    expansion_feature = min(1.0, max(0.0, expansion / expansion_peak))
+    size_drive = input_gain * size_feature if expansion > 0.0 else 0.0
+    expansion_drive = input_gain * expansion_feature
     return EncoderOutputV2(
         angular_radius,
         expansion,
+        size_feature,
+        expansion_feature,
         left_fraction,
         right_fraction,
-        size_drive * left_fraction,
-        size_drive * right_fraction,
         expansion_drive * left_fraction,
         expansion_drive * right_fraction,
+        size_drive * left_fraction,
+        size_drive * right_fraction,
     )
 
+
+
+def standard_feature_peaks(hand_radius: float = 0.75, initial_height: float = 8.0,
+                           standard_speed: float = 0.05) -> tuple[float, float]:
+    """Geometry only: theta at minimum distance r/8; max d atan(r/h)/dt.
+
+    The geometry clamps distance to r/8. For a centered standard approach,
+    expansion is r*v/(h*h+r*r), maximized at h=r/8 provided H>=r/8.
+    These are analytic upper bounds for the finite difference at dt=0.5 ms.
+    """
+    minimum_distance = hand_radius / 8.0
+    if initial_height < minimum_distance:
+        raise ValueError("standard start height must be at least radius/8")
+    return atan_approx(8.0), hand_radius * standard_speed / (minimum_distance * minimum_distance + hand_radius * hand_radius)

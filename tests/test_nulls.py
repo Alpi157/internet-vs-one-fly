@@ -58,7 +58,6 @@ def test_frozen_edges_remain_untouched() -> None:
 @pytest.mark.parametrize(
     ("sources", "targets", "message"),
     [
-        (np.asarray([0]), np.asarray([0]), "self-loop"),
         (np.asarray([0, 0]), np.asarray([1, 1]), "multi-edge"),
     ],
 )
@@ -84,3 +83,12 @@ def test_reachability_diagnostics_use_body_ids() -> None:
     )
     assert set(diagnostics["visual_to_output"]["reachable"]) == {"10001", "10010"}
     assert set(diagnostics["visual_to_output"]["shortest_path_lengths"]) == {"10001", "10010"}
+
+
+def test_autapses_are_identical_and_no_new_autapses():
+    sources,targets,counts,weights=synthetic()
+    sources=np.concatenate(([0],sources));targets=np.concatenate(([0],targets))
+    swapped=directed_double_edge_swap(sources,targets,swap_count=30,seed=53)
+    assert np.array_equal(sources==targets,sources==swapped.targets)
+    assert swapped.targets[0]==0
+    assert np.array_equal(np.bincount(targets,minlength=6),np.bincount(swapped.targets,minlength=6))

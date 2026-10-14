@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2B-REVIEW-01",
+  "classification": "EXTERNAL STAGE REVIEW VERDICT",
+  "stage": "V2B",
+  "attempt": 1,
+  "reviewer": "external (operator relay)",
+  "verdict_status": "ACCEPTED WITH CONDITIONS",
+  "verdict": "V2B attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nB0, B1, B2, B3, B5 (reference, kernel, noise parity, decoder, body) and B7 are\naccepted. B4 and the B5 encoder are accepted with required fixes. The B6 dry\nrun is recorded as a FAILED DRY RUN THAT FOUND DEFECTS, not as model evidence.\nIts \"inverted looming control\" and \"all rows silent\" outcomes are caused by\nimplementation and design defects, not by the circuit:\nD1 encoding_v2.py swaps the populations: LC4 receives angular size and LPLC2\n   receives expansion. Plan v2 and Ache et al. 2019 require LC4 = expansion\n   (angular velocity) and LPLC2 = angular size.\nD2 Expansion is not normalized. It is in rad/ms and about 50 times smaller\n   than angular size in rad, so expansion contributes almost nothing.\nD3 The dry-run looming stimulus continues at full size after impact for the rest\n   of the trial, and the matched non-looming control applies full final size\n   from t = 0. The control therefore receives more drive for longer.\nD4 Noise and synaptic scale grids are orders of magnitude too small. With\n   p = 0.01 per tick and w = 0.05 the steady free membrane potential is about\n   0.005 of threshold. One contact at scale 0.003 gives a peak PSP of about\n   0.0005 of threshold, so multi-hop signals cannot propagate.\nD5 The draft criterion \"looming escape exceeds non-looming by 0.10\" is also an\n   H1 outcome metric. Calibrating on an outcome is circular.\nD6 The draft criteria contain no false-escape limit.\nD7 atan_approx has about 5.8% relative error at small angles (slope 1.058 at 0).\nD8 The u32 mixer combines all counters linearly before a single finalizer, so\n   (tick, index) pairs can collide along lattice lines.\nReviewer decisions on V2B questions are in C1, C2 and C4 of the V2C prompt.",
+  "conditions_fixed_in": "V2C"
+}

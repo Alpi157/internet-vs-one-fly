@@ -1,0 +1,16 @@
+{
+  "changes": [
+    "Final exact-type ports from C1; turn direction assumptions use opened primary sources.",
+    "Freeze real autapses in every null; remove preliminary repair.",
+    "Chained flybench.u32.v2 and accurate restricted-operation atan. Keep v1 RNG for old evidence only.",
+    "Threshold-relative PSP, isolated-neuron noise table, reviewer grid and fixed decoder gains.",
+    "Draft criteria and held-out outcome separation from C6; no protocol freeze.",
+    "Decoder group rates are mean spikes per neuron per second. Hand removal uses the first neural boundary at or after impact, including an impact inside a control interval."
+  ],
+  "classification": "REVIEWER AUTHORIZED SCIENTIFIC REPAIR",
+  "decision_id": "D-V2C-MODEL-01",
+  "evidence_basis": "V2B reviewer defects D1 through D8 and V2C operator instructions",
+  "protocol_frozen": false,
+  "schema_version": 1,
+  "stage": "V2C"
+}

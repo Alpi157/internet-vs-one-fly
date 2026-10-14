@@ -1,0 +1,39 @@
+{
+  "classification": "MODEL ASSUMPTIONS, not measured MaleCNS turn directions",
+  "entries": [
+    {
+      "citation": "https://www.rayshubskiylab.org/uploads/1/3/3/9/133928559/rayshubskiyholtzwilsontext_200712brw.pdf",
+      "citation_checked": true,
+      "citation_note": "Opened primary preprint. Transfer to exact MaleCNS type and somaSide is a model assumption.",
+      "direction": "ipsilateral",
+      "supporting_sentence": "Both DN types correlate with rotational velocity and sideways velocity in the ipsilateral direction (Fig. 5).",
+      "type": "DNa02"
+    },
+    {
+      "citation": "https://www.rayshubskiylab.org/uploads/1/3/3/9/133928559/rayshubskiyholtzwilsontext_200712brw.pdf",
+      "citation_checked": true,
+      "citation_note": "Opened primary preprint. Transfer to exact MaleCNS type and somaSide is a model assumption.",
+      "direction": "ipsilateral",
+      "supporting_sentence": "Both DN types correlate with rotational velocity and sideways velocity in the ipsilateral direction (Fig. 5).",
+      "type": "DNa01"
+    },
+    {
+      "citation": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10614758/",
+      "citation_checked": true,
+      "citation_note": "Opened primary preprint. Transfer to exact MaleCNS type and somaSide is a model assumption.",
+      "direction": "ipsilateral",
+      "supporting_sentence": "From the perspective of their soma and dendritic arbor, both DN types predicted ipsiversive steering.",
+      "type": "DNg13"
+    },
+    {
+      "citation": null,
+      "citation_checked": false,
+      "citation_note": "No accessible direction-specific sentence found; excluded from decoder.",
+      "direction": "UNKNOWN",
+      "supporting_sentence": null,
+      "type": "DNb02"
+    }
+  ],
+  "profile_id": "flybench.turn-directions.v1",
+  "schema_version": 1
+}

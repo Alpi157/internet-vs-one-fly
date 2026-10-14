@@ -1,6 +1,3 @@
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-
 export type WebGraph = {
   header: Record<string, any>;
   ids: BigUint64Array;
@@ -35,27 +32,24 @@ function alignedPayloadOffset(headerLength: number): number {
   return prefix + ((8 - (prefix % 8)) % 8);
 }
 
-export function readGraph(path: string): WebGraph {
-  const raw = readFileSync(path);
-  if (raw.subarray(0, 8).toString("binary") !== "FLYWEB1\0") {
-    throw new Error("invalid web graph magic");
-  }
-  const headerLength = raw.readUInt32LE(8);
-  const header = JSON.parse(raw.subarray(12, 12 + headerLength).toString("utf8"));
+export function readGraph(raw: ArrayBuffer): WebGraph {
+  const bytes = new Uint8Array(raw);
+  if (new TextDecoder().decode(bytes.subarray(0, 8)) !== "FLYWEB1\0") throw new Error("invalid web graph magic");
+  const headerLength = new DataView(raw).getUint32(8, true);
+  const header = JSON.parse(new TextDecoder().decode(bytes.subarray(12,12+headerLength)));
   const payloadOffset = alignedPayloadOffset(headerLength);
   const section = (name: string) => header.sections[name];
-  const start = (name: string) => raw.byteOffset + payloadOffset + section(name).byte_offset;
-  return {
-    header,
-    ids: new BigUint64Array(raw.buffer, start("ids"), section("ids").length),
-    offsets: new BigInt64Array(raw.buffer, start("offsets"), section("offsets").length),
-    targets: new Int32Array(raw.buffer, start("targets"), section("targets").length),
-    counts: new BigUint64Array(raw.buffer, start("counts"), section("counts").length),
-    weights: new Float64Array(raw.buffer, start("weights"), section("weights").length),
-  };
+  const start = (name: string) => payloadOffset + section(name).byte_offset;
+  return { header,
+    ids: new BigUint64Array(raw,start("ids"),section("ids").length),
+    offsets: new BigInt64Array(raw,start("offsets"),section("offsets").length),
+    targets: new Int32Array(raw,start("targets"),section("targets").length),
+    counts: new BigUint64Array(raw,start("counts"),section("counts").length),
+    weights: new Float64Array(raw,start("weights"),section("weights").length) };
 }
 
-export function u32(seed: number, stream: number, tick: number, index: number): number {
+export function u32V1(seed: number, stream: number, tick: number, index: number): number {
+  for (const v of [seed,stream,tick,index]) if (!Number.isInteger(v) || v<0 || v>=2**32) throw new Error("u32 counters outside domain");
   let value = (seed + 0x9e3779b9) >>> 0;
   value = (value ^ Math.imul(stream, 0x85ebca6b)) >>> 0;
   value = (value + Math.imul(tick, 0xc2b2ae35)) >>> 0;
@@ -67,15 +61,36 @@ export function u32(seed: number, stream: number, tick: number, index: number): 
   return (value ^ (value >>> 16)) >>> 0;
 }
 
+export function fmix32(input: number): number {
+  let x = input >>> 0;
+  x = (x ^ (x >>> 16)) >>> 0;
+  x = Math.imul(x,0x85ebca6b) >>> 0;
+  x = (x ^ (x >>> 13)) >>> 0;
+  x = Math.imul(x,0xc2b2ae35) >>> 0;
+  return (x ^ (x >>> 16)) >>> 0;
+}
+export function u32(seed: number, stream: number, tick: number, index: number): number {
+  for (const v of [seed,stream,tick,index]) if (!Number.isInteger(v) || v < 0 || v >= 2**32) throw new Error("u32 counters outside domain");
+  let h = fmix32(seed+0x9e3779b9);
+  h = fmix32(h ^ stream);
+  h = fmix32(h+tick);
+  return fmix32(h ^ index);
+}
+
 export function atanApprox(input: number): number {
   if (!Number.isFinite(input) || input < -8 || input > 8) {
     throw new Error("atan approximation input outside domain");
   }
   const sign = input < 0 ? -1 : 1;
   const magnitude = input < 0 ? -input : input;
-  const reduced = magnitude > 1 ? 1 / magnitude : magnitude;
-  const core = reduced * (0.7853981633974483 + 0.273 * (1 - reduced));
-  return sign * (magnitude > 1 ? 1.5707963267948966 - core : core);
+  let reduced = magnitude > 1 ? 1/magnitude : magnitude;
+  for (let k=0;k<2;k++) reduced = reduced/(1+Math.sqrt(1+reduced*reduced));
+  const square = reduced*reduced;
+  let term = reduced;
+  let core = term;
+  for (let k=1;k<9;k++) { term = -term*square; core = core + term/(2*k+1); }
+  core = 4*core;
+  return sign*(magnitude>1 ? 1.5707963267948966-core : core);
 }
 
 export function rotateUnitStep(x: number, y: number, delta: number): [number, number] {
@@ -103,7 +118,12 @@ export class KernelState {
     this.graph = graph;
     this.model = model;
     this.noise = noise;
+    if (noise) {
+      u32(noise.seed,noise.stream_id,0,0);
+      if (!Number.isInteger(noise.threshold) || noise.threshold<0 || noise.threshold>2**32 || !Number.isFinite(noise.current_increment) || noise.current_increment<0) throw new Error("invalid noise");
+    }
     this.voltage = new Float64Array(graph.header.N);
+    this.voltage.fill(model.rest);
     this.synapticCurrent = new Float64Array(graph.header.N);
     this.refractoryUntilTick = new BigInt64Array(graph.header.N);
     const ringSize = model.delay_ticks + 1;
@@ -115,6 +135,7 @@ export class KernelState {
   }
 
   step(drive: Float64Array): Uint8Array {
+    if (this.tick>=2**32-1) throw new Error("u32 clock exhausted");
     const count = this.graph.header.N as number;
     if (drive.length !== count) throw new Error("drive size mismatch");
     const ringSize = this.pendingSpikeLists.length;
@@ -166,24 +187,24 @@ export class KernelState {
     return this.spikes;
   }
 
-  digest(domain: string): string {
-    const hash = createHash("sha256");
-    hash.update(Buffer.from(domain + "\0", "utf8"));
-    const tick = Buffer.alloc(8);
-    tick.writeBigUInt64LE(BigInt(this.tick));
-    hash.update(tick);
-    hash.update(Buffer.from(this.voltage.buffer, this.voltage.byteOffset, this.voltage.byteLength));
-    hash.update(Buffer.from(this.synapticCurrent.buffer, this.synapticCurrent.byteOffset, this.synapticCurrent.byteLength));
-    hash.update(Buffer.from(this.refractoryUntilTick.buffer, this.refractoryUntilTick.byteOffset, this.refractoryUntilTick.byteLength));
-    const pending = new Uint8Array(this.graph.header.N * this.pendingSpikeLists.length);
-    for (let slot = 0; slot < this.pendingSpikeLists.length; slot += 1) {
-      for (const neuron of this.pendingSpikeLists[slot]) pending[slot * this.graph.header.N + neuron] = 1;
-    }
-    hash.update(Buffer.from(pending.buffer));
-    for (const values of this.pendingInputs) {
-      hash.update(Buffer.from(values.buffer, values.byteOffset, values.byteLength));
-    }
-    return hash.digest("hex");
+  neuralBytes(): Uint8Array {
+    const tick = new Uint8Array(8);
+    new DataView(tick.buffer).setBigUint64(0,BigInt(this.tick),true);
+    const pending = new Uint8Array(this.graph.header.N*this.pendingSpikeLists.length);
+    for (let slot=0;slot<this.pendingSpikeLists.length;slot++) for (const neuron of this.pendingSpikeLists[slot]) pending[slot*this.graph.header.N+neuron]=1;
+    return concatBytes([tick,new Uint8Array(this.voltage.buffer),new Uint8Array(this.synapticCurrent.buffer),
+      new Uint8Array(this.refractoryUntilTick.buffer),pending,...this.pendingInputs.map(v=>new Uint8Array(v.buffer))]);
+  }
+  async digest(domain: string): Promise<string> {
+    return sha256(concatBytes([new TextEncoder().encode(domain+"\0"),this.neuralBytes()]));
   }
 }
 
+export function concatBytes(parts: Uint8Array[]): Uint8Array {
+  const out=new Uint8Array(parts.reduce((n,p)=>n+p.byteLength,0));
+  let offset=0;for (const part of parts) {out.set(part,offset);offset+=part.byteLength;}return out;
+}
+export async function sha256(bytes: Uint8Array): Promise<string> {
+  const result=await crypto.subtle.digest("SHA-256",bytes);
+  return Array.from(new Uint8Array(result),v=>v.toString(16).padStart(2,"0")).join("");
+}

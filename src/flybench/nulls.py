@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from numba import njit
 import numpy as np
 
 from flybench.graph import write_json
@@ -30,8 +31,6 @@ class SwapResult:
 def validate_simple_directed_graph(sources: np.ndarray, targets: np.ndarray) -> None:
     if sources.shape != targets.shape or sources.ndim != 1:
         raise ValueError("sources and targets must be matching one-dimensional arrays")
-    if np.any(sources == targets):
-        raise ValueError("input graph contains a self-loop")
     pairs = {(int(source), int(target)) for source, target in zip(sources, targets, strict=True)}
     if len(pairs) != sources.size:
         raise ValueError("input graph contains a multi-edge")
@@ -61,52 +60,63 @@ def directed_double_edge_swap(
         frozen = np.asarray(frozen_edges, dtype=np.bool_)
         if frozen.shape != sources.shape:
             raise ValueError("frozen edge mask must match the edge arrays")
+    # Autapses retain their original edge, contact count and sign in every null.
+    frozen = frozen | (sources == original_targets)
     eligible = np.flatnonzero(~frozen)
     if swap_count and eligible.size < 2:
         raise ValueError("at least two eligible edges are required")
     rng = np.random.Generator(np.random.PCG64(seed))
     rewired = original_targets.copy()
-    pairs = {(int(source), int(target)) for source, target in zip(sources, rewired, strict=True)}
     completed = 0
     attempts = 0
     maximum_attempts = max(swap_count * maximum_attempt_multiple, 1)
+    # Batch independent uniform edge proposals, then process in exact order.
+    # Equal edge proposals are rejected, giving the same uniform distinct pair
+    # law as sampling without replacement, with a new declared seed sequence.
+    width = int(max(sources.max(initial=0), original_targets.max(initial=0))) + 1
+    encoded_pairs = {int(source) * width + int(target) for source, target in zip(sources, rewired, strict=True)}
     while completed < swap_count and attempts < maximum_attempts:
-        attempts += 1
-        first_edge, second_edge = rng.choice(eligible, size=2, replace=False)
-        first_edge = int(first_edge)
-        second_edge = int(second_edge)
-        first_source = int(sources[first_edge])
-        second_source = int(sources[second_edge])
-        first_target = int(rewired[first_edge])
-        second_target = int(rewired[second_edge])
-        if first_source == second_source or first_target == second_target:
-            continue
-        first_new = (first_source, second_target)
-        second_new = (second_source, first_target)
-        if first_new[0] == first_new[1] or second_new[0] == second_new[1]:
-            continue
-        old_first = (first_source, first_target)
-        old_second = (second_source, second_target)
-        if (first_new in pairs and first_new not in {old_first, old_second}) or (
-            second_new in pairs and second_new not in {old_first, old_second}
-        ):
-            continue
-        pairs.remove(old_first)
-        pairs.remove(old_second)
-        pairs.add(first_new)
-        pairs.add(second_new)
-        rewired[first_edge] = second_target
-        rewired[second_edge] = first_target
-        completed += 1
+        size = min(max(4096, (swap_count - completed) * 2), 1_000_000, maximum_attempts-attempts)
+        proposals = eligible[rng.integers(0, eligible.size, size=(size, 2))]
+        done, used = _swap_proposals(sources, rewired, proposals, encoded_pairs, width, swap_count-completed)
+        completed += done
+        attempts += used
     if completed != swap_count:
         raise RuntimeError(
             f"completed {completed} of {swap_count} swaps after {attempts} proposals"
         )
     if np.any(rewired[frozen] != original_targets[frozen]):
         raise RuntimeError("a frozen edge changed")
+    if not np.array_equal(sources == rewired, sources == original_targets):
+        raise RuntimeError("self-loop set changed")
     validate_simple_directed_graph(sources, rewired)
     return SwapResult(rewired, completed, attempts)
 
+
+
+@njit(cache=True)
+def _swap_proposals(sources, targets, proposals, pairs, width, requested):
+    completed = 0
+    used = 0
+    for row in proposals:
+        used += 1
+        first, second = row[0], row[1]
+        a, b = sources[first], sources[second]
+        x, y = targets[first], targets[second]
+        if a == b or x == y or a == y or b == x:
+            continue
+        new1, new2 = a*width+y, b*width+x
+        if new1 in pairs or new2 in pairs:
+            continue
+        pairs.remove(a*width+x)
+        pairs.remove(b*width+y)
+        pairs.add(new1)
+        pairs.add(new2)
+        targets[first], targets[second] = y, x
+        completed += 1
+        if completed == requested:
+            break
+    return completed, used
 
 def _edge_sources(offsets: np.ndarray) -> np.ndarray:
     return np.repeat(
@@ -201,6 +211,8 @@ def null_diagnostics(
         body_ids,
     )
     return {
+        "self_loops_identical": bool(np.array_equal(sources == original_targets, sources == rewired_targets)),
+        "no_new_self_loops": bool(not np.any((sources == rewired_targets) & (sources != original_targets))),
         "degree_preservation": {
             "out_degree_exact": bool(np.array_equal(original_outdegree, rewired_outdegree)),
             "in_degree_exact": bool(np.array_equal(original_indegree, rewired_indegree)),

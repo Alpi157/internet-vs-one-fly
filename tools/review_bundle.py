@@ -2303,7 +2303,13 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone in {"V2A", "V2B"}:
+    if milestone == "V2C":
+        if attempt != 1 or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
+            raise BundleError("V2C requires attempt 1 and the pinned plan")
+        # Stage registration: the stage narrative is captured evidence, not a new review tool.
+        narrative = (evidence_root / "REVIEW.md").read_text(encoding="utf-8")
+        entries["REVIEW.md"] = narrative.replace("{{BASE_SHA}}", base).replace("{{SUBMITTED_SHA}}", submitted).encode("utf-8")
+    elif milestone in {"V2A", "V2B"}:
         plan_path = root / "docs/plan-v2.md"
         if not plan_path.is_file() or sha256(plan_path.read_bytes()) != PLAN_V2_SHA256:
             raise BundleError("docs/plan-v2.md identity mismatch")

@@ -1,22 +1,35 @@
 {
-  "schema_version": 1,
-  "profile_id": "flybench.hand-disk-encoder.v2-draft-1",
-  "status": "DRAFT_REVIEW_REQUIRED",
-  "hand_model": {
-    "shape": "disk",
-    "radius_arena_units": 0.75,
-    "initial_height_arena_units": 8.0,
-    "descent": "vertical at the player-chosen speed to the aimed point",
-    "speed_domain_arena_units_per_ms": [0.001, 0.05]
-  },
-  "runtime_math": "flybench.detmath.v2-1",
   "angular_radius": "atan_approx(hand_radius / true_3d_hand_to_fly_distance)",
+  "classification": "MODEL ASSUMPTIONS, not measured anatomy or physiology",
   "expansion": "positive finite difference of angular radius over one neural interval",
-  "side_split": "cross = heading_x*direction_y-heading_y*direction_x; left=(1+cross)/2; right=1-left",
-  "population_roles": {
-    "LC4": "angular radius",
-    "LPLC2": "positive angular expansion"
+  "hand_model": {
+    "descent": "vertical at the player-chosen speed to the aimed point",
+    "initial_height_arena_units": 8.0,
+    "radius_arena_units": 0.75,
+    "shape": "disk",
+    "speed_domain_arena_units_per_ms": [
+      0.001,
+      0.1
+    ]
   },
   "input_gain": 4.0,
-  "classification": "MODEL ASSUMPTIONS, not measured anatomy or physiology"
+  "normalization": {
+    "clamp_features": [
+      0,
+      1
+    ],
+    "expansion_peak": "r*v_standard/((r/8)^2+r^2), maximum of analytic centered approach derivative on height [r/8,H]",
+    "standard_speed": 0.05,
+    "theta_peak": "atan_approx(r/(r/8))"
+  },
+  "population_roles": {
+    "LC4": "expansion_feature",
+    "LPLC2": "size_feature if expansion > 0 else 0"
+  },
+  "profile_id": "flybench.hand-disk-encoder.v2-draft-2",
+  "runtime_math": "flybench.detmath.v2-2",
+  "schema_version": 1,
+  "side_split": "cross = heading_x*direction_y-heading_y*direction_x; left=(1+cross)/2; right=1-left",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "timeline": "baseline, approach, impact, hand removed at elapsed >= H/v"
 }

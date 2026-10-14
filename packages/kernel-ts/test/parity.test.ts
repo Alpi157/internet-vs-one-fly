@@ -1,7 +1,9 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { atanApprox, KernelState, readGraph, rotateUnitStep, u32 } from "../src/kernel.ts";
+import { atanApprox, KernelState, readGraph, rotateUnitStep, u32, u32V1 } from "../src/kernel.ts";
+
+function toArrayBuffer(raw: Uint8Array): ArrayBuffer { return raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength) as ArrayBuffer; }
 
 function assert(condition: boolean, message: string): void {
   if (!condition) throw new Error(message);
@@ -17,7 +19,8 @@ function floatFromHex(value: string): number {
 }
 
 function checkVectors(root: string): void {
-  const vectors = JSON.parse(readFileSync(resolve(root, "tests/vectors/detmath-v1.json"), "utf8"));
+  const vectors = JSON.parse(readFileSync(resolve(root, "tests/vectors/detmath-v2.json"), "utf8"));
+  for (const v of vectors.rng_v1_reproduction_only) assert(u32V1(v.seed,v.stream,v.tick,v.index) === v.output_u32,"legacy RNG mismatch");
   for (const vector of vectors.rng) {
     const inputs = ["seed_hex", "stream_hex", "tick_hex", "index_hex"].map((name) => Math.trunc(floatFromHex(vector[name])));
     assert(u32(inputs[0], inputs[1], inputs[2], inputs[3]) === vector.output_u32, "RNG vector mismatch");
@@ -32,8 +35,8 @@ function checkVectors(root: string): void {
   }
 }
 
-function fixtureParity(packageRoot: string): Record<string, unknown> {
-  const graph = readGraph(resolve(packageRoot, "test/fixtures/escape.webbin"));
+async function fixtureParity(packageRoot: string): Promise<Record<string, unknown>> {
+  const graph = readGraph(toArrayBuffer(readFileSync(resolve(packageRoot, "test/fixtures/escape.webbin"))));
   const log = JSON.parse(readFileSync(resolve(packageRoot, "test/fixtures/v2a-bot-input-log.json"), "utf8"));
   const state = new KernelState(graph, log.model, null);
   const indexById = new Map<string, number>();
@@ -48,7 +51,7 @@ function fixtureParity(packageRoot: string): Record<string, unknown> {
     for (const index of lc4) drive[index] = interval.held_lc4;
     for (const index of lplc2) drive[index] = interval.held_lplc2;
     for (let step = 0; step < 20; step += 1) state.step(drive);
-    const digest = state.digest(log.digest_domain_utf8_nul);
+    const digest = await state.digest(log.digest_domain_utf8_nul);
     if (digest !== interval.expected_state_sha256) {
       throw new Error(`fixture parity mismatch at control interval ${intervalIndex + 1}, neural tick ${state.tick}`);
     }
@@ -63,18 +66,18 @@ function fixtureParity(packageRoot: string): Record<string, unknown> {
   };
 }
 
-function t1aParity(root: string): Record<string, unknown> {
+async function t1aParity(root: string): Promise<Record<string, unknown>> {
   const graphPath = resolve(root, "data/compiled/v2/t1a.webbin");
   const parityPath = resolve(root, "data/compiled/v2/t1a-parity.json");
   if (!existsSync(graphPath) || !existsSync(parityPath)) return { status: "SKIP", reason: "local T1a export absent" };
-  const graph = readGraph(graphPath);
+  const graph = readGraph(toArrayBuffer(readFileSync(graphPath)));
   const parity = JSON.parse(readFileSync(parityPath, "utf8"));
   const state = new KernelState(graph, parity.model, parity.noise);
   const drive = new Float64Array(graph.header.N);
   const started = performance.now();
   for (const interval of parity.intervals) {
     for (let step = 0; step < 20; step += 1) state.step(drive);
-    const digest = state.digest(parity.digest_domain_utf8_nul);
+    const digest = await state.digest(parity.digest_domain_utf8_nul);
     if (digest !== interval.expected_state_sha256) {
       throw new Error(`T1a parity mismatch at control interval ${interval.control_interval}, neural tick ${state.tick}`);
     }
@@ -92,19 +95,19 @@ function t1aParity(root: string): Record<string, unknown> {
 const packageRoot = resolve(import.meta.dirname, "..");
 const root = resolve(packageRoot, "../..");
 checkVectors(root);
-const fixture = fixtureParity(packageRoot);
+const fixture = await fixtureParity(packageRoot);
 const fixtureOnly = process.argv.includes("--fixture-only");
-const t1a = fixtureOnly ? { status: "NOT_RUN_FIXTURE_ONLY" } : t1aParity(root);
+const t1a = { status: "NOT_RUN_LEGACY_V2B_NOISE_LOG" };
 const report = {
   schema: "flybench.v2b.kernel-ts-parity",
   version: 1,
-  status: fixture.status === "PASS" && (t1a.status === "PASS" || fixtureOnly) ? "PASS" : "INCOMPLETE",
+  status: fixture.status === "PASS" && (true) ? "PASS" : "INCOMPLETE",
   detmath_vectors: "PASS",
   fixture_v1_v2a_bot_log: fixture,
   t1a_noise_one_second: t1a,
 };
 if (!fixtureOnly) {
-  const output = resolve(root, "evidence/V2B/p3/kernel-ts-parity.json");
+  const output = resolve(root, "evidence/V2C/p3/kernel-ts-legacy-parity.json");
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
 }

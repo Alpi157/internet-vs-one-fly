@@ -1,22 +1,23 @@
 # Encoder card v2
 
-Status: DRAFT_REVIEW_REQUIRED.
+Status: DRAFT_REVIEW_REQUIRED. Model assumptions, not measured physiology.
+The disk radius is 0.75 units, start height 8 units, standard speed 0.05 units/ms.
+Angular radius is atan_approx(r / max(distance, r/8)). Expansion is the positive
+backward finite difference over 0.5 ms, holding current fly pose fixed.
 
-## Inputs and authority
+Both features are clamped to [0,1] before input gain. THETA_PEAK = atan_approx(8).
+EXPANSION_PEAK = r*v_standard / ((r/8)^2+r^2), the maximum derivative on the
+standard centered trajectory over height [r/8,H]. This geometry-derived bound
+also bounds the finite difference. Peaks are independent of neural output.
 
-The encoder receives the active strike, aimed arena point, player-chosen descent speed, elapsed strike time, and current fly pose. These values are sensory inputs to the network. They are not available to the decoder.
+LC4 receives expansion_feature. LPLC2 receives size_feature only while expansion
+is strictly positive. A static object gives zero drive to both. Looming selectivity
+is assumed at the encoder level and is not produced by the circuit, following the
+reviewer reading of Klapoetke et al. Nature 2017 (doi:10.1038/nature24626) and Ache
+et al. Current Biology 2019 (doi:10.1016/j.cub.2019.01.079). See D-V2C-ENCODER-01.
+The looming versus static difference is not an H1 metric.
 
-## Assumptions
-
-- The hand is a disk with radius 0.75 arena units.
-- The disk starts 8 arena units above the arena and descends vertically to the aimed point.
-- Angular radius uses true three-dimensional hand-center distance and the declared deterministic atan approximation.
-- LC4 drive is proportional to angular radius. LPLC2 drive is proportional to positive angular expansion.
-- Left and right drive fractions use the signed planar cross product between fly heading and hand direction.
-- A strike aimed far from the fly produces weak drive because its three-dimensional distance remains large.
-- Radius, height, gain, population roles, and side formula are model assumptions, not measurements.
-
-## Numerical limits
-
-Runtime evaluation uses only addition, subtraction, multiplication, division, square root, comparisons, and the approximation in `profiles/detmath-v2.json`.
-
+Cross product of heading and planar aim direction splits left=(1+cross)/2,
+right=1-left, using somaSide groups. No retinotopy is inferred. Baseline is zero;
+approach ends at impact; the hand is removed at impact, so drive is zero.
+No strike also means zero drive. The decoder receives spikes only.

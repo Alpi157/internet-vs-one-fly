@@ -39,9 +39,24 @@ graphs:
     contacts: 79112
     digest: 53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5
   v2_candidates:
-    T1a: {status: PROVISIONAL_SEEDS, N: 2461, E: 244345, contacts: 2227343, digest: 58d6cd4463428c753c8d5fb09a651651582b87282542bc28abc74b73aefc1190}
-    T1b: {status: PROVISIONAL_SEEDS, N: 5038, E: 649715, contacts: 6391268, digest: 7ee512cea35a6d183c542e46c8daa74103eb636b3162d39e651183c653ee988f}
-    T2: {status: PROVISIONAL_SEEDS, N: 42845, E: 7091676, contacts: 43697352, digest: 8069495572c0e789892fb4da1a1b828881b575626346a0f0d0c15d6de978315b}
+    T1a:
+      status: FINAL_SEEDS
+      N: 2641
+      E: 275162
+      contacts: 2511756
+      digest: c157802c70bfeb71548b71159ff297525136d3d58f31d91e91937fddc738e3d2
+    T1b:
+      status: FINAL_SEEDS
+      N: 5555
+      E: 759305
+      contacts: 7397244
+      digest: 52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858
+    T2:
+      status: FINAL_SEEDS
+      N: 43894
+      E: 7321740
+      contacts: 45179613
+      digest: 41aeec554aa4296bc0e8bea7803958a40d8f9c7e69feff80aceed61f0019b0df
 scientific_profiles_v2b:
   ports_v2_sha256: 1510d45d8db29739e94d08db55efe8b264099ed0140b5e0657621194a7ca2304
   walking_candidates_v2_sha256: cddab8a5badbd83fae23f16f79d4f749433bf6e0337ac466a7bf85ba4d36dd8d
@@ -53,10 +68,14 @@ scientific_profiles_v2b:
   body_v2_draft_sha256: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   calibration_v2_draft_sha256: 51601e75b5822424f6ab84f6deab224c5d48a4569c52ac774472a49b5cdcb423
 accepted_gates:
-  G-MAP: "PASS at 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8: exact canonical MaleCNS v1.0 LC4/LPLC2/DNp01 mapping and ports-only induced circuit; see docs/history/ledger-v1.yaml."
-  M05-NUMERICAL-SEMANTICS: "PASS at a7041a71e9da2b7de17d47f566f68d975ceec851: accepted numerical reference semantics; see docs/history/ledger-v1.yaml."
-  G-BIO: "PASS at ab8e88ff00db5a72e10a5769b232fb10f689c815: modeled DNp01-dependent escape onset in the declared simplified circuit/controller; see docs/history/ledger-v1.yaml."
-  G-FULL: "PASS at c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5: DISCLOSED_CIRCUIT selected with deterministic kernel parity; see docs/history/ledger-v1.yaml."
+  G-MAP: 'PASS at 621d5d5bfe3ad70c5ce4fdba36ffee09a589bfd8: exact canonical MaleCNS v1.0 LC4/LPLC2/DNp01 mapping
+    and ports-only induced circuit; see docs/history/ledger-v1.yaml.'
+  M05-NUMERICAL-SEMANTICS: 'PASS at a7041a71e9da2b7de17d47f566f68d975ceec851: accepted numerical reference semantics;
+    see docs/history/ledger-v1.yaml.'
+  G-BIO: 'PASS at ab8e88ff00db5a72e10a5769b232fb10f689c815: modeled DNp01-dependent escape onset in the declared
+    simplified circuit/controller; see docs/history/ledger-v1.yaml.'
+  G-FULL: 'PASS at c2b0dc064fa1f8d50b01f595f0232f8d9b37d5e5: DISCLOSED_CIRCUIT selected with deterministic kernel
+    parity; see docs/history/ledger-v1.yaml.'
 m08:
   status: G-GAME_DEFERRED_SUPERSEDED_BY_PLAN_V2
   candidate_product_sha: 76ccadccab5c37626557c6ff4b8a565d3c387c4f
@@ -74,7 +93,8 @@ m09:
   attempt_3_final_whole_state_sha256: ffd635efab9c97036021601ab667710d0059f87ef16617797bd463eb2053d1ef
 stages:
   V2A: ACCEPTED
-  V2B: SUBMITTED
+  V2B: ACCEPTED
+  V2C: SUBMITTED
 stage_review_records:
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
@@ -94,19 +114,65 @@ stage_review_records:
       C4 Scaffold tests must not hard-code the exact stage map; they must accept
          SUBMITTED and ACCEPTED values and require that only the reviewer verdict
          record can set ACCEPTED.
+  V2B:
+    decision: decisions/D-V2B-REVIEW-01.json
+    verdict: |-
+      V2B attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).
+      B0, B1, B2, B3, B5 (reference, kernel, noise parity, decoder, body) and B7 are
+      accepted. B4 and the B5 encoder are accepted with required fixes. The B6 dry
+      run is recorded as a FAILED DRY RUN THAT FOUND DEFECTS, not as model evidence.
+      Its "inverted looming control" and "all rows silent" outcomes are caused by
+      implementation and design defects, not by the circuit:
+      D1 encoding_v2.py swaps the populations: LC4 receives angular size and LPLC2
+         receives expansion. Plan v2 and Ache et al. 2019 require LC4 = expansion
+         (angular velocity) and LPLC2 = angular size.
+      D2 Expansion is not normalized. It is in rad/ms and about 50 times smaller
+         than angular size in rad, so expansion contributes almost nothing.
+      D3 The dry-run looming stimulus continues at full size after impact for the rest
+         of the trial, and the matched non-looming control applies full final size
+         from t = 0. The control therefore receives more drive for longer.
+      D4 Noise and synaptic scale grids are orders of magnitude too small. With
+         p = 0.01 per tick and w = 0.05 the steady free membrane potential is about
+         0.005 of threshold. One contact at scale 0.003 gives a peak PSP of about
+         0.0005 of threshold, so multi-hop signals cannot propagate.
+      D5 The draft criterion "looming escape exceeds non-looming by 0.10" is also an
+         H1 outcome metric. Calibrating on an outcome is circular.
+      D6 The draft criteria contain no false-escape limit.
+      D7 atan_approx has about 5.8% relative error at small angles (slope 1.058 at 0).
+      D8 The u32 mixer combines all counters linearly before a single finalizer, so
+         (tick, index) pairs can collide along lattice lines.
+      Reviewer decisions on V2B questions are in C1, C2 and C4 of the V2C prompt.
 measurements:
   full_graph:
     status: MEASURED_M07_PROVISIONAL
     graph_digest: 429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0
-    quiet_wall_seconds_per_simulated_second: [0.819961509, 0.818232291, 0.812240703]
-    nominal_wall_seconds_per_simulated_second: [0.896652571, 0.843234314, 0.826942529]
-    sustained_wall_seconds_per_simulated_second: [1.126155386, 1.009830065, 0.933420827]
+    quiet_wall_seconds_per_simulated_second:
+    - 0.819961509
+    - 0.818232291
+    - 0.812240703
+    nominal_wall_seconds_per_simulated_second:
+    - 0.896652571
+    - 0.843234314
+    - 0.826942529
+    sustained_wall_seconds_per_simulated_second:
+    - 1.126155386
+    - 1.009830065
+    - 0.933420827
   accepted_circuit:
     status: MEASURED_M07_PROVISIONAL
     graph_digest: 53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5
-    quiet_wall_seconds_per_simulated_second: [0.018432474, 0.017618518, 0.017525627]
-    nominal_wall_seconds_per_simulated_second: [0.017938964, 0.018923423, 0.018069697]
-    sustained_wall_seconds_per_simulated_second: [0.019969821, 0.019686976, 0.01984239]
+    quiet_wall_seconds_per_simulated_second:
+    - 0.018432474
+    - 0.017618518
+    - 0.017525627
+    nominal_wall_seconds_per_simulated_second:
+    - 0.017938964
+    - 0.018923423
+    - 0.018069697
+    sustained_wall_seconds_per_simulated_second:
+    - 0.019969821
+    - 0.019686976
+    - 0.01984239
   session_memory: UNMEASURED
   recorder_overhead: UNMEASURED
   host_capacity: UNMEASURED
@@ -115,34 +181,115 @@ measurements:
       rounds_per_strategy_controller: 500
       fixed_latency_ms_from_global_neural_median: 30.0
       catch_rates:
-        current-position: {accepted-neural: 0.028, fixed-latency-control: 0.028, no-escape: 0.478}
-        lead-0.5: {accepted-neural: 0.034, fixed-latency-control: 0.034, no-escape: 0.298}
-        lead-1.0: {accepted-neural: 0.022, fixed-latency-control: 0.022, no-escape: 0.04}
-        lead-2.0: {accepted-neural: 0.988, fixed-latency-control: 0.988, no-escape: 0.696}
-        far-corner: {accepted-neural: 0.0, fixed-latency-control: 0.0, no-escape: 0.002}
+        current-position:
+          accepted-neural: 0.028
+          fixed-latency-control: 0.028
+          no-escape: 0.478
+        lead-0.5:
+          accepted-neural: 0.034
+          fixed-latency-control: 0.034
+          no-escape: 0.298
+        lead-1.0:
+          accepted-neural: 0.022
+          fixed-latency-control: 0.022
+          no-escape: 0.04
+        lead-2.0:
+          accepted-neural: 0.988
+          fixed-latency-control: 0.988
+          no-escape: 0.696
+        far-corner:
+          accepted-neural: 0.0
+          fixed-latency-control: 0.0
+          no-escape: 0.002
       context:
-        accepted_circuit_dnp01_first_spike_ticks: {R: 1135, L: 1130}
-        full_graph_dnp01_first_spike_ticks: {R: 1136, L: 1131}
-        accepted_circuit_dnp01_spike_counts: {R: 3, L: 3}
-        full_graph_dnp01_spike_counts: {R: 3, L: 3}
+        accepted_circuit_dnp01_first_spike_ticks:
+          R: 1135
+          L: 1130
+        full_graph_dnp01_first_spike_ticks:
+          R: 1136
+          L: 1131
+        accepted_circuit_dnp01_spike_counts:
+          R: 3
+          L: 3
+        full_graph_dnp01_spike_counts:
+          R: 3
+          L: 3
         full_graph_outside_circuit_spiking_neurons: 11
     phase_1:
       circuit_survey_count: 10
-      circuit_N_range: [816, 100259]
-      circuit_E_range: [58219, 17046389]
+      circuit_N_range:
+      - 816
+      - 100259
+      circuit_E_range:
+      - 58219
+      - 17046389
       null_graph_count: 80
       null_diagnostics_status: PASS
   v2b:
-    walking_candidates: {DNp09_exact: 2, DNg13_exact: 2, DNb02_exact: 4, oDN1_matches: 0, DNa01_conflict: UNRESOLVED}
-    context_followup: {outside_circuit_spiking_neurons: 11, DNp01_full_graph_delay_ticks: 1, input_trace_status: EXPLAINED_BY_ACCUMULATED_DIFFERING_INPUT_HISTORY}
-    circuit_candidates: {count: 3, all_provisional: true, audit_status: PASS}
-    deterministic_math: {python_vectors: PASS, rng_sanity: REPORTED}
-    python_numba_noise_parity: {fixture_1s: PASS, T1a_1s: PASS}
-    calibration_dry_run: {status: DRAFT_PIPELINE_DRY_RUN_ONLY, rows: 96, silent_rows: 96, movement_rows: 0, looming_escape_intervals: 0, matched_non_looming_escape_intervals: 48}
-    typescript_parity: {detmath_vectors: PASS, fixture_v2a_bot_log: PASS, T1a_noise_1s: PASS}
+    walking_candidates:
+      DNp09_exact: 2
+      DNg13_exact: 2
+      DNb02_exact: 4
+      oDN1_matches: 0
+      DNa01_conflict: UNRESOLVED
+    context_followup:
+      outside_circuit_spiking_neurons: 11
+      DNp01_full_graph_delay_ticks: 1
+      input_trace_status: EXPLAINED_BY_ACCUMULATED_DIFFERING_INPUT_HISTORY
+    circuit_candidates:
+      count: 3
+      all_provisional: true
+      audit_status: PASS
+    deterministic_math:
+      python_vectors: PASS
+      rng_sanity: REPORTED
+    python_numba_noise_parity:
+      fixture_1s: PASS
+      T1a_1s: PASS
+    calibration_dry_run:
+      status: FAILED_DRY_RUN_THAT_FOUND_DEFECTS_NOT_MODEL_EVIDENCE
+      rows: 96
+      silent_rows: 96
+      movement_rows: 0
+      looming_escape_intervals: 0
+      matched_non_looming_escape_intervals: 48
+    typescript_parity:
+      detmath_vectors: PASS
+      fixture_v2a_bot_log: PASS
+      T1a_noise_1s: PASS
+  v2c:
+    circuits: FINAL_SEEDS audited; T1a 2641 neurons, T1b 5555, T2 43894
+    nulls:
+      count: 80
+      self_loops_identical: true
+    noise_table: profiles/noise-table-v1.json; nine isolated 200 s targets matched
+    dry_run:
+      rows: 80
+      passing_subset_points: 0
+      classification: PIPELINE_AND_SANITY_ONLY; no H1 or H2 results
+    protocol_status: DRAFT_REVIEW_REQUIRED
+    typescript_node_parity: 'PASS fixture, T1a and T1b: 200 identical per-interval runner state digests each'
+    browser_parity: 'BLOCKED_ENVIRONMENT: downloaded engines cannot launch without system libraries; install-deps
+      requires unavailable sudo password'
 launch_blockers:
-- Soft-launch evidence required by plan-v2 section 5 has not been collected.
+- Soft-launch evidence required by plan-v2 has not been collected.
 - v1 live demo is equivalent to a fixed 30 ms timer; no connectome-behavior claim for v1.
-- DNp09, DNg13, and DNb02 ports remain provisional; DNa01 versus DNae001 remains unresolved.
-- The V2B dry run was silent without threat, produced no spontaneous movement, and produced matched non-looming escapes where looming produced none; calibration remains a draft.
-next_action: Submit V2B attempt 1 for external review. Do not freeze calibration or finalize provisional ports.
+- 'Draft calibration: no V2C subset point passes; exact nonzero movement criterion conflicts with exponential decoder
+  tails. No protocol freeze.'
+- Chromium, Firefox and WebKit parity and timings are unmeasured because host system dependencies cannot be installed
+  without sudo authentication.
+- V2C external review remains pending.
+next_action: Submit V2C attempt 1 for external review. Stop here. Do not freeze calibration or run H1/H2.
+scientific_profiles_v2c:
+  profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
+  profiles/calibration-v2-draft.json: d93fb572c1183cab3be651d06dedeaeae025fad396d0da1e9c423061d5dc882e
+  profiles/circuit-builder-v2.json: 4509e37db50ebb05532bc9a1ac795640b82952828a6316a9bcc78668ad6e0413
+  profiles/decoder-v2-draft.json: d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24
+  profiles/detmath-v2.json: 28161c96289410131ae903144e94eb05d96d44642cba8069d876b3987d104a22
+  profiles/encoder-v2-draft.json: f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8
+  profiles/model-v2-draft.json: ace4f525652be85d269de425798deb50675b1d89935f07c1fb87ea08e040832f
+  profiles/ports-v2.json: 0eb28f41195107a5f59e947bc37d8e29d168c351e77efa1238d8f2361d47b751
+  profiles/walking-dn-candidates-v2.json: cddab8a5badbd83fae23f16f79d4f749433bf6e0337ac466a7bf85ba4d36dd8d
+  profiles/noise-table-v1.json: 6cf8d416ad3a755e4be3a314651b87a35cb3af5f9dba4d0b6b23b776324d9341
+  profiles/turn-directions-v1.json: 56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7
+  docs/plan-v2-amendments.md: d0479520ef0edae36d74963a9a39f7aecffbb88fea689d69a67b5bd082bd1b46

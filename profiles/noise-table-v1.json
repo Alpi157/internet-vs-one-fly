@@ -1,0 +1,98 @@
+{
+  "method": "32 integer-threshold bisections from [0,2**32]; closest measured rate, threshold ascending tie break; no circuit output",
+  "peak_end_tick": 18,
+  "population": "all circuit neurons",
+  "profile_id": "flybench.noise-table.v1",
+  "psp_unit": 0.15744308780006205,
+  "rest": 0,
+  "rng": "flybench.u32.v2",
+  "rows": [
+    {
+      "kappa": 0.02,
+      "measured_isolated_rate_hz": 0.5,
+      "nu0_hz": 0.5,
+      "p_per_tick": 0.6724396005738527,
+      "relative_error": 0.0,
+      "threshold_int": 2888106093,
+      "w_noise": 0.1270300289422558
+    },
+    {
+      "kappa": 0.02,
+      "measured_isolated_rate_hz": 2.0,
+      "nu0_hz": 2.0,
+      "p_per_tick": 0.7028815567027777,
+      "relative_error": 0.0,
+      "threshold_int": 3018853299,
+      "w_noise": 0.1270300289422558
+    },
+    {
+      "kappa": 0.02,
+      "measured_isolated_rate_hz": 5.0,
+      "nu0_hz": 5.0,
+      "p_per_tick": 0.7349934664089233,
+      "relative_error": 0.0,
+      "threshold_int": 3156772901,
+      "w_noise": 0.1270300289422558
+    },
+    {
+      "kappa": 0.05,
+      "measured_isolated_rate_hz": 0.5,
+      "nu0_hz": 0.5,
+      "p_per_tick": 0.2053043618798256,
+      "relative_error": 0.0,
+      "threshold_int": 881775520,
+      "w_noise": 0.3175750723556395
+    },
+    {
+      "kappa": 0.05,
+      "measured_isolated_rate_hz": 2.0,
+      "nu0_hz": 2.0,
+      "p_per_tick": 0.23195229284465313,
+      "relative_error": 0.0,
+      "threshold_int": 996227512,
+      "w_noise": 0.3175750723556395
+    },
+    {
+      "kappa": 0.05,
+      "measured_isolated_rate_hz": 5.0,
+      "nu0_hz": 5.0,
+      "p_per_tick": 0.25919253239408135,
+      "relative_error": 0.0,
+      "threshold_int": 1113223450,
+      "w_noise": 0.3175750723556395
+    },
+    {
+      "kappa": 0.1,
+      "measured_isolated_rate_hz": 0.5,
+      "nu0_hz": 0.5,
+      "p_per_tick": 0.07681426592171192,
+      "relative_error": 0.0,
+      "threshold_int": 329914760,
+      "w_noise": 0.635150144711279
+    },
+    {
+      "kappa": 0.1,
+      "measured_isolated_rate_hz": 2.0,
+      "nu0_hz": 2.0,
+      "p_per_tick": 0.09580480959266424,
+      "relative_error": 0.0,
+      "threshold_int": 411478524,
+      "w_noise": 0.635150144711279
+    },
+    {
+      "kappa": 0.1,
+      "measured_isolated_rate_hz": 5.0,
+      "nu0_hz": 5.0,
+      "p_per_tick": 0.11441397806629539,
+      "relative_error": 0.0,
+      "threshold_int": 491404294,
+      "w_noise": 0.635150144711279
+    }
+  ],
+  "schema": "flybench.noise-table.v1",
+  "seconds": 200.0,
+  "seed": 2026101401,
+  "stream": 17,
+  "threshold": 1,
+  "ticks": 400000
+}

@@ -1,19 +1,22 @@
 # Decoder card v2
 
-Status: DRAFT_REVIEW_REQUIRED.
+Status: DRAFT_REVIEW_REQUIRED. Inputs are spike body IDs and prior rates only.
+The dependency audit excludes geometry, closures and reachable environment state.
+Filtered group rates are mean spikes per neuron per second, with a 50 ms filter.
+Escape requests occur on any DNp01 spike; onsets count rising request edges.
 
-## Authority boundary
+Constants are declared before the dry run and are not calibrated. A 20 Hz
+forward-minus-MDN difference reaches maximum speed 0.02 units/ms. Backward speed
+is allowed to -0.01 units/ms. A 20 Hz left-minus-right difference reaches maximum
+turn 0.005 rad/ms. Empty groups have rate zero.
 
-The decoder receives spike body IDs and its prior filtered rates only. It receives no cursor, strike, threat, aim, bearing, distance, collision, future outcome, environment, or position data.
+Turn directions are model assumptions in turn-directions-v1.json. DNa01 and DNa02
+use ipsilateral interpretation from the opened Rayshubskiy 2020 primary preprint;
+DNg13 uses soma-relative ipsiversive interpretation from the opened Yang 2023
+primary preprint. DNb02 is UNKNOWN and excluded from decoding while retained in
+the circuit. The annotation audit does not establish projection side or crossing.
+Yang reports type-level DNg13 crossing and DNa02 noncrossing; transferring the
+type-level direction to these somaSide groups remains an assumption.
 
-## Assumptions
-
-- Any escape-group spike requests escape for the next control interval.
-- Filtered group rates use the precomputed decay in `profiles/decoder-v2-draft.json`.
-- Forward speed is proportional to forward rate minus backward rate and is clamped.
-- Turn rate is proportional to left-group rate minus right-group rate and is clamped.
-- An empty group has rate zero.
-- Assigning a body-side group to the same named turn direction is a model assumption, not a measured fact.
-- Takeoff follows current heading. This direction rule is a simplification.
-- Gain values, filter duration, and clamps are proposed model assumptions for calibration review.
-
+Body translation and takeoff follow current heading. Commands decoded at an
+interval end drive the next interval; they cannot change an earlier collision.

@@ -1187,6 +1187,187 @@
           "timeout_seconds": 900
         }
       ]
+    },
+    "V2C": {
+      "title": "Final ports, repaired draft model, second dry run, synthetic analysis and browser parity",
+      "commands": [
+        {
+          "name": "locked-development-environment",
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "full-python-regression",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2c-circuit-build",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.circuit",
+            "build-v2",
+            "--out",
+            "evidence/V2C/p1"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2c-autapse-null-diagnostics",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2c_nulls.py",
+            "--out",
+            "evidence/V2C/p1"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2c-noise-table",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.calibration_v2",
+            "--out",
+            "profiles/noise-table-v1.json"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "v2c-extended-rng-sanity",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2c_rng_sanity.py",
+            "--out",
+            "evidence/V2C/p2"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 900
+        },
+        {
+          "name": "v2c-calibration-dry-run",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2c_dry_run.py",
+            "--out",
+            "evidence/V2C/p2"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "v2c-python-parity-export",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2c_parity.py",
+            "--out",
+            "evidence/V2C/p3"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "kernel-ts-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "ci"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "kernel-ts-parity",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "browser-parity-all-available",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "run",
+            "test:browsers"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "fresh-clone-offline-fixture-smoke",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2c-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        }
+      ]
     }
   }
 }
