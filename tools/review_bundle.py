@@ -2099,6 +2099,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
+        if milestone == "V2C" and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"}):
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
+                            "reason": "V2C operator exclusion of graph arrays; unchanged fixture binaries can be restored from BASE_SHA"})
+            continue
         if reason:
             raise BundleError(f"tracked forbidden path {path!r}: {reason}")
         if len(data) > MAX_INCLUDED_FILE_BYTES:
