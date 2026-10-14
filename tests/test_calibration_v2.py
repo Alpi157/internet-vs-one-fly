@@ -21,5 +21,5 @@ def test_calibration_protocol_remains_draft_and_complete() -> None:
         "turning-neuron lesion",
         "noise straight to decoder",
         "C-SIMPLE single threshold on angular size fitted with the same calibration budget",
-        "C-TIMER fixed 30 ms latency from V2A",
+        "C-TIMER fixed 30 ms before impact",
     } <= set(profile["controls"])

@@ -271,18 +271,27 @@ measurements:
     typescript_node_parity: 'PASS fixture, T1a and T1b: 200 identical per-interval runner state digests each'
     browser_parity: 'BLOCKED_ENVIRONMENT: downloaded engines cannot launch without system libraries; install-deps
       requires unavailable sudo password'
+    independent_isolated_validation:
+      seconds_per_seed: 2000
+      seeds: 2
+      within_10_percent: 14
+      checks: 18
+      failures: kappa 0.10, nu0 0.5 and 2 Hz, both seeds. C7 subset kappa 0.05 passes. Reference agrees for checked
+        2000 s failed case.
 launch_blockers:
 - Soft-launch evidence required by plan-v2 has not been collected.
 - v1 live demo is equivalent to a fixed 30 ms timer; no connectome-behavior claim for v1.
 - 'Draft calibration: no V2C subset point passes; exact nonzero movement criterion conflicts with exponential decoder
   tails. No protocol freeze.'
+- The 200 s isolated fit at kappa 0.10, nu0 0.5 and 2 Hz fails independent rate checks. No parameters were retuned.
+  Review before protocol freeze.
 - Chromium, Firefox and WebKit parity and timings are unmeasured because host system dependencies cannot be installed
   without sudo authentication.
 - V2C external review remains pending.
 next_action: Submit V2C attempt 1 for external review. Stop here. Do not freeze calibration or run H1/H2.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
-  profiles/calibration-v2-draft.json: d93fb572c1183cab3be651d06dedeaeae025fad396d0da1e9c423061d5dc882e
+  profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
   profiles/circuit-builder-v2.json: 4509e37db50ebb05532bc9a1ac795640b82952828a6316a9bcc78668ad6e0413
   profiles/decoder-v2-draft.json: d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24
   profiles/detmath-v2.json: 28161c96289410131ae903144e94eb05d96d44642cba8069d876b3987d104a22

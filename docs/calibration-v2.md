@@ -18,7 +18,7 @@ A quantity used as a calibration criterion cannot be a primary H1 or H2 outcome.
 
 H1 primary outcomes: escape probability and onset time before impact across speeds {0.025, 0.05, 0.1} units/ms, offsets {0, 1.5, 3} units, azimuths {0, 90, 180, 270} degrees; exclude the standard aimed condition. Record left/right escape-group asymmetry for lateral strikes. H2 primary outcomes: walking bout and pause duration distributions, speed distribution while moving, turn autocorrelation and left/right turn asymmetry. Moving fraction is not primary. No real-graph hypothesis analysis occurs in V2C.
 
-Controls: output clamp; LC4 lesion; LPLC2 lesion; turning-neuron lesion; noise straight to decoder; C-SIMPLE single threshold on angular size fitted with the same calibration budget; C-TIMER fixed 30 ms latency from V2A. Static control is an encoder sanity test only.
+Controls: output clamp; LC4 lesion; LPLC2 lesion; turning-neuron lesion; noise straight to decoder; C-SIMPLE single threshold on angular size fitted with the same calibration budget; C-TIMER fixed 30 ms before impact. Static control is an encoder sanity test only.
 
 Nulls: N-FULL and N-CONTEXT, 20 each. Autapses frozen in both; direct visual-to-output edges also frozen in N-CONTEXT. Identical grid, seeds, criteria and selection rule. A real or null graph with no passing point is uncalibratable and never silently dropped.
 
