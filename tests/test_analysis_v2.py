@@ -49,7 +49,7 @@ def test_escape_and_autocorrelation():
 
 
 def test_matched_summary_keeps_uncalibratable_and_budget():
-    grid={'s':[.01,.039],'kappa':[.05],'nu0':[.5,5],'gain':[2,8]}
+    grid={'s':[.01],'kappa':[.05],'nu0':[.5],'gain':[2]}
     a=dict(graph_id='real',passes_all=True,no_threat_mean_rate_hz=2,parameters=dict(s=.01,kappa=.05,nu0=.5,gain=2))
     b=dict(a,graph_id='null',passes_all=False)
     result=matched_calibration_summary([a,b],['real','null','missing'],grid)
@@ -62,3 +62,20 @@ def test_missing_command_censors_both_sides_of_gap():
     segments=segment_bouts(data)['segments']
     assert segments[0]['right_censored']
     assert segments[1]['left_censored']
+
+
+
+def test_truncated_start_censors_escape_and_misaligned_clock_is_rejected():
+    data=[dict(tick=200,applied=[True,0.,0.])]
+    result=trial_metrics({'records':data,'impact_tick':400})
+    assert result['escape_onset_ticks']==[]
+    assert result['escape_probability_observation'] is None
+    with pytest.raises(ValueError):segment_bouts([dict(tick=21,applied=[False,0.,0.])])
+
+
+def test_partial_grid_is_not_declared_calibrated_or_uncalibratable():
+    grid={'s':[.01,.039],'kappa':[.05],'nu0':[.5],'gain':[2]}
+    row=dict(graph_id='real',passes_all=True,no_threat_mean_rate_hz=2,parameters=dict(s=.01,kappa=.05,nu0=.5,gain=2))
+    result=matched_calibration_summary([row],['real'],grid)[0]
+    assert result['status']=='INCOMPLETE_GRID' and result['selected'] is None
+    assert result['expected_points']==2 and result['attempted_points']==1

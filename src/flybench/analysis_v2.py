@@ -37,7 +37,7 @@ def segment_bouts(records: list[dict], *, interval_ticks: int=20,
     segments=[]; current=None; previous=None; gaps=[]; after_gap=True
     for row in records:
         tick=row['tick']
-        if type(tick) is not int or tick<interval_ticks or (previous is not None and tick<=previous):
+        if type(tick) is not int or tick<interval_ticks or tick % interval_ticks or (previous is not None and tick<=previous):
             raise ValueError('ticks must be increasing integer interval ends')
         command=row.get('applied')
         valid=command is not None and len(command)==3 and all(math.isfinite(v) for v in command)
@@ -82,8 +82,8 @@ def turn_autocorrelation(turns: list[float | None], max_lag: int) -> list[dict]:
 
 def trial_metrics(trial: dict, *, interval_ticks: int=20) -> dict:
     records=trial['records']; segmentation=segment_bouts(records,interval_ticks=interval_ticks)
-    impact=trial.get('impact_tick'); onset_ticks=[]; prior=False; previous_tick=None
-    speed_values=[]; turn_values=[]; group_counts=[0,0]; gaps=0
+    impact=trial.get('impact_tick'); onset_ticks=[]; prior=False if records and records[0]['tick']==interval_ticks else None; previous_tick=None
+    speed_values=[]; turn_values=[]; group_counts=[0,0]; gaps=int(bool(records) and records[0]['tick']!=interval_ticks)
     for row in records:
         command=row.get('applied')
         if command is None:
@@ -123,7 +123,11 @@ def matched_calibration_summary(graph_rows: list[dict], expected_graph_ids: list
         passing=[r for r in candidates if r['passes_all']]
         def key(row):
             return (row['no_threat_mean_rate_hz'],*(grid_order[name].index(row['parameters'][name]) for name in ('s','kappa','nu0','gain')))
-        selected=min(passing,key=key) if passing else None
+        expected_points=math.prod(len(grid_order[name]) for name in ('s','kappa','nu0','gain'))
+        points={tuple(row['parameters'][name] for name in ('s','kappa','nu0','gain')) for row in candidates}
+        complete=len(points)==expected_points and len(candidates)==expected_points
+        selected=min(passing,key=key) if passing and complete else None
         output.append(dict(graph_id=graph_id,attempted_points=len(candidates),passing_points=len(passing),
-            status='CALIBRATED' if passing else 'UNCALIBRATABLE' if candidates else 'NOT_RUN',selected=selected))
+            expected_points=expected_points,unique_points=len(points),grid_complete=complete,
+            status=('CALIBRATED' if passing else 'UNCALIBRATABLE') if complete else 'INCOMPLETE_GRID' if candidates else 'NOT_RUN',selected=selected))
     return output
