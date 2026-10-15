@@ -12,6 +12,11 @@ Receipt: docs/preregistration-receipt-v2.1.json. Main was not pushed.
 
 Run PID is in evidence/V2F/run.pid; log is evidence/V2F/run.log.
 Task progress: evidence/V2F/results/progress.jsonl.
+A separate watcher (PID in evidence/V2F/analysis-after-run.pid) waits for clean
+COMPLETE.json, then runs the frozen analysis and --verify. Its log is
+evidence/V2F/analysis-after-run.log. Do not launch duplicate analysis while it is
+active. Script copy: evidence/V2F/analysis-after-run.sh. It neither publishes
+results nor commits changes and refuses a STOP or missing completion record.
 The frozen plan uses one full-graph worker, four T2 workers, eight T1a workers,
 and two mechanism workers. Pre-null projection was 33,651 seconds (9.35 hours).
 Use the declared counts unchanged. Do not start a duplicate runner.
@@ -58,3 +63,7 @@ No deployment or main push is authorized. Every EXPLORATORY output stays labeled
 No em dashes in new prose. Final handoff must include the review ZIP, submitted
 SHA, freeze/push receipt, tables, exploratory highlights, resource use, WebKit
 before/after, coupling screenshot list, and open questions.
+
+Checkpoint at 2026-10-15T06:52:30.149799+00:00: H0-FULL 25/199 tasks; H0-STR complete.
+Both manifests verified unchanged. No STOP.json. Full worker observed peak RSS
+5276708 KiB. Treat this as progress only; final resource totals are pending.
