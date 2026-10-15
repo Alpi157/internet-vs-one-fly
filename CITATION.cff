@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Please cite this software and the MaleCNS dataset when using FlyBench."
+title: "FlyBench / Catch the Fly"
+type: software
+authors:
+  - name: "Alpar"
+repository-code: "https://github.com/Alpi157/internet-vs-one-fly"
+license: MIT
+references:
+  - type: data
+    title: "MaleCNS v1.0"
+    authors:
+      - name: "Male CNS Connectome project"
+    url: "https://male-cns.janelia.org/"
+  - type: article
+    title: "MaleCNS study linked by the Male CNS Connectome project"
+    journal: "Cell"
+    year: 2026
+    url: "https://www.cell.com/cell/fulltext/S0092-8674%2826%2900942-6"

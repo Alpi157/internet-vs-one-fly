@@ -374,10 +374,10 @@ measurements:
     game_profile: flybench.game.v2.6
     measurement_record: docs/measurements-v2e.json
 launch_blockers:
-- V2E awaits external review; H1/H2 have insufficient calibratable nulls.
+- V2F robustness execution and final analysis are in progress; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
-- Software license awaits owner decision.
-next_action: Implement V2F outcome-neutral gates, then freeze and run v2.1 if all gates pass.
+- Public hosting remains an operator deployment action.
+next_action: Monitor frozen v2.1 run, complete analysis and final product acceptance, then submit one V2F review ZIP. See docs/CONTINUE.md.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -396,3 +396,15 @@ scientific_profiles_v2d:
   profiles/noise-v2.json: 74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e
   profiles/noise-table-v2.json: b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4
   profiles/calibration-v2d-draft.json: 03770353725e059cd4122577f952fcf3875689aa805b7ac89fed04d6bf21e92b
+
+v2f_current:
+  status: IN_PROGRESS
+  base_sha: 6f5276d021086580b04a81bad3a16b1a840beac7
+  freeze_sha: 083bd2be2944c5dd773f670efc7b69445e207058
+  protocol_sha256: c4ed65c481373d1a3a4a29637878acae93c0a085fdff50914bb9d0f95d6b217d
+  push_receipt: docs/preregistration-receipt-v2.1.json
+  gates: S2 G1-G4 PASS
+  run: evidence/V2F/results
+  product_measurements: docs/measurements-v2f.json
+  main_pushed: false
+  deployment_triggered: false

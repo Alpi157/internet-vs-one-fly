@@ -1,102 +1,76 @@
 # Catch the Fly
 
-Six strikes against a simulated fly driven by measured neural wiring.
+A simulated fly driven by measured neural wiring. Try to swat it, then shuffle the wiring and compare what happens.
 
-![A recorded takeoff and brain-cam replay](docs/media/catch-the-fly-v2e.png)
+![Recorded comparison of measured and shuffled wiring as coupling increases](docs/media/coupling-hero.gif)
 
-## What it is
+**[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)** · Live after deployment.
+Six strikes, one fly. Tap for a flick or hold for a slower, wider strike.
+Open the coupling lab to run measured and scrambled wiring side by side.
 
-Catch the Fly is a browser game whose walking, turning and takeoff requests come
-from a spiking neural simulation. It executes a 5,555-neuron MaleCNS circuit locally
-and replays recorded spikes after each strike. The accompanying experiment tests
-measured wiring against equally calibrated shuffled graphs.
-
-## What is real and what is simplified
-
-The T1b graph contains 759,305 measured directed connections representing 7,397,244
-biological contacts. Original body IDs and contact counts survive compilation and
-lossless browser transport. The model uses uniform LIF neurons, predicted source
-signs, feature-level vision, assumed turn directions and abstract takeoff physics.
-Unknown signs remain disabled; missing soma coordinates remain explicitly missing.
-The brain map uses relative x/z positions with unverified physical units and
-anatomical orientation. It shows recorded spikes, including fading afterglow,
-without inventing neural observations.
-
-## Results and status
-
-V2E is submitted for review. The full experiment and frozen analysis completed;
-hosting has not been enabled. The [public preregistration tag](https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2)
-fixes the protocol at `1a853f40007dcf10fb113c29a8400a7f99a3addb` before confirmatory
-execution. [The protocol](docs/preregistration-v2.md), [freeze manifest](profiles/freeze-v2.json)
-and [push receipt](docs/preregistration-receipt-v2.json) are committed.
-
-H0 was motivated by a pilot; all confirmatory null seeds were fresh. T1a was the
-H0 primary. Its critical coupling remained above 0.1, compared with null medians
-of 0.03. The table gives rates at coupling 0.039 and Holm p across H0a and H0b
-within each family; both metrics have the same adjusted p here.
-
-| Null family | T1a rate (Hz) | Null median (Hz) | Null 2.5% to 97.5% band (Hz) | Holm p |
-|---|---:|---:|---|---:|
-| N-FULL | 2.65 | 113.67 | 79.56 to 134.74 | 0.008 |
-| N-CONTEXT | 2.65 | 110.73 | 80.90 to 137.76 | 0.008 |
-| N-SIGN | 2.65 | 119.78 | 101.72 to 135.69 | 0.008 |
+## The finding
 
 In this model, measured wiring stays stable at couplings where degree- and
-sign-matched shuffles saturate. This does not establish that real flies need this
-wiring. T1b's secondary H0 results have the same direction and remain descriptive.
+sign-matched shuffles saturate. In the 2,641-neuron circuit at coupling 0.039,
+measured wiring averaged **2.65 Hz**, compared with null medians of **110.73 to
+119.78 Hz** across three families of 499 shuffles each; both registered stability
+metrics reached Holm p = **0.008** in every family. The
+[pre-registration](docs/preregistration-v2.md) was publicly timestamped on
+**14 October 2026**, before those confirmatory runs. A separately
+[registered robustness study](docs/preregistration-v2.1.md), published
+**15 October 2026**, is running strength-preserving, larger-circuit and full-graph
+checks; results are **pending**, so no robustness replication is claimed yet.
+These results concern uniform model neurons, assumed transmitter signs and
+simplified inputs, and do not establish what real flies require.
 
-![T1a no-threat rate against the N-SIGN null band](docs/media/T1a-N-SIGN-H0-curve.png)
+![Measured circuit rate and N-SIGN null band across coupling](docs/media/T1a-N-SIGN-H0-curve.png)
 
-T1a had 0/180 passing calibration points. T1b had 4/180, so the frozen fallback
-selected T1b for H1, H2 and the game at s=0.01, kappa=0.05, isolated nu0=5 Hz and
-gain=8. Only 21/199 N-FULL, 0/199 N-CONTEXT and 37/199 N-SIGN T1b nulls calibrated.
-Every H1/H2 family therefore fell below the minimum of 149 calibratable nulls.
-There are no confirmatory H1 or H2 p-values or superiority claims.
+The coupling lab uses the same registered noise and coupling settings. Its
+scramble is the first N-SIGN seed at the family's median critical coupling,
+selected by a fixed rule. Heat and rate meters come from recorded simulation
+spikes. The displayed speed factor reports actual simulated time per wall second.
 
-| T1b descriptive metric | Value |
-|---|---:|
-| H1a: fast minus slow escape fraction, offset 0 | -1.000 |
-| H1b: median escape lead time | 40.0 ms |
-| H1c: lateral spike asymmetry | 0.594 |
-| H2a: mean uncensored moving bout | 80.89 ms |
-| H2b: turn autocorrelation at 100 ms | 0.231 |
-| H2c: signed / absolute turn | 0.068 |
+## How it works
 
-The negative H1a means 0/100 fast and 100/100 slow offset-zero trials escaped
-strictly before impact. The stochastic one-unit control matched the standard
-escape fraction exactly (0.875, mismatch 0). These descriptive controls do not
-rescue the insufficient-null comparisons. Full effects, null bands, calibration
-attrition, NA counts, secondary analyses and controls are in
-[results-v2e.json](docs/results-v2e.json) and [findings-v2e.md](docs/findings-v2e.md).
+```mermaid
+flowchart LR
+    A[MaleCNS measured wiring] --> B[Deterministic compiler]
+    B --> C[Selected circuit or full graph]
+    C --> D[LIF model: Python and Numba]
+    C --> E[Equivalent TypeScript model]
+    D --> F[Resumable experiment runner]
+    E --> G[Browser game and coupling lab]
+```
 
-## Engineering
+Visual features enter neural input ports. Spikes reach a motor decoder that
+receives no hand position, distance or future collision information. The previous
+command drives the current interval, so a new escape cannot alter an earlier hit.
 
-- Bit-exact state-digest checks cover the readable Python reference, Numba,
-  TypeScript and Chromium, Firefox and WebKit within the declared float64 and
-  integer-clock envelope. Browser parity uses 200 intervals per fixture/circuit.
-- Counter-based RNG streams, explicit resets, immutable topology and atomic
-  per-graph/stage outputs make scientific tasks resumable and independent of
-  worker count and scheduling order. Preflight compares one and three workers.
-- The decoder receives spikes and prior rates only. It receives no hand position,
-  bearing, distance or future collision information. Previously held commands
-  drive the current interval, before any newly decoded escape request.
-- A profiler-driven TypeScript pass retained exact digests. Selected T1b median
-  wall seconds per simulated second were 0.130 Chromium, 0.302 Firefox and 0.156
-  WebKit, versus 0.500, 1.665 and 0.599 before the pass on this development host.
-- The measured non-lab build is 1.33 MB compressed. The separately loaded
-  lab adds 1,483,138 bytes. Committed game data is 4,021,214 bytes, below 8 MB.
-- Game version 6 meets the 10% to 70% target for all ten development bots, with
-  60 strikes per strategy. Versions 2 to 5 failures are retained in review evidence.
-  These reused scripted seeds do not establish human usability.
+## Engineering highlights
 
-Exact measurements, scope and uncertainty are in
-[measurements-v2e.json](docs/measurements-v2e.json). Browser numbers come from
-headless desktop engines under concurrent scientific load, not phone hardware.
+- Bit-exact state-digest checks cover Python, Numba, TypeScript, Chromium, Firefox
+  and WebKit within the declared float64, integer-clock execution envelope.
+- Publicly timestamped protocols and freeze manifests pin code, graph identities,
+  model assumptions, trial seeds and analysis before confirmatory execution.
+- Atomic per-task results and deterministic seeds support resume independently of
+  worker scheduling. The original complete run took **10.0 hours on 12 workers**;
+  the registered follow-up projection is **9.35 hours**, with actual use pending.
+- A cached canvas rendering pass raised mobile-viewport WebKit's measured frame
+  opportunity rate from **38.9 to 62.5 fps** on this development host. The coupling
+  lab measured **62.2 fps** while its simulations ran. The mobile game also
+  reached **58.4 fps** during active simulation. These are headless desktop
+  engine measurements, not measurements on an iPhone.
+- Initial compressed build scope is **1.38 MB**, with the **0.97 MB** coupling
+  lab and **1.48 MB** lesion lab loaded separately. Neural replay and exported
+  clips use recorded observations. Missing observations remain missing.
+- Offline fixtures, cross-runtime parity, scripted bots, browser screenshots,
+  production base-path checks and fresh-clone acceptance make the implementation
+  inspectable. [Measurement details](docs/measurements-v2f.json) state each scope.
 
-## Play locally
+## Run locally
 
 Python 3.12, uv and Node 24 are used by the locked development setup. Committed
-browser data means local play needs no MaleCNS download, credentials or GPU.
+browser data means local play needs no credentials, GPU or connectome download.
 
 ```sh
 uv sync --extra dev --locked
@@ -104,78 +78,92 @@ npm --prefix apps/play ci
 npm --prefix apps/play run dev
 ```
 
-Open `http://127.0.0.1:5173/internet-vs-one-fly/`. Tap for a flick, hold for a slap,
-or hold longer for a swat. The visible descending hand and growing shadow depict
-the looming stimulus. After each strike, replay the recorded brain at 0.25x.
-The lab explicitly resets the simulation for lesions or the predeclared scramble.
-Export a 1200x630 result card or a 720x1280 replay clip where MediaRecorder is
-supported. Chromium and Firefox WebM exports were verified; this WebKit environment
-does not provide the clip export. Sound and reduced-motion settings are local.
+Open `http://127.0.0.1:5173/internet-vs-one-fly/`.
+The Pages workflow is manual-only. Deployment remains an operator action.
 
-## Reproduce
+## For scientists
 
-The small test path uses committed fixtures and game data:
+The game executes a calibrated 5,555-neuron circuit. The coupling lab executes
+2,641 neurons in each simulation. The full accepted dataset contains 166,700
+neurons. Original body IDs and biological contact counts remain separate from
+executable weights. Unknown signs remain disabled. Soma maps use relative x/z
+coordinates with unverified physical units and anatomical orientation.
+
+The model uses uniform current-based LIF neurons, predicted source signs,
+feature-level vision, declared turn-direction assumptions and abstract takeoff
+physics. Noise enters interior neurons and excludes visual and decoder ports.
+The coupling slider explicitly resets both simulations with the same noise seed;
+normal game rounds retain neural state. Dropping the hand adds the actual visual
+stimulus to both flies, whose movement still comes through the network.
+
+**Escape and walking comparisons remain insufficient.** The selected real circuit
+calibrated, but only 21/199 N-FULL, 0/199 N-CONTEXT and 37/199 N-SIGN nulls did,
+below the registered threshold of 149. There are no confirmatory H1 or H2
+superiority claims. The larger game circuit's stability replication is descriptive.
+
+| Registered comparison | Status |
+|---|---|
+| Original T1a stability, N-FULL / N-CONTEXT / N-SIGN | Positive in all three families; Holm p 0.008 for both metrics |
+| Strength-preserving T1a stability, 499 N-STRENGTH nulls | Running; analysis pending |
+| T2 stability, 199 nulls per N-FULL / N-SIGN / N-STRENGTH family | Pending |
+| Full-graph rate, 99 nulls per N-SIGN / N-STRENGTH family | Running; analysis pending |
+| EXPLORATORY mechanism, glutamate sign and noise checks | Pending; descriptive only |
+| EXPLORATORY confidence-threshold sign check | Skipped: confidence semantics relative to consensus signs are unestablished |
+
+[Original findings](docs/findings-v2e.md) · [Original result tables](docs/results-v2e.json)
+· [Robustness protocol](docs/preregistration-v2.1.md)
+· [Robustness freeze manifest](profiles/freeze-v2.1.json)
+· [Public freeze receipt](docs/preregistration-receipt-v2.1.json).
+
+A small verification path uses committed fixtures and browser assets:
 
 ```sh
 npm --prefix packages/kernel-ts ci
-uv run python -m pytest -q tests/test_v2e.py tests/test_v2e_freeze.py
 npm --prefix packages/kernel-ts run test:fixture
 npm --prefix apps/play test
 npm --prefix apps/play run build
 ```
 
-After dependencies are cached, these checks need no network or full connectome.
-The complete scientific run requires the pinned raw data and compiled graphs:
+The scientific run requires the pinned raw sources and compiled graph arrays.
+After acquiring and compiling the sources as documented in the
+[data guide](docs/data-attribution.md), use the locked base environment and
+separately pinned sparse-analysis dependency. The pilot-based projection is
+9.35 hours on this 24-thread host; saturated nulls may take longer.
 
 ```sh
-uv run flybench data fetch --lock profiles/source-lock.json --out data/raw --report evidence/V2E/sources.json
+uv run flybench data fetch --lock profiles/source-lock.json --out data/raw --report evidence/V2F/sources.json
 uv run flybench data compile --lock profiles/source-lock.json --selection profiles/accepted-neurons.json --out data/compiled/full
-uv run python -m flybench.circuit build-v2 --out evidence/V2E/circuit-build
-uv run python -m pytest -q tests/test_v2e_freeze.py
-uv run python experiments/v2e_dry_run.py --out evidence/V2E/dry-run-4
-uv run python experiments/v2e_preflight.py
-cp docs/preregistration-receipt-v2.json evidence/V2E/preregistration-receipt.json
-uv run python experiments/v2e_run.py --workers 12 --resume --out evidence/V2E/results
-uv run python experiments/v2e_analyze.py --out evidence/V2E/results
-uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
+uv run python -m flybench.circuit build-v2 --out evidence/V2F/circuit-build
+uv pip install --no-deps -r profiles/requirements-v2.1.txt
+uv run python -m pytest -q tests/test_v2f.py tests/test_v2f_freeze.py
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 uv run python experiments/v2f_run.py --resume --out evidence/V2F/results
+uv run python experiments/v2f_analyze.py --out evidence/V2F/results
+uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
 ```
 
-The original real calibrations took 28.23 s for T1a and 71.88 s for T1b. The
-full run took 35,991 seconds (10.0 hours) on 12 workers. The pre-null projection
-was 4.85 hours; calibration dominated the underestimate. Data acquisition, graph
-compilation and analysis are additional. A frozen-file mismatch or
-recorded defect stops execution; never patch frozen code to continue this attempt.
-
-Stage acceptance, including three-browser tests and fresh-clone smoke:
-
-```sh
-uv run python tools/run_acceptance.py V2E --out evidence/V2E/acceptance
-```
-
-The Pages workflow is manual-only and has not been triggered. Its configured URL
-is `https://alpi157.github.io/internet-vs-one-fly/`; this is not a live-hosting claim.
+Verification recomputes all tables from raw records and checks both freeze
+manifests. A changed frozen file or recorded scientific defect stops execution.
+Do not patch a frozen executable to continue an attempt.
 
 ## Limitations
 
-This is a selected circuit, not the full fly brain. Neurotransmitter signs,
-feature-level sensing, decoder directions and body physics are modeling assumptions.
-No learning, plasticity, realistic biomechanics, human-player experiment, public
-verification server or shared score is included. The scramble in the lab uses real
-selected parameters and is explicitly not calibrated. Replay displays recorded data;
-it does not infer observations across gaps. H1 and H2 remain inconclusive because too few nulls calibrated.
+This is a model of selected wiring, with full-graph robustness still pending.
+It has no learning, plasticity or realistic biomechanics. There is no human-player
+study, public verification service or shared score. Scripted bot results are
+engineering evidence, not human usability evidence. EXPLORATORY analyses cannot
+support confirmatory claims. An observed difference from a shuffle does not
+establish a biological necessity or identify a unique mechanism.
 
-## Data attribution and citation
+## Data attribution, citation and license
 
-MaleCNS v1.0 is published by the Male CNS Connectome project, a collaboration
-including FlyEM at HHMI Janelia, Cambridge, MRC LMB and Google Research. The
+MaleCNS v1.0 is published by the Male CNS Connectome project, including FlyEM at
+HHMI Janelia, Cambridge, MRC LMB and Google Research. The
 [official download page](https://male-cns.janelia.org/download/) identifies the
-CC-BY license. Cite the [MaleCNS study linked by the project, Cell (2026)](https://www.cell.com/cell/fulltext/S0092-8674%2826%2900942-6)
-and [dataset release](https://male-cns.janelia.org/). Source URLs and observed
-SHA-256 values are in [source-lock.json](profiles/source-lock.json); browser-derived
-data attribution and hashes are in [LICENSE-DATA.md](apps/play/public/data/LICENSE-DATA.md)
-and [HASHES.json](apps/play/public/data/HASHES.json).
+CC-BY license. Cite the [MaleCNS study, Cell (2026)](https://www.cell.com/cell/fulltext/S0092-8674%2826%2900942-6)
+and [dataset release](https://male-cns.janelia.org/).
 
-## License
-
-Underlying MaleCNS data is CC-BY. A software license has not yet been declared by
-the repository owner; the data license does not grant a license to FlyBench code.
+Source URLs and observed SHA-256 values are in [source-lock.json](profiles/source-lock.json).
+Browser asset attribution and hashes accompany the committed data.
+See [CITATION.cff](CITATION.cff) for software and dataset citation metadata.
+Code is [MIT licensed](LICENSE), copyright 2026 Alpar. Underlying and derived
+MaleCNS data remains [CC-BY](LICENSE-DATA.md).

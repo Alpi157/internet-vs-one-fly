@@ -32,6 +32,7 @@ self.onmessage = async (event) => {
                 timer = setInterval(step, 10);
             self.postMessage({ kind: 'ready', tick: 0, body: game.runner.body });
         }
+        else if (message.kind === 'pause') { paused = true; }
         else if (message.kind === 'start' || message.kind === 'resume') {
             paused = false;
         }

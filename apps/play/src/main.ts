@@ -8,7 +8,9 @@ app.innerHTML = `<main><header><a class="brand" href="./">FLYBENCH <span>FIELD N
 <section class="play-layout"><div class="table-wrap"><canvas id="table" width="700" height="700" tabindex="0" aria-label="Fly arena. Hold to charge, release to strike. Enter strikes the center."></canvas><div id="intro"><span class="stamp">WANTED<br>ALIVE & BUZZING</span><h2>Six chances.<br>One little show-off.</h2><p>Tap for a flick. Hold for a slap.<br>Hold longer for a mighty swat.</p><button id="start" disabled>Waking the fly…</button><small>No account. No tracking. Just you and a fly.</small></div><div id="impact-label" aria-live="polite"></div><span class="table-note">SPECIMEN 01 / HANDLE WITH CURIOSITY</span></div>
 <aside id="brain-panel"><div class="panel-top"><span class="eyebrow">BRAIN-CAM</span><b id="replay-badge">WAITING FOR YOUR MOVE</b></div><h2 id="brain-title">A look inside<br>the little troublemaker.</h2><canvas id="brain" width="560" height="420" aria-label="Recorded neuron activity map"></canvas><canvas id="timeline" width="560" height="120" aria-label="Recorded hand height, population rates, giant-fiber spikes and impact"></canvas><p id="caption">After each strike, watch the recorded neurons flash at quarter speed.</p><div class="legend"><span style="--dot:#0072b2">LC4</span><span style="--dot:#e69f00">LPLC2</span><span style="--dot:#cc79a7">Giant fiber</span><span style="--dot:#009e73">Walking DNs</span><span style="--dot:#74808b">Interior</span></div><small id="map-note">Relative soma positions. Missing coordinates appear in the side band.</small><div class="replay-actions" hidden><button id="again">Replay 0.25×</button><button id="continue">Next strike →</button></div></aside></section>
 <div class="instruction"><strong id="charge-text">TAP: FLICK · HOLD: SLAP · LONG HOLD: SWAT</strong><span>The growing hand shadow is the looming stimulus the fly sees.</span></div>
-<section class="bottom"><details><summary>What is real here? <span>+</span></summary><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p><span id="science-status">Calibration status loading.</span> No wiring-superiority or human usability result is claimed.</p><a href="./model.html">Model card</a> · <a href="./preregistration.html">Pre-registration status</a> · <a href="https://male-cns.janelia.org/download/">MaleCNS v1.0, CC-BY</a></details><div class="settings"><button id="lab">Open lesion lab</button><span id="activity">0.0 Hz · circuit activity</span><label><input id="reduce" type="checkbox"> Reduced motion</label><label><input id="sound" type="checkbox" checked> Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button><button id="video" disabled>Save replay video</button></div></section><div id="lab-panel" hidden></div><p id="notice" role="status"></p><footer>A real wiring diagram. An imaginary fly. A very personal rivalry.</footer></main>`;
+<section class="bottom"><details><summary>What is real here? <span>+</span></summary><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p><span id="science-status">Calibration status loading.</span> No wiring-superiority or human usability result is claimed.</p><a href="./model.html">Model card</a> · <a href="./preregistration.html">Pre-registration status</a> · <a href="https://male-cns.janelia.org/download/">MaleCNS v1.0, CC-BY</a></details><div class="settings"><button id="coupling">Try the coupling lab</button><button id="lab">Open lesion lab</button><span id="activity">0.0 Hz · circuit activity</span><label><input id="reduce" type="checkbox"> Reduced motion</label><label><input id="sound" type="checkbox" checked> Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button><button id="video" disabled>Save replay video</button></div></section><div id="lab-panel" hidden></div><section id="finding"><h2>What did we find?</h2><p>In this model, measured wiring stays stable at couplings where degree- and sign-matched shuffles saturate.</p><img src="./finding.png" alt="Measured T1a rate and N-SIGN null band across coupling" loading="lazy"><p>Uniform neurons, assumed signs and simplified inputs limit this result to the model; escape and walking comparisons had insufficient calibratable nulls. Robustness tests are pending.</p><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.md">Pre-registration</a> · <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2e.md">Findings</a></section><p id="notice" role="status"></p><button id="coupling-invitation" hidden>Same neurons, different wiring. See the finding →</button><footer>A real wiring diagram. An imaginary fly. A very personal rivalry.</footer></main>`;
+const couplingHost=document.createElement('div');couplingHost.id='coupling-host';couplingHost.hidden=true;document.body.append(couplingHost);
+let couplingOpen=false;
 const $ = (id: string) => document.getElementById(id)!;
 document.querySelector('.table-wrap')!.prepend(document.querySelector('.status')!);
 document.querySelector('.replay-actions')!.append($('card'),$('video'));
@@ -105,7 +107,7 @@ function fly(c: CanvasRenderingContext2D, f: Frame) {
     }
     c.restore();
 }
-function drawTable(f: Frame, c = ctx) {
+function drawTableBackground(c:CanvasRenderingContext2D) {
     c.fillStyle = '#debb81';
     c.fillRect(0, 0, 700, 700);
     for (let y = 0; y < 700; y += 140) {
@@ -133,6 +135,10 @@ function drawTable(f: Frame, c = ctx) {
     c.beginPath();
     c.arc(630, 73, 43, 0, Math.PI * 2);
     c.stroke();
+}
+const boardLayer=document.createElement('canvas');boardLayer.width=700;boardLayer.height=700;drawTableBackground(boardLayer.getContext('2d')!);
+function drawTable(f:Frame,c=ctx){
+    c.drawImage(boardLayer,0,0);
     const s = f.strike;
     if (s && f.tick <= s.impact_tick) {
         const [x, y] = world(s.aim_x, s.aim_y), progress = Math.max(0, Math.min(1, (f.tick - s.start_tick) / (s.impact_tick - s.start_tick))), radius = s.radius * 700 / (profile.arena_half_size * 2);
@@ -199,48 +205,23 @@ function drawTable(f: Frame, c = ctx) {
     }
 }
 const colors: Record<string, string> = { 'LC4': '#0072b2', 'LPLC2': '#e69f00', 'giant fiber': '#cc79a7', 'walking DNs': '#009e73', 'interior': '#74808b' };
-function drawBrain(f: Frame, c = bc) {
-    c.fillStyle = '#172f29';
-    c.fillRect(0, 0, 560, 420);
-    if (!brain)
-        return;
-    const observed = (replaying?replay:history).filter(v=>v.tick<=f.tick && v.tick>=f.tick-100);
-    const last = new Map<number,number>();
-    for(const v of observed)for(const event of v.spikes)for(const i of event.indices)last.set(i,event.tick);
-    for(const event of f.spikes)for(const i of event.indices)last.set(i,event.tick);
-    const active = new Set(last.keys());
-    c.fillStyle = '#bbd2bf';
-    c.font = '12px system-ui';
-    c.fillText('RELATIVE x/z PROJECTION', 18, 24);
-    c.fillText('NO SOMA', 465, 24);
-    c.strokeStyle = '#61776c';
-    c.beginPath();
-    c.moveTo(449, 38);
-    c.lineTo(449, 390);
-    c.stroke();
-    const band: Record<string, number> = {};
-    for (const n of brain.nodes) {
-        let x, y;
-        if (n.position) {
-            x = 24 + n.position[0] * 400;
-            y = 48 + n.position[1] * 330;
-        }
-        else {
-            const gi = Object.keys(colors).indexOf(n.group);
-            const k = band[n.group] ?? 0;
-            band[n.group] = k + 1;
-            x = 463 + (k % 7) * 11;
-            y = 62 + gi * 64 + Math.floor(k / 7) * 8;
-        }
-        c.globalAlpha = active.has(n.index) ? Math.max(.15,1-(f.tick-last.get(n.index)!)/120) : .22;
-        c.shadowBlur=0;
-        if(active.has(n.index)){const alpha=c.globalAlpha;c.fillStyle=colors[n.group];c.globalAlpha=alpha*.25;c.beginPath();c.arc(x,y,n.group==='interior'?8:14,0,Math.PI*2);c.fill();c.globalAlpha=alpha;}
-        c.fillStyle = colors[n.group];
-        c.beginPath();
-        c.arc(x, y, active.has(n.index) ? (n.group === 'giant fiber' ? 8 : n.group==='interior'?3.5:5) : 1.25, 0, Math.PI * 2);
-        c.fill();
+let brainLayer:HTMLCanvasElement|null=null;
+let brainPositions:number[][]=[];
+function drawBrain(f:Frame,c=bc){
+    if(!brain)return;
+    if(!brainLayer){
+        brainLayer=document.createElement('canvas');brainLayer.width=560;brainLayer.height=420;
+        const b=brainLayer.getContext('2d')!;b.fillStyle='#172f29';b.fillRect(0,0,560,420);
+        b.fillStyle='#bbd2bf';b.font='12px system-ui';b.fillText('RELATIVE x/z PROJECTION',18,24);b.fillText('NO SOMA',465,24);
+        b.strokeStyle='#61776c';b.beginPath();b.moveTo(449,38);b.lineTo(449,390);b.stroke();
+        const band:Record<string,number>={};
+        brainPositions=brain.nodes.map((n:any)=>{let x,y;if(n.position){x=24+n.position[0]*400;y=48+n.position[1]*330;}else{const gi=Object.keys(colors).indexOf(n.group),k=band[n.group]??0;band[n.group]=k+1;x=463+(k%7)*11;y=62+gi*64+Math.floor(k/7)*8;}b.globalAlpha=.22;b.fillStyle=colors[n.group];b.beginPath();b.arc(x,y,1.25,0,Math.PI*2);b.fill();return [x,y];});
     }
-    c.globalAlpha = 1;c.shadowBlur=0;
+    c.drawImage(brainLayer,0,0);
+    const observed=(replaying?replay:history).filter(v=>v.tick<=f.tick&&v.tick>=f.tick-100),last=new Map<number,number>();
+    for(const v of [...observed,f])for(const event of v.spikes)for(const i of event.indices)last.set(i,event.tick);
+    for(const [i,tick] of last){const n=brain.nodes[i],[x,y]=brainPositions[i],alpha=Math.max(.15,1-(f.tick-tick)/120);c.fillStyle=colors[n.group];c.globalAlpha=alpha*.25;c.beginPath();c.arc(x,y,n.group==='interior'?8:14,0,Math.PI*2);c.fill();c.globalAlpha=alpha;c.beginPath();c.arc(x,y,n.group==='giant fiber'?8:n.group==='interior'?3.5:5,0,Math.PI*2);c.fill();}
+    c.globalAlpha=1;
 }
 function drawTimeline(f:Frame) {
     const c=timeline.getContext('2d')!, data=replaying?replay:history.slice(-65);
@@ -270,16 +251,18 @@ function drawTimeline(f:Frame) {
     c.strokeStyle='#e69f00';c.beginPath();c.moveTo(x(f.tick),0);c.lineTo(x(f.tick),120);c.stroke();
 }
 function beginReplay() { replayPinned=null; replaying = true; paused = true; replayIndex = 0; replayStart = performance.now(); $('brain-panel').classList.add('active'); $('replay-badge').textContent = 'RECORDED / 0.25×'; $('brain-title').textContent = lastImpact?.caught ? 'A very close encounter.' : 'Gone in a buzz.'; $('caption').textContent = lastImpact?.lead_ms !== null ? `Giant fiber fired ${lastImpact.lead_ms} ms before your hand landed.` : 'Giant fiber never fired before your hand landed during this strike.'; document.querySelector<HTMLElement>('.replay-actions')!.hidden = false; ($('video') as HTMLButtonElement).disabled = !('MediaRecorder' in window) || !('captureStream' in table); $('continue').textContent = finished ? 'Play another round →' : 'Skip / next strike →'; }
+let paintedTick=-1,paintedReplay=false;
 function animate(now: number) {
+    if(couplingOpen){requestAnimationFrame(animate);return;}
     frames++;
     let shown = frame;
     if (replaying && replay.length) {
         replayIndex = replayPinned ?? Math.max(0, Math.min(replay.length - 1, Math.floor((now - replayStart) / 40)));
         shown = replay[replayIndex];
     }
-    drawTable(shown);
-    drawBrain(shown);
-    drawTimeline(shown);
+    if(shown.tick!==paintedTick||replaying!==paintedReplay||holdStart!==null){
+      drawTable(shown);drawBrain(shown);drawTimeline(shown);paintedTick=shown.tick;paintedReplay=replaying;
+    }
     if (holdStart !== null) {
         const ms = now - holdStart;
         $('charge-text').textContent = ms < 180 ? 'FLICK / QUICK & SMALL' : ms < 500 ? 'SLAP / A LITTLE MORE HAND' : 'SWAT / SLOW & MIGHTY';
@@ -322,6 +305,7 @@ worker.onmessage = event => {
         if (finished) {
             paused = true;
             $('notice').textContent = `Round complete: ${catches} catches from ${used} strikes.`;
+            $('coupling-invitation').hidden=false;
             document.querySelector<HTMLElement>('.replay-actions')!.hidden = false;
             $('continue').textContent = 'Play another round →';
         }
@@ -340,6 +324,14 @@ worker.onmessage = event => {
 function start() { if (!ready)
     return; started = true; paused = false; $('intro').hidden = true; send('start'); }
 $('start').onclick = start;
+async function showCoupling(){
+  send('pause');couplingOpen=true;app.hidden=true;
+  const {openCoupling}=await import('./coupling.ts');
+  await openCoupling(couplingHost,base,()=>{couplingOpen=false;app.hidden=false;paintedTick=-1;if(started&&!paused&&!finished)send('resume');});
+  window.scrollTo(0,0);
+}
+$('coupling').onclick=showCoupling;$('coupling-invitation').onclick=showCoupling;
+
 $('lab').onclick = async()=>{const {openLab}=await import('./lab.ts');openLab($('lab-panel'),async(mode:string)=>{
     paused=true;replaying=false;started=false;ready=false;history.length=0;replay=[];catches=0;used=0;finished=false;$('brain-panel').classList.remove('active');
     const {configureLab}=await import('./lab.ts');const selected=await configureLab(mode,buffer,runtime,base);
@@ -405,7 +397,7 @@ $('video').onclick = async () => {
         [runtime, profile, brain, buffer] = await Promise.all([fetch(base+'data/runtime.json').then(r => r.json()), fetch(base+'data/game.json').then(r => r.json()), fetch(base+'data/brain.json').then(r => r.json()), fetchGraph(base+'data/circuit.flygraph.gz')]);
         displayStatus=runtime.status;
         document.querySelector('.model-tag')!.textContent = displayStatus.toLowerCase();
-        $('science-status').textContent = runtime.status + '. Hypothesis results pending.';
+        $('science-status').textContent = runtime.status + '. Stability differs from the registered shuffles; H1 and H2 have insufficient calibratable nulls.';
         $('model-counts').textContent = `Executed scope: ${runtime.counts.N.toLocaleString()} neurons, ${runtime.counts.source_accepted_E.toLocaleString()} connections, ${runtime.counts.represented_source_contacts.toLocaleString()} biological contacts. ${runtime.counts.zero_disabled_E.toLocaleString()} connections have disabled unknown signs.`;
         $('map-note').textContent = `Relative x/z soma projection; ${brain.missing} neurons without somaLocation are grouped in the side band. Anatomical camera orientation is unverified.`;
         const random = new Uint32Array(2);
@@ -419,4 +411,4 @@ $('video').onclick = async () => {
 })();
 requestAnimationFrame(animate);
 if (manual)
-    (window as any).flyTest = { ready: () => ready, start, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: () => ($('continue') as HTMLButtonElement).click(), log: () => request('log'), state: () => ({ frame, catches, used, finished, replaying, simSpeed, fps: frames / ((performance.now() - rafStart) / 1000) }), showReplay: () => beginReplay(), showRecorded: (kind:string)=>{const index=kind==='takeoff'?replay.findIndex(f=>f.air):replay.reduce((best,f,i)=>f.spikes.reduce((n,e)=>n+e.indices.length,0)>(replay[best]?.spikes.reduce((n,e)=>n+e.indices.length,0)??-1)?i:best,0);if(index<0)return false;replayPinned=index;drawTable(replay[index]);drawBrain(replay[index]);drawTimeline(replay[index]);return true;} };
+    (window as any).flyTest = { ready: () => ready, start, startLive:()=>{ready=false;send('init',{buffer,runtime,profile,neuralSeed:2026092802,environmentSeed:8128,manual:false});}, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: () => ($('continue') as HTMLButtonElement).click(), log: () => request('log'), state: () => ({ frame, catches, used, finished, replaying, simSpeed, fps: frames / ((performance.now() - rafStart) / 1000) }), showReplay: () => beginReplay(), showRecorded: (kind:string)=>{const index=kind==='takeoff'?replay.findIndex(f=>f.air):replay.reduce((best,f,i)=>f.spikes.reduce((n,e)=>n+e.indices.length,0)>(replay[best]?.spikes.reduce((n,e)=>n+e.indices.length,0)??-1)?i:best,0);if(index<0)return false;replayPinned=index;drawTable(replay[index]);drawBrain(replay[index]);drawTimeline(replay[index]);return true;} };

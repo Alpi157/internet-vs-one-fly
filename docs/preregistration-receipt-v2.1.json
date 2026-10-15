@@ -1,0 +1,12 @@
+{
+  "status": "PUSHED",
+  "freeze_sha": "083bd2be2944c5dd773f670efc7b69445e207058",
+  "protocol_sha256": "c4ed65c481373d1a3a4a29637878acae93c0a085fdff50914bb9d0f95d6b217d",
+  "push_observed_utc": "2026-10-15T06:14:59Z",
+  "remote_verification_completed_utc": "2026-10-15T06:15:07Z",
+  "refs": {
+    "refs/heads/prereg/v2.1": "083bd2be2944c5dd773f670efc7b69445e207058",
+    "refs/tags/prereg-v2.1": "35655698ee9e64cc87e5aafbf91381b7082492c1",
+    "refs/tags/prereg-v2.1^{}": "083bd2be2944c5dd773f670efc7b69445e207058"
+  }
+}

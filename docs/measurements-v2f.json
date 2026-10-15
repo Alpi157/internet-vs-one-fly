@@ -1,0 +1,1221 @@
+{
+  "status": "PASS",
+  "scope": "Development host, headed rendering pipeline in headless engines, manual deterministic worker pacing; rAF count over a separate two-second rendering window after the scripted round. Simulation wall time includes step and trace capture, excludes message serialization and hashing. live_game_fps uses a three-second running worker window. Coupling fps uses two seconds with paired simulations running; heat snapshots arrive every 50 simulated ms and remain recorded observations between updates.",
+  "game_before": [
+    {
+      "browser": "chromium",
+      "version": "156.0.8078.4",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.44861867439698,
+          "simulation_wall_seconds_per_simulated_second": 0.10482638887026254,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.1250000000745058,
+          "screenshots": [
+            "chromium-390x844-start.png",
+            "chromium-390x844-mid-strike.png",
+            "chromium-390x844-caught.png",
+            "chromium-390x844-takeoff.png",
+            "chromium-390x844-escaped.png",
+            "chromium-390x844-brain-cam-flash.png",
+            "chromium-390x844-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          }
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.343107919319856,
+          "simulation_wall_seconds_per_simulated_second": 0.11006944447031455,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.12800000004470352,
+          "screenshots": [
+            "chromium-1440x900-start.png",
+            "chromium-1440x900-mid-strike.png",
+            "chromium-1440x900-caught.png",
+            "chromium-1440x900-takeoff.png",
+            "chromium-1440x900-escaped.png",
+            "chromium-1440x900-brain-cam-flash.png",
+            "chromium-1440x900-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          }
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.44559896093518,
+          "simulation_wall_seconds_per_simulated_second": 0.2788194444444447,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.26500000000000007,
+          "screenshots": [
+            "firefox-390x844-start.png",
+            "firefox-390x844-mid-strike.png",
+            "firefox-390x844-caught.png",
+            "firefox-390x844-takeoff.png",
+            "firefox-390x844-escaped.png",
+            "firefox-390x844-brain-cam-flash.png",
+            "firefox-390x844-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 132.8000030517578,
+            "width": 382,
+            "height": 523.2666473388672
+          }
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.55011266291456,
+          "simulation_wall_seconds_per_simulated_second": 0.25243055555555577,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.2900000000000001,
+          "screenshots": [
+            "firefox-1440x900-start.png",
+            "firefox-1440x900-mid-strike.png",
+            "firefox-1440x900-caught.png",
+            "firefox-1440x900-takeoff.png",
+            "firefox-1440x900-escaped.png",
+            "firefox-1440x900-brain-cam-flash.png",
+            "firefox-1440x900-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 244.6999969482422,
+            "width": 631.0999755859375,
+            "height": 631.0999908447266
+          }
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "version": "27.2",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 38.902743142144644,
+          "simulation_wall_seconds_per_simulated_second": 0.14166666666666677,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.13500000000000004,
+          "screenshots": [
+            "webkit-390x844-start.png",
+            "webkit-390x844-mid-strike.png",
+            "webkit-390x844-caught.png",
+            "webkit-390x844-takeoff.png",
+            "webkit-390x844-escaped.png",
+            "webkit-390x844-brain-cam-flash.png",
+            "webkit-390x844-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          }
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 34.75670307845085,
+          "simulation_wall_seconds_per_simulated_second": 0.13715277777777787,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.13000000000000003,
+          "screenshots": [
+            "webkit-1440x900-start.png",
+            "webkit-1440x900-mid-strike.png",
+            "webkit-1440x900-caught.png",
+            "webkit-1440x900-takeoff.png",
+            "webkit-1440x900-escaped.png",
+            "webkit-1440x900-brain-cam-flash.png",
+            "webkit-1440x900-lab-scrambled.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          }
+        }
+      ]
+    }
+  ],
+  "game_after": [
+    {
+      "browser": "chromium",
+      "version": "156.0.8078.4",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.38828167898387,
+          "simulation_wall_seconds_per_simulated_second": 0.10934027781089156,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.11899999998509883,
+          "screenshots": [
+            "chromium-390x844-start.png",
+            "chromium-390x844-mid-strike.png",
+            "chromium-390x844-caught.png",
+            "chromium-390x844-takeoff.png",
+            "chromium-390x844-escaped.png",
+            "chromium-390x844-brain-cam-flash.png",
+            "chromium-390x844-lab-scrambled.png",
+            "chromium-390x844-coupling-0.01.png",
+            "chromium-390x844-coupling-0.03.png",
+            "chromium-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.07944389266186,
+              "speed": 1.0237354970781445,
+              "rates": [
+                2.0022718667171526,
+                2.833775085195002
+              ],
+              "ticks": [
+                8100,
+                8100
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.09137862525871,
+              "speed": 1.0235802562733969,
+              "rates": [
+                2.253691783415373,
+                94.52025747822795
+              ],
+              "ticks": [
+                8100,
+                8100
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.10033278687776,
+              "speed": 1.0472541507024264,
+              "rates": [
+                3.394168875425975,
+                167.0367285119273
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.16308671422106,
+          "simulation_wall_seconds_per_simulated_second": 0.1056250000010349,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.13099999994039538,
+          "screenshots": [
+            "chromium-1440x900-start.png",
+            "chromium-1440x900-mid-strike.png",
+            "chromium-1440x900-caught.png",
+            "chromium-1440x900-takeoff.png",
+            "chromium-1440x900-escaped.png",
+            "chromium-1440x900-brain-cam-flash.png",
+            "chromium-1440x900-lab-scrambled.png",
+            "chromium-1440x900-coupling-0.01.png",
+            "chromium-1440x900-coupling-0.03.png",
+            "chromium-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.076460950300365,
+              "speed": 1.0236181155424922,
+              "rates": [
+                1.9719803104884512,
+                2.6081029912911777
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.0824271311698,
+              "speed": 1.0257693269952464,
+              "rates": [
+                1.9795531995456266,
+                94.36879969708444
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.07944389266186,
+              "speed": 1.0358243646132959,
+              "rates": [
+                3.394168875425975,
+                167.0367285119273
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.43835288006233,
+          "simulation_wall_seconds_per_simulated_second": 0.252777777777778,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.3100000000000001,
+          "screenshots": [
+            "firefox-390x844-start.png",
+            "firefox-390x844-mid-strike.png",
+            "firefox-390x844-caught.png",
+            "firefox-390x844-takeoff.png",
+            "firefox-390x844-escaped.png",
+            "firefox-390x844-brain-cam-flash.png",
+            "firefox-390x844-lab-scrambled.png",
+            "firefox-390x844-coupling-0.01.png",
+            "firefox-390x844-coupling-0.03.png",
+            "firefox-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 132.8000030517578,
+            "width": 382,
+            "height": 523.2666473388672
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.14155632430713,
+              "speed": 0.9837678307919332,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.139165009940356,
+              "speed": 0.9775171065493647,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.107498037813045,
+              "speed": 0.958505217180296,
+              "rates": [
+                3.416887542597501,
+                167.33358576296857
+              ],
+              "ticks": [
+                7900,
+                7900
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.09495996980354,
+          "simulation_wall_seconds_per_simulated_second": 0.26215277777777796,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.275,
+          "screenshots": [
+            "firefox-1440x900-start.png",
+            "firefox-1440x900-mid-strike.png",
+            "firefox-1440x900-caught.png",
+            "firefox-1440x900-takeoff.png",
+            "firefox-1440x900-escaped.png",
+            "firefox-1440x900-brain-cam-flash.png",
+            "firefox-1440x900-lab-scrambled.png",
+            "firefox-1440x900-coupling-0.01.png",
+            "firefox-1440x900-coupling-0.03.png",
+            "firefox-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 244.6999969482422,
+            "width": 631.0999755859375,
+            "height": 631.0999908447266
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.103915198839644,
+              "speed": 0.9818360333824252,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.1074980378131,
+              "speed": 0.9886307464162135,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.10272101409678,
+              "speed": 0.9753086419753088,
+              "rates": [
+                3.416887542597501,
+                167.33358576296857
+              ],
+              "ticks": [
+                7900,
+                7900
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "version": "27.2",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 62.5,
+          "simulation_wall_seconds_per_simulated_second": 0.13090277777777787,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.135,
+          "screenshots": [
+            "webkit-390x844-start.png",
+            "webkit-390x844-mid-strike.png",
+            "webkit-390x844-caught.png",
+            "webkit-390x844-takeoff.png",
+            "webkit-390x844-escaped.png",
+            "webkit-390x844-brain-cam-flash.png",
+            "webkit-390x844-lab-scrambled.png",
+            "webkit-390x844-coupling-0.01.png",
+            "webkit-390x844-coupling-0.03.png",
+            "webkit-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 62.2200099552016,
+              "speed": 0.9881422924901185,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 62.25099601593625,
+              "speed": 0.9918175055789734,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 62.18905472636816,
+              "speed": 0.9876543209876544,
+              "rates": [
+                3.5001893222264293,
+                167.2533131389625
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 62,
+          "simulation_wall_seconds_per_simulated_second": 0.13090277777777787,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.13500000000000004,
+          "screenshots": [
+            "webkit-1440x900-start.png",
+            "webkit-1440x900-mid-strike.png",
+            "webkit-1440x900-caught.png",
+            "webkit-1440x900-takeoff.png",
+            "webkit-1440x900-escaped.png",
+            "webkit-1440x900-brain-cam-flash.png",
+            "webkit-1440x900-lab-scrambled.png",
+            "webkit-1440x900-coupling-0.01.png",
+            "webkit-1440x900-coupling-0.03.png",
+            "webkit-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          },
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 62.25099601593625,
+              "speed": 0.9909469048201615,
+              "rates": [
+                2.0022718667171526,
+                2.833775085195002
+              ],
+              "ticks": [
+                8100,
+                8100
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 62.18905472636816,
+              "speed": 0.987166831194472,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 62.25099601593625,
+              "speed": 0.9883864591055104,
+              "rates": [
+                3.5001893222264293,
+                167.2533131389625
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    }
+  ],
+  "initial_gzip_bytes": 1376773,
+  "coupling_lazy_gzip_bytes": 968000,
+  "lesion_lazy_gzip_bytes": 1483138,
+  "hero": {
+    "path": "docs/media/coupling-hero.gif",
+    "bytes": 1040940,
+    "width": 480,
+    "frames": 60,
+    "playback_seconds": 6,
+    "source": "Playwright screenshots of live paired simulations; no generated or interpolated neural observations"
+  },
+  "coupling_selection": {
+    "critical_coupling": 0.03,
+    "family_median": 0.03,
+    "index": 0,
+    "rule": "First V2E T1a N-SIGN null in ascending seed order whose s* equals the family median; no other outcome enters selection.",
+    "seed": 202710160000,
+    "source_record": "evidence/V2E/results/H0/T1a-N-SIGN-000.json.gz",
+    "source_sha256": "5c27a42bdba5351039952e0afbbff4c95c9ad5e19b863f257e6250fe3038e974",
+    "target_sha256": "9486c40d4ac04c60bfc375a936e1863dc464095070077dcb085539c409a7ba34"
+  },
+  "game_final": [
+    {
+      "browser": "chromium",
+      "version": "156.0.8078.4",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.19301562033629,
+          "simulation_wall_seconds_per_simulated_second": 0.10819444442685289,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.12350000001490116,
+          "screenshots": [
+            "chromium-390x844-start.png",
+            "chromium-390x844-mid-strike.png",
+            "chromium-390x844-caught.png",
+            "chromium-390x844-takeoff.png",
+            "chromium-390x844-escaped.png",
+            "chromium-390x844-brain-cam-flash.png",
+            "chromium-390x844-lab-scrambled.png",
+            "chromium-390x844-coupling-0.01.png",
+            "chromium-390x844-coupling-0.03.png",
+            "chromium-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          },
+          "live_game_fps": 60.06703613972089,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.08839449769079,
+              "speed": 1.0346219844523232,
+              "rates": [
+                1.9719803104884512,
+                2.6081029912911777
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.09137862499191,
+              "speed": 1.0252306769038309,
+              "rates": [
+                1.9795531995456266,
+                94.36879969708444
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.07944389275075,
+              "speed": 1.042620282781335,
+              "rates": [
+                3.394168875425975,
+                167.0367285119273
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.285984753943836,
+          "simulation_wall_seconds_per_simulated_second": 0.10920138883197482,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.12599999994039535,
+          "screenshots": [
+            "chromium-1440x900-start.png",
+            "chromium-1440x900-mid-strike.png",
+            "chromium-1440x900-caught.png",
+            "chromium-1440x900-takeoff.png",
+            "chromium-1440x900-escaped.png",
+            "chromium-1440x900-brain-cam-flash.png",
+            "chromium-1440x900-lab-scrambled.png",
+            "chromium-1440x900-coupling-0.01.png",
+            "chromium-1440x900-coupling-0.03.png",
+            "chromium-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          },
+          "live_game_fps": 60.06703613960209,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.100332786610814,
+              "speed": 1.0271312974414257,
+              "rates": [
+                1.9719803104884512,
+                2.6081029912911777
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.07347830386355,
+              "speed": 1.0211706102117062,
+              "rates": [
+                1.9795531995456266,
+                94.36879969708444
+              ],
+              "ticks": [
+                8200,
+                8200
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.07646095012258,
+              "speed": 1.0514847471377151,
+              "rates": [
+                3.1427489587277546,
+                167.0791366906475
+              ],
+              "ticks": [
+                8300,
+                8300
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.51887494419367,
+          "simulation_wall_seconds_per_simulated_second": 0.2611111111111113,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.2950000000000001,
+          "screenshots": [
+            "firefox-390x844-start.png",
+            "firefox-390x844-mid-strike.png",
+            "firefox-390x844-caught.png",
+            "firefox-390x844-takeoff.png",
+            "firefox-390x844-escaped.png",
+            "firefox-390x844-brain-cam-flash.png",
+            "firefox-390x844-lab-scrambled.png",
+            "firefox-390x844-coupling-0.01.png",
+            "firefox-390x844-coupling-0.03.png",
+            "firefox-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 132.8000030517578,
+            "width": 382,
+            "height": 523.2666473388672
+          },
+          "live_game_fps": 60.06703613978032,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.12183366623936,
+              "speed": 0.9763241396143518,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.10690086832113,
+              "speed": 0.9765142150803462,
+              "rates": [
+                2.547519878833775,
+                94.55509276789095
+              ],
+              "ticks": [
+                7900,
+                7900
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.12780886313715,
+              "speed": 0.9558823529411764,
+              "rates": [
+                3.3078379401741764,
+                167.57440363498674
+              ],
+              "ticks": [
+                7800,
+                7800
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 60.53028498848931,
+          "simulation_wall_seconds_per_simulated_second": 0.2607638888888891,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.26500000000000007,
+          "screenshots": [
+            "firefox-1440x900-start.png",
+            "firefox-1440x900-mid-strike.png",
+            "firefox-1440x900-caught.png",
+            "firefox-1440x900-takeoff.png",
+            "firefox-1440x900-escaped.png",
+            "firefox-1440x900-brain-cam-flash.png",
+            "firefox-1440x900-lab-scrambled.png",
+            "firefox-1440x900-coupling-0.01.png",
+            "firefox-1440x900-coupling-0.03.png",
+            "firefox-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 244.6999969482422,
+            "width": 631.0999755859375,
+            "height": 631.0999908447266
+          },
+          "live_game_fps": 60.058665038556995,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 60.12123621186524,
+              "speed": 0.9760858955588092,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 60.11227582095485,
+              "speed": 0.9799118079372857,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 60.11884651310689,
+              "speed": 0.9608367793724155,
+              "rates": [
+                3.416887542597501,
+                167.33358576296857
+              ],
+              "ticks": [
+                7900,
+                7900
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "version": "27.2",
+      "status": "PASS",
+      "runs": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 62.2200099552016,
+          "simulation_wall_seconds_per_simulated_second": 0.12951388888888898,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.12500000000000003,
+          "screenshots": [
+            "webkit-390x844-start.png",
+            "webkit-390x844-mid-strike.png",
+            "webkit-390x844-caught.png",
+            "webkit-390x844-takeoff.png",
+            "webkit-390x844-escaped.png",
+            "webkit-390x844-brain-cam-flash.png",
+            "webkit-390x844-lab-scrambled.png",
+            "webkit-390x844-coupling-0.01.png",
+            "webkit-390x844-coupling-0.03.png",
+            "webkit-390x844-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 4,
+            "y": 130.796875,
+            "width": 382,
+            "height": 523.265625
+          },
+          "live_game_fps": 58.37479270315091,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 62.25099601593625,
+              "speed": 0.9913258983890954,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 62.2200099552016,
+              "speed": 0.9888751545117429,
+              "rates": [
+                2.376372586141613,
+                94.55509276789095
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 62.2200099552016,
+              "speed": 0.9913258983890954,
+              "rates": [
+                3.5001893222264293,
+                167.2533131389625
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "status": "PASS",
+          "console_errors": [],
+          "applied_inputs": 6,
+          "digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "node_replay_digest": "f925b218c5f428a8a33196cef60f6568d6767d05dafaf7e973c98f3894c4f4fd",
+          "frame_rate_fps": 62.065541211519374,
+          "simulation_wall_seconds_per_simulated_second": 0.12569444444444455,
+          "lab_simulation_wall_seconds_per_simulated_second": 0.14000000000000004,
+          "screenshots": [
+            "webkit-1440x900-start.png",
+            "webkit-1440x900-mid-strike.png",
+            "webkit-1440x900-caught.png",
+            "webkit-1440x900-takeoff.png",
+            "webkit-1440x900-escaped.png",
+            "webkit-1440x900-brain-cam-flash.png",
+            "webkit-1440x900-lab-scrambled.png",
+            "webkit-1440x900-coupling-0.01.png",
+            "webkit-1440x900-coupling-0.03.png",
+            "webkit-1440x900-coupling-0.06.png"
+          ],
+          "takeoff_captured": true,
+          "lab_node_replay_digest": "d1119ed6a520a4e844ed9828c92d0f40810184a1008080f04e41accda64934f4",
+          "board_bounds": {
+            "x": 158,
+            "y": 241.6875,
+            "width": 631.078125,
+            "height": 631.078125
+          },
+          "live_game_fps": 52.91181364392679,
+          "coupling": [
+            {
+              "scale": 0.01,
+              "fps": 62.2200099552016,
+              "speed": 0.9898539965355109,
+              "rates": [
+                1.9795531995456266,
+                2.8776978417266186
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            },
+            {
+              "scale": 0.03,
+              "fps": 62.2200099552016,
+              "speed": 0.9928904143172347,
+              "rates": [
+                2.253691783415373,
+                94.52025747822795
+              ],
+              "ticks": [
+                8100,
+                8100
+              ]
+            },
+            {
+              "scale": 0.06,
+              "fps": 61.93806193806194,
+              "speed": 0.9878982464806124,
+              "rates": [
+                3.5001893222264293,
+                167.2533131389625
+              ],
+              "ticks": [
+                8000,
+                8000
+              ]
+            }
+          ],
+          "base_path_resources": "PASS",
+          "coupling_lazy_load": "PASS"
+        }
+      ]
+    }
+  ],
+  "live_mobile_webkit_fps": 58.37479270315091,
+  "bots": {
+    "status": "PASS",
+    "source": "evidence/V2F/bots-v6.json"
+  },
+  "coupling_clip": {
+    "width": 720,
+    "height": 1280,
+    "bytes": 915358,
+    "source": "evidence/V2F/game-final/measured-vs-scrambled.webm"
+  }
+}

@@ -2105,7 +2105,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
-        if milestone in {"V2C", "V2D", "V2E"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone == "V2E" and path.startswith("apps/play/public/data/"))):
+        if milestone in {"V2C", "V2D", "V2E", "V2F"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone in {"V2E", "V2F"} and path.startswith("apps/play/public/data/"))):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
                             "reason": "V2C/V2D/V2E operator exclusion of graph arrays and V2E game data; restore from the submitted checkout"})
             continue
@@ -2121,7 +2121,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     entries["ledger.yaml"] = commit_blob(root, submitted, "ledger.yaml")
     entries["tree.txt"] = ("\n".join(repo_paths) + "\n").encode("utf-8")
     entries["git_status.txt"] = status.encode("utf-8")
-    diff = git(root, "diff", "--binary", diff_base, submitted, "--", *([".", ":(exclude)apps/play/public/data"] if milestone == "V2E" else []), text=False)
+    diff = git(root, "diff", "--binary", diff_base, submitted, "--", *([".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F"} else []), text=False)
     assert isinstance(diff, bytes)
     entries["git_diff.patch"] = diff
 
@@ -2313,7 +2313,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone in {"V2C", "V2D", "V2E"}:
+    if milestone in {"V2C", "V2D", "V2E", "V2F"}:
         if attempt != 1 or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires attempt 1 and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.

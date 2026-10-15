@@ -9,7 +9,7 @@ const runtime = JSON.parse(readFileSync(resolve(data, 'runtime.json'), 'utf8')),
 const raw = readFileSync(resolve(data, 'circuit.flygraph.gz'));
 const packed = gunzipSync(raw);
 const buffer = unpackGraph(packed.buffer.slice(packed.byteOffset, packed.byteOffset + packed.byteLength));
-const out = resolve(root, 'evidence/V2E/game');
+const out = resolve(root, process.env.FLYBENCH_GAME_OUT ?? 'evidence/V2E/game');
 mkdirSync(out, { recursive: true });
 const rounds = Number(process.env.FLYBENCH_BOT_ROUNDS ?? 10), strategies: any[] = [];
 for (const type of [0, 1, 2])
