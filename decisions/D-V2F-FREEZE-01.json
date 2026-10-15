@@ -1,0 +1,15 @@
+{
+  "decision_id": "D-V2F-FREEZE-01",
+  "classification": "PUBLIC PREREGISTRATION FREEZE",
+  "authorization": "V2F S3 after S2 G1-G4 PASS",
+  "protocol": "profiles/protocol-v2.1.json",
+  "manifest": "profiles/freeze-v2.1.json",
+  "gates": "evidence/V2F/gate-report.json",
+  "confirmatory_results_at_freeze": "NONE",
+  "refs": [
+    "refs/tags/prereg-v2.1",
+    "refs/heads/prereg/v2.1"
+  ],
+  "defect_action": "Stop and preserve outputs. No frozen member may change.",
+  "external_stage_acceptance": "PENDING"
+}

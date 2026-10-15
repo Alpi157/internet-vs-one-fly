@@ -1,0 +1,151 @@
+{
+  "schema": "flybench.protocol.v2.1",
+  "status": "FROZEN_BY_PREREG_V2.1_COMMIT",
+  "H0": {
+    "disclosure": "H0 was motivated by a V2D pilot with 2 nulls per family; those nulls are excluded from this test.",
+    "circuits": [
+      "T1a primary",
+      "T1b secondary"
+    ],
+    "s": [
+      0.005,
+      0.0075,
+      0.01,
+      0.015,
+      0.02,
+      0.03,
+      0.039,
+      0.05,
+      0.06,
+      0.08,
+      0.1
+    ],
+    "kappa": 0.05,
+    "nu0_hz": 2,
+    "seeds": [
+      2027101401,
+      2027101402
+    ],
+    "seconds_per_seed": 10,
+    "H0a": "smallest s with seed-mean whole-circuit rate >=50 Hz; above 0.1 censored and tied at top",
+    "H0b": "whole-circuit no-threat rate at s=0.039",
+    "statistics": "analysis_v2.permutation_rank two-sided; Holm across H0a/H0b within family; alpha .05; real minus null median; 2.5 to 97.5 percentile band",
+    "secondary": "Spearman correlation of s* and mean absolute per-target E/I input-ratio shift"
+  },
+  "confirmatory": [
+    {
+      "test": "H0-STR",
+      "circuit": "T1a",
+      "families": [
+        "N-STRENGTH"
+      ],
+      "nulls": 499,
+      "seconds_per_seed": 10,
+      "metrics": [
+        "H0a",
+        "H0b"
+      ],
+      "holm": "within family across metrics"
+    },
+    {
+      "test": "H0-FULL",
+      "circuit": "FULL",
+      "families": [
+        "N-SIGN",
+        "N-STRENGTH"
+      ],
+      "nulls": 99,
+      "seconds_per_seed": 5,
+      "metrics": [
+        "H0b-FULL"
+      ],
+      "holm": "across the two families"
+    },
+    {
+      "test": "H0-T2",
+      "circuit": "T2",
+      "families": [
+        "N-FULL",
+        "N-SIGN",
+        "N-STRENGTH"
+      ],
+      "nulls": 199,
+      "seconds_per_seed": 10,
+      "metrics": [
+        "H0a",
+        "H0b"
+      ],
+      "holm": "within family across metrics"
+    }
+  ],
+  "nulls": {
+    "seed_base": 202910150000,
+    "rule": "base + block_index*100000 + family_index*10000 + index*32; family indices N-FULL=0,N-SIGN=1,N-STRENGTH=2; block order H0-STR,H0-FULL,H0-T2,E2a,E3-low,E3-high. Stratum RNG seeds add 0..26.",
+    "excluded": "All earlier seed ranges, including 202810150000..202810150226 topology-only pilots; V2E seeds are used only for EXPLORATORY E1 regeneration and the product.",
+    "swap_multiple": 1,
+    "max_proposals_per_requested_swap": 100,
+    "contact_bin_upper": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      null
+    ],
+    "incomplete_strata": "Retain and report without reseeding; global changed-edge gate on pilot T1a and T2 >=50%"
+  },
+  "exploratory": {
+    "classification": "EXPLORATORY",
+    "inference": "descriptive percentiles and Spearman only, no p-values or Holm",
+    "E1": "T1a REAL plus all 499 nulls of each of four families; T2 REAL plus first 20 per family",
+    "E2a": "T1a consensus glutamate code 3 treated as excitatory, REAL plus 99 fresh N-SIGN nulls",
+    "E2b": {
+      "status": "SKIPPED",
+      "reason": "Compiled predicted_nt_confidence is copied verbatim, but the source confidence semantics and its relationship to consensus_nt signs are not established. No threshold interpretation is invented."
+    },
+    "E3": "T1a REAL plus 99 fresh N-SIGN nulls separately at nu0=.5 and 5 Hz; full H0 metric definitions"
+  },
+  "resource_plan": {
+    "available_ram_kib": 13880904,
+    "memory_fraction_limit": 0.7,
+    "full_peak_rss_kib": 5461192,
+    "full_worker_bound_kib": 5985480,
+    "full_workers": 1,
+    "T2_workers": 4,
+    "small_workers": 8,
+    "mechanism_workers": 2,
+    "projected_seconds_by_block": {
+      "H0-STR": 116.49291349954183,
+      "H0-FULL": 13707.921879279631,
+      "H0-T2": 18812.06463188887,
+      "E1-T1a": 443.20985649149225,
+      "E1-T2": 501.7140408621344,
+      "E2-E3": 69.8957480997251
+    },
+    "projected_total_seconds": 33651.29907012139,
+    "E2_E3": true,
+    "E1_T2": true,
+    "basis": "Real-only maximum pilot trial duration applied to all 11 grid points, without early-stop savings; measured topology and real mechanism timing; T1a uses archived V2E real-only full-sweep timing. Saturated null dynamics may cost more. This is a projection, not a runtime guarantee. Single-worker full graph includes 512 MiB memory margin."
+  },
+  "early_stop": "Ascending grid, stop after first current seed-mean >=50 Hz once .039 evaluated; retain first crossing even if later rates fall. Real graphs full sweeps.",
+  "noise": "Same interior mask and body IDs as ports-v2.json profile_id ports-v2.1, source noise-v2.json, stream 17, table noise-table-v2.json",
+  "statistics": "analysis_v2.permutation_rank inclusive two-sided plus-one ties; alpha .05; H0a .11 is censored rank sentinel, not a measurement; exactly all declared nulls required",
+  "mechanism": {
+    "matrix": "A[source,target]; s*PSP_UNIT*W; s=.039; PSP_UNIT=unit_psp()[0]; transpose has identical eigenvalues",
+    "cycles": "Distinct vertices, autapses excluded; product of positive contact weights per directed cycle, divided by rotations (2 or 3)",
+    "reciprocity": "Fraction of non-autaptic positive edges with positive reverse edge",
+    "scc": "All N vertices including isolated nodes; positive edges only",
+    "gini": "Absolute signed incoming weight sum, including zero-strength neurons",
+    "eigen": "ARPACK k=1, deterministic ones v0, tol=1e-7,maxiter=5000; report nonconvergence as missing; no retries or substitute spectra"
+  },
+  "claims": [
+    "In this model, measured wiring stays stable at couplings where shuffles that also preserve each neuron's binned excitatory and inhibitory connection strength saturate.",
+    "The stability difference also holds in the 43,894-neuron circuit, under this model and for the families that reached significance.",
+    "The stability difference also holds in the full 166,700-neuron MaleCNS graph, under this model and for the families that reached significance."
+  ],
+  "reporting": "Non-significant or not-run families stated plainly wherever H0 is mentioned; no real-fly necessity claim. All exploratory outputs labeled EXPLORATORY.",
+  "freeze": "No manifest member may change after freeze. Defect stops execution. Public tag and branch required before null simulation."
+}
