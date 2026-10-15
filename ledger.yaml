@@ -96,8 +96,32 @@ stages:
   V2B: ACCEPTED
   V2C: ACCEPTED
   V2D: ACCEPTED
-  V2E: SUBMITTED
+  V2E: ACCEPTED
+  V2F: IN_PROGRESS
 stage_review_records:
+  V2E:
+    decision: decisions/D-V2E-REVIEW-01.json
+    verdict: |-
+      V2E attempt 1: ACCEPTED. Reviewer: external (operator relay).
+      The pre-registration (prereg-v2, freeze 1a853f4, pushed 2026-10-14 12:21 UTC),
+      the 10-hour run, the frozen analysis and its verification are accepted. H0 is
+      confirmed on T1a in all three families at the minimum attainable Holm p (0.008)
+      and replicates descriptively on T1b. H1 and H2 are correctly reported as
+      insufficient. The calibrated game, lab, share outputs and README are accepted
+      as a base. Conditions for V2F:
+      G1 N-SIGN shifts per-target in-strength (KS about 0.25). A null that also
+         preserves binned excitatory and inhibitory strength (N-STRENGTH) is needed.
+      G2 T1a is extracted by hop distance from ports, which may favor convergent,
+         feedforward structure that shuffles destroy. H0 must be tested on T2 and on
+         the full 166,700-neuron graph.
+      G3 Mechanism and assumption checks (spectral and cycle structure, sign model,
+         noise level) are needed as exploratory analyses.
+      G4 The game's scramble runs at the game coupling s = 0.01, below where H0 shows
+         saturation (about 0.02 to 0.03), so players cannot see the finding. Add a
+         coupling lab. WebKit rendering (40 to 47 fps) must improve.
+      G5 README reads as an internal report; it needs a public structure.
+      G6 Software license: MIT for code (operator decision); MaleCNS data stays CC-BY.
+      G7 CONTINUE.md must not remain at repo root when no run is in progress.
   V2A:
     decision: decisions/D-V2A-REVIEW-01.json
     verdict: "V2A attempt 1: ACCEPTED WITH CONDITIONS. Reviewer: external (operator relay).\nConditions, fixed in\
@@ -353,7 +377,7 @@ launch_blockers:
 - V2E awaits external review; H1/H2 have insufficient calibratable nulls.
 - No enabled public hosting or human usability evidence.
 - Software license awaits owner decision.
-next_action: External review of completed V2E attempt 1; verification commands are in CONTINUE.md. Do not mark V2E accepted.
+next_action: Implement V2F outcome-neutral gates, then freeze and run v2.1 if all gates pass.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56

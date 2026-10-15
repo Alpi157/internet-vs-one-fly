@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2E-REVIEW-01",
+  "classification": "EXTERNAL STAGE REVIEW VERDICT",
+  "stage": "V2E",
+  "attempt": 1,
+  "reviewer": "external (operator relay)",
+  "verdict_status": "ACCEPTED",
+  "verdict": "V2E attempt 1: ACCEPTED. Reviewer: external (operator relay).\nThe pre-registration (prereg-v2, freeze 1a853f4, pushed 2026-10-14 12:21 UTC),\nthe 10-hour run, the frozen analysis and its verification are accepted. H0 is\nconfirmed on T1a in all three families at the minimum attainable Holm p (0.008)\nand replicates descriptively on T1b. H1 and H2 are correctly reported as\ninsufficient. The calibrated game, lab, share outputs and README are accepted\nas a base. Conditions for V2F:\nG1 N-SIGN shifts per-target in-strength (KS about 0.25). A null that also\n   preserves binned excitatory and inhibitory strength (N-STRENGTH) is needed.\nG2 T1a is extracted by hop distance from ports, which may favor convergent,\n   feedforward structure that shuffles destroy. H0 must be tested on T2 and on\n   the full 166,700-neuron graph.\nG3 Mechanism and assumption checks (spectral and cycle structure, sign model,\n   noise level) are needed as exploratory analyses.\nG4 The game's scramble runs at the game coupling s = 0.01, below where H0 shows\n   saturation (about 0.02 to 0.03), so players cannot see the finding. Add a\n   coupling lab. WebKit rendering (40 to 47 fps) must improve.\nG5 README reads as an internal report; it needs a public structure.\nG6 Software license: MIT for code (operator decision); MaleCNS data stays CC-BY.\nG7 CONTINUE.md must not remain at repo root when no run is in progress."
+}

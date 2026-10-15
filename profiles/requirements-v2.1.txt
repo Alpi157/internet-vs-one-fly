@@ -1,0 +1,2 @@
+# Additional sparse-analysis dependency. Base numerical versions stay in uv.lock.
+scipy==1.16.2

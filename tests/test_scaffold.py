@@ -126,7 +126,7 @@ def test_v2_process_acceptance_requires_reviewer_verdict() -> None:
         decision = json.loads(decision_path.read_text(encoding="utf-8"))
         assert decision["stage"] == stage
         assert decision["reviewer"] == "external (operator relay)"
-        assert decision["verdict_status"] == "ACCEPTED WITH CONDITIONS"
+        assert decision["verdict_status"] in {"ACCEPTED", "ACCEPTED WITH CONDITIONS"}
         assert record["verdict"] == decision["verdict"]
 
 

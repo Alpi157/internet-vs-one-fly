@@ -1,0 +1,14 @@
+{
+  "decision_id": "D-V2F-PROTOCOL-01",
+  "classification": "REVIEWER AUTHORIZED ROBUSTNESS PROTOCOL",
+  "authorization": "V2F operator prompt and D-V2E-REVIEW-01",
+  "protocol": "profiles/protocol-v2.1.json",
+  "changes": [
+    "Add sign and contact-bin constrained N-STRENGTH with global duplicate rejection.",
+    "Retain H0 metrics under early stopping; prove equivalence from five archived complete sweeps without new prefreeze null simulation.",
+    "Use separate v2.1 modules and freeze, preserving every prereg-v2 member.",
+    "Sparse mechanism summaries are EXPLORATORY; explicit cycle and eigenvalue conventions are registered.",
+    "Skip EXPLORATORY E2b because confidence semantics relative to consensus signs are not established."
+  ],
+  "confirmatory_results_at_decision": "NONE"
+}
