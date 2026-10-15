@@ -916,11 +916,11 @@ def add_evidence(
         if not path.is_file() or path.is_symlink():
             continue
         relative = PurePosixPath(path.relative_to(evidence_root).as_posix())
-        if evidence_root.name == "V2E" and (relative.suffix in {".npy", ".npz", ".webbin"} or
-            (len(relative.parts)>2 and relative.parts[0]=="results" and relative.parts[1] in {"H0","calibration","H1","H2","fixed","controls"} and relative.name.endswith(".json.gz") and not (relative.parts[1]=="calibration" and "-REAL-" in relative.name))):
+        if evidence_root.name in {"V2E", "V2F"} and (relative.suffix in {".npy", ".npz", ".webbin"} or
+            (len(relative.parts)>2 and relative.parts[0]=="results" and relative.parts[1] in {"H0","calibration","H1","H2","fixed","controls","H0-STR","H0-FULL","H0-T2","E1","E2a","E3-low","E3-high"} and relative.name.endswith(".json.gz") and not (relative.parts[1]=="calibration" and "-REAL-" in relative.name))):
             size, digest = sha256_file(path)
             omitted.append({"path":f"evidence/{relative}","bytes":size,"sha256":digest,
-                "reason":"V2E bounded archive: graph arrays or raw trial records; per-graph summaries and run status retained"})
+                "reason":"V2E/V2F bounded archive: graph arrays or raw task records; summaries and run status retained"})
             continue
         reason = exclusion_reason(relative)
         size = path.stat().st_size

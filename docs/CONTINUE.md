@@ -33,12 +33,13 @@ and clip; P4 cache optimization; P5 finding panel; P6 manual-only build; P7 init
 three-browser game/coupling matrix and production base path checks pass.
 The final live-game pass in evidence/V2F/game-final is PASS: mobile WebKit 58.37 fps during active simulation; coupling about 62.22 fps. Desktop live WebKit 52.91 fps is disclosed. Ten bot strategies pass; evidence/V2F/bots-v6.json.
 
-Current files are partly uncommitted. New apps/play/public/data/coupling files
-match the existing ignored data pattern and must be explicitly git-added with -f.
+Product implementation and media are committed in 96a5337. The fresh-clone smoke
+passed in evidence/V2F/fresh-clone-r2. Its earlier dependency-target failure is
+retained in evidence/V2F/fresh-clone and fixed in the acceptance registration.
 Do not rerun v2e_game_export.py, which rewrites older game exports/evidence.
 The product-only exporter is experiments/v2f_game_export.py.
 
-Remaining: fresh-clone smoke; await S4; run frozen analysis and verify;
+Remaining: await S4; run frozen analysis and verify;
 publish docs/findings-v2f.md and docs/results-v2f.json; update public text with
 all robustness outcomes; finalize README; move this continuation to docs/history
 when no run remains; run acceptance, commit submission and build one review ZIP.
