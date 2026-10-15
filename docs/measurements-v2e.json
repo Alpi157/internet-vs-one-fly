@@ -548,5 +548,15 @@
     "projected_total_seconds": 17462.44403913095,
     "secondary_deferred": false,
     "workers": 12
+  },
+  "scientific_completion": {
+    "circuits": [
+      "T1a",
+      "T1b"
+    ],
+    "invocation_wall_seconds": 35991.309121369006,
+    "primary": "T1b",
+    "protocol_sha256": "f684489801ec3d5d9af4c9fd845019c79f4daef97cb3533d023b6baf4fce4c8a",
+    "status": "COMPLETE"
   }
 }

@@ -1,41 +1,30 @@
-# V2E continuation
+# V2E verification
 
-Status: RUN_IN_PROGRESS. V2E is not accepted. The science files are frozen at
-`1a853f40007dcf10fb113c29a8400a7f99a3addb`, published as prereg-v2 and prereg/v2.
-Main has not been pushed. T1b is the H1/H2 primary, selected at s=0.01,
-kappa=0.05, nu0=5 Hz, gain=8. The pre-null projection retains both circuits.
+Status: COMPLETE_FOR_REVIEW. V2E is not accepted. No scientific process remains
+running. The original detached run completed in 35,991.309 seconds, retaining both
+circuits. The freeze commit is `1a853f40007dcf10fb113c29a8400a7f99a3addb`, published
+as prereg-v2 and prereg/v2. Main was not pushed and hosting remains unenabled.
 
-The detached process ID is in evidence/V2E/run.pid. Do not launch a second copy
-while it is alive. Monitor without interpreting partial hypothesis results:
+T1b is the H1/H2 primary at s=0.01, kappa=0.05, nu0=5 Hz, gain=8. H0 retains its
+preregistered T1a primary. H1/H2 primary tests are insufficient in every null
+family because fewer than 149 nulls calibrated. Do not expand the grid or replace
+nulls to change this result.
 
-```sh
-ps -p "$(cat evidence/V2E/run.pid)" -o pid,ppid,stat,etime
-tail -5 evidence/V2E/run.log
-```
-
-If the process has exited and results/STOP.json is absent, resume exactly:
+To verify the retained complete raw records and every frozen file:
 
 ```sh
-setsid nohup .venv/bin/python experiments/v2e_run.py --workers 12 --resume --out evidence/V2E/results > evidence/V2E/run-resumed.log 2>&1 < /dev/null &
-echo $! > evidence/V2E/run.pid
+uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
+uv run python tools/run_acceptance.py V2E --out evidence/V2E/acceptance
 ```
 
-If STOP.json exists, preserve every output and report the defect. Do not edit any
-file in profiles/freeze-v2.json. Do not delete STOP.json to bypass the stop.
-
-After evidence/V2E/results/COMPLETE.json appears, run:
+To regenerate figures and tables from those same raw records:
 
 ```sh
 uv run python experiments/v2e_analyze.py --out evidence/V2E/results
 uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 ```
 
-Remaining science: finish H0, null calibration, eligible H1/H2, every-null
-fixed-parameter comparisons and real-graph descriptive controls, then frozen S6
-analysis, PNG figures and FINDINGS.md. Update README pending results from those
-verified tables only. Add the analysis verification command to V2E acceptance
-only once S6 has run. Keep existing submitted review evidence and archive intact.
-The submitted ZIP is a snapshot of an active run, not a completed experiment.
-
-All game functionality, bot checks and review packaging are independent of the
-remaining scientific computation. Public Pages hosting remains unenabled.
+For a separate reproduction, use the README's data acquisition, compilation and
+runner commands in a separate checkout and output directory. Never edit a file
+in profiles/freeze-v2.json. Preserve this submitted evidence and review archive.
+Software licensing and any decision to enable public hosting remain with the owner.

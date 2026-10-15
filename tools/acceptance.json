@@ -1393,7 +1393,7 @@
       ]
     },
     "V2E": {
-      "description": "V2E engineering acceptance; frozen scientific run is external, resumable and not registered here. Review status RUN_IN_PROGRESS until S5/S6 complete.",
+      "description": "V2E engineering and frozen analysis verification; the completed multi-hour S5 experiment is not registered.",
       "commands": [
         {
           "name": "locked-development-environment",
@@ -1631,6 +1631,25 @@
           "cwd": ".",
           "required": true,
           "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "frozen-analysis-verification",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2e_analyze.py",
+            "--out",
+            "evidence/V2E/results",
+            "--verify"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "evidence/V2E/results/COMPLETE.json",
+            "evidence/V2E/results/tables.json"
+          ],
           "timeout_seconds": 1200
         }
       ]

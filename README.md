@@ -24,23 +24,50 @@ without inventing neural observations.
 
 ## Results and status
 
-V2E is submitted for review with the confirmatory run in progress. Hosting has not
-been enabled. The [public preregistration tag](https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2)
+V2E is submitted for review. The full experiment and frozen analysis completed;
+hosting has not been enabled. The [public preregistration tag](https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2)
 fixes the protocol at `1a853f40007dcf10fb113c29a8400a7f99a3addb` before confirmatory
 execution. [The protocol](docs/preregistration-v2.md), [freeze manifest](profiles/freeze-v2.json)
 and [push receipt](docs/preregistration-receipt-v2.json) are committed.
 
-| Outcome | Status |
-|---|---|
-| H0: dynamic stability | Pending; disclosed as pilot-motivated, fresh confirmatory nulls |
-| H1: held-out escape | Pending |
-| H2: spontaneous movement | Pending |
-| Full-grid real calibration | T1a uncalibratable; T1b selected by the frozen fallback rule |
+H0 was motivated by a pilot; all confirmatory null seeds were fresh. T1a was the
+H0 primary. Its critical coupling remained above 0.1, compared with null medians
+of 0.03. The table gives rates at coupling 0.039 and Holm p across H0a and H0b
+within each family; both metrics have the same adjusted p here.
 
-T1b uses s=0.01, kappa=0.05, isolated nu0=5 Hz and visual gain=8. Calibration is
-not evidence of a wiring advantage. Failed points and uncalibratable nulls remain
-in the experiment. See [CONTINUE.md](CONTINUE.md) for the running job and remaining
-analysis. No claim about a requirement in real flies follows from this model.
+| Null family | T1a rate (Hz) | Null median (Hz) | Null 2.5% to 97.5% band (Hz) | Holm p |
+|---|---:|---:|---|---:|
+| N-FULL | 2.65 | 113.67 | 79.56 to 134.74 | 0.008 |
+| N-CONTEXT | 2.65 | 110.73 | 80.90 to 137.76 | 0.008 |
+| N-SIGN | 2.65 | 119.78 | 101.72 to 135.69 | 0.008 |
+
+In this model, measured wiring stays stable at couplings where degree- and
+sign-matched shuffles saturate. This does not establish that real flies need this
+wiring. T1b's secondary H0 results have the same direction and remain descriptive.
+
+![T1a no-threat rate against the N-SIGN null band](docs/media/T1a-N-SIGN-H0-curve.png)
+
+T1a had 0/180 passing calibration points. T1b had 4/180, so the frozen fallback
+selected T1b for H1, H2 and the game at s=0.01, kappa=0.05, isolated nu0=5 Hz and
+gain=8. Only 21/199 N-FULL, 0/199 N-CONTEXT and 37/199 N-SIGN T1b nulls calibrated.
+Every H1/H2 family therefore fell below the minimum of 149 calibratable nulls.
+There are no confirmatory H1 or H2 p-values or superiority claims.
+
+| T1b descriptive metric | Value |
+|---|---:|
+| H1a: fast minus slow escape fraction, offset 0 | -1.000 |
+| H1b: median escape lead time | 40.0 ms |
+| H1c: lateral spike asymmetry | 0.594 |
+| H2a: mean uncensored moving bout | 80.89 ms |
+| H2b: turn autocorrelation at 100 ms | 0.231 |
+| H2c: signed / absolute turn | 0.068 |
+
+The negative H1a means 0/100 fast and 100/100 slow offset-zero trials escaped
+strictly before impact. The stochastic one-unit control matched the standard
+escape fraction exactly (0.875, mismatch 0). These descriptive controls do not
+rescue the insufficient-null comparisons. Full effects, null bands, calibration
+attrition, NA counts, secondary analyses and controls are in
+[results-v2e.json](docs/results-v2e.json) and [findings-v2e.md](docs/findings-v2e.md).
 
 ## Engineering
 
@@ -56,7 +83,7 @@ analysis. No claim about a requirement in real flies follows from this model.
 - A profiler-driven TypeScript pass retained exact digests. Selected T1b median
   wall seconds per simulated second were 0.130 Chromium, 0.302 Firefox and 0.156
   WebKit, versus 0.500, 1.665 and 0.599 before the pass on this development host.
-- The measured non-lab build is 1,329,773 compressed bytes. The separately loaded
+- The measured non-lab build is 1.33 MB compressed. The separately loaded
   lab adds 1,483,138 bytes. Committed game data is 4,021,214 bytes, below 8 MB.
 - Game version 6 meets the 10% to 70% target for all ten development bots, with
   60 strikes per strategy. Versions 2 to 5 failures are retained in review evidence.
@@ -114,9 +141,9 @@ uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 ```
 
 The original real calibrations took 28.23 s for T1a and 71.88 s for T1b. The
-pre-null projection for the full run was 4.85 hours on 12 workers. That is an
-estimate from measured pilot timings, not a measured completion time. Data
-acquisition and graph compilation are additional. A frozen-file mismatch or
+full run took 35,991 seconds (10.0 hours) on 12 workers. The pre-null projection
+was 4.85 hours; calibration dominated the underestimate. Data acquisition, graph
+compilation and analysis are additional. A frozen-file mismatch or
 recorded defect stops execution; never patch frozen code to continue this attempt.
 
 Stage acceptance, including three-browser tests and fresh-clone smoke:
@@ -135,7 +162,7 @@ feature-level sensing, decoder directions and body physics are modeling assumpti
 No learning, plasticity, realistic biomechanics, human-player experiment, public
 verification server or shared score is included. The scramble in the lab uses real
 selected parameters and is explicitly not calibrated. Replay displays recorded data;
-it does not infer observations across gaps. Hypothesis results remain pending.
+it does not infer observations across gaps. H1 and H2 remain inconclusive because too few nulls calibrated.
 
 ## Data attribution and citation
 
