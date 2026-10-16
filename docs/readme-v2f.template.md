@@ -2,7 +2,7 @@
 
 A simulated fly driven by measured neural wiring. Try to swat it, then compare measured and shuffled wiring under the same model.
 
-![Recorded comparison of measured and shuffled wiring as coupling increases](docs/media/coupling-hero.gif)
+![Recorded N-SIGN comparison; strength-preserving shuffles stay almost as calm as measured wiring](docs/media/coupling-hero.gif)
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)** · Live after deployment.
 Tap for a flick or hold for a slower, wider strike. Open the coupling lab to compare measured and scrambled wiring side by side.
@@ -11,15 +11,21 @@ Tap for a flick or hold for a slower, wider strike. Open the coupling lab to com
 
 {{original}}
 
-{{summary}}
+{{combined}}
 
-{{limits}}
+Rates at coupling {{coupling}} in the registered comparisons:
 
-The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **{{original_date}}**, before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published on **{{robustness_date}}**, before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
+{{comparison_table}}
 
-![Measured circuit rate and N-SIGN null band across coupling](docs/media/T1a-N-SIGN-H0-curve.png)
+{{mechanism}}
 
-The clip demonstrates the original N-SIGN comparison, not the strength-preserving control. The lab scramble is the first seed at the family's median critical coupling, selected by a fixed rule. Heat and meters use recorded simulation spikes; the speed factor reports simulated time per wall second. The strength-preserving comparisons above limit the broader interpretation.
+{{bin_note}} {{limits}}
+
+The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **{{original_date}}** and the [robustness protocol](docs/preregistration-v2.1.md) on **{{robustness_date}}**, before their runs. [Full family results and limits](docs/findings-v2f.md).
+
+![Measured rate versus the earlier N-SIGN shuffles; the stricter control removes most of this gap](docs/media/T1a-N-SIGN-H0-curve.png)
+
+The hero recording demonstrates N-SIGN only. The stricter control is described in the table above. Its scramble was selected by the fixed median-critical-coupling rule. Heat and rate meters use recorded simulation spikes.
 
 ## How it works
 
@@ -79,13 +85,14 @@ Critical coupling above the tested grid is censored. A non-significant result do
 Verify the existing raw records without simulating new trials:
 
 ```sh
+uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
 uv pip install --no-deps -r profiles/requirements-v2.1.txt
-uv run python experiments/v2f_analyze.py --out evidence/V2F/results
+uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
 uv run python experiments/v2f_publish.py --check
 ```
 
-Analysis takes seconds on this host after the records are available. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
+The raw-record dataset has reserved DOI [{{dataset_doi}}](https://doi.org/{{dataset_doi}}). The DOI resolves once the owner publishes the Zenodo draft. After publication, `uv run python tools/restore_evidence.py --download` retrieves the same checksum-pinned archive. Both frozen verifiers run offline after restoration; the older verifier also compares recorded host metadata, so its exact equality check requires the recorded platform and thread-count envelope. Verification processes the raw records without running a simulation. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
 
 ## Limitations
 

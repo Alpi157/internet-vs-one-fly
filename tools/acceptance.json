@@ -6,10 +6,19 @@
       "commands": [
         {
           "name": "locked-development-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 180
         },
         {
@@ -21,7 +30,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -36,7 +47,10 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests/test_scaffold.py", "tests/test_review_tools.py"],
+          "required_paths": [
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py"
+          ],
           "timeout_seconds": 180
         },
         {
@@ -48,7 +62,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -79,10 +95,18 @@
         },
         {
           "name": "m02-offline-source-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_source_fetch.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_source_fetch.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests/test_source_fetch.py"],
+          "required_paths": [
+            "tests/test_source_fetch.py"
+          ],
           "timeout_seconds": 180
         },
         {
@@ -111,7 +135,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -123,7 +149,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -133,7 +161,13 @@
       "commands": [
         {
           "name": "m03-offline-graph-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_graph_compile.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_graph_compile.py"
+          ],
           "cwd": ".",
           "required": true,
           "required_paths": [
@@ -198,7 +232,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["data/compiled/full/manifest.json"],
+          "required_paths": [
+            "data/compiled/full/manifest.json"
+          ],
           "timeout_seconds": 600
         },
         {
@@ -256,7 +292,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -268,7 +306,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["profiles/source-lock.json"],
+          "required_paths": [
+            "profiles/source-lock.json"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -280,7 +320,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -325,7 +367,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 300
         },
         {
@@ -400,7 +444,13 @@
         },
         {
           "name": "m04-pathway-mapping-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_pathway_mapping.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_pathway_mapping.py"
+          ],
           "cwd": ".",
           "required": true,
           "required_paths": [
@@ -460,7 +510,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -472,7 +524,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["profiles/source-lock.json"],
+          "required_paths": [
+            "profiles/source-lock.json"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -484,7 +538,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["data/compiled/full/manifest.json"],
+          "required_paths": [
+            "data/compiled/full/manifest.json"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -496,7 +552,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -619,7 +677,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
@@ -631,7 +691,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -766,7 +828,9 @@
           ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -776,50 +840,126 @@
       "commands": [
         {
           "name": "locked-development-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m07-kernel-parity-and-timeout-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_kernel_parity.py", "tests/test_probe_limits.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_kernel_parity.py",
+            "tests/test_probe_limits.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/kernel.py", "tests/test_kernel_parity.py", "tests/test_probe_limits.py", "profiles/kernel-parity-v0.1.json"],
+          "required_paths": [
+            "src/flybench/kernel.py",
+            "tests/test_kernel_parity.py",
+            "tests/test_probe_limits.py",
+            "profiles/kernel-parity-v0.1.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m07-evidence-consistency",
-          "argv": ["python", "tools/check_m07_evidence.py", "--out", "evidence/M07"],
+          "argv": [
+            "python",
+            "tools/check_m07_evidence.py",
+            "--out",
+            "evidence/M07"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/check_m07_evidence.py", "profiles/full-probe.json", "profiles/live-candidate-v0.1.json", "evidence/M07/decision.json", "evidence/M07/raw-interval-timings.jsonl"],
+          "required_paths": [
+            "tools/check_m07_evidence.py",
+            "profiles/full-probe.json",
+            "profiles/live-candidate-v0.1.json",
+            "evidence/M07/decision.json",
+            "evidence/M07/raw-interval-timings.jsonl"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m01-m07-small-offline-regression",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_scaffold.py", "tests/test_review_tools.py", "tests/test_source_fetch.py", "tests/test_graph_compile.py", "tests/test_pathway_mapping.py", "tests/test_reference.py", "tests/test_numerical_semantics.py", "tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py", "tests/test_probe_limits.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py",
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py",
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py",
+            "tests/test_probe_limits.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests/test_scaffold.py", "tests/test_review_tools.py", "tests/test_source_fetch.py", "tests/test_graph_compile.py", "tests/test_pathway_mapping.py", "tests/test_reference.py", "tests/test_numerical_semantics.py", "tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py", "tests/test_probe_limits.py"],
+          "required_paths": [
+            "tests/test_scaffold.py",
+            "tests/test_review_tools.py",
+            "tests/test_source_fetch.py",
+            "tests/test_graph_compile.py",
+            "tests/test_pathway_mapping.py",
+            "tests/test_reference.py",
+            "tests/test_numerical_semantics.py",
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py",
+            "tests/test_probe_limits.py"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "m07-accepted-identity-guards",
-          "argv": ["python", "-c", "import hashlib,json,pathlib,sys; r=pathlib.Path('.'); expected={'docs/architecture.md':'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1','profiles/source-lock.json':'2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c','profiles/controller-v0.1.json':'0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817','profiles/encoder-runtime-v0.1.json':'7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7','profiles/decoder-runtime-v0.1.json':'7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f','profiles/environment-v0.1.json':'9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7'}; actual={p:hashlib.sha256((r/p).read_bytes()).hexdigest() for p in expected}; full=json.loads((r/'data/compiled/full/manifest.json').read_text())['semantic_digest']['value']; circuit=json.loads((r/'data/compiled/escape/manifest.json').read_text())['semantic_digest']['value']; print(actual,full,circuit); sys.exit(actual!=expected or full!='429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0' or circuit!='53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5')"],
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,json,pathlib,sys; r=pathlib.Path('.'); expected={'docs/architecture.md':'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1','profiles/source-lock.json':'2e72e5c99708751fc9f6251d41e4fbed6456f4592fea76b8778a7453d5b18d4c','profiles/controller-v0.1.json':'0b3577ec2dc257f130d59f0219544ad0dae479080027e25bdeca2182673bf817','profiles/encoder-runtime-v0.1.json':'7840fa564c7f34d188797899ced5c87ffd9825469172f3a7c1076e36873c7de7','profiles/decoder-runtime-v0.1.json':'7fec8cef8d5ca3679fbf65456f236bab2c5e15e7902aafc5146ce8d83838ca4f','profiles/environment-v0.1.json':'9119848704b84416e1eed25ed8ae84735216ccb251e83147ea8970e2754968f7'}; actual={p:hashlib.sha256((r/p).read_bytes()).hexdigest() for p in expected}; full=json.loads((r/'data/compiled/full/manifest.json').read_text())['semantic_digest']['value']; circuit=json.loads((r/'data/compiled/escape/manifest.json').read_text())['semantic_digest']['value']; print(actual,full,circuit); sys.exit(actual!=expected or full!='429cffb53e11ca2ea353163aa07f695c730df053db58b18ab2f85c59fa90b3c0' or circuit!='53d87e2c9ea9c21f601ab372ae4fd058298e2a67f7530e3f0054c5e38c66d8e5')"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md", "profiles/source-lock.json", "profiles/controller-v0.1.json", "data/compiled/full/manifest.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "docs/architecture.md",
+            "profiles/source-lock.json",
+            "profiles/controller-v0.1.json",
+            "data/compiled/full/manifest.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 60
         },
         {
           "name": "clean-submitted-code-identity",
-          "argv": ["python", "-c", "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"],
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -829,106 +969,236 @@
       "commands": [
         {
           "name": "node24-and-npm-tooling-capture",
-          "argv": ["python", "-c", "import json,re,subprocess,sys; t=json.load(open('tooling.json')); n=subprocess.run(['node','--version'],capture_output=True,text=True); p=subprocess.run(['npm','--version'],capture_output=True,text=True); ok=n.returncode==0 and p.returncode==0 and re.fullmatch(r'v24\\.[0-9]+\\.[0-9]+\\n?',n.stdout) is not None and t['commands']['node']['stdout']==n.stdout and t['commands']['npm']['stdout']==p.stdout; print(json.dumps({'status':'PASS' if ok else 'FAIL','node':n.stdout.strip(),'npm':p.stdout.strip()})); sys.stderr.write(n.stderr+p.stderr); sys.exit(not ok)"],
+          "argv": [
+            "python",
+            "-c",
+            "import json,re,subprocess,sys; t=json.load(open('tooling.json')); n=subprocess.run(['node','--version'],capture_output=True,text=True); p=subprocess.run(['npm','--version'],capture_output=True,text=True); ok=n.returncode==0 and p.returncode==0 and re.fullmatch(r'v24\\.[0-9]+\\.[0-9]+\\n?',n.stdout) is not None and t['commands']['node']['stdout']==n.stdout and t['commands']['npm']['stdout']==p.stdout; print(json.dumps({'status':'PASS' if ok else 'FAIL','node':n.stdout.strip(),'npm':p.stdout.strip()})); sys.stderr.write(n.stderr+p.stderr); sys.exit(not ok)"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tooling.json", "ledger.yaml"],
+          "required_paths": [
+            "tooling.json",
+            "ledger.yaml"
+          ],
           "timeout_seconds": 30
         },
         {
           "name": "locked-python-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "locked-frontend-environment",
-          "argv": ["npm", "--prefix", "apps/web", "ci"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "ci"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/package.json", "apps/web/package-lock.json"],
+          "required_paths": [
+            "apps/web/package.json",
+            "apps/web/package-lock.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "frontend-input-and-disclosure-tests",
-          "argv": ["npm", "--prefix", "apps/web", "run", "test", "--", "--run"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "run",
+            "test",
+            "--",
+            "--run"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/tests/App.test.tsx", "apps/web/src/App.tsx", "apps/web/src/Arena.tsx"],
+          "required_paths": [
+            "apps/web/tests/App.test.tsx",
+            "apps/web/src/App.tsx",
+            "apps/web/src/Arena.tsx"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "frontend-production-build",
-          "argv": ["npm", "--prefix", "apps/web", "run", "build"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "run",
+            "build"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/vite.config.ts", "apps/web/tsconfig.json"],
+          "required_paths": [
+            "apps/web/vite.config.ts",
+            "apps/web/tsconfig.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m08-local-game-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_local_game.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_local_game.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/game.py", "src/flybench/server.py", "tests/test_local_game.py", "profiles/live.json", "profiles/game-v0.1.json", "profiles/game-v0.2.json", "profiles/game-v0.3.json"],
+          "required_paths": [
+            "src/flybench/game.py",
+            "src/flybench/server.py",
+            "tests/test_local_game.py",
+            "profiles/live.json",
+            "profiles/game-v0.1.json",
+            "profiles/game-v0.2.json",
+            "profiles/game-v0.3.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m06-m07-scientific-regression",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py"],
+          "required_paths": [
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "m08-live-identity-evidence",
-          "argv": ["python", "tools/m08_identity_evidence.py", "--profile", "profiles/live.json", "--out", "evidence/M08"],
+          "argv": [
+            "python",
+            "tools/m08_identity_evidence.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_identity_evidence.py", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_identity_evidence.py",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "m08-headless-server-parity",
-          "argv": ["python", "tools/m08_headless_parity.py", "--profile", "profiles/live.json", "--out", "evidence/M08/headless-server-parity.json"],
+          "argv": [
+            "python",
+            "tools/m08_headless_parity.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08/headless-server-parity.json"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_headless_parity.py", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_headless_parity.py",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 180
         },
         {
           "name": "m08-bounded-loopback-server-smoke",
-          "argv": ["python", "tools/m08_local_smoke.py", "--profile", "profiles/live.json", "--out", "evidence/M08/local-server-smoke.json"],
+          "argv": [
+            "python",
+            "tools/m08_local_smoke.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08/local-server-smoke.json"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_local_smoke.py", "apps/web/dist/index.html", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_local_smoke.py",
+            "apps/web/dist/index.html",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "architecture-identity",
-          "argv": ["python", "-c", "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"],
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
           "name": "m08-final-human-and-automated-evidence-consistency",
-          "argv": ["python", "tools/check_m08_evidence.py", "--out", "evidence/M08", "--phase", "final"],
+          "argv": [
+            "python",
+            "tools/check_m08_evidence.py",
+            "--out",
+            "evidence/M08",
+            "--phase",
+            "final"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/check_m08_evidence.py", "evidence/M08/decision.json", "evidence/M08/manual/playtests.json", "evidence/M08/manual/host-smoke.json", "evidence/M08/manual/manual-game-review.txt"],
+          "required_paths": [
+            "tools/check_m08_evidence.py",
+            "evidence/M08/decision.json",
+            "evidence/M08/manual/playtests.json",
+            "evidence/M08/manual/host-smoke.json",
+            "evidence/M08/manual/manual-game-review.txt"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "clean-submitted-code-identity",
-          "argv": ["python", "-c", "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"],
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -938,138 +1208,328 @@
       "commands": [
         {
           "name": "locked-python-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "locked-frontend-environment",
-          "argv": ["npm", "--prefix", "apps/web", "ci"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "ci"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/package.json", "apps/web/package-lock.json"],
+          "required_paths": [
+            "apps/web/package.json",
+            "apps/web/package-lock.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m08-frontend-regression",
-          "argv": ["npm", "--prefix", "apps/web", "run", "test", "--", "--run"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "run",
+            "test",
+            "--",
+            "--run"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/tests/App.test.tsx", "apps/web/src/App.tsx", "apps/web/src/Arena.tsx"],
+          "required_paths": [
+            "apps/web/tests/App.test.tsx",
+            "apps/web/src/App.tsx",
+            "apps/web/src/Arena.tsx"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m08-frontend-build-regression",
-          "argv": ["npm", "--prefix", "apps/web", "run", "build"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/web",
+            "run",
+            "build"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["apps/web/vite.config.ts", "apps/web/tsconfig.json"],
+          "required_paths": [
+            "apps/web/vite.config.ts",
+            "apps/web/tsconfig.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m09-attempt3-recording-and-parity-tests",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_recording.py", "tests/test_recording_parity.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_recording.py",
+            "tests/test_recording_parity.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/recording.py", "src/flybench/game.py", "src/flybench/server.py", "tests/test_recording.py", "tests/test_recording_parity.py", "profiles/live.json", "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"],
+          "required_paths": [
+            "src/flybench/recording.py",
+            "src/flybench/game.py",
+            "src/flybench/server.py",
+            "tests/test_recording.py",
+            "tests/test_recording_parity.py",
+            "profiles/live.json",
+            "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m08-local-game-regression",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_local_game.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_local_game.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/game.py", "src/flybench/server.py", "tests/test_local_game.py", "profiles/live.json"],
+          "required_paths": [
+            "src/flybench/game.py",
+            "src/flybench/server.py",
+            "tests/test_local_game.py",
+            "profiles/live.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m06-m07-scientific-regression",
-          "argv": ["python", "-m", "pytest", "-q", "tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests/test_runner.py", "tests/test_controller_authority.py", "tests/test_kernel_parity.py"],
+          "required_paths": [
+            "tests/test_runner.py",
+            "tests/test_controller_authority.py",
+            "tests/test_kernel_parity.py"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "full-python-regression",
-          "argv": ["python", "-m", "pytest", "-q"],
+          "argv": [
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests", "src/flybench"],
+          "required_paths": [
+            "tests",
+            "src/flybench"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "m08-live-identity-regression",
-          "argv": ["python", "tools/m08_identity_evidence.py", "--profile", "profiles/live.json", "--out", "evidence/M08"],
+          "argv": [
+            "python",
+            "tools/m08_identity_evidence.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_identity_evidence.py", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_identity_evidence.py",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "m08-headless-server-parity-regression",
-          "argv": ["python", "tools/m08_headless_parity.py", "--profile", "profiles/live.json", "--out", "evidence/M08/headless-server-parity.json"],
+          "argv": [
+            "python",
+            "tools/m08_headless_parity.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08/headless-server-parity.json"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_headless_parity.py", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_headless_parity.py",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 180
         },
         {
           "name": "m08-bounded-loopback-server-smoke-regression",
-          "argv": ["python", "tools/m08_local_smoke.py", "--profile", "profiles/live.json", "--out", "evidence/M08/local-server-smoke.json"],
+          "argv": [
+            "python",
+            "tools/m08_local_smoke.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M08/local-server-smoke.json"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m08_local_smoke.py", "apps/web/dist/index.html", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m08_local_smoke.py",
+            "apps/web/dist/index.html",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "m09-bounded-demo-recording-smoke",
-          "argv": ["python", "tools/m09_demo_recording_smoke.py", "--profile", "profiles/live.json", "--out", "evidence/M09/demo-recording-smoke.json"],
+          "argv": [
+            "python",
+            "tools/m09_demo_recording_smoke.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M09/demo-recording-smoke.json"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m09_demo_recording_smoke.py", "apps/web/dist/index.html", "profiles/live.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "tools/m09_demo_recording_smoke.py",
+            "apps/web/dist/index.html",
+            "profiles/live.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "m09-bench-recording-cli-integration",
-          "argv": ["flybench", "bench", "profiles/looming-controls.json", "--out", "evidence/M09/bench", "--record-dir", "evidence/M09/runs"],
+          "argv": [
+            "flybench",
+            "bench",
+            "profiles/looming-controls.json",
+            "--out",
+            "evidence/M09/bench",
+            "--record-dir",
+            "evidence/M09/runs"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/cli.py", "src/flybench/recording.py", "profiles/looming-controls.json", "profiles/live.json"],
+          "required_paths": [
+            "src/flybench/cli.py",
+            "src/flybench/recording.py",
+            "profiles/looming-controls.json",
+            "profiles/live.json"
+          ],
           "timeout_seconds": 180
         },
         {
           "name": "m09-build-recorder-evidence",
-          "argv": ["python", "tools/m09_build_evidence.py", "--profile", "profiles/live.json", "--out", "evidence/M09"],
+          "argv": [
+            "python",
+            "tools/m09_build_evidence.py",
+            "--profile",
+            "profiles/live.json",
+            "--out",
+            "evidence/M09"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/m09_build_evidence.py", "src/flybench/recording.py", "profiles/live.json"],
+          "required_paths": [
+            "tools/m09_build_evidence.py",
+            "src/flybench/recording.py",
+            "profiles/live.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "m09-automated-evidence-consistency",
-          "argv": ["python", "tools/check_m09_evidence.py", "--out", "evidence/M09", "--phase", "current"],
+          "argv": [
+            "python",
+            "tools/check_m09_evidence.py",
+            "--out",
+            "evidence/M09",
+            "--phase",
+            "current"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tools/check_m09_evidence.py", "evidence/M09/representative.flyrun", "evidence/M09/bench/selected-trial-summary.json", "evidence/M09/bench/recorder-parity.json", "evidence/M09/runs/looming-seed-0.flyrun", "evidence/M09/coordinate-quantization.json", "evidence/M09/recording-parity.json", "evidence/M09/attempt-2-superseded.json", "evidence/M09/review-fixtures/valid-complete.flyrun", "evidence/M09/review-fixtures/valid-optional-truncated.flyrun", "evidence/M09/review-fixtures/malformed-path-traversal.flyrun", "evidence/M09/review-fixtures/malformed-executable-member.flyrun", "evidence/M09/review-fixtures/malformed-integrity.flyrun", "evidence/M09/fixture-excerpts.md", "decisions/D-M08-HUMAN-GATE-DEFER-01.json", "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"],
+          "required_paths": [
+            "tools/check_m09_evidence.py",
+            "evidence/M09/representative.flyrun",
+            "evidence/M09/bench/selected-trial-summary.json",
+            "evidence/M09/bench/recorder-parity.json",
+            "evidence/M09/runs/looming-seed-0.flyrun",
+            "evidence/M09/coordinate-quantization.json",
+            "evidence/M09/recording-parity.json",
+            "evidence/M09/attempt-2-superseded.json",
+            "evidence/M09/review-fixtures/valid-complete.flyrun",
+            "evidence/M09/review-fixtures/valid-optional-truncated.flyrun",
+            "evidence/M09/review-fixtures/malformed-path-traversal.flyrun",
+            "evidence/M09/review-fixtures/malformed-executable-member.flyrun",
+            "evidence/M09/review-fixtures/malformed-integrity.flyrun",
+            "evidence/M09/fixture-excerpts.md",
+            "decisions/D-M08-HUMAN-GATE-DEFER-01.json",
+            "decisions/D-M09-COORDINATE-QUANTIZATION-01.json"
+          ],
           "timeout_seconds": 120
         },
         {
           "name": "architecture-identity",
-          "argv": ["python", "-c", "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"],
+          "argv": [
+            "python",
+            "-c",
+            "import hashlib,pathlib,sys; p=pathlib.Path('docs/architecture.md'); h=hashlib.sha256(p.read_bytes()).hexdigest(); print(h); sys.exit(h != 'bae80837d5d6d769ae5b728af3b80c1caa21b7f08efdd7f3eb458f7bb2eab9d1')"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["docs/architecture.md"],
+          "required_paths": [
+            "docs/architecture.md"
+          ],
           "timeout_seconds": 30
         },
         {
           "name": "clean-submitted-code-identity",
-          "argv": ["python", "-c", "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"],
+          "argv": [
+            "python",
+            "-c",
+            "import subprocess,sys; head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,text=True); status=subprocess.run(['git','status','--porcelain=v1','--untracked-files=all'],capture_output=True,text=True); print(head.stdout.strip()); print(status.stdout,end=''); sys.stderr.write(head.stderr+status.stderr); sys.exit(head.returncode or status.returncode or bool(status.stdout))"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": [".git"],
+          "required_paths": [
+            ".git"
+          ],
           "timeout_seconds": 30
         }
       ]
@@ -1079,50 +1539,119 @@
       "commands": [
         {
           "name": "locked-development-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "full-python-regression",
-          "argv": ["uv", "run", "python", "-m", "pytest", "-q"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests", "src/flybench"],
+          "required_paths": [
+            "tests",
+            "src/flybench"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "v2a-phase0-truth-checks",
-          "argv": ["uv", "run", "python", "experiments/p0_truth_checks.py", "--out", "evidence/V2A/p0", "--rounds", "500", "--full-graph", "data/compiled/full", "--timeout-s", "1800"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/p0_truth_checks.py",
+            "--out",
+            "evidence/V2A/p0",
+            "--rounds",
+            "500",
+            "--full-graph",
+            "data/compiled/full",
+            "--timeout-s",
+            "1800"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["experiments/p0_truth_checks.py", "profiles/p0-bots-v1.json", "data/compiled/full/manifest.json"],
+          "required_paths": [
+            "experiments/p0_truth_checks.py",
+            "profiles/p0-bots-v1.json",
+            "data/compiled/full/manifest.json"
+          ],
           "timeout_seconds": 2400
         },
         {
           "name": "v2a-circuit-survey",
-          "argv": ["uv", "run", "python", "-m", "flybench.circuit", "survey", "--out", "evidence/V2A/p1"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.circuit",
+            "survey",
+            "--out",
+            "evidence/V2A/p1"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/circuit.py", "profiles/circuit-builder-v1.json", "data/compiled/full/manifest.json"],
+          "required_paths": [
+            "src/flybench/circuit.py",
+            "profiles/circuit-builder-v1.json",
+            "data/compiled/full/manifest.json"
+          ],
           "timeout_seconds": 1200
         },
         {
           "name": "v2a-null-diagnostics",
-          "argv": ["uv", "run", "python", "-m", "flybench.nulls", "generate", "--out", "evidence/V2A/p1"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.nulls",
+            "generate",
+            "--out",
+            "evidence/V2A/p1"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/nulls.py", "profiles/nulls-v1.json", "data/compiled/escape/manifest.json"],
+          "required_paths": [
+            "src/flybench/nulls.py",
+            "profiles/nulls-v1.json",
+            "data/compiled/escape/manifest.json"
+          ],
           "timeout_seconds": 1200
         },
         {
           "name": "fresh-clone-scaffold-and-demo",
-          "argv": ["bash", "-lc", "git clone . /tmp/flybench-clean && cd /tmp/flybench-clean && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv sync --extra dev --locked && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run python -m pytest -q tests/test_scaffold.py && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run flybench demo --profile profiles/live.json --headless-round"],
+          "argv": [
+            "bash",
+            "-lc",
+            "git clone . /tmp/flybench-clean && cd /tmp/flybench-clean && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv sync --extra dev --locked && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run python -m pytest -q tests/test_scaffold.py && UV_CACHE_DIR=/tmp/flybench-v2a-clean-uv-cache uv run flybench demo --profile profiles/live.json --headless-round"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["fixtures/escape-circuit-v1/manifest.json", "tests/test_scaffold.py"],
+          "required_paths": [
+            "fixtures/escape-circuit-v1/manifest.json",
+            "tests/test_scaffold.py"
+          ],
           "timeout_seconds": 600
         }
       ]
@@ -1132,58 +1661,129 @@
       "commands": [
         {
           "name": "locked-development-environment",
-          "argv": ["uv", "sync", "--extra", "dev", "--locked"],
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["pyproject.toml", "uv.lock"],
+          "required_paths": [
+            "pyproject.toml",
+            "uv.lock"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "full-python-regression",
-          "argv": ["uv", "run", "python", "-m", "pytest", "-q"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["tests", "src/flybench"],
+          "required_paths": [
+            "tests",
+            "src/flybench"
+          ],
           "timeout_seconds": 900
         },
         {
           "name": "v2b-circuit-build",
-          "argv": ["uv", "run", "python", "-m", "flybench.circuit", "build-v2", "--out", "evidence/V2B/p1"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.circuit",
+            "build-v2",
+            "--out",
+            "evidence/V2B/p1"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["src/flybench/circuit.py", "src/flybench/v2_data.py", "profiles/circuit-builder-v2.json", "data/compiled/full/manifest.json"],
+          "required_paths": [
+            "src/flybench/circuit.py",
+            "src/flybench/v2_data.py",
+            "profiles/circuit-builder-v2.json",
+            "data/compiled/full/manifest.json"
+          ],
           "timeout_seconds": 1200
         },
         {
           "name": "v2b-calibration-dry-run",
-          "argv": ["uv", "run", "python", "experiments/v2b_dry_run.py", "--out", "evidence/V2B/p2"],
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2b_dry_run.py",
+            "--out",
+            "evidence/V2B/p2"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["experiments/v2b_dry_run.py", "profiles/calibration-v2-draft.json", "data/compiled/v2/t1a/manifest.json", "data/compiled/v2/t1b/manifest.json"],
+          "required_paths": [
+            "experiments/v2b_dry_run.py",
+            "profiles/calibration-v2-draft.json",
+            "data/compiled/v2/t1a/manifest.json",
+            "data/compiled/v2/t1b/manifest.json"
+          ],
           "timeout_seconds": 900
         },
         {
           "name": "kernel-ts-install",
-          "argv": ["npm", "--prefix", "packages/kernel-ts", "ci"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "ci"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["packages/kernel-ts/package.json", "packages/kernel-ts/package-lock.json"],
+          "required_paths": [
+            "packages/kernel-ts/package.json",
+            "packages/kernel-ts/package-lock.json"
+          ],
           "timeout_seconds": 300
         },
         {
           "name": "kernel-ts-parity",
-          "argv": ["npm", "--prefix", "packages/kernel-ts", "test"],
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "test"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["packages/kernel-ts/src/kernel.ts", "packages/kernel-ts/test/parity.test.ts", "packages/kernel-ts/test/fixtures/escape.webbin"],
+          "required_paths": [
+            "packages/kernel-ts/src/kernel.ts",
+            "packages/kernel-ts/test/parity.test.ts",
+            "packages/kernel-ts/test/fixtures/escape.webbin"
+          ],
           "timeout_seconds": 600
         },
         {
           "name": "fresh-clone-scaffold-detmath-and-fixture-parity",
-          "argv": ["bash", "-lc", "git clone . /tmp/flybench-v2b-clean && cd /tmp/flybench-v2b-clean && UV_CACHE_DIR=/tmp/flybench-v2b-clean-uv-cache uv sync --extra dev --locked && UV_CACHE_DIR=/tmp/flybench-v2b-clean-uv-cache uv run python -m pytest -q tests/test_scaffold.py tests/test_detmath.py && npm --prefix packages/kernel-ts ci && npm --prefix packages/kernel-ts test -- --fixture-only"],
+          "argv": [
+            "bash",
+            "-lc",
+            "git clone . /tmp/flybench-v2b-clean && cd /tmp/flybench-v2b-clean && UV_CACHE_DIR=/tmp/flybench-v2b-clean-uv-cache uv sync --extra dev --locked && UV_CACHE_DIR=/tmp/flybench-v2b-clean-uv-cache uv run python -m pytest -q tests/test_scaffold.py tests/test_detmath.py && npm --prefix packages/kernel-ts ci && npm --prefix packages/kernel-ts test -- --fixture-only"
+          ],
           "cwd": ".",
           "required": true,
-          "required_paths": ["fixtures/escape-circuit-v1/manifest.json", "tests/test_scaffold.py", "tests/test_detmath.py", "packages/kernel-ts/test/fixtures/escape.webbin"],
+          "required_paths": [
+            "fixtures/escape-circuit-v1/manifest.json",
+            "tests/test_scaffold.py",
+            "tests/test_detmath.py",
+            "packages/kernel-ts/test/fixtures/escape.webbin"
+          ],
           "timeout_seconds": 900
         }
       ]
@@ -1372,24 +1972,245 @@
     "V2D": {
       "description": "V2D: S4 G4 scientific stop, provisional game slice; no S5-S7 execution",
       "commands": [
-        {"name": "locked-development-environment", "argv": ["uv", "sync", "--extra", "dev", "--locked"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 300},
-        {"name": "full-python-regression", "argv": ["uv", "run", "python", "-m", "pytest", "-q"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "v2d-noise-table", "argv": ["uv", "run", "python", "-m", "flybench.calibration_v2", "--v2", "--out", "profiles/noise-table-v2.json"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "v2d-control-feasibility", "argv": ["uv", "run", "python", "experiments/v2d_control_probe.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "v2d-noise-decoder-control", "argv": ["uv", "run", "python", "experiments/v2d_noise_control.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "v2d-dry-run-3", "argv": ["uv", "run", "python", "experiments/v2d_dry_run.py", "--out", "evidence/V2D/dry-run-3"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 1200},
-        {"name": "v2d-python-parity-export", "argv": ["uv", "run", "python", "experiments/v2d_parity.py", "--out", "evidence/V2D/browser"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "kernel-ts-install", "argv": ["npm", "--prefix", "packages/kernel-ts", "ci"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "node-parity", "argv": ["node", "packages/kernel-ts/test/runner.test.ts", "--v2d"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "node-port-noise-exclusion", "argv": ["node", "packages/kernel-ts/test/noise.test.ts"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "browser-matrix", "argv": ["node", "packages/kernel-ts/test/browser-parity.mjs", "--v2d"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-data-export", "argv": ["uv", "run", "python", "experiments/v2d_game_export.py"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-install", "argv": ["npm", "--prefix", "apps/play", "ci"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-build", "argv": ["npm", "--prefix", "apps/play", "run", "build"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-authority-replay-tests", "argv": ["npm", "--prefix", "apps/play", "test"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-e2e", "argv": ["node", "apps/play/test/e2e.mjs"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "game-bots", "argv": ["node", "apps/play/test/bots.ts"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600},
-        {"name": "fresh-clone-offline-fixture-smoke", "argv": ["uv", "run", "python", "-c", "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2d-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['uv','run','python','experiments/v2d_game_export.py','--fixture'],['npm','--prefix','apps/play','ci'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"], "cwd": ".", "required": true, "required_paths": [], "timeout_seconds": 600}
+        {
+          "name": "locked-development-environment",
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 300
+        },
+        {
+          "name": "full-python-regression",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2d-noise-table",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "flybench.calibration_v2",
+            "--v2",
+            "--out",
+            "profiles/noise-table-v2.json"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2d-control-feasibility",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2d_control_probe.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2d-noise-decoder-control",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2d_noise_control.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "v2d-dry-run-3",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2d_dry_run.py",
+            "--out",
+            "evidence/V2D/dry-run-3"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "v2d-python-parity-export",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2d_parity.py",
+            "--out",
+            "evidence/V2D/browser"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "kernel-ts-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "ci"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-parity",
+          "argv": [
+            "node",
+            "packages/kernel-ts/test/runner.test.ts",
+            "--v2d"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-port-noise-exclusion",
+          "argv": [
+            "node",
+            "packages/kernel-ts/test/noise.test.ts"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "browser-matrix",
+          "argv": [
+            "node",
+            "packages/kernel-ts/test/browser-parity.mjs",
+            "--v2d"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-data-export",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "experiments/v2d_game_export.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "ci"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-build",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "run",
+            "build"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-authority-replay-tests",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-e2e",
+          "argv": [
+            "node",
+            "apps/play/test/e2e.mjs"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-bots",
+          "argv": [
+            "node",
+            "apps/play/test/bots.ts"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "fresh-clone-offline-fixture-smoke",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "import pathlib,subprocess,tempfile; root=pathlib.Path.cwd(); clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2d-clone-'))/'repo'; subprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True); commands=[['uv','sync','--extra','dev','--locked'],['uv','run','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py'],['npm','--prefix','packages/kernel-ts','ci'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['uv','run','python','experiments/v2d_game_export.py','--fixture'],['npm','--prefix','apps/play','ci'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]; [(print('COMMAND',c,flush=True),subprocess.run(c,cwd=clone,check=True)) for c in commands]"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        }
       ]
     },
     "V2E": {
@@ -1655,7 +2476,7 @@
       ]
     },
     "V2F": {
-      "description": "Registered robustness and launch product acceptance. Long S4 execution is excluded; raw-record frozen analysis verification is required after completion.",
+      "description": "Publication repair acceptance: original 15 checks plus offline raw-evidence restoration and both frozen verifiers. No scientific experiment is registered.",
       "commands": [
         {
           "name": "locked-development-environment",
@@ -1738,7 +2559,7 @@
           "name": "node-legacy-and-runner-parity",
           "argv": [
             "env",
-            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/acceptance-browser",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/a02/browser",
             "npm",
             "--prefix",
             "packages/kernel-ts",
@@ -1753,7 +2574,7 @@
           "name": "node-selected-parity",
           "argv": [
             "env",
-            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/acceptance-browser",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/a02/browser",
             "node",
             "packages/kernel-ts/test/runner.test.ts",
             "--v2e"
@@ -1767,7 +2588,7 @@
           "name": "browser-matrix",
           "argv": [
             "env",
-            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/acceptance-browser",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2F/a02/browser",
             "node",
             "packages/kernel-ts/test/browser-parity.mjs",
             "--v2e"
@@ -1835,7 +2656,7 @@
           "name": "game-coupling-e2e-performance-base-path-and-share",
           "argv": [
             "env",
-            "FLYBENCH_GAME_OUT=evidence/V2F/acceptance-game",
+            "FLYBENCH_GAME_OUT=evidence/V2F/a02/game",
             "node",
             "apps/play/test/e2e.mjs"
           ],
@@ -1848,7 +2669,7 @@
           "name": "game-bots",
           "argv": [
             "env",
-            "FLYBENCH_GAME_OUT=evidence/V2F/acceptance-game",
+            "FLYBENCH_GAME_OUT=evidence/V2F/a02/game",
             "node",
             "apps/play/test/bots.ts"
           ],
@@ -1872,6 +2693,23 @@
           "required": true,
           "required_paths": [],
           "timeout_seconds": 1200
+        },
+        {
+          "name": "offline-fresh-clone-restore-and-both-frozen-verifiers",
+          "argv": [
+            "uv",
+            "run",
+            "python",
+            "-c",
+            "import os,pathlib,subprocess,tempfile\nroot=pathlib.Path.cwd()\narchive=pathlib.Path(os.environ.get('FLYBENCH_EVIDENCE_ARCHIVE',str(pathlib.Path.home()/'flybench-archive/flybench-raw-records-v2e-v2f.tar.gz')))\nassert archive.is_file(), 'Local evidence archive is required for offline acceptance'\nclone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-evidence-clone-'))/'repo'\nenv=os.environ.copy();env.pop('VIRTUAL_ENV',None);env['UV_OFFLINE']='1';env['PIP_NO_INDEX']='1'\nsubprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True,env=env)\nhead=subprocess.check_output(['git','rev-parse','HEAD'],cwd=clone,text=True).strip()\nassert head==subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()\nprint('Offline evidence clone SHA:',head,flush=True)\ncommands=[['uv','sync','--extra','dev','--locked','--offline'],['uv','pip','install','--python',str(clone/'.venv/bin/python'),'--offline','--no-deps','-r','profiles/requirements-v2.1.txt'],['uv','run','--offline','python','tools/restore_evidence.py','--archive',str(archive)],['uv','run','--offline','python','experiments/v2e_analyze.py','--out','evidence/V2E/results','--verify'],['uv','run','--offline','python','experiments/v2f_analyze.py','--out','evidence/V2F/results','--verify']]\nfor command in commands:\n print('COMMAND',command,flush=True);subprocess.run(command,cwd=clone,env=env,check=True)\nprint('PASS: fresh-clone restore and both frozen verifiers, offline',flush=True)\n"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "archive/raw-records-manifest.json",
+            "tools/restore_evidence.py"
+          ],
+          "timeout_seconds": 2400
         }
       ]
     }

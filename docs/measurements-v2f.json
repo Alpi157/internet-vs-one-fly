@@ -700,11 +700,24 @@
   "lesion_lazy_gzip_bytes": 1483138,
   "hero": {
     "path": "docs/media/coupling-hero.gif",
-    "bytes": 1040940,
+    "bytes": 1272955,
     "width": 480,
     "frames": 60,
     "playback_seconds": 6,
-    "source": "Playwright screenshots of live paired simulations; no generated or interpolated neural observations"
+    "source": "Same recorded frames, cropped for publication repair a02; no new simulation or neural interpolation",
+    "height": 350,
+    "crop_provenance": {
+      "path": "docs/media/coupling-hero.gif",
+      "source_sha256": "6793f25cf6286413344cd68bc5d74819870dbcfc63a61da3145d979bbcb50cf9",
+      "sha256": "391ddc9a3c266c111db851efbd78a5755303c0ca3545a4a73b967acc62c2cd33",
+      "crop": [
+        0,
+        120,
+        480,
+        470
+      ],
+      "method": "Crop only: remove the partners-only heading and stale footer, retaining pixels from the same recording; no new simulation or interpolated observations."
+    }
   },
   "coupling_selection": {
     "critical_coupling": 0.03,

@@ -5,7 +5,7 @@ export function loadResults(base:string){
 }
 export function renderResults(host:HTMLElement,results:any){
   host.replaceChildren();
-  for(const text of [results.original,...results.summary,results.limitations]){
+  for(const text of [results.original,results.combined,...results.summary,results.bin_note,results.mechanism,results.limitations]){
     const p=document.createElement('p');p.textContent=text;host.append(p);
   }
 }

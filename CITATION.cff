@@ -17,3 +17,9 @@ references:
     journal: "Cell"
     year: 2026
     url: "https://www.cell.com/cell/fulltext/S0092-8674%2826%2900942-6"
+  - type: data
+    title: "Catch the Fly (FlyBench): raw simulation records for preregistered stability tests v2 and v2.1, MaleCNS model"
+    authors:
+      - name: "Alpar"
+    doi: "10.5281/zenodo.23409752"
+    notes: "Reserved DOI; resolves after the owner publishes the Zenodo draft."

@@ -2,28 +2,34 @@
 
 A simulated fly driven by measured neural wiring. Try to swat it, then compare measured and shuffled wiring under the same model.
 
-![Recorded comparison of measured and shuffled wiring as coupling increases](docs/media/coupling-hero.gif)
+![Recorded N-SIGN comparison; strength-preserving shuffles stay almost as calm as measured wiring](docs/media/coupling-hero.gif)
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)** · Live after deployment.
 Tap for a flick or hold for a slower, wider strike. Open the coupling lab to compare measured and scrambled wiring side by side.
 
 ## The finding
 
-In this model, measured wiring stays stable at couplings where degree- and sign-matched shuffles saturate: the original circuit averaged 2.65 Hz at coupling 0.039, compared with null medians of 110.73 to 119.78 Hz, with Holm p 0.008 in each family.
+In this model, measured wiring stays calm at couplings where shuffles that keep each neuron's partner counts and signs saturate.
 
-The strength-preserving comparison did not replicate the registered stability result in the 2,641-neuron circuit: N-STRENGTH had Holm p 0.088 for both metrics.
+A stricter preregistered control that also approximately keeps each neuron's total input strength removes most of that gap.
 
-The stability difference also holds in the full 166,700-neuron MaleCNS graph, under this model and for the families that reached significance. N-SIGN reached Holm p 0.04; N-STRENGTH did not replicate (Holm p 0.14).
+Rates at coupling 0.039 in the registered comparisons:
 
-The stability difference also holds in the 43,894-neuron circuit, under this model and for the families that reached significance. N-FULL and N-SIGN each reached Holm p 0.02 for both metrics; N-STRENGTH did not replicate: its critical-coupling comparison was not significant (Holm p 1), and its measured rate was higher, the opposite direction (Holm p 0.02).
+| Graph | Measured rate | Earlier shuffle medians and Holm p | N-STRENGTH median and Holm p | Verdict |
+|---|---:|---|---|---|
+| T1a | 2.65 Hz | N-FULL 113.67 Hz (Holm p 0.008); N-CONTEXT 110.73 Hz (Holm p 0.008); N-SIGN 119.78 Hz (Holm p 0.008) | N-STRENGTH 4.40 Hz (Holm p 0.088) | The stricter control removes most of the rate gap; its comparison is not significant. |
+| Full MaleCNS | 15.31 Hz | N-SIGN 36.84 Hz (Holm p 0.04) | N-STRENGTH 14.48 Hz (Holm p 0.14) | No significant rate difference from the stricter control. |
+| T2 | 10.00 Hz | N-FULL 72.08 Hz (Holm p 0.02); N-SIGN 29.66 Hz (Holm p 0.02) | N-STRENGTH 4.99 Hz (Holm p 0.02) | Measured wiring is faster than N-STRENGTH, the opposite direction. |
 
-Uniform model neurons, assumed transmitter signs and simplified inputs limit these findings to this model. Escape and walking comparisons remain insufficient; no claim concerns what living flies require.
+EXPLORATORY: the earlier shuffles flattened the input-strength distribution in T1a (Gini about 0.47, versus 0.65 measured), while N-STRENGTH kept it close (about 0.64). This suggests that, in this model, stability mainly reflects how unevenly input strength is spread across neurons rather than which partners connect. This explanation was not a preregistered mechanism test; the E1 descriptors were preregistered as exploratory.
 
-The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **2026-10-14**, before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published on **2026-10-15**, before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
+N-STRENGTH preserves incoming partner counts within sign and contact-count bins; its preservation of total input strength is approximate. These results apply only to this simplified model, with no claims about living flies. A non-significant result does not establish equivalence. Escape and walking comparisons remain insufficient.
 
-![Measured circuit rate and N-SIGN null band across coupling](docs/media/T1a-N-SIGN-H0-curve.png)
+The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **2026-10-14** and the [robustness protocol](docs/preregistration-v2.1.md) on **2026-10-15**, before their runs. [Full family results and limits](docs/findings-v2f.md).
 
-The clip demonstrates the original N-SIGN comparison, not the strength-preserving control. The lab scramble is the first seed at the family's median critical coupling, selected by a fixed rule. Heat and meters use recorded simulation spikes; the speed factor reports simulated time per wall second. The strength-preserving comparisons above limit the broader interpretation.
+![Measured rate versus the earlier N-SIGN shuffles; the stricter control removes most of this gap](docs/media/T1a-N-SIGN-H0-curve.png)
+
+The hero recording demonstrates N-SIGN only. The stricter control is described in the table above. Its scramble was selected by the fixed median-critical-coupling rule. Heat and rate meters use recorded simulation spikes.
 
 ## How it works
 
@@ -45,7 +51,7 @@ Visual features enter neural input ports. Spikes reach a motor decoder that rece
 - Publicly timestamped protocols and freeze manifests pin code, graph identities, assumptions, seeds and analysis before confirmatory execution.
 - Atomic per-task results and deterministic seeds support resume independently of worker scheduling. The robustness run took **7.11 hours** on a **24-thread** host, with peak process RSS **5.17 GiB**.
 - Cached canvas rendering raised mobile-viewport WebKit frame opportunities from **38.9 to 62.5 fps** in the comparable measurement window. Active mobile gameplay measured **58.4 fps**; the coupling lab measured **62.3 fps**. These are headless desktop engines, not physical iPhone measurements.
-- The recorded initial compressed build scope is **1.38 MB**, with the **0.97 MB** coupling lab and **1.48 MB** lesion lab loaded separately. Missing neural observations remain missing.
+- The recorded initial compressed build scope is **1.38 MB**, with the **0.039 MB** coupling lab and **1.48 MB** lesion lab loaded separately. Missing neural observations remain missing.
 - Offline fixtures, cross-runtime parity, scripted bots, browser screenshots, production base-path checks and fresh-clone acceptance make the implementation inspectable. [Measurement details](docs/measurements-v2f.json) state each scope.
 
 ## Run locally
@@ -102,13 +108,14 @@ EXPLORATORY E2b: preregistered SKIPPED. Compiled predicted_nt_confidence is copi
 Verify the existing raw records without simulating new trials:
 
 ```sh
+uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
 uv pip install --no-deps -r profiles/requirements-v2.1.txt
-uv run python experiments/v2f_analyze.py --out evidence/V2F/results
+uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
 uv run python experiments/v2f_publish.py --check
 ```
 
-Analysis takes seconds on this host after the records are available. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
+The raw-record dataset has reserved DOI [10.5281/zenodo.23409752](https://doi.org/10.5281/zenodo.23409752). The DOI resolves once the owner publishes the Zenodo draft. After publication, `uv run python tools/restore_evidence.py --download` retrieves the same checksum-pinned archive. Both frozen verifiers run offline after restoration; the older verifier also compares recorded host metadata, so its exact equality check requires the recorded platform and thread-count envelope. Verification processes the raw records without running a simulation. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
 
 ## Limitations
 

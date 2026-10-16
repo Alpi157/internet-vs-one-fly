@@ -32,7 +32,7 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    if(requests.some(v=>v.includes('/coupling/')||v.includes('/coupling-')))throw new Error('Coupling data eagerly loaded');
    const publicResults=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
    const copy=await page.locator('#finding-copy').innerText();
-   for(const text of [publicResults.original,...publicResults.summary,publicResults.limitations])if(!copy.includes(text))throw new Error('Public finding differs from generated results');
+   for(const text of [publicResults.original,publicResults.combined,...publicResults.summary,publicResults.bin_note,publicResults.mechanism,publicResults.limitations])if(!copy.includes(text))throw new Error('Public finding differs from generated results');
    await shot('start');await page.click('#start');
    const seen=new Set();
    for(let i=0;i<6;i++){
@@ -78,6 +78,9 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    await page.click('#coupling');await page.waitForFunction(()=>window.couplingTest?.ready());
    const labCopy=await page.locator('#coupling-results').textContent();
    for(const text of publicResults.summary)if(!labCopy.includes(text))throw new Error('Coupling finding differs from generated results');
+   if(await page.locator('#coupling-heading').innerText()!==publicResults.lab_heading)throw new Error('Coupling heading differs');
+   if(await page.locator('#coupling-caveat').innerText()!==publicResults.lab_caveat)throw new Error('Coupling strength caveat differs');
+   if(!(await page.locator('#coupling-caveat').isVisible())||await page.locator('#coupling-caveat').evaluate(e=>Boolean(e.closest('details'))))throw new Error('Coupling caveat hidden');
    const coupling=[];
    for(const scale of [.01,.03,.06]){
      await page.evaluate(s=>window.couplingTest.setScale(s),scale);
@@ -90,9 +93,12 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    }
    await page.click('#coupling-drop');
    if(name==='chromium'&&viewport.width===390&&await page.locator('#coupling-clip').isEnabled()){
+     await page.evaluate(()=>{window.clipTexts=[];const original=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(text,...args){if(this.canvas.width===720&&this.canvas.height===1280)window.clipTexts.push(text);return original.call(this,text,...args);};});
      const [clip]=await Promise.all([page.waitForEvent('download',{timeout:30000}),page.click('#coupling-clip')]);const clipPath=resolve(out,'measured-vs-scrambled.webm');await clip.saveAs(clipPath);
      const dimensions=await page.evaluate(base64=>new Promise((resolve,reject)=>{const v=document.createElement('video');v.onloadedmetadata=()=>resolve([v.videoWidth,v.videoHeight]);v.onerror=()=>reject(new Error('Coupling clip unreadable'));v.src='data:video/webm;base64,'+base64;}),readFileSync(clipPath).toString('base64'));
      if(dimensions[0]!==720||dimensions[1]!==1280)throw new Error('Coupling clip dimensions');
+     const clipCopy=await page.evaluate(()=>window.clipTexts.join(' '));
+     if(!clipCopy.includes(publicResults.lab_caveat))throw new Error('Exported clip lacks generated strength caveat');
    }
    if(process.env.FLYBENCH_CAPTURE_HERO==='1'&&name==='chromium'&&viewport.width===1440){
      mkdirSync(resolve(out,'hero-frames'),{recursive:true});let index=0;

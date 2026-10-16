@@ -97,7 +97,7 @@ stages:
   V2C: ACCEPTED
   V2D: ACCEPTED
   V2E: ACCEPTED
-  V2F: IN_PROGRESS
+  V2F: SUBMITTED
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -381,7 +381,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: Operator must revise the raw-evidence publication size/storage constraint before V2F-a02 repair can continue. See docs/CONTINUE.md.
+next_action: External review of V2F-a02; owner alone may publish the Zenodo draft. No git push or deployment authorized.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -402,7 +402,7 @@ scientific_profiles_v2d:
   profiles/calibration-v2d-draft.json: 03770353725e059cd4122577f952fcf3875689aa805b7ac89fed04d6bf21e92b
 
 v2f_current:
-  status: BLOCKED_RAW_ARCHIVE_SIZE
+  status: PUBLICATION_REPAIR_A02_FOR_REVIEW
   base_sha: 6f5276d021086580b04a81bad3a16b1a840beac7
   freeze_sha: 083bd2be2944c5dd773f670efc7b69445e207058
   protocol_sha256: c4ed65c481373d1a3a4a29637878acae93c0a085fdff50914bb9d0f95d6b217d
@@ -416,4 +416,8 @@ v2f_current:
   findings: docs/findings-v2f.md
   acceptance: PASS; evidence/V2F/acceptance/command-results.json
   science_review: SCIENCE_ACCEPTED; decisions/D-V2F-REVIEW-01.json
-  publication_gate: BLOCKED; deterministic archive exceeds 50 MB; no archive committed
+  publication_gate: owner authorized separate Zenodo draft storage; archive hash verified; no publication performed
+  raw_evidence_manifest: archive/raw-records-manifest.json
+  zenodo_draft: https://zenodo.org/deposit/23409752
+  reserved_dataset_doi: 10.5281/zenodo.23409752
+  repair_acceptance_commands: 16; original a01 registry contained 15

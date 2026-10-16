@@ -4,7 +4,7 @@ const caption='Same neurons. Same number of excitatory and inhibitory inputs and
 const repo='https://github.com/Alpi157/internet-vs-one-fly/blob/main/';
 export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void){
   host.hidden=false;
-  host.innerHTML=`<section class="coupling-view"><div class="coupling-heading"><div><p class="eyebrow">A CONTROLLED COMPARISON</p><h1>Same brain.<br><i>Different partners.</i></h1></div><button id="coupling-close">Back to the fly</button></div><p class="coupling-caption">${caption}</p><div class="coupling-controls"><label>Coupling <output id="coupling-value">0.01</output><input id="coupling-slider" aria-label="Coupling" type="range" min="0" max="10" value="2" step="1"></label><button id="coupling-drop">Drop the hand</button><button id="coupling-clip" disabled>Save the comparison</button></div><p id="coupling-status" role="status">Loading measured circuit and declared shuffle…</p><canvas id="coupling-canvas" width="1000" height="650" aria-label="Measured and scrambled brain heat maps, recorded rates and neural flies"></canvas><p class="coupling-note">Heat shows each neuron's observed firing rate over the last 250 simulated ms. The line marks 50 Hz. Relative x/z soma positions; units and anatomical orientation are unverified. Missing soma coordinates appear in a labeled band.</p><p class="coupling-note">Changing coupling explicitly resets both simulations with the same noise seed. No threat is present until you drop the hand. Movement comes from each fly's own neural decoder.</p><p id="coupling-identity" class="coupling-note"></p><details><summary>Registered results and limits</summary><div id="coupling-results"></div></details><p><a href="${repo}docs/preregistration-v2.md">Pre-registration</a> · <a href="${base}finding.png">H0 figure</a> · <a href="${repo}docs/findings-v2f.md">Findings and limitations</a></p></section>`;
+  host.innerHTML=`<section class="coupling-view"><div class="coupling-heading"><div><p class="eyebrow">A CONTROLLED COMPARISON</p><h1 id="coupling-heading">Measured vs shuffled wiring</h1></div><button id="coupling-close">Back to the fly</button></div><p class="coupling-caption">${caption}</p><p id="coupling-caveat" class="coupling-note" role="note">Loading the registered strength control…</p><div class="coupling-controls"><label>Coupling <output id="coupling-value">0.01</output><input id="coupling-slider" aria-label="Coupling" type="range" min="0" max="10" value="2" step="1"></label><button id="coupling-drop">Drop the hand</button><button id="coupling-clip" disabled>Save the comparison</button></div><p id="coupling-status" role="status">Loading measured circuit and declared shuffle…</p><canvas id="coupling-canvas" width="1000" height="650" aria-label="Measured and scrambled brain heat maps, recorded rates and neural flies"></canvas><p class="coupling-note">Heat shows each neuron's observed firing rate over the last 250 simulated ms. The line marks 50 Hz. Relative x/z soma positions; units and anatomical orientation are unverified. Missing soma coordinates appear in a labeled band.</p><p class="coupling-note">Changing coupling explicitly resets both simulations with the same noise seed. No threat is present until you drop the hand. Movement comes from each fly's own neural decoder.</p><p id="coupling-identity" class="coupling-note"></p><details><summary>Registered results and limits</summary><div id="coupling-results"></div></details><p><a href="${repo}docs/preregistration-v2.md">Pre-registration</a> · <a href="${base}finding.png">H0 figure</a> · <a href="${repo}docs/findings-v2f.md">Findings and limitations</a></p></section>`;
   const canvas=host.querySelector<HTMLCanvasElement>('canvas')!,ctx=canvas.getContext('2d')!;
   const status=host.querySelector<HTMLElement>('#coupling-status')!,slider=host.querySelector<HTMLInputElement>('input')!;
   const worker=new Worker(new URL('./coupling-worker.ts',import.meta.url),{type:'module'});
@@ -52,7 +52,10 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
     runtime=rt;brain=b;positions=brain.nodes.map((n:any,i:number)=>n.position?[15+n.position[0]*365,30+n.position[1]*285]:[405+(i%5)*9,35+(Math.floor(i/5)%35)*8]);
     staticLayer=document.createElement('canvas');staticLayer.width=460;staticLayer.height=340;const bg=staticLayer.getContext('2d')!;bg.fillStyle='#172f29';bg.fillRect(0,0,460,340);bg.fillStyle='#496154';for(const [x,y] of positions)bg.fillRect(x,y,1,1);bg.fillStyle='#bcccb8';bg.font='10px monospace';bg.fillText('RELATIVE x/z',15,17);bg.fillText('NO SOMA',400,17);
     host.querySelector('#coupling-identity')!.textContent=`${brain.nodes.length.toLocaleString('en-US')} neurons in each simulation. N-SIGN seed ${runtime.null_selection.seed}; ${runtime.null_selection.rule} Kappa ${runtime.parameters.kappa}; isolated noise target ${runtime.parameters.nu0_hz} Hz. Uniform LIF model with assumed transmitter signs. The strength-preserving comparisons did not replicate; see registered results below.`;
-    renderResults(host.querySelector<HTMLElement>('#coupling-results')!,await loadResults(base));
+    const results=await loadResults(base);
+    host.querySelector('#coupling-heading')!.textContent=results.lab_heading;
+    host.querySelector('#coupling-caveat')!.textContent=results.lab_caveat;
+    renderResults(host.querySelector<HTMLElement>('#coupling-results')!,results);
     worker.postMessage({kind:'init',buffer,runtime,targets,profile,s:scale,generation});draw(ctx);requestAnimationFrame(animate);
     const button=host.querySelector<HTMLButtonElement>('#coupling-clip')!;
     button.disabled=!('MediaRecorder' in window)||!('captureStream' in canvas);
@@ -62,8 +65,20 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
       const portrait=document.createElement('canvas');portrait.width=720;portrait.height=1280;const g=portrait.getContext('2d')!,stream=portrait.captureStream(25),recorder=new MediaRecorder(stream,{mimeType:mime});const chunks:Blob[]=[];
       recorder.ondataavailable=e=>chunks.push(e.data);
       recorder.onstop=()=>{const blob=new Blob(chunks,{type:mime}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='measured-vs-scrambled.'+(mime.includes('mp4')?'mp4':'webm');a.click();setTimeout(()=>URL.revokeObjectURL(a.href),10000);stream.getTracks().forEach(t=>t.stop());recording=false;button.disabled=false;slider.disabled=false;};
-      const paint=()=>{g.fillStyle='#f6edd9';g.fillRect(0,0,720,1280);g.fillStyle='#183c31';g.font='bold 43px Georgia';g.fillText('Measured vs Scrambled',28,70);g.font='23px monospace';g.fillText(`Coupling ${scale} · ${speed.toFixed(2)}× speed`,28,117);
-        const capture=document.createElement('canvas');capture.width=1000;capture.height=650;draw(capture.getContext('2d')!);g.fillStyle='#f6edd9';g.fillRect(0,0,720,1280);g.fillStyle='#183c31';g.font='bold 43px Georgia';g.fillText('Measured vs Scrambled',28,70);g.font='23px monospace';g.fillText(`Coupling ${scale} · ${speed.toFixed(2)}× speed`,28,117);g.drawImage(capture,0,180,720,780);g.font='25px Georgia';['Same neurons. Same number of excitatory','and inhibitory inputs and outputs per neuron.','Partners shuffled.'].forEach((line,i)=>g.fillText(line,28,1040+i*38));g.font='17px monospace';g.fillText('A model result. Measured neural activity.',28,1200);};
+      const paint=()=>{
+        const capture=document.createElement('canvas');capture.width=1000;capture.height=650;draw(capture.getContext('2d')!);
+        g.fillStyle='#f6edd9';g.fillRect(0,0,720,1280);g.fillStyle='#183c31';g.font='bold 38px Georgia';g.fillText(results.lab_heading,28,70);g.font='23px monospace';g.fillText(`Coupling ${scale} · ${speed.toFixed(2)}× speed`,28,117);g.drawImage(capture,0,180,720,780);
+        g.font='19px Georgia';let y=1000;
+        for(const text of [caption,results.lab_caveat]){
+          let line='';
+          for(const word of text.split(' ')){
+            const candidate=line?line+' '+word:word;
+            if(line&&g.measureText(candidate).width>664){g.fillText(line,28,y);y+=22;line=word;}else line=candidate;
+          }
+          if(line){g.fillText(line,28,y);y+=27;}
+        }
+        g.font='16px monospace';g.fillText('Model only. Registered control values; live meters above.',28,1260);
+      };
       updateScale(.01);paint();recorder.start();const timer=setInterval(paint,40);
       for(const s of [.01,.02,.03,.039,.05,.06]){updateScale(s);await new Promise(r=>setTimeout(r,1000));}
       clearInterval(timer);recorder.stop();

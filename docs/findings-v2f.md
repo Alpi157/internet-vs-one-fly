@@ -4,11 +4,17 @@ Generated from [results-v2f.json](results-v2f.json), the unchanged frozen analys
 
 ## CONFIRMATORY
 
-The strength-preserving comparison did not replicate the registered stability result in the 2,641-neuron circuit: N-STRENGTH had Holm p 0.088 for both metrics.
+In this model, measured wiring stays calm at couplings where shuffles that keep each neuron's partner counts and signs saturate.
 
-The stability difference also holds in the full 166,700-neuron MaleCNS graph, under this model and for the families that reached significance. N-SIGN reached Holm p 0.04; N-STRENGTH did not replicate (Holm p 0.14).
+A stricter preregistered control that also approximately keeps each neuron's total input strength removes most of that gap.
 
-The stability difference also holds in the 43,894-neuron circuit, under this model and for the families that reached significance. N-FULL and N-SIGN each reached Holm p 0.02 for both metrics; N-STRENGTH did not replicate: its critical-coupling comparison was not significant (Holm p 1), and its measured rate was higher, the opposite direction (Holm p 0.02).
+T1a: measured 2.65 Hz; earlier shuffles: N-FULL 113.67 Hz (Holm p 0.008); N-CONTEXT 110.73 Hz (Holm p 0.008); N-SIGN 119.78 Hz (Holm p 0.008); stricter control: N-STRENGTH 4.40 Hz (Holm p 0.088). The stricter control removes most of the rate gap; its comparison is not significant.
+
+Full MaleCNS: measured 15.31 Hz; earlier shuffles: N-SIGN 36.84 Hz (Holm p 0.04); stricter control: N-STRENGTH 14.48 Hz (Holm p 0.14). No significant rate difference from the stricter control.
+
+T2: measured 10.00 Hz; earlier shuffles: N-FULL 72.08 Hz (Holm p 0.02); N-SIGN 29.66 Hz (Holm p 0.02); stricter control: N-STRENGTH 4.99 Hz (Holm p 0.02). Measured wiring is faster than N-STRENGTH, the opposite direction.
+
+N-STRENGTH preserves incoming partner counts within sign and contact-count bins; its preservation of total input strength is approximate.
 
 | Test | Circuit | Family | Metric | Real | Null median | 95% null band | p | Holm p | Verdict |
 |---|---|---|---|---:|---:|---|---:|---:|---|
@@ -25,12 +31,12 @@ The stability difference also holds in the 43,894-neuron circuit, under this mod
 
 H0a is critical coupling; >0.1 means censored above the tested grid. The stored 0.11 is a rank sentinel, never a measured coupling. H0b and H0b-FULL are whole-graph rates in Hz at coupling 0.039. Bands are descriptive null percentiles, not confidence intervals on an effect. Non-significant outcomes do not establish equivalence. A significant opposite-direction rate does not support the registered stability claim.
 
-- H0-STR (T1a), N-STRENGTH: the registered stability result did not replicate. H0a: Holm p 0.088, not significant; does not establish the stability difference; H0b: Holm p 0.088, not significant; does not establish the stability difference.
-- H0-FULL (FULL), N-SIGN: the stability difference holds under this model. H0b-FULL: Holm p 0.04, supports the registered stability direction.
-- H0-FULL (FULL), N-STRENGTH: the registered stability result did not replicate. H0b-FULL: Holm p 0.14, not significant; does not establish the stability difference.
-- H0-T2 (T2), N-FULL: the stability difference holds under this model. H0a: Holm p 0.02, supports the registered stability direction; H0b: Holm p 0.02, supports the registered stability direction.
-- H0-T2 (T2), N-SIGN: the stability difference holds under this model. H0a: Holm p 0.02, supports the registered stability direction; H0b: Holm p 0.02, supports the registered stability direction.
-- H0-T2 (T2), N-STRENGTH: the registered stability result did not replicate. H0a: Holm p 1, not significant; does not establish the stability difference; H0b: Holm p 0.02, opposite direction: measured rate is higher.
+- H0-STR (T1a), N-STRENGTH: the registered stability result did not replicate. H0a: measured >0.1 (censored) versus null median 0.1, Holm p 0.088, not significant; does not establish the stability difference; H0b: measured 2.65068 versus null median 4.40042, Holm p 0.088, not significant; does not establish the stability difference.
+- H0-FULL (FULL), N-SIGN: the stability difference holds under this model. H0b-FULL: measured 15.3095 versus null median 36.8414, Holm p 0.04, supports the registered stability direction.
+- H0-FULL (FULL), N-STRENGTH: the registered stability result did not replicate. H0b-FULL: measured 15.3095 versus null median 14.4829, Holm p 0.14, not significant; does not establish the stability difference.
+- H0-T2 (T2), N-FULL: the stability difference holds under this model. H0a: measured >0.1 (censored) versus null median 0.039, Holm p 0.02, supports the registered stability direction; H0b: measured 10.0006 versus null median 72.0766, Holm p 0.02, supports the registered stability direction.
+- H0-T2 (T2), N-SIGN: the stability difference holds under this model. H0a: measured >0.1 (censored) versus null median 0.05, Holm p 0.02, supports the registered stability direction; H0b: measured 10.0006 versus null median 29.658, Holm p 0.02, supports the registered stability direction.
+- H0-T2 (T2), N-STRENGTH: the registered stability result did not replicate. H0a: measured >0.1 (censored) versus null median >0.1 (censored), Holm p 1, not significant; does not establish the stability difference; H0b: measured 10.0006 versus null median 4.98657, Holm p 0.02, opposite direction: measured rate is higher.
 
 ![H0-STR N-STRENGTH observed rate curve](media/v2f/T1a-N-STRENGTH-curve.png)
 ![H0-FULL N-SIGN observed rate curve](media/v2f/FULL-N-SIGN-curve.png)
@@ -42,6 +48,8 @@ H0a is critical coupling; >0.1 means censored above the tested grid. The stored 
 ## EXPLORATORY
 
 Descriptive percentiles and Spearman coefficients only.
+
+EXPLORATORY: the earlier shuffles flattened the input-strength distribution in T1a (Gini about 0.47, versus 0.65 measured), while N-STRENGTH kept it close (about 0.64). This suggests that, in this model, stability mainly reflects how unevenly input strength is spread across neurons rather than which partners connect. This explanation was not a preregistered mechanism test; the E1 descriptors were preregistered as exploratory.
 
 EXPLORATORY E1: measured leading signed eigenvalues are 3.04103 for T1a and 6.91182 for T2, above every family median; 2 null eigenvalues did not converge and remain missing. Structure and Spearman associations are descriptive, not a causal mechanism test.
 
@@ -227,7 +235,7 @@ All null-distribution and EXPLORATORY scatter figures are in the review archive 
 
 Elapsed invocation: 25612.696 seconds (7.115 hours). Summed task time: 63345.880 seconds. Peak process high-water RSS: 5,423,064 KiB. Hardware threads: 24. Worker counts were full graph 1, T2 4, small circuits 8, mechanism 2. RSS is a process high-water mark, not an isolated incremental allocation for each task.
 
-Uniform model neurons, assumed transmitter signs and simplified inputs limit these findings to this model. Escape and walking comparisons remain insufficient; no claim concerns what living flies require.
+These results apply only to this simplified model, with no claims about living flies. A non-significant result does not establish equivalence. Escape and walking comparisons remain insufficient.
 
 No scientific protocol deviation or replacement was made. The EXPLORATORY E2b skip and numerical nonconvergence handling were preregistered. Data hashes, task identity checks, synthetic null invariants, censoring and analysis checks passed; no frozen code was patched to obtain these conclusions. The opposite-direction T2 N-STRENGTH outcome is retained.
 
