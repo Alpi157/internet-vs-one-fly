@@ -3,7 +3,9 @@ message: "Please cite this software and the MaleCNS dataset when using FlyBench.
 title: "FlyBench / Catch the Fly"
 type: software
 authors:
-  - name: "Alpar"
+  - family-names: "Arman"
+    given-names: "Alpar"
+    orcid: "https://orcid.org/0000-0002-2627-5761"
 repository-code: "https://github.com/Alpi157/internet-vs-one-fly"
 license: MIT
 references:
@@ -20,6 +22,7 @@ references:
   - type: data
     title: "Catch the Fly (FlyBench): raw simulation records for preregistered stability tests v2 and v2.1, MaleCNS model"
     authors:
-      - name: "Alpar"
+      - family-names: "Arman"
+        given-names: "Alpar"
+        orcid: "https://orcid.org/0000-0002-2627-5761"
     doi: "10.5281/zenodo.23409752"
-    notes: "Reserved DOI; resolves after the owner publishes the Zenodo draft."

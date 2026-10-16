@@ -2,6 +2,12 @@
   "archive_bytes": 2201225419,
   "archive_name": "flybench-raw-records-v2e-v2f.tar.gz",
   "archive_sha256": "7b808bdef63450414e10afa8dde96233a2c4b218240bfdc3688e67c69a4e19f2",
+  "data_readme": {
+    "bytes": 3365,
+    "filename": "DATA-README.md",
+    "md5": "251d360427348174affae03d9b4fd0c6",
+    "sha256": "4850cb7c233a39df90ab47ce4666e85bbb8bc51436ddd01651ae65ca47e6b2a0"
+  },
   "draft_url": "https://zenodo.org/deposit/23409752",
   "files": [
     {
@@ -63174,7 +63180,7 @@
   "member_bytes": 2229611176,
   "member_count": 12633,
   "public_file_url": "https://zenodo.org/records/23409752/files/flybench-raw-records-v2e-v2f.tar.gz?download=1",
-  "publication_status": "DRAFT_ONLY_OWNER_MUST_PUBLISH",
+  "publication_status": "OWNER_PUBLISHES_BEFORE_PUSH",
   "reserved_doi": "10.5281/zenodo.23409752",
   "schema": "flybench.raw-evidence.v1",
   "zenodo_draft_id": 23409752,

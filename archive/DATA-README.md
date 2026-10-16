@@ -1,12 +1,12 @@
 # Catch the Fly raw simulation records
 
-Existing raw simulation records and analysis inputs for the preregistered FlyBench stability study, including V2E and V2F. This is a simplified MaleCNS neural model study; it makes no claims about living flies or biological necessity. The N-STRENGTH stability result did not replicate on T1a, T2 or the full graph; measured T2 wiring had a higher rate than N-STRENGTH. EXPLORATORY analyses remain descriptive.
+Raw simulation records and analysis inputs for the preregistered Catch the Fly (FlyBench) stability tests under protocols v2 and v2.1. This is a simplified MaleCNS neural model study; it makes no claims about living flies or biological necessity. The N-STRENGTH stability result did not replicate on T1a, T2 or the full graph; measured T2 wiring had a higher rate than N-STRENGTH. EXPLORATORY analyses remain descriptive.
 
-Reserved dataset DOI: 10.5281/zenodo.23409752. This deposition is a DRAFT. The DOI and public file URL resolve after the owner publishes it. No publication was requested by the agent.
+Dataset DOI: https://doi.org/10.5281/zenodo.23409752
 
 ## Identities
 
-- Repository: https://github.com/Alpi157/internet-vs-one-fly
+- Code repository: https://github.com/Alpi157/internet-vs-one-fly, tag `v2f-accepted`.
 - prereg-v2 freeze: 1a853f40007dcf10fb113c29a8400a7f99a3addb
 - prereg-v2 protocol SHA-256: f684489801ec3d5d9af4c9fd845019c79f4daef97cb3533d023b6baf4fce4c8a
 - prereg-v2.1 freeze: 083bd2be2944c5dd773f670efc7b69445e207058
@@ -15,17 +15,19 @@ Reserved dataset DOI: 10.5281/zenodo.23409752. This deposition is a DRAFT. The D
 
 ## Restore and verify
 
-Use the repository repair a02 checkout containing tools/restore_evidence.py and archive/raw-records-manifest.json. Install its locked Python environment and the pinned sparse-analysis dependency, then use the downloaded archive offline:
+Use tag `v2f-accepted` of the code repository. Install its locked Python environment and the pinned sparse-analysis dependency, then restore the downloaded archive and verify the records offline:
 
 ```sh
 uv sync --extra dev --locked
 uv pip install --no-deps -r profiles/requirements-v2.1.txt
-uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
-uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
-uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
+uv run python tools/restore_evidence.py --archive /path/to/records.tar.gz
+uv run python experiments/v2e_analyze.py --verify
+uv run python experiments/v2f_analyze.py --verify
 ```
 
-After publication, tools/restore_evidence.py --download retrieves the same archive from the public Zenodo URL. Restoration verifies the archive hash before extracting, refuses conflicting existing files, and verifies every restored member. No graph arrays or new simulation are needed for these analysis commands. The frozen v2 verifier also compares recorded host metadata (platform and hardware-thread count), so its exact equality check requires the recorded host envelope documented in the repository results. No metadata substitution is performed.
+Alternatively, `uv run python tools/restore_evidence.py --download` retrieves the same archive from Zenodo. Restoration checks the archive SHA-256 before extraction, refuses to overwrite existing files with different bytes, and checks every restored file against `archive/raw-records-manifest.json`. No graph arrays or new simulation are needed for verification.
+
+The v2 verifier (`experiments/v2e_analyze.py`) also compares the recorded platform and hardware-thread count. Its exact equality check passes only on a host matching those recorded values, documented in the repository results. The v2.1 verifier (`experiments/v2f_analyze.py`) and the per-file SHA-256 checks have no such host restriction and run on other machines with the required software. No host metadata is replaced or adjusted.
 
 The archive has 12,633 sorted regular-file entries with fixed mtime, uid/gid zero and a gzip header without a timestamp. SHA256SUMS includes the archive and every member. Included inputs are raw task records, topology diagnostics, COMPLETE and progress files, projection, frozen tables and findings. Source graphs, compiled arrays, credentials and caches are excluded.
 
