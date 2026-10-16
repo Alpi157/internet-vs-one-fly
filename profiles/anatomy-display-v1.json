@@ -2,12 +2,45 @@
   "schema": "flybench.anatomy-display.v1",
   "scope": "Display simplification only. No model, circuit, runtime or scientific result change.",
   "operator_rule": "Iteratively prune whole terminal twigs shorter than the group threshold, measured along their 3D paths. Repeat until nothing changes. Preserve every root and explicit SWC soma, and ancestral paths. Simplify only remaining unbranched paths using original vertices.",
-  "highlighted_groups": ["LC4", "LPLC2", "giant fiber", "walking DNs", "named ports"],
-  "named_ports_sources": ["profiles/ports-v2.json"],
-  "desktop": {"highlighted_twig_um": 3, "interior_twig_um": 10, "douglas_peucker_um": 0.5, "T1a_budget_bytes": 3000000, "T1b_budget_bytes": 5000000},
-  "phone": {"highlighted_twig_um": 6, "interior_twig_um": 20, "douglas_peucker_um": 1.5, "T1a_budget_bytes": 1500000, "T1b_budget_bytes": 2500000},
+  "highlighted_groups": [
+    "LC4",
+    "LPLC2",
+    "giant fiber",
+    "walking DNs",
+    "named ports"
+  ],
+  "named_ports_sources": [
+    "profiles/ports-v2.json"
+  ],
+  "desktop": {
+    "highlighted_twig_um": 3,
+    "interior_twig_um": 10,
+    "douglas_peucker_um": 0.5,
+    "T1a_budget_bytes": 3000000,
+    "T1b_budget_bytes": 5000000
+  },
+  "phone": {
+    "highlighted_twig_um": 6,
+    "interior_twig_um": 20,
+    "douglas_peucker_um": 1.5,
+    "T1a_budget_bytes": 1500000,
+    "T1b_budget_bytes": 2500000
+  },
   "interior_threshold_step_um": 5,
   "maximum_highlighted_twig_um": 8,
   "budget_rule": "Keep the stated highlighted thresholds fixed. If necessary increase only the interior threshold by 5 micrometres per step, logging every attempt. Select the first passing step. If budgets fail with root-only interior trees, stop and report.",
-  "coordinate_rule": "Keep only original SWC vertices. No smoothing, resampling, invented soma, reconnection or interpolation. Quantization is a separate bounded transport approximation."
+  "coordinate_rule": "Keep only original SWC vertices. No smoothing, resampling, invented soma, reconnection or interpolation. Quantization is a separate bounded transport approximation.",
+  "layout": "Composite layout: brain frontal view, VNC ventral view; not a single projection.",
+  "layout_gap_um": 12,
+  "giant_fiber_sanity_rule": "Before display pruning, orient the raw SWC tree from its nearest vertex to the annotated soma. Follow the shortest cable path to a VNC-ROI vertex. The main dendritic branch point is the brain-ROI vertex on this trunk with greatest off-trunk brain cable; ties use lowest original row. Compare annotated soma height with that branch point, without changing axes or the selection rule.",
+  "a01_final_interior_thresholds_um": {
+    "T1a": {
+      "phone": 20,
+      "desktop": 15
+    },
+    "T1b": {
+      "phone": 25,
+      "desktop": 20
+    }
+  }
 }

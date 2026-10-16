@@ -1,115 +1,5 @@
 {
   "evidence": {
-    "anchors": [
-      {
-        "body_id": "10001",
-        "brain_median_xyz_um": [
-          287.744,
-          234.5832,
-          214.528
-        ],
-        "brain_median_y_um": 214.528,
-        "brain_nodes": 2476,
-        "instance": "DNp01(GF)_R",
-        "vnc_median_xyz_um": [
-          391.168,
-          418.30400000000003,
-          676.864
-        ],
-        "vnc_median_y_um": 676.864,
-        "vnc_nodes": 111
-      },
-      {
-        "body_id": "10010",
-        "brain_median_xyz_um": [
-          491.94640000000004,
-          229.376,
-          213.2272
-        ],
-        "brain_median_y_um": 213.2272,
-        "brain_nodes": 2785,
-        "instance": "DNp01(GF)_L",
-        "vnc_median_xyz_um": [
-          404.6696,
-          422.91200000000003,
-          674.816
-        ],
-        "vnc_median_y_um": 674.816,
-        "vnc_nodes": 195
-      },
-      {
-        "body_id": "10763",
-        "brain_median_xyz_um": [
-          347.648,
-          235.52,
-          197.632
-        ],
-        "brain_median_y_um": 197.632,
-        "brain_nodes": 6520,
-        "instance": "MDN_R",
-        "vnc_median_xyz_um": [
-          420.35200000000003,
-          416.25600000000003,
-          772.3520000000001
-        ],
-        "vnc_median_y_um": 772.3520000000001,
-        "vnc_nodes": 1808
-      },
-      {
-        "body_id": "11288",
-        "brain_median_xyz_um": [
-          409.6,
-          227.328,
-          190.976
-        ],
-        "brain_median_y_um": 190.976,
-        "brain_nodes": 6966,
-        "instance": "MDN_L",
-        "vnc_median_xyz_um": [
-          379.904,
-          413.184,
-          759.808
-        ],
-        "vnc_median_y_um": 759.808,
-        "vnc_nodes": 1778
-      },
-      {
-        "body_id": "11332",
-        "brain_median_xyz_um": [
-          391.68,
-          232.96,
-          192.0
-        ],
-        "brain_median_y_um": 192.0,
-        "brain_nodes": 6587,
-        "instance": "MDN_R",
-        "vnc_median_xyz_um": [
-          423.42400000000004,
-          413.696,
-          772.096
-        ],
-        "vnc_median_y_um": 772.096,
-        "vnc_nodes": 1769
-      },
-      {
-        "body_id": "12348",
-        "brain_median_xyz_um": [
-          408.576,
-          231.424,
-          190.976
-        ],
-        "brain_median_y_um": 190.976,
-        "brain_nodes": 6417,
-        "instance": "MDN_L",
-        "vnc_median_xyz_um": [
-          377.856,
-          411.648,
-          747.52
-        ],
-        "vnc_median_y_um": 747.52,
-        "vnc_nodes": 1652
-      }
-    ],
     "annotated_somata": [
       {
         "body_id": "10001",
@@ -57424,17 +57314,1935 @@
         ]
       }
     ],
-    "roi_centroids_um": {
-      "rois/fullbrain-roi-v4": [
-        386.4608857872558,
-        229.78385692825665,
-        231.94749413479045
+    "axis_audit": {
+      "audit": {
+        "axes": [
+          {
+            "anatomical_positive": "posterior",
+            "axis": 2,
+            "contrast_xyz_um": [
+              -0.20381836382654228,
+              -42.82640683132827,
+              125.5120587162263
+            ],
+            "high_landmarks": [
+              "CA(L)",
+              "CA(R)",
+              "PB"
+            ],
+            "low_landmarks": [
+              "AL(L)",
+              "AL(R)",
+              "EB",
+              "aL(L)",
+              "aL(R)",
+              "bL(L)",
+              "bL(R)",
+              "gL(L)",
+              "gL(R)"
+            ],
+            "panel": "brain",
+            "sign": 1,
+            "source_axis": "z"
+          },
+          {
+            "anatomical_positive": "ventral",
+            "axis": 1,
+            "contrast_xyz_um": [
+              2.2130240027343007,
+              149.92593970644847,
+              -71.01213957769573
+            ],
+            "high_landmarks": [
+              "AL(L)",
+              "AL(R)",
+              "GNG"
+            ],
+            "low_landmarks": [
+              "CA(L)",
+              "CA(R)",
+              "PB",
+              "SMP(L)",
+              "SMP(R)"
+            ],
+            "panel": "brain",
+            "sign": 1,
+            "source_axis": "y"
+          },
+          {
+            "anatomical_positive": "posterior",
+            "axis": 2,
+            "contrast_xyz_um": [
+              7.482150119312905,
+              -32.09973057551497,
+              339.87321792893783
+            ],
+            "high_landmarks": [
+              "LegNp(T3)(L)",
+              "LegNp(T3)(R)"
+            ],
+            "low_landmarks": [
+              "LegNp(T1)(L)",
+              "LegNp(T1)(R)"
+            ],
+            "panel": "VNC",
+            "sign": 1,
+            "source_axis": "z"
+          },
+          {
+            "anatomical_positive": "ventral",
+            "axis": 1,
+            "contrast_xyz_um": [
+              -0.5580430255254782,
+              69.8959800846705,
+              36.56816625708825
+            ],
+            "high_landmarks": [
+              "LegNp(T1)(L)",
+              "LegNp(T1)(R)",
+              "LegNp(T2)(L)",
+              "LegNp(T2)(R)",
+              "LegNp(T3)(L)",
+              "LegNp(T3)(R)",
+              "mVAC(T1)(L)",
+              "mVAC(T1)(R)",
+              "mVAC(T2)(L)",
+              "mVAC(T2)(R)",
+              "mVAC(T3)(L)",
+              "mVAC(T3)(R)"
+            ],
+            "low_landmarks": [
+              "IntTct",
+              "LTct",
+              "NTct(UTct-T1)(L)",
+              "NTct(UTct-T1)(R)",
+              "WTct(UTct-T2)(L)",
+              "WTct(UTct-T2)(R)",
+              "HTct(UTct-T3)(L)",
+              "HTct(UTct-T3)(R)"
+            ],
+            "panel": "VNC",
+            "sign": 1,
+            "source_axis": "y"
+          }
+        ],
+        "contradictions": [],
+        "descriptive_LTct": {
+          "centroid_um": [
+            397.973925515143,
+            438.7949197017007,
+            688.637481035255
+          ],
+          "interpretation": "Lower tectulum; intermediate; no strict ordering gate"
+        },
+        "left_right": {
+          "anatomical_positive": "fly left; viewer right",
+          "axis": 0,
+          "sign": 1,
+          "source_axis": "x"
+        },
+        "relations": [
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "AL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 144.20190252943797
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "AL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 150.21008154700706
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "AL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 135.7683919268909
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "AL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 138.19417076240623
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "AL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 144.20234977997532
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "AL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 129.76066015985916
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "EB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 101.73594635337417
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "EB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 107.74412537094327
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "EB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 93.3024357508271
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "aL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 103.94886972451496
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "aL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 109.95704874208405
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "aL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 95.51535912196789
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "aL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 103.07045532406875
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "aL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 109.07863434163784
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "aL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 94.63694472152167
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "bL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 133.11636800642395
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "bL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 139.12454702399305
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "bL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 124.68285740387688
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "bL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 128.90511868653084
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "bL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 134.91329770409993
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "bL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 120.47160808398377
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "gL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 144.1325020824327
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "gL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 150.14068110000179
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "gL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 135.69899147988562
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(L)",
+            "low": "gL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 139.5791897317809
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "CA(R)",
+            "low": "gL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 145.58736874935
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "PB",
+            "low": "gL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 131.14567912923383
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(L)",
+            "low": "CA(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 111.96285212540349
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(R)",
+            "low": "CA(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 127.1260148269067
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "GNG",
+            "low": "CA(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 219.50679265115323
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(L)",
+            "low": "CA(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 103.7298713790418
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(R)",
+            "low": "CA(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 118.89303408054501
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "GNG",
+            "low": "CA(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 211.27381190479156
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(L)",
+            "low": "PB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 85.81992862928385
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(R)",
+            "low": "PB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 100.98309133078706
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "GNG",
+            "low": "PB",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 193.3638691550336
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(L)",
+            "low": "SMP(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 123.83810845298626
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(R)",
+            "low": "SMP(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 139.00127115448947
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "GNG",
+            "low": "SMP(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 231.382048978736
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(L)",
+            "low": "SMP(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 119.76709923343869
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "AL(R)",
+            "low": "SMP(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 134.93026193494188
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "GNG",
+            "low": "SMP(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 227.31103975918842
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "bL(L)",
+            "low": "aL(L)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 53.709550015946704
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "bL(R)",
+            "low": "aL(R)",
+            "panel": "brain",
+            "passes": true,
+            "signed_separation_um": 56.952011487556504
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "LegNp(T3)(L)",
+            "low": "LegNp(T1)(L)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 340.08754284538327
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "LegNp(T3)(R)",
+            "low": "LegNp(T1)(L)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 344.1659855057086
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "LegNp(T3)(L)",
+            "low": "LegNp(T1)(R)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 335.58045035216696
+          },
+          {
+            "anatomical_positive": "posterior",
+            "high": "LegNp(T3)(R)",
+            "low": "LegNp(T1)(R)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 339.6588930124923
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T1)(L)",
+            "low": "NTct(UTct-T1)(L)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 73.96632340490987
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T1)(R)",
+            "low": "NTct(UTct-T1)(R)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 79.16184378297129
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T2)(L)",
+            "low": "WTct(UTct-T2)(L)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 100.50049946743133
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T2)(R)",
+            "low": "WTct(UTct-T2)(R)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 98.06649928059596
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T3)(L)",
+            "low": "HTct(UTct-T3)(L)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 45.15252846643949
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "LegNp(T3)(R)",
+            "low": "HTct(UTct-T3)(R)",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 40.87833311436697
+          },
+          {
+            "anatomical_positive": "ventral",
+            "high": "mean LegNp(T2)(L), LegNp(T2)(R)",
+            "low": "IntTct",
+            "panel": "VNC",
+            "passes": true,
+            "signed_separation_um": 71.55284189292752
+          }
+        ],
+        "rule": "Brain rules unchanged. VNC strict dorsal checks are within-neuromere NTct/T1, WTct/T2 and HTct/T3 by side, plus IntTct against mean bilateral LegNp(T2). LTct is descriptive, intermediate, with no strict rule. Overall tectulum-versus-ventral contrast retained.",
+        "status": "PASS"
+      },
+      "centroids": {
+        "VNC": [
+          {
+            "centroid_um": [
+              401.5295645946275,
+              425.9647179077837,
+              492.0985649383045
+            ],
+            "label": 4,
+            "name": "CV-posterior",
+            "voxels": 360804
+          },
+          {
+            "centroid_um": [
+              469.905380383354,
+              466.83562798357923,
+              595.0878464144184
+            ],
+            "label": 5,
+            "name": "LegNp(T1)(L)",
+            "voxels": 983634
+          },
+          {
+            "centroid_um": [
+              327.01910446645337,
+              466.21334426666294,
+              599.5949389076347
+            ],
+            "label": 6,
+            "name": "LegNp(T1)(R)",
+            "voxels": 1005854
+          },
+          {
+            "centroid_um": [
+              458.8310594919256,
+              484.49870983095667,
+              771.6153231114049
+            ],
+            "label": 7,
+            "name": "LegNp(T2)(L)",
+            "voxels": 794175
+          },
+          {
+            "centroid_um": [
+              340.25836689053693,
+              475.3823965445945,
+              775.1878719415527
+            ],
+            "label": 8,
+            "name": "LegNp(T2)(R)",
+            "voxels": 771429
+          },
+          {
+            "centroid_um": [
+              451.3751895209214,
+              439.1277620778363,
+              935.1753892598017
+            ],
+            "label": 9,
+            "name": "LegNp(T3)(L)",
+            "voxels": 956649
+          },
+          {
+            "centroid_um": [
+              360.5135955675118,
+              429.72174902137596,
+              939.253831920127
+            ],
+            "label": 10,
+            "name": "LegNp(T3)(R)",
+            "voxels": 998085
+          },
+          {
+            "centroid_um": [
+              440.1661354346546,
+              471.19427784283755,
+              684.5751855130571
+            ],
+            "label": 11,
+            "name": "Ov(L)",
+            "voxels": 151143
+          },
+          {
+            "centroid_um": [
+              352.5418806579484,
+              467.5327329092753,
+              686.1330589862115
+            ],
+            "label": 12,
+            "name": "Ov(R)",
+            "voxels": 151866
+          },
+          {
+            "centroid_um": [
+              400.7047300092904,
+              408.38771129484803,
+              696.0706188039287
+            ],
+            "label": 13,
+            "name": "IntTct",
+            "voxels": 643674
+          },
+          {
+            "centroid_um": [
+              397.973925515143,
+              438.7949197017007,
+              688.637481035255
+            ],
+            "label": 14,
+            "name": "LTct",
+            "voxels": 489039
+          },
+          {
+            "centroid_um": [
+              447.4364482881305,
+              392.86930457866936,
+              639.7919855496866
+            ],
+            "label": 15,
+            "name": "NTct(UTct-T1)(L)",
+            "voxels": 73078
+          },
+          {
+            "centroid_um": [
+              354.1333579751368,
+              387.05150048369165,
+              644.4637715242784
+            ],
+            "label": 16,
+            "name": "NTct(UTct-T1)(R)",
+            "voxels": 69259
+          },
+          {
+            "centroid_um": [
+              446.05234016625656,
+              383.99821036352535,
+              717.4585932298496
+            ],
+            "label": 17,
+            "name": "WTct(UTct-T2)(L)",
+            "voxels": 365339
+          },
+          {
+            "centroid_um": [
+              357.80925477256903,
+              377.3158972639985,
+              719.0776141751934
+            ],
+            "label": 18,
+            "name": "WTct(UTct-T2)(R)",
+            "voxels": 380665
+          },
+          {
+            "centroid_um": [
+              431.1606841122919,
+              393.9752336113968,
+              817.4880481468784
+            ],
+            "label": 19,
+            "name": "HTct(UTct-T3)(L)",
+            "voxels": 105012
+          },
+          {
+            "centroid_um": [
+              372.32711854216876,
+              388.843415907009,
+              816.151518823205
+            ],
+            "label": 20,
+            "name": "HTct(UTct-T3)(R)",
+            "voxels": 112441
+          },
+          {
+            "centroid_um": [
+              405.3295015148193,
+              382.13791698810894,
+              947.968033996189
+            ],
+            "label": 21,
+            "name": "ANm",
+            "voxels": 971403
+          },
+          {
+            "centroid_um": [
+              433.20825746220277,
+              477.4647296491273,
+              621.6034380851119
+            ],
+            "label": 22,
+            "name": "mVAC(T1)(L)",
+            "voxels": 38561
+          },
+          {
+            "centroid_um": [
+              359.7322046602895,
+              477.834090556782,
+              621.886175913662
+            ],
+            "label": 23,
+            "name": "mVAC(T1)(R)",
+            "voxels": 40770
+          },
+          {
+            "centroid_um": [
+              421.95478703519586,
+              480.70317279777294,
+              735.4507631735933
+            ],
+            "label": 24,
+            "name": "mVAC(T2)(L)",
+            "voxels": 40232
+          },
+          {
+            "centroid_um": [
+              375.74117271864407,
+              476.8831592135593,
+              732.8832147525424
+            ],
+            "label": 25,
+            "name": "mVAC(T2)(R)",
+            "voxels": 36875
+          },
+          {
+            "centroid_um": [
+              421.6899179932465,
+              462.4462788229619,
+              857.7353478051134
+            ],
+            "label": 26,
+            "name": "mVAC(T3)(L)",
+            "voxels": 16584
+          },
+          {
+            "centroid_um": [
+              384.47123657489266,
+              458.49503005809544,
+              862.0533007325082
+            ],
+            "label": 27,
+            "name": "mVAC(T3)(R)",
+            "voxels": 19795
+          }
+        ],
+        "brain": [
+          {
+            "centroid_um": [
+              448.6952520349318,
+              215.2461107162618,
+              121.18634898723997
+            ],
+            "label": 1,
+            "name": "AL(L)",
+            "voxels": 350626
+          },
+          {
+            "centroid_um": [
+              327.79553939477256,
+              230.409273417765,
+              127.19408075427171
+            ],
+            "label": 2,
+            "name": "AL(R)",
+            "voxels": 349158
+          },
+          {
+            "centroid_um": [
+              572.8388774422735,
+              260.1270499873129,
+              207.8981131692464
+            ],
+            "label": 3,
+            "name": "AME(L)",
+            "voxels": 3941
+          },
+          {
+            "centroid_um": [
+              212.09767858061198,
+              268.43084391874515,
+              219.97805502699924
+            ],
+            "label": 4,
+            "name": "AME(R)",
+            "voxels": 15556
+          },
+          {
+            "centroid_um": [
+              458.96955757674544,
+              284.067186264602,
+              216.50252570497148
+            ],
+            "label": 5,
+            "name": "AMMC(L)",
+            "voxels": 92025
+          },
+          {
+            "centroid_um": [
+              324.7928977868147,
+              294.9290773441777,
+              218.13922765308516
+            ],
+            "label": 6,
+            "name": "AMMC(R)",
+            "voxels": 102296
+          },
+          {
+            "centroid_um": [
+              523.0465809075131,
+              125.47483580461196,
+              148.29342193569718
+            ],
+            "label": 7,
+            "name": "AOTU(L)",
+            "voxels": 60495
+          },
+          {
+            "centroid_um": [
+              253.31653133437305,
+              133.56854843957004,
+              155.55661773238754
+            ],
+            "label": 8,
+            "name": "AOTU(R)",
+            "voxels": 59631
+          },
+          {
+            "centroid_um": [
+              414.22951117039014,
+              125.77956918972991,
+              239.31014871623873
+            ],
+            "label": 9,
+            "name": "ATL(L)",
+            "voxels": 11996
+          },
+          {
+            "centroid_um": [
+              360.3628984247692,
+              127.59294006880319,
+              239.43170595690748
+            ],
+            "label": 10,
+            "name": "ATL(R)",
+            "voxels": 11046
+          },
+          {
+            "centroid_um": [
+              533.1564250797842,
+              199.2658871355813,
+              171.7825960433164
+            ],
+            "label": 11,
+            "name": "AVLP(L)",
+            "voxels": 519526
+          },
+          {
+            "centroid_um": [
+              245.60986528449504,
+              209.92211729582823,
+              178.1219039298282
+            ],
+            "label": 12,
+            "name": "AVLP(R)",
+            "voxels": 519183
+          },
+          {
+            "centroid_um": [
+              448.47375836260886,
+              150.05040965327632,
+              167.84536184511992
+            ],
+            "label": 13,
+            "name": "BU(L)",
+            "voxels": 6547
+          },
+          {
+            "centroid_um": [
+              326.98085675797034,
+              157.99188863942524,
+              168.5516108367011
+            ],
+            "label": 14,
+            "name": "BU(R)",
+            "voxels": 6681
+          },
+          {
+            "centroid_um": [
+              472.7621226921308,
+              103.28325859085831,
+              265.38825151667794
+            ],
+            "label": 15,
+            "name": "CA(L)",
+            "voxels": 45659
+          },
+          {
+            "centroid_um": [
+              300.98175991272035,
+              111.51623933722,
+              271.39643053424703
+            ],
+            "label": 16,
+            "name": "CA(R)",
+            "voxels": 58662
+          },
+          {
+            "centroid_um": [
+              415.44199931153184,
+              258.80639449225475,
+              236.21520963855423
+            ],
+            "label": 17,
+            "name": "CAN(L)",
+            "voxels": 11620
+          },
+          {
+            "centroid_um": [
+              369.9870458173219,
+              264.5430446349394,
+              235.53861543009162
+            ],
+            "label": 18,
+            "name": "CAN(R)",
+            "voxels": 13532
+          },
+          {
+            "centroid_um": [
+              430.77325472722083,
+              131.8379769589641,
+              131.18482231743312
+            ],
+            "label": 19,
+            "name": "CRE(L)",
+            "voxels": 105030
+          },
+          {
+            "centroid_um": [
+              344.4265727665561,
+              138.69026775198475,
+              133.42004815596422
+            ],
+            "label": 20,
+            "name": "CRE(R)",
+            "voxels": 99510
+          },
+          {
+            "centroid_um": [
+              388.19650786391867,
+              163.392389580694,
+              163.65230516330377
+            ],
+            "label": 21,
+            "name": "EB",
+            "voxels": 64726
+          },
+          {
+            "centroid_um": [
+              458.38500447513104,
+              195.96795090141924,
+              205.16643907428715
+            ],
+            "label": 22,
+            "name": "EPA(L)",
+            "voxels": 31284
+          },
+          {
+            "centroid_um": [
+              322.6232665471272,
+              203.08330116161224,
+              203.79164699462075
+            ],
+            "label": 23,
+            "name": "EPA(R)",
+            "voxels": 25654
+          },
+          {
+            "centroid_um": [
+              388.0054215124729,
+              151.39671133756218,
+              194.99520335573146
+            ],
+            "label": 24,
+            "name": "FB",
+            "voxels": 175461
+          },
+          {
+            "centroid_um": [
+              415.10869037152696,
+              275.2736599059726,
+              188.06066145046591
+            ],
+            "label": 25,
+            "name": "FLA(L)",
+            "voxels": 58919
+          },
+          {
+            "centroid_um": [
+              366.1712617188787,
+              282.38306973679875,
+              187.51130981322265
+            ],
+            "label": 26,
+            "name": "FLA(R)",
+            "voxels": 60714
+          },
+          {
+            "centroid_um": [
+              482.03402963498377,
+              172.92776870256594,
+              142.50012865919769
+            ],
+            "label": 27,
+            "name": "GA(L)",
+            "voxels": 2767
+          },
+          {
+            "centroid_um": [
+              296.2485476358504,
+              182.91660691601976,
+              143.73397318278052
+            ],
+            "label": 28,
+            "name": "GA(R)",
+            "voxels": 2834
+          },
+          {
+            "centroid_um": [
+              389.80202797956383,
+              322.79005124201154,
+              229.15434364754748
+            ],
+            "label": 29,
+            "name": "GNG",
+            "voxels": 1293587
+          },
+          {
+            "centroid_um": [
+              432.2034776042561,
+              186.4917340655569,
+              218.18730187060237
+            ],
+            "label": 30,
+            "name": "GOR(L)",
+            "voxels": 29135
+          },
+          {
+            "centroid_um": [
+              348.9304307671289,
+              191.34579137919258,
+              216.9410697452012
+            ],
+            "label": 31,
+            "name": "GOR(R)",
+            "voxels": 29278
+          },
+          {
+            "centroid_um": [
+              387.89986026349345,
+              169.70669353629793,
+              253.19244860333038
+            ],
+            "label": 32,
+            "name": "IB",
+            "voxels": 129415
+          },
+          {
+            "centroid_um": [
+              458.0269621212121,
+              152.1530909090909,
+              222.1617803030303
+            ],
+            "label": 33,
+            "name": "ICL(L)",
+            "voxels": 135168
+          },
+          {
+            "centroid_um": [
+              320.8196711589531,
+              159.16699024383317,
+              224.88731664228808
+            ],
+            "label": 34,
+            "name": "ICL(R)",
+            "voxels": 140834
+          },
+          {
+            "centroid_um": [
+              450.4236666080063,
+              247.00741513940218,
+              279.1619985418709
+            ],
+            "label": 35,
+            "name": "IPS(L)",
+            "voxels": 119331
+          },
+          {
+            "centroid_um": [
+              333.27915437905415,
+              254.69008034919887,
+              282.4869680382659
+            ],
+            "label": 36,
+            "name": "IPS(R)",
+            "voxels": 131501
+          },
+          {
+            "centroid_um": [
+              688.84134904504,
+              238.3337184492096,
+              205.3532879432347
+            ],
+            "label": 37,
+            "name": "LA(L)",
+            "voxels": 409546
+          },
+          {
+            "centroid_um": [
+              89.28971769840848,
+              283.2105284718156,
+              213.74196403896312
+            ],
+            "label": 38,
+            "name": "LA(R)",
+            "voxels": 375740
+          },
+          {
+            "centroid_um": [
+              454.88908511479684,
+              197.91411272651143,
+              166.0740762520645
+            ],
+            "label": 39,
+            "name": "LAL(L)",
+            "voxels": 171956
+          },
+          {
+            "centroid_um": [
+              325.03407739916685,
+              208.4672330960295,
+              168.78201976763913
+            ],
+            "label": 40,
+            "name": "LAL(R)",
+            "voxels": 159149
+          },
+          {
+            "centroid_um": [
+              550.3219460921649,
+              108.30815941625418,
+              232.37211959060505
+            ],
+            "label": 41,
+            "name": "LH(L)",
+            "voxels": 175967
+          },
+          {
+            "centroid_um": [
+              223.8973348801675,
+              119.82137189100477,
+              238.32619925865143
+            ],
+            "label": 42,
+            "name": "LH(R)",
+            "voxels": 176705
+          },
+          {
+            "centroid_um": [
+              566.1545815571715,
+              243.12020087444978,
+              274.4300088085961
+            ],
+            "label": 43,
+            "name": "LO(L)",
+            "voxels": 811253
+          },
+          {
+            "centroid_um": [
+              212.19001810976766,
+              250.65020559940754,
+              280.3082937393343
+            ],
+            "label": 44,
+            "name": "LO(R)",
+            "voxels": 838553
+          },
+          {
+            "centroid_um": [
+              602.0592127735116,
+              261.5747694742288,
+              311.2808912242973
+            ],
+            "label": 45,
+            "name": "LOP(L)",
+            "voxels": 394316
+          },
+          {
+            "centroid_um": [
+              177.98740668994884,
+              269.5354303867083,
+              319.77691772267923
+            ],
+            "label": 46,
+            "name": "LOP(R)",
+            "voxels": 430945
+          },
+          {
+            "centroid_um": [
+              643.4495600676246,
+              263.30050954561824,
+              254.93258291550364
+            ],
+            "label": 47,
+            "name": "ME(L)",
+            "voxels": 2418649
+          },
+          {
+            "centroid_um": [
+              133.83005440293985,
+              279.48321724279197,
+              265.4698052830035
+            ],
+            "label": 48,
+            "name": "ME(R)",
+            "voxels": 2555781
+          },
+          {
+            "centroid_um": [
+              389.6804145892178,
+              195.57117327766179,
+              188.57878619673338
+            ],
+            "label": 49,
+            "name": "NO",
+            "voxels": 16286
+          },
+          {
+            "centroid_um": [
+              388.1162163360848,
+              129.42618208697795,
+              256.95474091413087
+            ],
+            "label": 50,
+            "name": "PB",
+            "voxels": 32468
+          },
+          {
+            "centroid_um": [
+              484.5873082706767,
+              144.59654736842106,
+              203.06766917293234
+            ],
+            "label": 51,
+            "name": "PED(L)",
+            "voxels": 21280
+          },
+          {
+            "centroid_um": [
+              293.664846323082,
+              154.09292252960725,
+              206.055494078547
+            ],
+            "label": 52,
+            "name": "PED(R)",
+            "voxels": 21363
+          },
+          {
+            "centroid_um": [
+              503.907990499789,
+              176.52240811996404,
+              255.68188019015105
+            ],
+            "label": 53,
+            "name": "PLP(L)",
+            "voxels": 272415
+          },
+          {
+            "centroid_um": [
+              274.72689173313785,
+              185.50264350543506,
+              259.29905898012134
+            ],
+            "label": 54,
+            "name": "PLP(R)",
+            "voxels": 311037
+          },
+          {
+            "centroid_um": [
+              388.6917371914959,
+              283.10906479907004,
+              153.48412846451663
+            ],
+            "label": 55,
+            "name": "PRW",
+            "voxels": 104091
+          },
+          {
+            "centroid_um": [
+              523.7855715055332,
+              201.08418800034312,
+              212.89153608647163
+            ],
+            "label": 56,
+            "name": "PVLP(L)",
+            "voxels": 291425
+          },
+          {
+            "centroid_um": [
+              256.31331743242737,
+              210.1651949605593,
+              218.743764626715
+            ],
+            "label": 57,
+            "name": "PVLP(R)",
+            "voxels": 267490
+          },
+          {
+            "centroid_um": [
+              463.03324415793713,
+              165.84302981466558,
+              126.85346655922643
+            ],
+            "label": 58,
+            "name": "ROB(L)",
+            "voxels": 1241
+          },
+          {
+            "centroid_um": [
+              314.81617860465116,
+              172.67831069767442,
+              130.40092279069768
+            ],
+            "label": 59,
+            "name": "ROB(R)",
+            "voxels": 1075
+          },
+          {
+            "centroid_um": [
+              446.8037123473542,
+              145.84636092265941,
+              139.22162279511534
+            ],
+            "label": 60,
+            "name": "RUB(L)",
+            "voxels": 737
+          },
+          {
+            "centroid_um": [
+              330.3430440251572,
+              152.69772075471698,
+              142.96650062893082
+            ],
+            "label": 61,
+            "name": "RUB(R)",
+            "voxels": 795
+          },
+          {
+            "centroid_um": [
+              389.1209207398106,
+              291.7556539910511,
+              204.55111934748416
+            ],
+            "label": 62,
+            "name": "SAD",
+            "voxels": 328084
+          },
+          {
+            "centroid_um": [
+              481.76583237767187,
+              119.16559204105495,
+              212.48062372140893
+            ],
+            "label": 63,
+            "name": "SCL(L)",
+            "voxels": 142833
+          },
+          {
+            "centroid_um": [
+              293.4012249502861,
+              127.45719951841781,
+              216.23402253696412
+            ],
+            "label": 64,
+            "name": "SCL(R)",
+            "voxels": 147846
+          },
+          {
+            "centroid_um": [
+              466.29212495737704,
+              99.80566074754098,
+              171.49725041311476
+            ],
+            "label": 65,
+            "name": "SIP(L)",
+            "voxels": 152500
+          },
+          {
+            "centroid_um": [
+              305.58897638093435,
+              105.8918063141951,
+              170.72920755431437
+            ],
+            "label": 66,
+            "name": "SIP(R)",
+            "voxels": 169016
+          },
+          {
+            "centroid_um": [
+              507.58561027380836,
+              83.31136296704176,
+              204.49851369633888
+            ],
+            "label": 67,
+            "name": "SLP(L)",
+            "voxels": 337791
+          },
+          {
+            "centroid_um": [
+              265.63096159693384,
+              90.71445644487677,
+              208.4696519434526
+            ],
+            "label": 68,
+            "name": "SLP(R)",
+            "voxels": 343358
+          },
+          {
+            "centroid_um": [
+              419.85800118821965,
+              91.40800226327553,
+              178.9919633349365
+            ],
+            "label": 69,
+            "name": "SMP(L)",
+            "voxels": 282776
+          },
+          {
+            "centroid_um": [
+              351.03814553928686,
+              95.47901148282311,
+              178.22060057025155
+            ],
+            "label": 70,
+            "name": "SMP(R)",
+            "voxels": 295659
+          },
+          {
+            "centroid_um": [
+              438.60662078620874,
+              201.73509591746114,
+              260.9404034791694
+            ],
+            "label": 71,
+            "name": "SPS(L)",
+            "voxels": 191425
+          },
+          {
+            "centroid_um": [
+              340.5603471449832,
+              209.1551832067048,
+              262.58130743322624
+            ],
+            "label": 72,
+            "name": "SPS(R)",
+            "voxels": 204272
+          },
+          {
+            "centroid_um": [
+              432.0174175094159,
+              237.45921344529333,
+              204.33756912225806
+            ],
+            "label": 73,
+            "name": "VES(L)",
+            "voxels": 158509
+          },
+          {
+            "centroid_um": [
+              349.95745464297033,
+              245.02273697554793,
+              205.42194163680244
+            ],
+            "label": 74,
+            "name": "VES(R)",
+            "voxels": 164076
+          },
+          {
+            "centroid_um": [
+              491.9551223484124,
+              256.69668178932415,
+              231.19070470508802
+            ],
+            "label": 75,
+            "name": "WED(L)",
+            "voxels": 198466
+          },
+          {
+            "centroid_um": [
+              290.8879864398855,
+              265.5054021470181,
+              235.1578333430748
+            ],
+            "label": 76,
+            "name": "WED(R)",
+            "voxels": 205308
+          },
+          {
+            "centroid_um": [
+              461.4285256941384,
+              99.62238307624504,
+              152.3928172763332
+            ],
+            "label": 77,
+            "name": "a'L(L)",
+            "voxels": 11345
+          },
+          {
+            "centroid_um": [
+              310.83397114553554,
+              105.64563951864902,
+              151.29298743434612
+            ],
+            "label": 78,
+            "name": "a'L(R)",
+            "voxels": 15041
+          },
+          {
+            "centroid_um": [
+              460.14025506123994,
+              101.64914280904078,
+              161.43938179216298
+            ],
+            "label": 79,
+            "name": "aL(L)",
+            "voxels": 23759
+          },
+          {
+            "centroid_um": [
+              312.81748712206047,
+              104.44527659574469,
+              162.3177961926092
+            ],
+            "label": 80,
+            "name": "aL(R)",
+            "voxels": 28576
+          },
+          {
+            "centroid_um": [
+              427.845418516706,
+              141.4029559104863,
+              136.78536601859676
+            ],
+            "label": 81,
+            "name": "b'L(L)",
+            "voxels": 22477
+          },
+          {
+            "centroid_um": [
+              349.67783047018406,
+              144.88930088953734,
+              139.72766037558245
+            ],
+            "label": 82,
+            "name": "b'L(R)",
+            "voxels": 21247
+          },
+          {
+            "centroid_um": [
+              437.3414194408937,
+              155.3586928249875,
+              132.27188351025399
+            ],
+            "label": 83,
+            "name": "bL(L)",
+            "voxels": 17993
+          },
+          {
+            "centroid_um": [
+              341.04810533854885,
+              161.3972880833012,
+              136.4831328301471
+            ],
+            "label": 84,
+            "name": "bL(R)",
+            "voxels": 18151
+          },
+          {
+            "centroid_um": [
+              441.59740500006694,
+              140.36617908649018,
+              121.25574943424525
+            ],
+            "label": 85,
+            "name": "gL(L)",
+            "voxels": 74679
+          },
+          {
+            "centroid_um": [
+              329.78269084081444,
+              145.85034841283812,
+              125.80906178489703
+            ],
+            "label": 86,
+            "name": "gL(R)",
+            "voxels": 68172
+          },
+          {
+            "centroid_um": [
+              381.70440262582053,
+              179.23174325309995,
+              195.31548942377825
+            ],
+            "label": 93,
+            "name": "AB(R)",
+            "voxels": 1371
+          },
+          {
+            "centroid_um": [
+              395.1310497237569,
+              177.45750276243092,
+              196.1299447513812
+            ],
+            "label": 94,
+            "name": "AB(L)",
+            "voxels": 362
+          },
+          {
+            "centroid_um": [
+              392.5847130701632,
+              385.29052085367556,
+              379.77513851304224
+            ],
+            "label": 95,
+            "name": "CV-anterior",
+            "voxels": 229408
+          },
+          {
+            "centroid_um": [
+              390.1571261836939,
+              313.4241367310801,
+              385.3182157209947
+            ],
+            "label": 96,
+            "name": "CRN",
+            "voxels": 25978
+          }
+        ]
+      },
+      "coordinate_definition": "Original source XYZ in micrometres, using occupied voxel centres; not display coordinates.",
+      "existing_soma_side_evidence": {
+        "L": {
+          "fraction": 0.9951969260326609,
+          "n": 3123
+        },
+        "R": {
+          "fraction": 0.9719568567026194,
+          "n": 3245
+        }
+      },
+      "scale_um": 1.024,
+      "schema": "flybench.anatomical-axis-audit.v1",
+      "source_lock_sha256": "cf1d172bc9cb9a185e9c66d8de8a5ebe04b8c57bc488339966f910c45f593833"
+    },
+    "giant_fiber_sanity": {
+      "neurons": [
+        {
+          "annotated_soma_display_um": [
+            296.992,
+            178.064
+          ],
+          "annotated_soma_source_um": [
+            296.992,
+            178.064,
+            290.192
+          ],
+          "body_id": "10001",
+          "branch_display_um": [
+            304.64,
+            211.96800000000002
+          ],
+          "branch_row": 66,
+          "branch_source_um": [
+            304.64,
+            211.96800000000002,
+            214.016
+          ],
+          "dorsal_separation_um": 33.904000000000025,
+          "nearest_soma_row": 2903,
+          "off_trunk_brain_cable_um": 408.7707574901932,
+          "rule": "Nearest annotated-soma vertex to nearest VNC vertex by cable distance; largest off-trunk brain cable at a brain-ROI trunk branch point. Ties use lowest original row. No sign tuning.",
+          "soma_dorsal": true,
+          "soma_to_nearest_swc_um": 1.234412961694768
+        },
+        {
+          "annotated_soma_display_um": [
+            465.904,
+            177.872
+          ],
+          "annotated_soma_source_um": [
+            465.904,
+            177.872,
+            290.208
+          ],
+          "body_id": "10010",
+          "branch_display_um": [
+            474.7808,
+            210.4736
+          ],
+          "branch_row": 61,
+          "branch_source_um": [
+            474.7808,
+            210.4736,
+            213.2272
+          ],
+          "dorsal_separation_um": 32.60159999999999,
+          "nearest_soma_row": 3304,
+          "off_trunk_brain_cable_um": 397.5731746801577,
+          "rule": "Nearest annotated-soma vertex to nearest VNC vertex by cable distance; largest off-trunk brain cable at a brain-ROI trunk branch point. Ties use lowest original row. No sign tuning.",
+          "soma_dorsal": true,
+          "soma_to_nearest_swc_um": 1.0466167971134548
+        }
       ],
-      "rois/malecns-vnc-neuropil-roi-v0": [
-        401.11483570615405,
-        437.46225493553607,
-        758.5664791040778
-      ]
+      "rule": "Before display pruning, orient the raw SWC tree from its nearest vertex to the annotated soma. Follow the shortest cable path to a VNC-ROI vertex. The main dendritic branch point is the brain-ROI vertex on this trunk with greatest off-trunk brain cable; ties use lowest original row. Compare annotated soma height with that branch point, without changing axes or the selection rule."
+    },
+    "lamina": {
+      "rows": [
+        {
+          "boundary_runs": [
+            {
+              "axis": "x",
+              "longest_run_um": 7.168,
+              "longest_run_voxels": 7,
+              "plane_voxel": 640,
+              "type": "chunk"
+            },
+            {
+              "axis": "x",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 704,
+              "type": "chunk"
+            },
+            {
+              "axis": "x",
+              "longest_run_um": 2.048,
+              "longest_run_voxels": 2,
+              "plane_voxel": 704,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 128,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 320,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 320,
+              "type": "chunk"
+            }
+          ],
+          "default_silhouette": true,
+          "flag": null,
+          "label": 37,
+          "longest_aligned_run_um": 7.168,
+          "name": "LA(L)",
+          "source_voxel_max": [
+            723,
+            396,
+            249
+          ],
+          "source_voxel_min": [
+            622,
+            116,
+            149
+          ],
+          "truncated": false
+        },
+        {
+          "boundary_runs": [
+            {
+              "axis": "x",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 64,
+              "type": "chunk"
+            },
+            {
+              "axis": "x",
+              "longest_run_um": 3.072,
+              "longest_run_voxels": 3,
+              "plane_voxel": 128,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 192,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 1.024,
+              "longest_run_voxels": 1,
+              "plane_voxel": 256,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 2.048,
+              "longest_run_voxels": 2,
+              "plane_voxel": 320,
+              "type": "chunk"
+            },
+            {
+              "axis": "y",
+              "longest_run_um": 2.048,
+              "longest_run_voxels": 2,
+              "plane_voxel": 384,
+              "type": "chunk"
+            }
+          ],
+          "default_silhouette": true,
+          "flag": null,
+          "label": 38,
+          "longest_aligned_run_um": 3.072,
+          "name": "LA(R)",
+          "source_voxel_max": [
+            143,
+            419,
+            256
+          ],
+          "source_voxel_min": [
+            32,
+            141,
+            158
+          ],
+          "truncated": false
+        }
+      ],
+      "rule": "In frontal occupancy projection, inspect volume and 64-voxel source chunk boundary planes. Flag a contiguous boundary run of at least 20 micrometres; retain source ROI and contour. Also retain raster inspection preview. This detects aligned clipping, not arbitrary tissue loss inside acquired bounds."
+    },
+    "skeleton_panel_split": {
+      "VNC_roi": 4973626,
+      "brain_roi": 23718522,
+      "roi_override_plane": 0,
+      "unlabeled_VNC": 445237,
+      "unlabeled_brain": 2090338
     },
     "soma_axis_effect": [
       1.7523403855020936,
@@ -57454,17 +59262,80 @@
     "soma_side_midline_um": 386.88
   },
   "frame": {
-    "axes": [
-      0,
-      2
-    ],
-    "projection_axis": 1,
-    "signs": [
-      1,
-      1
-    ],
+    "horizontal_axis": 0,
+    "horizontal_sign": 1,
+    "neck": {
+      "anchor_rule": "Shared original x column nearest the two face means; brain CV-anterior ventral face and VNC CV-posterior anterior face. No panel horizontal shift.",
+      "brain_cv_posterior_face_um": 415.744,
+      "brain_exit_display_um": [
+        393.728,
+        437.76000000000016
+      ],
+      "brain_exit_source_um": [
+        393.728,
+        437.76000000000016,
+        408.576
+      ],
+      "bridge_label": "layout, not anatomy",
+      "gap_um": 12,
+      "horizontal_translation_um": 0,
+      "shared_source_x_um": 393.728,
+      "vnc_cv_anterior_face_um": 415.74399999999997,
+      "vnc_entry_display_um": [
+        393.7279999999996,
+        449.75999999999976
+      ],
+      "vnc_entry_source_um": [
+        393.7279999999996,
+        416.76800000000003,
+        416.25599999999974
+      ],
+      "vnc_vertical_translation_um": 33.50400000000002
+    },
+    "panels": {
+      "VNC": {
+        "axes": [
+          0,
+          2
+        ],
+        "id": 1,
+        "offset_um": [
+          0,
+          33.50400000000002
+        ],
+        "projection_axis": 1,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "ventral; T1 up"
+      },
+      "brain": {
+        "axes": [
+          0,
+          1
+        ],
+        "id": 0,
+        "offset_um": [
+          0,
+          0
+        ],
+        "projection_axis": 2,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "frontal anterior; dorsal up"
+      }
+    },
+    "schema": "flybench.composite-layout.v1",
+    "split": {
+      "axis": 2,
+      "boundary_um": 415.744,
+      "posterior_sign": 1,
+      "rule": "Nonzero brain ROI membership assigns brain, including CV-anterior. Nonzero VNC ROI membership assigns VNC, including CV-posterior. Conflicting memberships stop. Unlabeled vertices use the midpoint between the posterior CV-anterior face and anterior CV-posterior face; equality assigns VNC."
+    },
     "units": "micrometres",
-    "view": "frontal anterior; fly right on viewer left",
-    "y_direction": "down; brain above VNC"
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
   }
 }

@@ -1,34 +1,46 @@
 {
   "LC4-raw-versus-pruned.png": {
-    "bytes": 87435,
-    "sha256": "22de487265b50accb9971445195d4be4e642f132ec9fc038d453795c4e343328"
+    "bytes": 106113,
+    "sha256": "7a592dc0f9a1d1702084cbdf459c804c918373061663978a0e12d32bd943e479"
   },
   "LPLC2-raw-versus-pruned.png": {
-    "bytes": 105826,
-    "sha256": "4f3a96c43590ceaca67859496d674dbd368f1d8ccb2c24bb1391824893a9f1a9"
+    "bytes": 138175,
+    "sha256": "8c2bab393a0d5414c6b9708a9d90bcc930cdec3679c44a233e40128760117dc8"
   },
   "T1a-arbors.png": {
-    "bytes": 741905,
-    "sha256": "1b892ce2b257cd16cee13f8f962b764bfd29e13e9c6b2007698c628ea52ec01c"
+    "bytes": 809830,
+    "sha256": "72b7f4409a3ba6d72efcbd067b9f5ba47f3b3fb6b4f72a83283a170bbe4cd700"
   },
   "T1b-arbors.png": {
-    "bytes": 795060,
-    "sha256": "c12fe12ce9ddecff0687d9ac7e1538d8fb8afbcbea903b9c0391c1975c5a1b6b"
+    "bytes": 871119,
+    "sha256": "5acb86dc3e26c4f45ad1e5dc6231526b137233c8c9235a9dc2f7953783c330b9"
+  },
+  "T1b-brain-1to1.png": {
+    "bytes": 398583,
+    "sha256": "5a3f64b38dc8efa6515c87494662c27ef44f292dcb17ba23afe56e90bd4b95cd"
   },
   "giant-fiber-raw-versus-pruned.png": {
-    "bytes": 206350,
-    "sha256": "fa3f97a16e218daf11fae81b6661c2e389e5d38d06f99972a4df909c81c1d049"
+    "bytes": 247247,
+    "sha256": "8a9b303cfb79206713abcbae80c6eba5d6ef013fe24a828c03ee2af80dd74781"
   },
   "giant-fiber.png": {
-    "bytes": 379313,
-    "sha256": "0d99da7510a1c9d32289038b25193aeb8fff078bbe4fe272c491017818b4c48d"
+    "bytes": 352656,
+    "sha256": "6ec74d8689f89e79665d5b8f21c27a818e8b9ada729a32ae7d8a090aa747cae2"
+  },
+  "lamina-inspection.png": {
+    "bytes": 65736,
+    "sha256": "501bfce3adce6ef235a32fe5bfab08f249715ba96a80d6514b45b8264a2a713d"
   },
   "neuropils.png": {
-    "bytes": 272524,
-    "sha256": "2c9084fec9487903ca02e70d85e7770bb76776c3ddc2529d23cd5306eae64528"
+    "bytes": 302228,
+    "sha256": "a01d64ad325048806850d197f11d858f458eee54ba03a06834addc8394cb7490"
+  },
+  "previews.json": {
+    "bytes": 2128,
+    "sha256": "1eb8bfc0f5f8b726ead12b25a94979527ed18229c6892751388a98c13dacbfc2"
   },
   "pruning-previews.json": {
-    "bytes": 786,
-    "sha256": "fd509471a96fd27b9592f2adb1c340587ab2573808d17abb7f7733709f15ff01"
+    "bytes": 2664,
+    "sha256": "09ef81486f21e9ee53bf6443b0e3c83208460e102b37df988c400a2d10d644c3"
   }
 }

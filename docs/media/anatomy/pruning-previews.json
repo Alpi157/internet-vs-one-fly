@@ -1,17 +1,80 @@
 {
   "frame": {
-    "axes": [
-      0,
-      2
-    ],
-    "projection_axis": 1,
-    "signs": [
-      1,
-      1
-    ],
+    "horizontal_axis": 0,
+    "horizontal_sign": 1,
+    "neck": {
+      "anchor_rule": "Shared original x column nearest the two face means; brain CV-anterior ventral face and VNC CV-posterior anterior face. No panel horizontal shift.",
+      "brain_cv_posterior_face_um": 415.744,
+      "brain_exit_display_um": [
+        393.728,
+        437.76000000000016
+      ],
+      "brain_exit_source_um": [
+        393.728,
+        437.76000000000016,
+        408.576
+      ],
+      "bridge_label": "layout, not anatomy",
+      "gap_um": 12,
+      "horizontal_translation_um": 0,
+      "shared_source_x_um": 393.728,
+      "vnc_cv_anterior_face_um": 415.74399999999997,
+      "vnc_entry_display_um": [
+        393.7279999999996,
+        449.75999999999976
+      ],
+      "vnc_entry_source_um": [
+        393.7279999999996,
+        416.76800000000003,
+        416.25599999999974
+      ],
+      "vnc_vertical_translation_um": 33.50400000000002
+    },
+    "panels": {
+      "VNC": {
+        "axes": [
+          0,
+          2
+        ],
+        "id": 1,
+        "offset_um": [
+          0,
+          33.50400000000002
+        ],
+        "projection_axis": 1,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "ventral; T1 up"
+      },
+      "brain": {
+        "axes": [
+          0,
+          1
+        ],
+        "id": 0,
+        "offset_um": [
+          0,
+          0
+        ],
+        "projection_axis": 2,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "frontal anterior; dorsal up"
+      }
+    },
+    "schema": "flybench.composite-layout.v1",
+    "split": {
+      "axis": 2,
+      "boundary_um": 415.744,
+      "posterior_sign": 1,
+      "rule": "Nonzero brain ROI membership assigns brain, including CV-anterior. Nonzero VNC ROI membership assigns VNC, including CV-posterior. Conflicting memberships stop. Unlabeled vertices use the midpoint between the posterior CV-anterior face and anterior CV-posterior face; equality assigns VNC."
+    },
     "units": "micrometres",
-    "view": "frontal anterior; fly right on viewer left",
-    "y_direction": "down; brain above VNC"
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
   },
   "selection": [
     {

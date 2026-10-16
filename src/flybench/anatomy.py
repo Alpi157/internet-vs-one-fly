@@ -1,4 +1,4 @@
-"""Data-only anatomy transforms and FLYARB02 transport, independent of simulation."""
+"""Data-only anatomy transforms and FLYARB02/03 transport, independent of simulation."""
 from pathlib import Path
 import struct
 import numpy as np
@@ -51,7 +51,7 @@ def anatomical_axis_audit(centroids, left_right_axis=0, left_right_sign=1):
         return rows
 
     axes = []; relations = []
-    def infer(panel, meaning, low, high, available):
+    def infer(panel, meaning, low, high, available, strict=True):
         contrast = (np.mean([r['centroid_um'] for r in high], axis=0)
                     - np.mean([r['centroid_um'] for r in low], axis=0))
         axis = max(available, key=lambda a: abs(contrast[a]))
@@ -63,7 +63,7 @@ def anatomical_axis_audit(centroids, left_right_axis=0, left_right_sign=1):
                          contrast_xyz_um=contrast.tolist(),
                          low_landmarks=[r['name'] for r in low],
                          high_landmarks=[r['name'] for r in high]))
-        for a in low:
+        for a in low if strict else []:
             for b in high:
                 delta = sign * (b['centroid_um'][axis] - a['centroid_um'][axis])
                 relations.append(dict(panel=panel, anatomical_positive=meaning,
@@ -88,14 +88,30 @@ def anatomical_axis_audit(centroids, left_right_axis=0, left_right_sign=1):
     legs = select('VNC', ('LegNp',))
     va, _ = infer('VNC', 'posterior', [r for r in legs if '(T1)' in r['name']],
                    [r for r in legs if '(T3)' in r['name']], available)
-    infer('VNC', 'ventral', select('VNC', ('NTct', 'WTct', 'HTct', 'IntTct', 'LTct')),
-          select('VNC', ('LegNp', 'mVAC')), [a for a in available if a != va])
+    vd, vs = infer('VNC', 'ventral', select('VNC', ('NTct', 'WTct', 'HTct', 'IntTct', 'LTct')),
+          select('VNC', ('LegNp', 'mVAC')), [a for a in available if a != va], strict=False)
+    vnc = {r['name']: r for r in centroids['VNC']}
+    for tectulum, segment in (('NTct', 'T1'), ('WTct', 'T2'), ('HTct', 'T3')):
+        for side in ('L', 'R'):
+            a = vnc[f'{tectulum}(UTct-{segment})({side})']
+            b = vnc[f'LegNp({segment})({side})']
+            delta = vs * (b['centroid_um'][vd] - a['centroid_um'][vd])
+            relations.append(dict(panel='VNC', anatomical_positive='ventral',
+                                  low=a['name'], high=b['name'],
+                                  signed_separation_um=float(delta), passes=bool(delta > 0)))
+    delta = vs * (np.mean([vnc[f'LegNp(T2)({s})']['centroid_um'][vd] for s in ('L', 'R')])
+                  - vnc['IntTct']['centroid_um'][vd])
+    relations.append(dict(panel='VNC', anatomical_positive='ventral', low='IntTct',
+                          high='mean LegNp(T2)(L), LegNp(T2)(R)',
+                          signed_separation_um=float(delta), passes=bool(delta > 0)))
     failures = [r for r in relations if not r['passes']]
     return dict(status='STOP' if failures else 'PASS',
-                rule='Set centroid contrasts assign axes/signs; every named low/high centroid pair must respect the resulting ordering. No contradictory pair is hidden by a group mean.',
+                rule='Brain rules unchanged. VNC strict dorsal checks are within-neuromere NTct/T1, WTct/T2 and HTct/T3 by side, plus IntTct against mean bilateral LegNp(T2). LTct is descriptive, intermediate, with no strict rule. Overall tectulum-versus-ventral contrast retained.',
                 left_right=dict(source_axis='xyz'[left_right_axis], axis=left_right_axis,
                                 sign=left_right_sign, anatomical_positive='fly left; viewer right'),
-                axes=axes, relations=relations, contradictions=failures)
+                axes=axes, relations=relations, contradictions=failures,
+                descriptive_LTct=dict(centroid_um=vnc['LTct']['centroid_um'],
+                                      interpretation='Lower tectulum; intermediate; no strict ordering gate'))
 
 
 def read_swc(path):
@@ -233,8 +249,17 @@ def simplified_tree(xyz, parent, tolerance, frame, active=None, return_rows=Fals
     return result if return_rows else result[:2]
 
 
-def project(xyz_um, frame):
+def project(xyz_um, frame, panels=None):
     xyz_um = np.asarray(xyz_um)
+    if 'panels' in frame:
+        if panels is None:
+            panels = xyz_um[..., frame['split']['axis']] >= frame['split']['boundary_um']
+        points = np.empty((*xyz_um.shape[:-1], 2), dtype=float)
+        for name in ('brain', 'VNC'):
+            panel = frame['panels'][name]
+            values = xyz_um[..., panel['axes']] * panel['signs'] + panel['offset_um']
+            points = np.where((np.asarray(panels) == panel['id'])[..., None], values, points)
+        return points
     return xyz_um[..., frame['axes']] * frame['signs']
 
 
@@ -272,14 +297,14 @@ def decode_segmentation(data, shape, block=(8, 8, 8)):
     return out
 
 
-def encode_arbors(ids, trees, somata, missing, bbox):
+def encode_arbors(ids, trees, somata, missing, bbox, panels=None, soma_panels=None):
     bbox=np.asarray(bbox,dtype=float);low,high=bbox[:2],bbox[2:];step=(high-low)/65535
     if np.any(step<=0):raise ValueError('Degenerate bounding box')
     def quantize(points):
         values=(np.asarray(points)-low)/step
         if np.any(values<-.001) or np.any(values>65535.001):raise ValueError('Coordinate outside bounds')
         return np.rint(values).astype('<u2')
-    records=np.zeros(len(ids),NEURON);parents=[];coordinates=[];total=0
+    records=np.zeros(len(ids),NEURON);parents=[];coordinates=[];layout=[];total=0
     for i,body in enumerate(ids):
         points,local_parent=trees[i];local_parent=np.asarray(local_parent,dtype=np.int64)
         if len(points)!=len(local_parent):raise ValueError('Tree length differs')
@@ -287,6 +312,13 @@ def encode_arbors(ids, trees, somata, missing, bbox):
         if np.any((local_parent>=indices)|(local_parent < -1)):raise ValueError('Tree must be topological')
         if missing[i] and len(points):raise ValueError('Missing skeleton has geometry')
         soma=somata[i];flag=int(missing[i])|(2 if soma is None else 0)
+        if panels is not None:
+            flag |= 4 if soma is not None and soma_panels[i] else 0
+            pp=np.asarray(panels[i],dtype=np.uint8)
+            if len(pp)!=len(points) or np.any(pp>1):raise ValueError('Invalid panel assignment')
+            flags=pp.copy();children=np.flatnonzero(local_parent>=0)
+            flags[children] |= (pp[children]!=pp[local_parent[children]]).astype(np.uint8)*2
+            layout.append(flags)
         records[i]=(body,total,len(points),[0,0] if soma is None else quantize(soma),flag)
         q=quantize(points) if len(points) else np.empty((0,2),'<u2')
         delta=q.astype(np.int32)
@@ -297,14 +329,16 @@ def encode_arbors(ids, trees, somata, missing, bbox):
         total+=len(points)
     deltas=np.concatenate(coordinates) if total else np.empty((0,2),'<u2')
     links=np.concatenate(parents) if total else np.empty(0,'<u4')
-    return (HEADER.pack(MAGIC,len(ids),total,total,0,*bbox)+records.tobytes()+links.tobytes()
-            +deltas[:,0].astype('<u2').tobytes()+deltas[:,1].astype('<u2').tobytes())
+    return (HEADER.pack(b'FLYARB03' if panels is not None else MAGIC,len(ids),total,total,0,*bbox)+records.tobytes()+links.tobytes()
+            +deltas[:,0].astype('<u2').tobytes()+deltas[:,1].astype('<u2').tobytes()
+            +(np.concatenate(layout).tobytes() if panels is not None and total else b''))
 
 
 def decode_arbors(data):
     magic,n,s,p,reserved,*bbox=HEADER.unpack_from(data)
-    if magic!=MAGIC or reserved or s!=p or len(data)!=HEADER.size+n*24+p*8:
-        raise ValueError('Invalid FLYARB02 length/header')
+    composite=magic==b'FLYARB03'
+    if magic not in (MAGIC,b'FLYARB03') or reserved or s!=p or len(data)!=HEADER.size+n*24+p*(9 if composite else 8):
+        raise ValueError('Invalid FLYARB length/header')
     rows=np.frombuffer(data,NEURON,n,HEADER.size)
     links=np.frombuffer(data,'<u4',p,HEADER.size+n*24)
     dx=np.frombuffer(data,'<u2',p,HEADER.size+n*24+p*4)
@@ -312,7 +346,7 @@ def decode_arbors(data):
     q=np.empty((p,2),np.uint16);parents=np.empty(p,np.int32);expected=0
     for row in rows:
         first,count=int(row['first']),int(row['count'])
-        if first!=expected or int(row['flags'])&~3 or first+count>p:raise ValueError('Invalid neuron index')
+        if first!=expected or int(row['flags'])&~(7 if composite else 3) or first+count>p:raise ValueError('Invalid neuron index')
         if int(row['flags'])&1 and count:raise ValueError('Missing skeleton has geometry')
         for i in range(first,first+count):
             link=int(links[i]);parent=i-link if link else -1
@@ -322,7 +356,14 @@ def decode_arbors(data):
             q[i,1]=(int(dy[i])+(int(q[parent,1]) if parent>=0 else 0))%65536
         expected+=count
     if expected!=p:raise ValueError('Neuron index does not cover transport')
+    layout=np.frombuffer(data,np.uint8,p,HEADER.size+n*24+p*8) if composite else np.zeros(p,np.uint8)
+    if np.any(layout & ~np.uint8(3)):raise ValueError('Invalid layout flags')
+    panels=layout&1;bridges=(layout&2)!=0
+    children=np.flatnonzero(parents>=0);expected_bridges=np.zeros(p,bool)
+    expected_bridges[children]=panels[children]!=panels[parents[children]]
+    if not np.array_equal(bridges,expected_bridges):raise ValueError('Bridge flag disagrees with panels')
     low=np.array(bbox[:2]);step=(np.array(bbox[2:])-low)/65535
     if not np.isfinite(bbox).all() or np.any(step<=0):raise ValueError('Invalid bounding box')
     return dict(neurons=rows,parents=parents,quantized=q,points=q*step+low,
-                somata=rows['soma']*step+low,bbox=bbox,step=step)
+                somata=rows['soma']*step+low,bbox=bbox,step=step,panels=panels,bridges=bridges,
+                soma_panels=((rows['flags']&4)!=0).astype(np.uint8),format=magic.decode())

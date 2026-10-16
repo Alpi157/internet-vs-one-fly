@@ -1,75 +1,71 @@
 # Anatomical landmark audit, repair attempt a02
 
-Status: STOP, anatomical landmark ordering conflict. No composite assets have
-been exported. The a01 view is a ventral whole-CNS projection, not a frontal
-brain view. Its existing frame metadata and previews remain superseded and must
-not be used as the proposed composite layout.
+Status: PASS under the external reviewer's amended VNC rule. All brain rules
+are unchanged. The original gate stopped at LTct versus LegNp(T3)(R); the
+external reviewer then corrected the rule because lower tectulum is intermediate
+and comparisons across curved neuromeres are confounded. No source data, centroid
+or sign was changed to repair the rule.
 
-External review: sources, pruning, budgets, N-STRENGTH demo, recompute_v2e and
-acceptance are ACCEPTED. One defect blocks acceptance: the display frame is
-mislabeled. The projection is not a frontal view. It is a ventral view of the
-whole CNS, with the body's anterior-posterior axis vertical.
+## Reviewer amendment, verbatim
 
-## Reproduction and fixed checks
+```text
+Reviewer amendment to the a02 landmark gate. The gate stopped correctly; the defect is in my rule, not in the data.
+
+LTct is the lower tectulum. It lies between the upper tectulum and the leg neuropils, so it does not belong in the strict dorsal set. Comparing centroids across neuromeres (LTct against LegNp(T3)) is also confounded by the curvature of the VNC along the anterior-posterior axis.
+
+Replace only the VNC dorsal-ventral rule:
+- Strict pairwise checks within the same neuromere only: NTct(UTct-T1) dorsal to LegNp(T1); WTct(UTct-T2) dorsal to LegNp(T2); HTct(UTct-T3) dorsal to LegNp(T3), each for L and R. Also IntTct dorsal to the mean of LegNp(T2)(L) and LegNp(T2)(R).
+- LTct: report its position as descriptive and intermediate, with no strict rule.
+- Keep the overall tectulum-versus-ventral contrast as reported.
+
+Record this amendment verbatim in docs/anatomy-v2g-a02-axis-audit.md and in the ledger. State that it was issued by the external reviewer after the gate stopped, and why. If any of the new strict checks fails, stop again and report.
+
+All brain rules and every other a02 requirement are unchanged. Continue from step 2 (the composite layout) through to reviews/V2G-a02.zip.
+```
+
+The [original stopped report](history/anatomy-v2g-a02-original-axis-audit.md)
+and [original JSON](history/anatomy-v2g-a02-original-axis-audit.json) preserve
+the failed gate. Its signed LTct/LegNp(T3)(R) difference remains -9.073170680324722 µm.
+It is descriptive under the amendment, with no strict rule.
+
+## Reproduce the amended gate
 
 ```sh
 uv run --offline python experiments/v2g_anatomy.py --audit-frame
 ```
 
-Expected exit: 1, with the contradiction below. The command verifies the pinned
-input hashes, decodes the original ROI chunks at 1.024 µm, and computes each
-label's 3D centroid using occupied voxel centres. It reads the official volume
-offsets and resolutions; it does not compute centroids from projected contours.
-Every centroid, voxel count, set contrast and individual comparison is in
-[the machine-readable report](anatomy-v2g-a02-axis-audit.json).
+Expected exit: 0. This verifies pinned source hashes and recomputes 3D centroids
+from occupied voxel centres in the 1.024 µm original ROI volumes. It does not
+use contours or display coordinates. The [JSON report](anatomy-v2g-a02-axis-audit.json)
+contains all 114 centroids, voxel counts, set contrasts and all 55 strict checks.
+The seven amended VNC dorsal checks pass; any strict failure stops export.
 
-The existing annotated R/L soma rule supplies the horizontal axis and sign.
-For each panel the anterior/posterior set contrast chooses the largest remaining
-source coordinate contrast. The remaining coordinate is dorsal/ventral. Signs
-come from the set contrasts once. Every individual dorsal/ventral and
-anterior/posterior named pair is then checked against those signs, including
-paired aL/bL landmarks. A group mean cannot hide a reversed pair.
+## Axis assignments and signs
 
-## Axis assignments
+| Panel | Source axis | Sign | Positive direction | Landmark contrast (µm) |
+|---|---|---:|---|---:|
+| Both | x | +1 | Fly left, viewer right | Soma-side majorities: R 97.19568567026194%, L 99.51969260326609% |
+| brain | z | +1 | posterior | 125.512058716226 |
+| brain | y | +1 | ventral | 149.925939706448 |
+| VNC | z | +1 | posterior | 339.873217928938 |
+| VNC | y | +1 | ventral | 69.895980084670 |
 
-These are measured assignments, not an implemented composite display frame.
-Positive directions are listed; the corresponding negative directions are
-fly right, anterior and dorsal.
+The overall VNC tectulum-versus-ventral contrast includes LTct exactly as before.
+Only its strict rules were replaced.
 
-| Panel | Source axis | Sign | Positive anatomical direction | Landmark evidence |
-|---|---|---:|---|---|
-| Both | x | +1 | Fly left, viewer right | Existing soma-side rule: R 97.19568567026194%, L 99.51969260326609% |
-| brain | z | +1 | posterior | AL(L), AL(R), EB, aL(L), aL(R), bL(L), bL(R), gL(L), gL(R) to CA(L), CA(R), PB: 125.512058716226 µm |
-| brain | y | +1 | ventral | CA(L), CA(R), PB, SMP(L), SMP(R) to AL(L), AL(R), GNG: 149.925939706448 µm |
-| VNC | z | +1 | posterior | LegNp(T1)(L), LegNp(T1)(R) to LegNp(T3)(L), LegNp(T3)(R): 339.873217928938 µm |
-| VNC | y | +1 | ventral | IntTct, LTct, NTct(UTct-T1)(L), NTct(UTct-T1)(R), WTct(UTct-T2)(L), WTct(UTct-T2)(R), HTct(UTct-T3)(L), HTct(UTct-T3)(R) to LegNp(T1)(L), LegNp(T1)(R), LegNp(T2)(L), LegNp(T2)(R), LegNp(T3)(L), LegNp(T3)(R), mVAC(T1)(L), mVAC(T1)(R), mVAC(T2)(L), mVAC(T2)(R), mVAC(T3)(L), mVAC(T3)(R): 69.895980084670 µm |
+| Dorsal landmark | Ventral landmark | Signed separation µm | Pass |
+|---|---|---:|---|
+| NTct(UTct-T1)(L) | LegNp(T1)(L) | 73.966323404910 | True |
+| NTct(UTct-T1)(R) | LegNp(T1)(R) | 79.161843782971 | True |
+| WTct(UTct-T2)(L) | LegNp(T2)(L) | 100.500499467431 | True |
+| WTct(UTct-T2)(R) | LegNp(T2)(R) | 98.066499280596 | True |
+| HTct(UTct-T3)(L) | LegNp(T3)(L) | 45.152528466439 | True |
+| HTct(UTct-T3)(R) | LegNp(T3)(R) | 40.878333114367 | True |
+| IntTct | mean LegNp(T2)(L), LegNp(T2)(R) | 71.552841892928 | True |
 
-## Blocking relation
+LTct is descriptive and intermediate. Its original XYZ centroid is [397.973925515143, 438.7949197017007, 688.637481035255] µm.
 
-LTct has source y = 438.7949197017007 µm. LegNp(T3)(R) has source
-y = 429.72174902137596 µm. With the inferred +y ventral direction, LTct
-is 9.073170680324722 µm more ventral than LegNp(T3)(R), reversing their
-requested dorsal/ventral ordering. Reversing y would reverse the other
-tectulum/ventral comparisons. The overall ventral-minus-dorsal set contrast is
-+69.8959800846705 µm, so the broad axis assignment and this individual exception
-are both reported. This is not evidence of a source-data bug.
-
-There are 144 individual comparisons and one contradiction. The brain's
-anterior/posterior, dorsal/ventral and paired aL-above-bL checks pass. The VNC
-T1-before-T3 checks pass. No landmark is dropped, moved or renamed to obtain a
-passing gate. The unit tests explicitly reproduce the failed gate; their passing
-does not mean the anatomical gate passes.
-
-Per the owner's stop condition, the composite split, neck alignment, giant-fiber
-soma-versus-branch-point check, lamina truncation check, re-export, new previews
-and browser screenshots are not run. Existing a01 assets are unchanged. There is
-no a02 acceptance claim or a02 review ZIP. Resolving the incompatible landmark
-ordering requires the owner's anatomical direction before continuing.
-
-## Original source centroids
-
-All values below are micrometres in the original XYZ frame. Names are official
-dataset labels. These include every observed ROI, not only the gate landmarks.
+## Every original 3D centroid
 
 | Volume | Label | Official name | Voxels | Source x µm | Source y µm | Source z µm |
 |---|---:|---|---:|---:|---:|---:|

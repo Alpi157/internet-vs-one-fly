@@ -1,57 +1,50 @@
-# V2G repair attempt a02
+# V2G anatomy repair a02
 
-Status: STOP_ANATOMICAL_LANDMARK_GATE. Existing a01 anatomy assets are unchanged
-and do not implement the requested composite layout. The previously claimed
-frontal whole-CNS frame is invalid. External stage acceptance is not asserted.
+Status: COMPLETE_FOR_REVIEW, conditional on the final-commit acceptance receipt.
+External stage acceptance remains pending. No push, tag, deployment or new
+scientific trial is authorized or performed.
 
-Base: df787fa8c05591a39f4466b3c71872d902ecb6bc.
-The source, pruning, budget, demo, portable recompute and a01 acceptance portions
-were accepted by external review. The frame requires repair.
+The original landmark gate stopped correctly. The external reviewer amended only
+VNC dorsal/ventral strict checks after the stop: same-neuromere upper tectulum
+versus leg neuropil, plus IntTct versus bilateral T2 mean. LTct is descriptive.
+The amendment is verbatim in docs/anatomy-v2g-a02-axis-audit.md and ledger.yaml.
+All 55 strict checks now pass. Original failed reports remain under docs/history/.
 
-The pinned 3D volumes yield brain +z posterior, +y ventral and +x fly left.
-The VNC set contrasts also yield +z posterior and +y ventral. One required
-individual dorsal/ventral ordering conflicts: LTct y=438.7949197017007 µm is
-more ventral than LegNp(T3)(R) y=429.72174902137596 µm by
-9.073170680324722 µm. Other tectulum comparisons support the opposite ordering.
-No sign or landmark was changed to conceal it.
+Composite layout: brain frontal view, VNC ventral view; not a single projection.
+Brain uses (x,y), VNC (x,z) with a +33.504 µm vertical translation, sharing x.
+ROI membership and the CV boundary at z=415.744 µm assign vertices. The neck
+anchors share x=393.728 µm and have a 12 µm gap. Every crossing edge is flagged
+layout, not anatomy. All four assets pass at the same a01 pruning thresholds.
+Both giant-fiber annotated somata are dorsal to their fixed-rule branch points.
+No long LA clipping edge is found at documented ROI volume/chunk boundaries;
+both labels remain in the default silhouette, with evidence and scope explicit.
 
-See docs/anatomy-v2g-a02-axis-audit.md and its JSON companion for all 114 original
-3D ROI centroids and 144 comparisons. The new non-frozen --audit-frame mode
-recomputes the centroids from the pinned ROI chunks, stops with exit 1 and leaves
-display assets untouched. Build and preview modes run this gate first.
+The full guide, sizes, cable retention and every centroid are committed under
+docs/anatomy-v2g.md and docs/anatomy-v2g-a02-axis-audit.json. Frame evidence is in
+apps/play/public/data/anatomy/frame.json. All previews and isolated browser
+screenshots are regenerated. The brain-only preview has exactly 1 pixel per µm.
 
-Exact command:
+Exact verification commands:
 
 ```sh
 uv run --offline python experiments/v2g_anatomy.py --audit-frame
+uv run --offline python experiments/v2g_anatomy.py --verify-raw
+npm --prefix apps/play run test:anatomy
+npm --prefix apps/play run test:anatomy-browsers
+uv run --offline python tools/recompute_v2e.py
+uv run --offline python -m pytest -q
+uv run --offline python tools/run_acceptance.py V2G --out evidence/V2G/acceptance
+uv run --offline python tools/review_bundle.py --milestone V2G --attempt 2 --base f66b2100e43bb0a4683da7c5ffcfb0ef6124ad36 --out reviews/V2G-a02.zip
 ```
 
-Captured output and traceback:
+There are 15 registered acceptance commands. The command-results.json receipt
+must PASS and name the exact submitted SHA with a clean tree. Final SHA is in
+that receipt and the review manifest, avoiding a self-referential commit.
+Raw verification needs ignored pinned anatomy downloads; fresh-clone smoke is
+offline and uses committed assets/fixtures. No frozen file, raw scientific record,
+source lock, model, mechanics, runtime profile or current game UI is changed.
 
-```text
-Decoded rois/fullbrain-roi-v4 labels 90 absent background chunks 353
-Decoded rois/malecns-vnc-neuropil-roi-v0 labels 24 absent background chunks 1916
-brain posterior z 1
-brain ventral y 1
-VNC posterior z 1
-VNC ventral y 1
-CONTRADICTION {"anatomical_positive": "ventral", "high": "LegNp(T3)(R)", "low": "LTct", "panel": "VNC", "passes": false, "signed_separation_um": -9.073170680324722}
-Traceback (most recent call last):
-  File "/home/alpi/Projects/FlyBench/experiments/v2g_anatomy.py", line 500, in <module>
-    if args.audit_frame:audit_frame()
-                        ^^^^^^^^^^^^^
-  File "/home/alpi/Projects/FlyBench/experiments/v2g_anatomy.py", line 143, in audit_frame
-    raise RuntimeError('STOP: contradictory anatomical landmark ordering; see evidence/V2G/a02/axis-audit.json. No assets re-exported.')
-RuntimeError: STOP: contradictory anatomical landmark ordering; see evidence/V2G/a02/axis-audit.json. No assets re-exported.
-```
-
-The composite split, neck offsets, giant-fiber soma check, lamina check,
-re-export, new previews, browser matrix and final acceptance are not run after
-the failed gate. No reviews/V2G-a02.zip has been built. Do not treat the previous
-a01 acceptance receipt as acceptance of this repair. No frozen file, scientific
-raw record, UI, mechanics, model, runtime profile or source lock is changed.
-No push, tag or deployment is authorized or performed.
-
-New tests check the 3D centroid algorithm against direct voxel enumeration and
-recompute the axis assignments and explicit stop from the full centroid report.
-The owner's anatomical direction is required before continuing past this gate.
+The bounded review ZIP includes phone transports, manifests, all previews and
+browser screenshots, compact per-neuron retention, logs and original gate history.
+Desktop transports and full source-row inventories remain in the committed
+checkout and are listed by hash and size in large-files.json.

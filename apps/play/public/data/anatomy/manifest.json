@@ -4,23 +4,26 @@
       "attempts": [
         {
           "budget_bytes": 1500000,
-          "bytes": 1163036,
+          "bytes": 1167797,
           "douglas_peucker_um": 1.5,
           "highlighted_twig_um": 6,
           "interior_twig_um": 20,
           "passes": true
         }
       ],
+      "bridge_label": "layout, not anatomy",
       "budget_bytes": 1500000,
-      "bytes": 1163036,
+      "bytes": 1167797,
       "circuit": "T1a",
-      "export_wall_seconds": 17.58352730202023,
+      "export_wall_seconds": 17.86741004200303,
       "file": "t1a-phone.arbors.gz",
+      "format": "FLYARB03",
       "graph_identity": "c157802c70bfeb71548b71159ff297525136d3d58f31d91e91937fddc738e3d2",
       "highlighted_twig_um": 6,
       "interior_twig_um": 20,
+      "layout_bridges": 291,
       "lod": "phone",
-      "maximum_quantization_error_um": 0.007730586709385534,
+      "maximum_quantization_error_um": 0.00813824673841168,
       "missing_skeletons": [],
       "missing_somata": [
         "26872",
@@ -52,13 +55,13 @@
       ],
       "neurons": 2641,
       "ordered_body_ids_sha256": "ec447ee597534df3b27de6427790071830c428d01846dc281664fe2858cf9be3",
-      "points": 383327,
+      "points": 383770,
       "quantization_step_um": [
         0.010126131074998095,
-        0.015461173418783856
+        0.016277103837644004
       ],
       "retention": {
-        "bytes": 1090768,
+        "bytes": 1108745,
         "file": "t1a-phone.retention.json.gz",
         "groups": {
           "LC4": {
@@ -75,8 +78,8 @@
           },
           "giant fiber": {
             "defined_cable_fractions": 2,
-            "median_kept_cable_fraction": 0.6074547771671276,
-            "minimum_kept_cable_fraction": 0.5850210491159374,
+            "median_kept_cable_fraction": 0.6074359456280036,
+            "minimum_kept_cable_fraction": 0.5850251837319024,
             "neurons": 2
           },
           "interior": {
@@ -87,54 +90,50 @@
           },
           "named ports": {
             "defined_cable_fractions": 4,
-            "median_kept_cable_fraction": 0.7651722078416816,
-            "minimum_kept_cable_fraction": 0.7487772525377773,
+            "median_kept_cable_fraction": 0.7651596884642706,
+            "minimum_kept_cable_fraction": 0.7488005438413713,
             "neurons": 4
           },
           "walking DNs": {
             "defined_cable_fractions": 12,
-            "median_kept_cable_fraction": 0.7413140196602972,
-            "minimum_kept_cable_fraction": 0.610906712800041,
+            "median_kept_cable_fraction": 0.7413416427018892,
+            "minimum_kept_cable_fraction": 0.6109222790075904,
             "neurons": 12
           }
         },
-        "sha256": "e2b97744ae8b36f286197e9a06403598936dc0ff115862e55e406cecf46ae42c"
+        "sha256": "b99d95bbc8e14727705c857ff94559760f004eba297dffc624a497e5b1484fb8"
       },
-      "segments": 383327,
-      "sha256": "c872345faf07eb9581caf797edbd96258a720ab3c89aa77ac15a48ef7d5e61e1",
+      "segments": 383770,
+      "sha256": "9d10a397ff12c97a9f94dbc18ae460eef9d7c32d68c141423f0b17f09a1f5feb",
       "tolerance_um": 1.5,
-      "uncompressed_bytes": 3130056,
-      "uncompressed_sha256": "b4bf8d5c16ded9c2ea267deba4c71f3fdffee486d66f804bda60d8c55685b4e3"
+      "uncompressed_bytes": 3517370,
+      "uncompressed_sha256": "e55292686077d1cfc3eede862eaa85e1276686a5b67a9d211420bc0bc88bde73",
+      "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
     },
     {
       "attempts": [
         {
           "budget_bytes": 3000000,
-          "bytes": 3571604,
-          "douglas_peucker_um": 0.5,
-          "highlighted_twig_um": 3,
-          "interior_twig_um": 10,
-          "passes": false
-        },
-        {
-          "budget_bytes": 3000000,
-          "bytes": 2753201,
+          "bytes": 2766617,
           "douglas_peucker_um": 0.5,
           "highlighted_twig_um": 3,
           "interior_twig_um": 15,
           "passes": true
         }
       ],
+      "bridge_label": "layout, not anatomy",
       "budget_bytes": 3000000,
-      "bytes": 2753201,
+      "bytes": 2766617,
       "circuit": "T1a",
-      "export_wall_seconds": 78.57247344899224,
+      "export_wall_seconds": 35.075942313007545,
       "file": "t1a-desktop.arbors.gz",
+      "format": "FLYARB03",
       "graph_identity": "c157802c70bfeb71548b71159ff297525136d3d58f31d91e91937fddc738e3d2",
       "highlighted_twig_um": 3,
       "interior_twig_um": 15,
+      "layout_bridges": 291,
       "lod": "desktop",
-      "maximum_quantization_error_um": 0.007730586709385534,
+      "maximum_quantization_error_um": 0.008138551918790426,
       "missing_skeletons": [],
       "missing_somata": [
         "26872",
@@ -166,13 +165,13 @@
       ],
       "neurons": 2641,
       "ordered_body_ids_sha256": "ec447ee597534df3b27de6427790071830c428d01846dc281664fe2858cf9be3",
-      "points": 1282138,
+      "points": 1282501,
       "quantization_step_um": [
         0.010126131074998095,
-        0.015461173418783856
+        0.016277103837644004
       ],
       "retention": {
-        "bytes": 2653108,
+        "bytes": 2676830,
         "file": "t1a-desktop.retention.json.gz",
         "groups": {
           "LC4": {
@@ -195,60 +194,56 @@
           },
           "interior": {
             "defined_cable_fractions": 2312,
-            "median_kept_cable_fraction": 0.46024058338582846,
+            "median_kept_cable_fraction": 0.4602410493897008,
             "minimum_kept_cable_fraction": 0.08539004402963045,
             "neurons": 2312
           },
           "named ports": {
             "defined_cable_fractions": 4,
-            "median_kept_cable_fraction": 0.9062332917651906,
-            "minimum_kept_cable_fraction": 0.8998500777243245,
+            "median_kept_cable_fraction": 0.9061482854506326,
+            "minimum_kept_cable_fraction": 0.8998136181322903,
             "neurons": 4
           },
           "walking DNs": {
             "defined_cable_fractions": 12,
-            "median_kept_cable_fraction": 0.8940315211400445,
+            "median_kept_cable_fraction": 0.8940518643099835,
             "minimum_kept_cable_fraction": 0.8605942620520669,
             "neurons": 12
           }
         },
-        "sha256": "901c84b4cc1e1e4d2907c96dcc336f357652ac67a2f450437fcdd0dc8ec07339"
+        "sha256": "78350f47302d6c3c7cd4995ade558fd6bd507d9d54b8ce96b418c214e45a6910"
       },
-      "segments": 1282138,
-      "sha256": "7a5de3f44cfec8a68f7cbcccab8e39ba8e65a8ba5d4b20626f326245c0d3a19e",
+      "segments": 1282501,
+      "sha256": "c65e3efd982af6be6e2bbfdf0b09f9550555fddd7a93a634158484c1e14bdb65",
       "tolerance_um": 0.5,
-      "uncompressed_bytes": 10320544,
-      "uncompressed_sha256": "e276653d733d243bad78c8f50d4e552a01e9264c7a3143b6a14306a80b6e99e0"
+      "uncompressed_bytes": 11605949,
+      "uncompressed_sha256": "b3b02c985fb62521c55e838d2d640656d4e1f0bf5037cf675fa28c19e74dc8ed",
+      "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
     },
     {
       "attempts": [
         {
           "budget_bytes": 2500000,
-          "bytes": 2514448,
-          "douglas_peucker_um": 1.5,
-          "highlighted_twig_um": 6,
-          "interior_twig_um": 20,
-          "passes": false
-        },
-        {
-          "budget_bytes": 2500000,
-          "bytes": 2051910,
+          "bytes": 2062331,
           "douglas_peucker_um": 1.5,
           "highlighted_twig_um": 6,
           "interior_twig_um": 25,
           "passes": true
         }
       ],
+      "bridge_label": "layout, not anatomy",
       "budget_bytes": 2500000,
-      "bytes": 2051910,
+      "bytes": 2062331,
       "circuit": "T1b",
-      "export_wall_seconds": 72.21796518098563,
+      "export_wall_seconds": 34.557771580002736,
       "file": "t1b-phone.arbors.gz",
+      "format": "FLYARB03",
       "graph_identity": "52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858",
       "highlighted_twig_um": 6,
       "interior_twig_um": 25,
+      "layout_bridges": 807,
       "lod": "phone",
-      "maximum_quantization_error_um": 0.007730586709385534,
+      "maximum_quantization_error_um": 0.008138551918790426,
       "missing_skeletons": [],
       "missing_somata": [
         "10706",
@@ -334,13 +329,13 @@
       ],
       "neurons": 5555,
       "ordered_body_ids_sha256": "5f5e13ba03c4ec565a9dd1fc1deaafc9bc55b5dcb9142fbcdcc52056eaa6c513",
-      "points": 685605,
+      "points": 686850,
       "quantization_step_um": [
         0.010126131074998095,
-        0.015461173418783856
+        0.016277103837644004
       ],
       "retention": {
-        "bytes": 2057620,
+        "bytes": 2095112,
         "file": "t1b-phone.retention.json.gz",
         "groups": {
           "LC4": {
@@ -357,74 +352,62 @@
           },
           "giant fiber": {
             "defined_cable_fractions": 2,
-            "median_kept_cable_fraction": 0.6074547771671276,
-            "minimum_kept_cable_fraction": 0.5850210491159374,
+            "median_kept_cable_fraction": 0.6074359456280036,
+            "minimum_kept_cable_fraction": 0.5850251837319024,
             "neurons": 2
           },
           "interior": {
             "defined_cable_fractions": 5226,
-            "median_kept_cable_fraction": 0.3061486937226645,
+            "median_kept_cable_fraction": 0.3061643285441241,
             "minimum_kept_cable_fraction": 0.028143410089313228,
             "neurons": 5226
           },
           "named ports": {
             "defined_cable_fractions": 4,
-            "median_kept_cable_fraction": 0.7651722078416816,
-            "minimum_kept_cable_fraction": 0.7487772525377773,
+            "median_kept_cable_fraction": 0.7651596884642706,
+            "minimum_kept_cable_fraction": 0.7488005438413713,
             "neurons": 4
           },
           "walking DNs": {
             "defined_cable_fractions": 12,
-            "median_kept_cable_fraction": 0.7413140196602972,
-            "minimum_kept_cable_fraction": 0.610906712800041,
+            "median_kept_cable_fraction": 0.7413416427018892,
+            "minimum_kept_cable_fraction": 0.6109222790075904,
             "neurons": 12
           }
         },
-        "sha256": "cacaffaff8d5662abc9ebd847f323a5e6f1f5ae09669aebf7698a1dab70ab2de"
+        "sha256": "16d3363d2886501757d27175ee874e2d53456a464aa1051fbec6097d1635e68d"
       },
-      "segments": 685605,
-      "sha256": "0ae05810829d3e1193793cc3c13836ef68972bd9676c721c9e01e1afe6a0b01c",
+      "segments": 686850,
+      "sha256": "ae31a4aaecdaf103aaffe7a2a3a8165faaf29e166772e431dccb030151e5255d",
       "tolerance_um": 1.5,
-      "uncompressed_bytes": 5618216,
-      "uncompressed_sha256": "45b5b56298ecbb7ab86b4f6dc9e90e91224c794f691a73e9f3c292508681398a"
+      "uncompressed_bytes": 6315026,
+      "uncompressed_sha256": "7902cbe1a26828828d52faf08036fc371a1046f38001ec84b110096f922c0783",
+      "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
     },
     {
       "attempts": [
         {
           "budget_bytes": 5000000,
-          "bytes": 7752866,
-          "douglas_peucker_um": 0.5,
-          "highlighted_twig_um": 3,
-          "interior_twig_um": 10,
-          "passes": false
-        },
-        {
-          "budget_bytes": 5000000,
-          "bytes": 5889948,
-          "douglas_peucker_um": 0.5,
-          "highlighted_twig_um": 3,
-          "interior_twig_um": 15,
-          "passes": false
-        },
-        {
-          "budget_bytes": 5000000,
-          "bytes": 4750204,
+          "bytes": 4769548,
           "douglas_peucker_um": 0.5,
           "highlighted_twig_um": 3,
           "interior_twig_um": 20,
           "passes": true
         }
       ],
+      "bridge_label": "layout, not anatomy",
       "budget_bytes": 5000000,
-      "bytes": 4750204,
+      "bytes": 4769548,
       "circuit": "T1b",
-      "export_wall_seconds": 238.44289011700312,
+      "export_wall_seconds": 64.62388999402174,
       "file": "t1b-desktop.arbors.gz",
+      "format": "FLYARB03",
       "graph_identity": "52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858",
       "highlighted_twig_um": 3,
       "interior_twig_um": 20,
+      "layout_bridges": 807,
       "lod": "desktop",
-      "maximum_quantization_error_um": 0.007730586709385534,
+      "maximum_quantization_error_um": 0.008138551918790426,
       "missing_skeletons": [],
       "missing_somata": [
         "10706",
@@ -510,13 +493,13 @@
       ],
       "neurons": 5555,
       "ordered_body_ids_sha256": "5f5e13ba03c4ec565a9dd1fc1deaafc9bc55b5dcb9142fbcdcc52056eaa6c513",
-      "points": 2269688,
+      "points": 2270634,
       "quantization_step_um": [
         0.010126131074998095,
-        0.015461173418783856
+        0.016277103837644004
       ],
       "retention": {
-        "bytes": 4844922,
+        "bytes": 4894480,
         "file": "t1b-desktop.retention.json.gz",
         "groups": {
           "LC4": {
@@ -545,50 +528,115 @@
           },
           "named ports": {
             "defined_cable_fractions": 4,
-            "median_kept_cable_fraction": 0.9062332917651906,
-            "minimum_kept_cable_fraction": 0.8998500777243245,
+            "median_kept_cable_fraction": 0.9061482854506326,
+            "minimum_kept_cable_fraction": 0.8998136181322903,
             "neurons": 4
           },
           "walking DNs": {
             "defined_cable_fractions": 12,
-            "median_kept_cable_fraction": 0.8940315211400445,
+            "median_kept_cable_fraction": 0.8940518643099835,
             "minimum_kept_cable_fraction": 0.8605942620520669,
             "neurons": 12
           }
         },
-        "sha256": "6217585e0bc2f3912bcb9d67d82821358bb89f92fca360b91e85eb2276bd4c9e"
+        "sha256": "a331443fc6ed85b52905f6041a53d30ee1e066935d101b140e6b856ca288264f"
       },
-      "segments": 2269688,
-      "sha256": "c87d588a9627d65596b25f47aff831fb6fe90cfe0b0e22a8c8286b49c528245e",
+      "segments": 2270634,
+      "sha256": "eb9ab49a35d34a583916abc5e0ccb3cf61f7d3bbe4295b8f78bbb84fc3699127",
       "tolerance_um": 0.5,
-      "uncompressed_bytes": 18290880,
-      "uncompressed_sha256": "2635d6618303344a6443985021700e661b423a245455379cc96600445fd2bd69"
+      "uncompressed_bytes": 20569082,
+      "uncompressed_sha256": "7448433d0062aba165455d30ead97c390e8be66dd9411f72b6ef80e5aac0ae3e",
+      "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
     }
   ],
   "bounding_box_um": [
     54.208,
-    62.464,
+    42.496,
     717.8240000000001,
-    1075.712
+    1109.216
   ],
-  "display_profile_sha256": "17d20f776d535782ab9425f946f4fd6c86a3e3ea1f820fce9c94ef82c541fa86",
+  "display_profile_sha256": "3db08a82d038402109f71a78c3e4a6639f835e505696d7b73a430c71a7e3d56d",
   "frame": {
-    "axes": [
-      0,
-      2
-    ],
-    "projection_axis": 1,
-    "signs": [
-      1,
-      1
-    ],
+    "horizontal_axis": 0,
+    "horizontal_sign": 1,
+    "neck": {
+      "anchor_rule": "Shared original x column nearest the two face means; brain CV-anterior ventral face and VNC CV-posterior anterior face. No panel horizontal shift.",
+      "brain_cv_posterior_face_um": 415.744,
+      "brain_exit_display_um": [
+        393.728,
+        437.76000000000016
+      ],
+      "brain_exit_source_um": [
+        393.728,
+        437.76000000000016,
+        408.576
+      ],
+      "bridge_label": "layout, not anatomy",
+      "gap_um": 12,
+      "horizontal_translation_um": 0,
+      "shared_source_x_um": 393.728,
+      "vnc_cv_anterior_face_um": 415.74399999999997,
+      "vnc_entry_display_um": [
+        393.7279999999996,
+        449.75999999999976
+      ],
+      "vnc_entry_source_um": [
+        393.7279999999996,
+        416.76800000000003,
+        416.25599999999974
+      ],
+      "vnc_vertical_translation_um": 33.50400000000002
+    },
+    "panels": {
+      "VNC": {
+        "axes": [
+          0,
+          2
+        ],
+        "id": 1,
+        "offset_um": [
+          0,
+          33.50400000000002
+        ],
+        "projection_axis": 1,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "ventral; T1 up"
+      },
+      "brain": {
+        "axes": [
+          0,
+          1
+        ],
+        "id": 0,
+        "offset_um": [
+          0,
+          0
+        ],
+        "projection_axis": 2,
+        "signs": [
+          1,
+          1
+        ],
+        "view": "frontal anterior; dorsal up"
+      }
+    },
+    "schema": "flybench.composite-layout.v1",
+    "split": {
+      "axis": 2,
+      "boundary_um": 415.744,
+      "posterior_sign": 1,
+      "rule": "Nonzero brain ROI membership assigns brain, including CV-anterior. Nonzero VNC ROI membership assigns VNC, including CV-posterior. Conflicting memberships stop. Unlabeled vertices use the midpoint between the posterior CV-anterior face and anterior CV-posterior face; equality assigns VNC."
+    },
     "units": "micrometres",
-    "view": "frontal anterior; fly right on viewer left",
-    "y_direction": "down; brain above VNC"
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
   },
   "missing_roi_names": [],
   "roi_count": 114,
-  "schema": "flybench.anatomy-assets.v1",
+  "schema": "flybench.anatomy-assets.v2",
   "soma_units_report": "docs/anatomy-soma-units.json",
-  "source_lock_sha256": "cf1d172bc9cb9a185e9c66d8de8a5ebe04b8c57bc488339966f910c45f593833"
+  "source_lock_sha256": "cf1d172bc9cb9a185e9c66d8de8a5ebe04b8c57bc488339966f910c45f593833",
+  "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
 }

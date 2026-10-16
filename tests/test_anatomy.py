@@ -121,10 +121,10 @@ def test_committed_assets_order_quantization_missing_and_orientation():
         x=project(points,frame['frame'])[:,0];mid=frame['evidence']['soma_side_midline_um']
         fraction=float(np.mean(x<mid if side=='R' else x>mid))
         assert fraction>.5 and fraction==frame['evidence']['soma_side_majority'][side]['fraction']
-    assert len(frame['evidence']['anchors'])==6
-    assert all(v['brain_median_y_um']<v['vnc_median_y_um'] for v in frame['evidence']['anchors'])
-    for anchor in frame['evidence']['anchors']:
-        assert project(anchor['brain_median_xyz_um'],frame['frame'])[1]<project(anchor['vnc_median_xyz_um'],frame['frame'])[1]
+    assert frame['evidence']['axis_audit']['audit']['status']=='PASS'
+    assert all(r['soma_dorsal'] for r in frame['evidence']['giant_fiber_sanity']['neurons'])
+    neck=frame['frame']['neck'];a=neck['brain_exit_display_um'];b=neck['vnc_entry_display_um']
+    assert abs(a[0]-b[0])<1e-9 and abs(b[1]-a[1]-12)<1e-9
     rois=json.loads((ROOT/'apps/play/public/data/anatomy/neuropils.json').read_text())
     assert 1<=rois['voxel_size_um']<=2 and rois['simplification_tolerance_um']<=1.5
     assert not rois['missing_roi_names'] and all(r['name'] for r in rois['rois'])

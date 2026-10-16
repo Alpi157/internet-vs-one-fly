@@ -12,6 +12,14 @@ assert.deepEqual(f.neurons.map(n=>n.missing),[false,true,false]);
 assert.deepEqual(Array.from(f.parents),[-1,0,1,-1]);
 for(let i=0;i<fixture.points.length;i++)for(let axis=0;axis<2;axis++)assert(Math.abs(f.point(i)[axis]-fixture.points[i][axis])<=f.step[axis]*.50001);
 assert.throws(()=>decodeArbors(raw.slice(0,-1)));
+const composite=JSON.parse(readFileSync(new URL('fixtures/anatomy-composite-v1.json',root),'utf8'));
+const compositeRaw=Uint8Array.from(Buffer.from(composite.hex,'hex')).buffer;
+const cf=decodeArbors(compositeRaw);
+assert.equal(cf.format,'FLYARB03');assert.deepEqual(cf.neurons.map(n=>Number(n.bodyId)),composite.ids);
+assert.deepEqual(Array.from(cf.panels),composite.panels);assert.deepEqual(Array.from(cf.bridges,Boolean),composite.bridges);
+for(let i=0;i<composite.points.length;i++)for(let a=0;a<2;a++)assert(Math.abs(cf.point(i)[a]-composite.points[i][a])<=cf.step[a]*.50001);
+const broken=compositeRaw.slice(0);new Uint8Array(broken)[broken.byteLength-1]=1;
+assert.throws(()=>decodeArbors(broken),/Bridge flag/);
 const dir=new URL('apps/play/public/data/anatomy/',root);
 const manifest=JSON.parse(readFileSync(new URL('manifest.json',dir),'utf8'));
 for(const asset of manifest.assets){
@@ -20,5 +28,6 @@ for(const asset of manifest.assets){
  const brain=JSON.parse(readFileSync(new URL(asset.circuit==='T1a'?'apps/play/public/data/coupling/brain.json':'apps/play/public/data/brain.json',root),'utf8'));
  assert.deepEqual(decoded.neurons.map(n=>n.bodyId.toString()),brain.nodes.map((n:any)=>n.body_id));
  assert.deepEqual(decoded.neurons.filter(n=>n.missing).map(n=>n.bodyId.toString()),asset.missing_skeletons);
+ assert.equal(decoded.format,'FLYARB03');assert.equal(decoded.bridges.reduce((a,b)=>a+b,0),asset.layout_bridges);
 }
-console.log('PASS: Python/TypeScript FLYARB02 fixture, every asset hash, neuron order and missing flag');
+console.log('PASS: Python/TypeScript FLYARB02/03 fixtures, panel and bridge flags, every asset hash, neuron order and missing flag');

@@ -10,6 +10,7 @@ import time
 import numpy as np
 from flybench.anatomy_sources import SWC, ROIS, fetch_many, chunk_paths
 from flybench.anatomy import read_swc, unbranched_paths, simplify, simplified_tree, project, decode_segmentation, encode_arbors, decode_arbors, prune_terminal_twigs, cable_and_tips, roi_centroids, anatomical_axis_audit
+from flybench.anatomy_layout import LABEL, panel_ids, make_layout, giant_fiber_sanity, lamina_check, lookup
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'apps/play/public/data/anatomy'
@@ -127,7 +128,7 @@ def audit_frame():
         centroids[panel] = roi_centroids(v['volume'], v['scale'], v['names'])
     prior = json.loads((OUT/'frame.json').read_text())
     frame = prior['frame']
-    audit = anatomical_axis_audit(centroids, frame['axes'][0], frame['signs'][0])
+    audit = anatomical_axis_audit(centroids, frame.get('horizontal_axis',frame.get('axes',[0])[0]), frame.get('horizontal_sign',frame.get('signs',[1])[0]))
     report = dict(schema='flybench.anatomical-axis-audit.v1',
                   source_lock_sha256=hashlib.sha256((ROOT/'profiles/anatomy-lock-v1.json').read_bytes()).hexdigest(),
                   scale_um=1.024, coordinate_definition='Original source XYZ in micrometres, using occupied voxel centres; not display coordinates.',
@@ -145,6 +146,27 @@ def audit_frame():
     return report
 
 
+def prepare_layout(v, audit, annotation, skeletons):
+    profile=json.loads((ROOT/'profiles/anatomy-display-v1.json').read_text())
+    frame=make_layout(v,audit['audit'],profile['layout_gap_um'])
+    checks=[]
+    for body in (10001,10010):
+        xyz,parent,_=skeletons[body]
+        check=giant_fiber_sanity(body,xyz,parent,annotation[body]['somaLocation'],v,frame)
+        checks.append(check)
+        print('Giant fiber sanity',json.dumps(check,sort_keys=True),flush=True)
+    sanity=dict(rule=profile['giant_fiber_sanity_rule'],neurons=checks)
+    save(ROOT/'evidence/V2G/a02/giant-fiber-sanity.json',sanity)
+    if not all(row['soma_dorsal'] for row in checks):
+        raise RuntimeError('STOP: annotated giant-fiber soma is not dorsal to the fixed-rule main dendritic branch point')
+    lamina=lamina_check(v[0],frame)
+    save(ROOT/'evidence/V2G/a02/lamina-check.json',lamina)
+    prior=json.loads((OUT/'frame.json').read_text())['evidence']
+    evidence={k:prior[k] for k in ('soma_side_majority','soma_side_midline_um','soma_axis_effect','annotated_somata')}
+    evidence.update(axis_audit=audit,giant_fiber_sanity=sanity,lamina=lamina)
+    return frame,evidence
+
+
 def verify_pinned_inputs():
     inputs=json.loads((ROOT/'profiles/anatomy-lock-v1.json').read_text())['inputs']
     for row in inputs:
@@ -152,36 +174,6 @@ def verify_pinned_inputs():
         path=ROOT/row['cache_path']
         assert path.stat().st_size==row['bytes'] and hashlib.sha256(path.read_bytes()).hexdigest()==row['sha256'],row['url']
     return inputs
-
-
-def display_frame(volumes, annotation, skeletons):
-    sides={side:np.array([r['somaLocation'] for body,r in annotation.items() if body in skeletons and r['somaSide']==side and r['somaLocation'] is not None])*.008 for side in ('R','L')}
-    right,left=sides['R'],sides['L']; effect=(left.mean(axis=0)-right.mean(axis=0))/np.maximum(np.std(np.concatenate([right,left]),axis=0),1e-12)
-    lr=int(np.argmax(np.abs(effect))); lr_sign=1 if effect[lr]>0 else -1
-    separation=np.array(volumes[1]['centroid'])-volumes[0]['centroid']
-    dv=max((a for a in range(3) if a!=lr),key=lambda a:abs(separation[a]))
-    dv_sign=1 if separation[dv]>0 else -1
-    frame=dict(axes=[lr,dv],signs=[lr_sign,dv_sign],projection_axis=next(a for a in range(3) if a not in (lr,dv)),
-               units='micrometres',y_direction='down; brain above VNC',view='frontal anterior; fly right on viewer left')
-    mid=float((np.median(right[:,lr])+np.median(left[:,lr]))/2)*lr_sign
-    majority={side:dict(n=len(values),fraction=float(np.mean(values[:,lr]*lr_sign<mid if side=='R' else values[:,lr]*lr_sign>mid))) for side,values in sides.items()}
-    assert all(v['fraction']>.5 for v in majority.values()),'Soma-side majority fails'
-    anchors=[]
-    for body in (10001,10010,10763,11288,11332,12348):
-        xyz,parent,_=skeletons[body]; medians=[]; counts=[];xyz_medians=[]
-        for volume in volumes:
-            scale=volume['scale']; vox=np.floor(xyz/(np.array(scale['resolution'])/1000)-scale['voxel_offset']).astype(int)
-            valid=np.all((vox>=0)&(vox<volume['volume'].shape),axis=1)
-            selected=np.zeros(len(xyz),bool)
-            selected[valid]=volume['volume'][tuple(vox[valid].T)]!=0
-            assert selected.any(),f'Anchor {body} misses '+volume['roi']
-            medians.append(float(np.median(project(xyz[selected],frame)[:,1]))); counts.append(int(selected.sum()))
-            xyz_medians.append(np.median(xyz[selected],axis=0).tolist())
-        assert medians[0]<medians[1],f'Brain-above-VNC fails for {body}'
-        anchors.append(dict(body_id=str(body),instance=annotation[body]['instance'],brain_median_y_um=medians[0],vnc_median_y_um=medians[1],brain_median_xyz_um=xyz_medians[0],vnc_median_xyz_um=xyz_medians[1],brain_nodes=counts[0],vnc_nodes=counts[1]))
-    return frame,dict(soma_side_majority=majority,soma_side_midline_um=mid,soma_axis_effect=effect.tolist(),
-                      annotated_somata=[dict(body_id=str(body),somaSide=r['somaSide'],xyz_um=(np.array(r['somaLocation'])*.008).tolist()) for body,r in annotation.items() if body in skeletons and r['somaSide'] in ('R','L') and r['somaLocation'] is not None],
-                      roi_centroids_um={v['roi']:v['centroid'] for v in volumes},anchors=anchors)
 
 
 def soma_units(annotation,skeletons):
@@ -222,7 +214,7 @@ def contours(mask, scale, frame, tolerance=1.0):
             indices=list(np.flatnonzero(codes==1))+[len(codes)]
             pieces=[vertices[a:b] for a,b in zip(indices,indices[1:])]
         for piece in pieces:
-            if len(piece)>=3:paths.append(simplify(piece*frame['signs'],tolerance).tolist())
+            if len(piece)>=3:paths.append((simplify(piece*frame['signs'],tolerance)+frame.get('offset_um',[0,0])).tolist())
     plt.close(fig);return paths
 
 
@@ -237,22 +229,26 @@ def roi_group(name, volume):
     return 'central brain' if core not in ('CV-anterior','CRN') else 'other'
 
 
-def export_rois(volumes,frame):
-    rois=[]; shape=np.max([v['scale']['size'] for v in volumes],axis=0)
-    union=np.zeros(tuple(shape[frame['axes']]),bool)
+def export_rois(volumes,frame,lamina):
+    rois=[];silhouettes=[]
+    truncated={row['name'] for row in lamina['rows'] if row['truncated']}
     for v in volumes:
         name='brain' if v is volumes[0] else 'VNC'; volume=v['volume']; scale=v['scale']
+        panel=frame['panels'][name];union=np.zeros(tuple(volume.shape[a] for a in panel['axes']),bool)
         for label in v['observed']:
-            mask=np.any(volume==label,axis=frame['projection_axis'])
+            mask=np.any(volume==label,axis=panel['projection_axis'])
             # np.any retains original axis order; the display axes can differ.
-            remaining=[a for a in range(3) if a!=frame['projection_axis']]
-            if remaining!=frame['axes']:mask=mask.T
-            union[tuple(slice(0,n) for n in mask.shape)] |= mask
-            rois.append(dict(volume=name,label=label,name=v['names'][label],group=roi_group(v['names'][label],name),contours_um=contours(mask,scale,frame)))
+            remaining=[a for a in range(3) if a!=panel['projection_axis']]
+            if remaining!=panel['axes']:mask=mask.T
+            included=v['names'][label] not in truncated
+            if included:union |= mask
+            rois.append(dict(volume=name,panel=panel['id'],label=label,name=v['names'][label],group=roi_group(v['names'][label],name),contours_um=contours(mask,scale,panel),
+                             default_silhouette=included,truncation_flag=None if included else 'truncated at the imaged volume'))
+        silhouettes.append(dict(panel=panel['id'],name=name,contours_um=contours(union,scale,panel)))
         print('Projected',name,flush=True)
-    result=dict(schema='flybench.neuropil-outlines.v1',frame=frame,voxel_size_um=1.024,simplification_tolerance_um=1.0,
-                projection='Frontal maximum occupancy projection of each label separately; overlaps retained',rois=rois,
-                missing_roi_names=[],union_silhouette_um=contours(union,volumes[0]['scale'],frame),
+    result=dict(schema='flybench.neuropil-outlines.v2',frame=frame,voxel_size_um=1.024,simplification_tolerance_um=1.0,
+                projection=LABEL,rois=rois,silhouettes=silhouettes,
+                missing_roi_names=[],union_silhouette_um=[c for panel in silhouettes for c in panel['contours_um']],
                 sparse_chunks=[dict(source=v['roi'],absent_background_chunks=v['absent_background_chunks'],total_chunks=v['total_chunks']) for v in volumes])
     save(OUT/'neuropils.json',result);return result
 
@@ -277,26 +273,32 @@ def retention_summary(rows):
     return result
 
 
-def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod):
+def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod, skeleton_panels):
     profile=json.loads((ROOT/'profiles/anatomy-display-v1.json').read_text());settings=profile[lod]
-    tolerance=settings['douglas_peucker_um'];highlighted=settings['highlighted_twig_um'];interior=settings['interior_twig_um']
+    tolerance=settings['douglas_peucker_um'];highlighted=settings['highlighted_twig_um'];interior=profile['a01_final_interior_thresholds_um'][circuit][lod]
     budget=settings[circuit+'_budget_bytes'];ports=named_port_ids();attempts=[]
     started=time.perf_counter()
     while True:
-        trees=[];somata=[];missing=[];records=[];interior_max_cable=0.
+        trees=[];somata=[];missing=[];records=[];transport_panels=[];soma_panels=[];interior_max_cable=0.
         for node,body in zip(brain['nodes'],ids):
             body=int(body);is_missing=body not in skeletons;missing.append(is_missing)
-            soma=node['somaLocation'];somata.append(None if soma is None else project(np.array(soma)*.008,frame))
+            soma=node['somaLocation'];soma_panel=0 if soma is None else int(panel_ids(np.array(soma)*.008,frame))
+            soma_panels.append(soma_panel);somata.append(None if soma is None else project(np.array(soma)*.008,frame,np.array(soma_panel)))
             group=display_group(node,ports);threshold=interior if group=='interior' else highlighted
             if is_missing:
                 trees.append((np.empty((0,2)),np.empty(0,np.int32)))
+                transport_panels.append(np.empty(0,np.uint8))
                 records.append(dict(body_id=str(body),group=group,missing=True,source_rows=[],original_cable_um=None,kept_cable_um=None,kept_cable_fraction=None,original_tips=None,kept_tips=None))
                 continue
             xyz,parent,types=skeletons[body];soma_nodes=np.flatnonzero(types==1)
+            pp=skeleton_panels[body];children=np.flatnonzero(parent>=0)
+            crossing=children[pp[children]!=pp[parent[children]]]
             active,rounds=prune_terminal_twigs(xyz,parent,threshold,soma_nodes)
-            positions,links,rows=simplified_tree(xyz,parent,tolerance,frame,active,return_rows=True,preserve_nodes=soma_nodes)
+            preserve=np.unique(np.concatenate([soma_nodes,crossing,parent[crossing]]));preserve=preserve[active[preserve]]
+            positions,links,rows=simplified_tree(xyz,parent,tolerance,frame,active,return_rows=True,preserve_nodes=preserve)
+            positions=project(xyz[rows],frame,pp[rows]);transport_panels.append(pp[rows])
             # Every transport vertex is selected directly from the original SWC.
-            assert np.array_equal(positions,project(xyz[rows],frame))
+            assert np.array_equal(positions,project(xyz[rows],frame,pp[rows]))
             assert active[rows].all() and np.all(np.isin(np.flatnonzero(parent==-1),rows))
             assert np.all(np.isin(soma_nodes,rows))
             original_length,original_tips=cable_and_tips(xyz,parent)
@@ -310,15 +312,17 @@ def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod):
                 original_cable_um=original_length,pruned_cable_um=pruned_length,kept_cable_um=kept_length,
                 kept_cable_fraction=kept_length/original_length if original_length else None,
                 original_tips=original_tips,pruned_tips=pruned_tips,kept_tips=kept_tips,
+                brain_vertices=int(np.count_nonzero(pp[rows]==0)),vnc_vertices=int(np.count_nonzero(pp[rows]==1)),
+                layout_bridges=int(np.count_nonzero(pp[rows][links>=0]!=pp[rows][links[links>=0]])),
                 source_rows=rows.tolist(),selected_original_vertices_sha256=hashlib.sha256(xyz[rows].astype('<f8').tobytes()).hexdigest()))
-        raw=encode_arbors(ids,trees,somata,missing,bbox);packed=gzip.compress(raw,mtime=0)
+        raw=encode_arbors(ids,trees,somata,missing,bbox,transport_panels,soma_panels);packed=gzip.compress(raw,mtime=0)
         attempt=dict(highlighted_twig_um=highlighted,interior_twig_um=interior,douglas_peucker_um=tolerance,bytes=len(packed),budget_bytes=budget,passes=len(packed)<=budget)
         attempts.append(attempt);print(circuit,lod,json.dumps(attempt),flush=True)
         if len(packed)<=budget:break
-        if interior>interior_max_cable:
-            save(ROOT/'evidence/V2G/SIZE-STOP.json',dict(circuit=circuit,lod=lod,attempts=attempts,reason='Budgets still fail after every removable interior twig is gone. Highlighted thresholds unchanged.'))
-            raise RuntimeError('STOP: display assets cannot fit without exceeding protected-group limits')
-        interior+=profile['interior_threshold_step_um']
+        if len(packed)>budget:
+            save(ROOT/'evidence/V2G/SIZE-STOP.json',dict(circuit=circuit,lod=lod,attempts=attempts,reason='Repair a02 fixed accepted thresholds exceed the budget. No threshold changed.'))
+            raise RuntimeError('STOP: composite assets exceed budget at the accepted thresholds')
+        # Repair a02 preserves the accepted a01 thresholds exactly.
     name=f'{circuit.lower()}-{lod}.arbors.gz';(OUT/name).write_bytes(packed)
     decoded=decode_arbors(raw);assert decoded['neurons']['body'].tolist()==ids.tolist()
     original=np.concatenate([tree[0] for tree in trees])
@@ -331,6 +335,7 @@ def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod):
     retention_bytes=gzip.compress((json.dumps(retention,sort_keys=True,separators=(',',':'))+'\n').encode(),mtime=0)
     (OUT/retention_name).write_bytes(retention_bytes)
     return dict(file=name,circuit=circuit,lod=lod,bytes=len(packed),uncompressed_bytes=len(raw),budget_bytes=budget,
+                format='FLYARB03',view=LABEL,layout_bridges=int(decoded['bridges'].sum()),bridge_label='layout, not anatomy',
                 sha256=hashlib.sha256(packed).hexdigest(),uncompressed_sha256=hashlib.sha256(raw).hexdigest(),
                 tolerance_um=tolerance,highlighted_twig_um=highlighted,interior_twig_um=interior,attempts=attempts,
                 neurons=len(ids),segments=len(decoded['points']),points=len(decoded['points']),
@@ -345,9 +350,9 @@ def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod):
 
 def build(arbors_only=False):
     # Never regenerate the mislabeled a01 frame while the anatomical gate fails.
-    audit_frame()
+    audit=audit_frame()
     inputs=verify_pinned_inputs()
-    OUT.mkdir(parents=True,exist_ok=True);v=None if arbors_only else volumes(); annotation=annotations();c=circuits();skeletons={}
+    OUT.mkdir(parents=True,exist_ok=True);v=volumes(); annotation=annotations();c=circuits();skeletons={}
     for row in inputs:
         if not row['url'].endswith('.swc') or row.get('http_status')==404:continue
         path=ROOT/row['cache_path'];assert hashlib.sha256(path.read_bytes()).hexdigest()==row['sha256']
@@ -360,98 +365,53 @@ def build(arbors_only=False):
             skeletons[body]=read_swc(path);cache.parent.mkdir(parents=True,exist_ok=True)
             xyz,parent,types=skeletons[body]
             np.savez(cache,xyz=xyz,parent=parent,types=types,source_sha256=row['sha256'])
-    if arbors_only:
-        saved=json.loads((OUT/'frame.json').read_text());frame,orientation=saved['frame'],saved['evidence']
-    else:frame,orientation=display_frame(v,annotation,skeletons)
+    frame,orientation=prepare_layout(v,audit,annotation,skeletons)
+    save(ROOT/'docs/anatomy-v2g-a02-axis-audit.json',audit)
     units=soma_units(annotation,skeletons);save(ROOT/'docs/anatomy-soma-units.json',units)
     save(OUT/'frame.json',dict(frame=frame,evidence=orientation))
-    roi=json.loads((OUT/'neuropils.json').read_text()) if arbors_only else export_rois(v,frame)
+    roi=export_rois(v,frame,orientation['lamina'])
+    skeleton_panels={body:panel_ids(xyz,frame,v) for body,(xyz,_,_) in skeletons.items()}
+    split_counts=dict(brain_roi=0,VNC_roi=0,unlabeled_brain=0,unlabeled_VNC=0,roi_override_plane=0)
+    for body,(xyz,_,_) in skeletons.items():
+        bb=lookup(xyz,v[0])!=0;vv=lookup(xyz,v[1])!=0;pp=skeleton_panels[body]
+        split_counts['brain_roi']+=int(bb.sum());split_counts['VNC_roi']+=int(vv.sum())
+        split_counts['unlabeled_brain']+=int(np.count_nonzero(~bb & ~vv & (pp==0)))
+        split_counts['unlabeled_VNC']+=int(np.count_nonzero(~bb & ~vv & (pp==1)))
+        split_counts['roi_override_plane']+=int(np.count_nonzero(pp!=panel_ids(xyz,frame)))
+    orientation['skeleton_panel_split']=split_counts
+    save(OUT/'frame.json',dict(frame=frame,evidence=orientation))
     all_ids={int(body) for ids,_ in c.values() for body in ids}
-    points=np.concatenate([project(xyz,frame) for xyz,_,_ in skeletons.values()]+[project(np.array(r['somaLocation'])*.008,frame)[None,:] for body,r in annotation.items() if body in all_ids and r['somaLocation'] is not None])
+    points=np.concatenate([project(xyz,frame,skeleton_panels[body]) for body,(xyz,_,_) in skeletons.items()]+[project(np.array(r['somaLocation'])*.008,frame)[None,:] for body,r in annotation.items() if body in all_ids and r['somaLocation'] is not None])
     bbox=np.concatenate([points.min(axis=0),points.max(axis=0)]).tolist()
     assets=[]
     for circuit,(ids,brain) in c.items():
         for lod in ('phone','desktop'):
-            asset=export_arbors(circuit,ids,brain,skeletons,frame,bbox,lod)
+            asset=export_arbors(circuit,ids,brain,skeletons,frame,bbox,lod,skeleton_panels)
             assets.append(asset)
-    manifest=dict(schema='flybench.anatomy-assets.v1',frame=frame,bounding_box_um=bbox,
+    manifest=dict(schema='flybench.anatomy-assets.v2',frame=frame,view=LABEL,bounding_box_um=bbox,
                   source_lock_sha256=hashlib.sha256((ROOT/'profiles/anatomy-lock-v1.json').read_bytes()).hexdigest(),display_profile_sha256=hashlib.sha256((ROOT/'profiles/anatomy-display-v1.json').read_bytes()).hexdigest(),assets=assets,
                   roi_count=len(roi['rois']),missing_roi_names=[],soma_units_report='docs/anatomy-soma-units.json')
     save(OUT/'manifest.json',manifest)
-    preview(manifest,roi,c)
     pruning_previews(manifest,c,skeletons)
+    from flybench.anatomy_previews import lamina_preview
+    lamina_preview(v[0],ROOT/'docs/media/anatomy')
+    update_preview_hashes()
     save(OUT/'HASHES.json',{p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in OUT.iterdir() if p.is_file() and p.name!='HASHES.json'})
 
 
 def preview(manifest,roi,circuits):
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    from matplotlib.collections import LineCollection
-    dest=ROOT/'docs/media/anatomy';dest.mkdir(parents=True,exist_ok=True)
-    colors={'LC4':'#0072b2','LPLC2':'#e69f00','giant fiber':'#cc79a7','walking DNs':'#009e73','interior':'#596474'}
-    for name,circuit in [('neuropils',None),('T1b-arbors','T1b'),('giant-fiber','T1b'),('T1a-arbors','T1a')]:
-        fig,ax=plt.subplots(figsize=(8,10),facecolor='black');ax.set_facecolor('black')
-        paths=[p for r in roi['rois'] for p in r['contours_um']]
-        ax.add_collection(LineCollection(paths,colors='#cc28ad',linewidths=.4,alpha=.65))
-        if circuit:
-            asset=next(a for a in manifest['assets'] if a['circuit']==circuit and a['lod']=='desktop')
-            d=decode_arbors(gzip.decompress((OUT/asset['file']).read_bytes()));brain=circuits[circuit][1]
-            for group in ['interior',*[g for g in colors if g!='interior']]:
-                paths=[]
-                for i,node in enumerate(brain['nodes']):
-                    if node['group']!=group or (name=='giant-fiber' and group!='giant fiber'):continue
-                    row=d['neurons'][i]
-                    for j in range(row['first'],row['first']+row['count']):
-                        parent=int(d['parents'][j]);paths.append(d['points'][[j,parent if parent>=0 else j]])
-                ax.add_collection(LineCollection(paths,colors=colors[group],linewidths=.25 if group=='interior' else .8,alpha=.06 if group=='interior' else .8,label=group))
-            ax.legend(loc='upper right',facecolor='black',labelcolor='white',fontsize=8)
-        bbox=manifest['bounding_box_um'];ax.set_xlim(bbox[0]-10,bbox[2]+10);ax.set_ylim(bbox[3]+10,bbox[1]-10)
-        if name=='giant-fiber':
-            selected=[]
-            for i,node in enumerate(brain['nodes']):
-                if node['group']=='giant fiber':
-                    row=d['neurons'][i];a=int(row['first']);b=a+int(row['count']);selected.append(d['points'][a:b])
-            p=np.concatenate(selected);low=p.min(axis=0)-15;high=p.max(axis=0)+15;ax.set_xlim(low[0],high[0]);ax.set_ylim(high[1],low[1])
-        x0,x1=ax.get_xlim();bottom,top=ax.get_ylim();sx=x0+10;sy=bottom-20
-        ax.plot([sx,sx+100],[sy,sy],color='white',lw=2);ax.text(sx,sy-8,'100 µm',color='white',fontsize=9)
-        ax.set_aspect('equal');ax.tick_params(colors='white');ax.set_xlabel('Frontal horizontal (µm)',color='white');ax.set_ylabel('Dorsal to ventral (µm)',color='white');ax.set_title(name+' · measured MaleCNS anatomy',color='white');fig.tight_layout();fig.savefig(dest/(name+'.png'),dpi=140);plt.close(fig)
+    from flybench.anatomy_previews import previews
+    previews(manifest,roi,circuits,OUT,ROOT/'docs/media/anatomy')
 
 
 def pruning_previews(manifest,circuits,skeletons):
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    from matplotlib.collections import LineCollection
-    directory=ROOT/'docs/media/anatomy';selection=[]
-    brain=circuits['T1b'][1]
-    for group in ('giant fiber','LC4','LPLC2'):
-        node=min((n for n in brain['nodes'] if n['group']==group),key=lambda n:int(n['body_id']))
-        body=int(node['body_id']);xyz,parent,_=skeletons[body];raw=project(xyz,manifest['frame'])
-        low=raw.min(axis=0)-15;high=raw.max(axis=0)+15
-        if high[0]-low[0]<140:
-            mid=(low[0]+high[0])/2;low[0]=mid-70;high[0]=mid+70
-        height=min(12,max(3,4*(high[1]-low[1])/(high[0]-low[0])+1))
-        fig,axes=plt.subplots(1,3,figsize=(12,height),facecolor='black')
-        for ax,label in zip(axes,('raw','desktop','phone')):
-            if label=='raw':points,links=raw,parent;subtitle='raw SWC'
-            else:
-                asset=next(a for a in manifest['assets'] if a['circuit']=='T1b' and a['lod']==label)
-                d=decode_arbors(gzip.decompress((OUT/asset['file']).read_bytes()));index=next(i for i,n in enumerate(brain['nodes']) if n['body_id']==str(body))
-                row=d['neurons'][index];first=int(row['first']);end=first+int(row['count'])
-                points=d['points'][first:end];links=d['parents'][first:end].copy();links[links>=0]-=first
-                subtitle=f"{label}: twig < {asset['highlighted_twig_um']} µm; DP {asset['tolerance_um']} µm"
-            indices=np.flatnonzero(links>=0)
-            lines=np.stack([points[indices],points[links[indices]]],axis=1)
-            ax.set_facecolor('black');ax.add_collection(LineCollection(lines,colors='#cc79a7',linewidths=.45))
-            ax.scatter(points[links<0,0],points[links<0,1],s=2,c='white')
-            ax.set_xlim(low[0],high[0]);ax.set_ylim(high[1],low[1]);ax.set_aspect('equal');ax.tick_params(colors='white')
-            x,y=low[0]+10,high[1]-15;ax.plot([x,x+100],[y,y],c='white',lw=2);ax.text(x,y-6,'100 µm',c='white',fontsize=8)
-            ax.set_title(subtitle,color='white',fontsize=9)
-        fig.suptitle(f'{group}, body {body} · original versus display simplification',color='white');fig.tight_layout()
-        name=group.replace(' ','-')+'-raw-versus-pruned.png';fig.savefig(directory/name,dpi=140);plt.close(fig)
-        selection.append(dict(group=group,body_id=str(body),rule='Lowest body ID in this T1b brain.json group',file=name))
-    save(directory/'pruning-previews.json',dict(frame=manifest['frame'],selection=selection))
+    from flybench.anatomy_previews import previews
+    previews(manifest,json.loads((OUT/'neuropils.json').read_text()),circuits,OUT,ROOT/'docs/media/anatomy',skeletons)
+
+
+def update_preview_hashes():
+    directory=ROOT/'docs/media/anatomy'
+    save(directory/'HASHES.json',{p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in directory.iterdir() if p.is_file() and p.name!='HASHES.json'})
 
 
 def verify_assets(raw=False):
@@ -459,13 +419,29 @@ def verify_assets(raw=False):
     assert manifest['source_lock_sha256']==hashlib.sha256((ROOT/'profiles/anatomy-lock-v1.json').read_bytes()).hexdigest()
     assert manifest['display_profile_sha256']==hashlib.sha256((ROOT/'profiles/anatomy-display-v1.json').read_bytes()).hexdigest()
     inputs=verify_pinned_inputs() if raw else json.loads((ROOT/'profiles/anatomy-lock-v1.json').read_text())['inputs']
+    saved_frame=json.loads((OUT/'frame.json').read_text())
+    assert manifest['frame']['view']==LABEL and saved_frame['frame']==manifest['frame']
+    assert anatomical_axis_audit(saved_frame['evidence']['axis_audit']['centroids'])==saved_frame['evidence']['axis_audit']['audit']
+    assert saved_frame['evidence']['axis_audit']['audit']['status']=='PASS'
+    v=None
+    if raw:
+        circuits()  # Compiled ordered IDs and executed graph identity, read-only.
+        computed_audit=audit_frame()
+        assert computed_audit==saved_frame['evidence']['axis_audit']
+        v=volumes()
+        gf={body:read_swc(ROOT/'data/anatomy/raw'/SWC/(str(body)+'.swc')) for body in (10001,10010)}
+        actual_frame,actual_evidence=prepare_layout(v,computed_audit,annotations(),gf)
+        assert actual_frame==manifest['frame']
+        for key in ('giant_fiber_sanity','lamina'):assert actual_evidence[key]==saved_frame['evidence'][key]
     sources={r['url'].rsplit('/',1)[-1][:-4]:r for r in inputs if r['url'].endswith('.swc')}
     skeleton_cache={};total=0
     for asset in manifest['assets']:
         packed=(OUT/asset['file']).read_bytes();assert hashlib.sha256(packed).hexdigest()==asset['sha256']
         assert len(packed)==asset['bytes']<=profile[asset['lod']][asset['circuit']+'_budget_bytes']
         assert asset['highlighted_twig_um']==profile[asset['lod']]['highlighted_twig_um']<=8
+        assert asset['interior_twig_um']==profile['a01_final_interior_thresholds_um'][asset['circuit']][asset['lod']]
         d=decode_arbors(gzip.decompress(packed))
+        assert d['format']=='FLYARB03' and int(d['bridges'].sum())==asset['layout_bridges']
         brain=json.loads((ROOT/'apps/play/public/data'/('coupling/brain.json' if asset['circuit']=='T1a' else 'brain.json')).read_text())
         assert d['neurons']['body'].tolist()==[int(n['body_id']) for n in brain['nodes']]
         retention_data=(OUT/asset['retention']['file']).read_bytes()
@@ -488,10 +464,16 @@ def verify_assets(raw=False):
             assert np.all((indices>=0)&(indices<len(xyz))) and len(np.unique(indices))==len(indices)
             assert hashlib.sha256(xyz[indices].astype('<f8').tobytes()).hexdigest()==r['selected_original_vertices_sha256']
             threshold=r['twig_threshold_um'];active,_=prune_terminal_twigs(xyz,parent,threshold,np.flatnonzero(types==1))
-            points,parents,selected=simplified_tree(xyz,parent,asset['tolerance_um'],manifest['frame'],active,True,np.flatnonzero(types==1))
+            pp=panel_ids(xyz,manifest['frame'],v);children=np.flatnonzero(parent>=0);crossing=children[pp[children]!=pp[parent[children]]]
+            preserve=np.unique(np.concatenate([np.flatnonzero(types==1),crossing,parent[crossing]]));preserve=preserve[active[preserve]]
+            points,parents,selected=simplified_tree(xyz,parent,asset['tolerance_um'],manifest['frame'],active,True,preserve)
+            points=project(xyz[selected],manifest['frame'],pp[selected])
             assert np.array_equal(selected,indices)
             first=int(row['first']);end=first+int(row['count']);actual=d['parents'][first:end].copy();actual[actual>=0]-=first
             assert np.array_equal(actual,parents)
+            assert np.array_equal(d['panels'][first:end],pp[indices])
+            for child in np.flatnonzero(d['bridges'][first:end]):
+                assert parent[indices[child]]==indices[parents[child]],'Layout bridge must retain original crossing edge endpoints'
             assert np.all(np.abs(d['points'][first:end]-points)<=d['step']*.50001)
             total+=len(indices)
     print('PASS: anatomy assets, budgets, groups, retention, original vertex rows and graph order; '+(str(total)+' exported vertices independently checked against pinned SWCs' if raw else 'raw vertex check available with --verify-raw'),flush=True)
@@ -506,7 +488,9 @@ if __name__=='__main__':
     if args.previews:
         audit_frame()
         manifest=json.loads((OUT/'manifest.json').read_text());c=circuits();roi=json.loads((OUT/'neuropils.json').read_text())
-        preview(manifest,roi,c)
         selected={int(min((n for n in c['T1b'][1]['nodes'] if n['group']==g),key=lambda n:int(n['body_id']))['body_id']) for g in ('giant fiber','LC4','LPLC2')}
         skeletons={body:read_swc(ROOT/'data/anatomy/raw'/SWC/(str(body)+'.swc')) for body in selected}
         pruning_previews(manifest,c,skeletons)
+        from flybench.anatomy_previews import lamina_preview
+        lamina_preview(volumes()[0],ROOT/'docs/media/anatomy')
+        update_preview_hashes()

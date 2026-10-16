@@ -1,0 +1,82 @@
+[
+  {
+    "aspect": "equal physical units",
+    "bounds_um": [
+      44.208,
+      32.496,
+      727.8240000000001,
+      1119.216
+    ],
+    "file": "neuropils.png",
+    "pixels_per_um": null,
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "aspect": "equal physical units",
+    "bounds_um": [
+      44.208,
+      32.496,
+      727.8240000000001,
+      1119.216
+    ],
+    "file": "T1b-arbors.png",
+    "pixels_per_um": null,
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "aspect": "equal physical units",
+    "bounds_um": [
+      247.14810162508587,
+      139.62896833752956,
+      526.4838270847639,
+      781.6806268406193
+    ],
+    "file": "giant-fiber.png",
+    "pixels_per_um": null,
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "aspect": "equal physical units",
+    "bounds_um": [
+      44.208,
+      32.496,
+      727.8240000000001,
+      1119.216
+    ],
+    "file": "T1a-arbors.png",
+    "pixels_per_um": null,
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "aspect": "equal physical units",
+    "bounds_um": [
+      45.0,
+      34.0,
+      726.0,
+      447.0
+    ],
+    "file": "T1b-brain-1to1.png",
+    "pixels_per_um": 1,
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "file": "giant-fiber-raw-versus-pruned.png",
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "file": "LC4-raw-versus-pruned.png",
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  },
+  {
+    "file": "LPLC2-raw-versus-pruned.png",
+    "scale_bar_um": 100,
+    "view": "Composite layout: brain frontal view, VNC ventral view; not a single projection."
+  }
+]
