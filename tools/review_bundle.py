@@ -2105,6 +2105,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
+        if milestone == "V2G" and attempt == 2 and path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}:
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
+                            "reason": "Unchanged accepted scientific-stage inventory/results; present in submitted checkout. Bounded anatomy repair ZIP retains every new anatomy manifest, preview and decoder screenshot."})
+            continue
         if milestone == "V2G" and path.startswith("docs/media/") and not path.startswith("docs/media/anatomy/"):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
                             "reason": "Unchanged legacy publication media; all V2G anatomy previews and decode screenshots are included"})

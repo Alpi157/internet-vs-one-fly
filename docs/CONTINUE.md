@@ -48,3 +48,9 @@ The bounded review ZIP includes phone transports, manifests, all previews and
 browser screenshots, compact per-neuron retention, logs and original gate history.
 Desktop transports and full source-row inventories remain in the committed
 checkout and are listed by hash and size in large-files.json.
+
+The first a02 dry bundle was 16,260,228 bytes, above the existing 15 MiB limit.
+The unchanged archive/raw-records-manifest.json and docs/results-v2f.json are
+therefore listed by hash and size instead of duplicated. Both remain in the
+submitted checkout. Every new anatomy manifest, preview and browser screenshot
+is included, along with both scientific freeze manifests.
