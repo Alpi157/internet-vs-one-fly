@@ -1,0 +1,34 @@
+{
+  "LC4-raw-versus-pruned.png": {
+    "bytes": 87435,
+    "sha256": "22de487265b50accb9971445195d4be4e642f132ec9fc038d453795c4e343328"
+  },
+  "LPLC2-raw-versus-pruned.png": {
+    "bytes": 105826,
+    "sha256": "4f3a96c43590ceaca67859496d674dbd368f1d8ccb2c24bb1391824893a9f1a9"
+  },
+  "T1a-arbors.png": {
+    "bytes": 741905,
+    "sha256": "1b892ce2b257cd16cee13f8f962b764bfd29e13e9c6b2007698c628ea52ec01c"
+  },
+  "T1b-arbors.png": {
+    "bytes": 795060,
+    "sha256": "c12fe12ce9ddecff0687d9ac7e1538d8fb8afbcbea903b9c0391c1975c5a1b6b"
+  },
+  "giant-fiber-raw-versus-pruned.png": {
+    "bytes": 206350,
+    "sha256": "fa3f97a16e218daf11fae81b6661c2e389e5d38d06f99972a4df909c81c1d049"
+  },
+  "giant-fiber.png": {
+    "bytes": 379313,
+    "sha256": "0d99da7510a1c9d32289038b25193aeb8fff078bbe4fe272c491017818b4c48d"
+  },
+  "neuropils.png": {
+    "bytes": 272524,
+    "sha256": "2c9084fec9487903ca02e70d85e7770bb76776c3ddc2529d23cd5306eae64528"
+  },
+  "pruning-previews.json": {
+    "bytes": 786,
+    "sha256": "fd509471a96fd27b9592f2adb1c340587ab2573808d17abb7f7733709f15ff01"
+  }
+}

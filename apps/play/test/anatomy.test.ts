@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
+import {decodeArbors} from '../src/anatomy.ts';
+const root=new URL('../../../',import.meta.url);
+const fixture=JSON.parse(readFileSync(new URL('fixtures/anatomy-v1.json',root),'utf8'));
+const raw=Uint8Array.from(Buffer.from(fixture.hex,'hex')).buffer;
+const f=decodeArbors(raw);
+assert.deepEqual(f.neurons.map(n=>Number(n.bodyId)),fixture.ids);
+assert.deepEqual(f.neurons.map(n=>n.missing),[false,true,false]);
+assert.deepEqual(Array.from(f.parents),[-1,0,1,-1]);
+for(let i=0;i<fixture.points.length;i++)for(let axis=0;axis<2;axis++)assert(Math.abs(f.point(i)[axis]-fixture.points[i][axis])<=f.step[axis]*.50001);
+assert.throws(()=>decodeArbors(raw.slice(0,-1)));
+const dir=new URL('apps/play/public/data/anatomy/',root);
+const manifest=JSON.parse(readFileSync(new URL('manifest.json',dir),'utf8'));
+for(const asset of manifest.assets){
+ const packed=readFileSync(new URL(asset.file,dir));assert.equal(createHash('sha256').update(packed).digest('hex'),asset.sha256);
+ const decoded=decodeArbors(Uint8Array.from(gunzipSync(packed)).buffer);
+ const brain=JSON.parse(readFileSync(new URL(asset.circuit==='T1a'?'apps/play/public/data/coupling/brain.json':'apps/play/public/data/brain.json',root),'utf8'));
+ assert.deepEqual(decoded.neurons.map(n=>n.bodyId.toString()),brain.nodes.map((n:any)=>n.body_id));
+ assert.deepEqual(decoded.neurons.filter(n=>n.missing).map(n=>n.bodyId.toString()),asset.missing_skeletons);
+}
+console.log('PASS: Python/TypeScript FLYARB02 fixture, every asset hash, neuron order and missing flag');

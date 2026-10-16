@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "axes": [
+      0,
+      2
+    ],
+    "projection_axis": 1,
+    "signs": [
+      1,
+      1
+    ],
+    "units": "micrometres",
+    "view": "frontal anterior; fly right on viewer left",
+    "y_direction": "down; brain above VNC"
+  },
+  "selection": [
+    {
+      "body_id": "10001",
+      "file": "giant-fiber-raw-versus-pruned.png",
+      "group": "giant fiber",
+      "rule": "Lowest body ID in this T1b brain.json group"
+    },
+    {
+      "body_id": "12032",
+      "file": "LC4-raw-versus-pruned.png",
+      "group": "LC4",
+      "rule": "Lowest body ID in this T1b brain.json group"
+    },
+    {
+      "body_id": "11498",
+      "file": "LPLC2-raw-versus-pruned.png",
+      "group": "LPLC2",
+      "rule": "Lowest body ID in this T1b brain.json group"
+    }
+  ]
+}

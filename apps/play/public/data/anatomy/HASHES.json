@@ -1,0 +1,46 @@
+{
+  "frame.json": {
+    "bytes": 1021496,
+    "sha256": "8365c1eb43d13d2ea3d901776eab0865cf03f3d62e091feb50b84b6bdf41b4f6"
+  },
+  "manifest.json": {
+    "bytes": 16717,
+    "sha256": "664d437e9e8f61f9960e1915a9bff371d359d4a3dd5445a1d32f90fc57c597b2"
+  },
+  "neuropils.json": {
+    "bytes": 310971,
+    "sha256": "e05f3543fc6955500f64204b65275facd933567f4b10a99a8c2f398012cc11fe"
+  },
+  "t1a-desktop.arbors.gz": {
+    "bytes": 2753201,
+    "sha256": "7a5de3f44cfec8a68f7cbcccab8e39ba8e65a8ba5d4b20626f326245c0d3a19e"
+  },
+  "t1a-desktop.retention.json.gz": {
+    "bytes": 2653108,
+    "sha256": "901c84b4cc1e1e4d2907c96dcc336f357652ac67a2f450437fcdd0dc8ec07339"
+  },
+  "t1a-phone.arbors.gz": {
+    "bytes": 1163036,
+    "sha256": "c872345faf07eb9581caf797edbd96258a720ab3c89aa77ac15a48ef7d5e61e1"
+  },
+  "t1a-phone.retention.json.gz": {
+    "bytes": 1090768,
+    "sha256": "e2b97744ae8b36f286197e9a06403598936dc0ff115862e55e406cecf46ae42c"
+  },
+  "t1b-desktop.arbors.gz": {
+    "bytes": 4750204,
+    "sha256": "c87d588a9627d65596b25f47aff831fb6fe90cfe0b0e22a8c8286b49c528245e"
+  },
+  "t1b-desktop.retention.json.gz": {
+    "bytes": 4844922,
+    "sha256": "6217585e0bc2f3912bcb9d67d82821358bb89f92fca360b91e85eb2276bd4c9e"
+  },
+  "t1b-phone.arbors.gz": {
+    "bytes": 2051910,
+    "sha256": "0ae05810829d3e1193793cc3c13836ef68972bd9676c721c9e01e1afe6a0b01c"
+  },
+  "t1b-phone.retention.json.gz": {
+    "bytes": 2057620,
+    "sha256": "cacaffaff8d5662abc9ebd847f323a5e6f1f5ae09669aebf7698a1dab70ab2de"
+  }
+}

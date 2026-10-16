@@ -77215,5 +77215,5 @@
   "projection": "x horizontal, z vertical; front display convention, anatomical camera orientation unverified",
   "source": "https://male-cns.janelia.org/download/",
   "source_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
-  "units": "Relative positions only. Official page specifies 8 nm for synapse coordinates and SWC skeletons, but does not explicitly specify somaLocation units."
+  "units": "Original somaLocation values use 8 nm voxel units, confirmed against official SWC soma/root coordinates; displayed positions remain normalized relative x/z coordinates. Anatomical camera orientation of this legacy map remains unverified. Evidence: docs/anatomy-soma-units.json."
 }

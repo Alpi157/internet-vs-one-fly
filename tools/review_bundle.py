@@ -2105,9 +2105,12 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
-        if milestone in {"V2C", "V2D", "V2E", "V2F"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone in {"V2E", "V2F"} and path.startswith("apps/play/public/data/"))):
+        if milestone == "V2G" and (path.endswith(".retention.json.gz") or path.endswith("-desktop.arbors.gz")):
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data), "reason": "Bounded V2G review: detailed source-row provenance or desktop arbor transport; phone transports, all manifests, retention summaries and previews included; full file in submitted checkout"})
+            continue
+        if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone in {"V2E", "V2F", "V2G"} and path.startswith("apps/play/public/data/") and not (milestone == "V2G" and (path.startswith("apps/play/public/data/anatomy/") or path in {"apps/play/public/data/coupling/strength-demo.json", "apps/play/public/data/coupling/strength-targets.json.gz", "apps/play/public/data/brain.json", "apps/play/public/data/HASHES.json", "apps/play/public/data/coupling/brain.json", "apps/play/public/data/coupling/HASHES.json"})))):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
-                            "reason": "V2C/V2D/V2E operator exclusion of graph arrays and V2E game data; restore from the submitted checkout"})
+                            "reason": "Stage exclusion of compiled graph arrays and legacy runtime assets; restore from the submitted checkout"})
             continue
         if reason:
             raise BundleError(f"tracked forbidden path {path!r}: {reason}")
@@ -2121,7 +2124,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     entries["ledger.yaml"] = commit_blob(root, submitted, "ledger.yaml")
     entries["tree.txt"] = ("\n".join(repo_paths) + "\n").encode("utf-8")
     entries["git_status.txt"] = status.encode("utf-8")
-    diff = git(root, "diff", "--binary", diff_base, submitted, "--", *([".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F"} else []), text=False)
+    diff_exclusions = [".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F", "V2G"} else []
+    if milestone == "V2G":
+        diff_exclusions.append(":(exclude)docs/media/anatomy")
+    diff = git(root, "diff", "--binary", diff_base, submitted, "--", *diff_exclusions, text=False)
     assert isinstance(diff, bytes)
     entries["git_diff.patch"] = diff
 
@@ -2313,7 +2319,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone in {"V2C", "V2D", "V2E", "V2F"}:
+    if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G"}:
         if attempt not in ({1, 2} if milestone == "V2F" else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires a registered attempt and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.

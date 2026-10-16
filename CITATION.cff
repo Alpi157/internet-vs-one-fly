@@ -26,3 +26,21 @@ references:
         given-names: "Alpar"
         orcid: "https://orcid.org/0000-0002-2627-5761"
     doi: "10.5281/zenodo.23409752"
+  - type: data
+    title: "MaleCNS v1.0 skeletons in Male CNS EM space"
+    authors:
+      - name: "Male CNS Connectome project"
+    url: "https://male-cns.janelia.org/download/"
+    notes: "CC-BY-4.0. Official SWC source: https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/ . Coordinates are specified in 8 nm units. Per-file identities: profiles/anatomy-lock-v1.json."
+  - type: data
+    title: "MaleCNS brain neuropil compartment segmentation, fullbrain-roi-v4"
+    authors:
+      - name: "Male CNS Connectome project"
+    url: "https://storage.googleapis.com/flyem-male-cns/rois/fullbrain-roi-v4/info"
+    notes: "CC-BY-4.0. Official label names are in segment_properties/info beside the volume."
+  - type: data
+    title: "MaleCNS VNC neuropil compartment segmentation, malecns-vnc-neuropil-roi-v0"
+    authors:
+      - name: "Male CNS Connectome project"
+    url: "https://storage.googleapis.com/flyem-male-cns/rois/malecns-vnc-neuropil-roi-v0/info"
+    notes: "CC-BY-4.0. Official label names are in segment_properties/info beside the volume."

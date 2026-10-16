@@ -16,6 +16,25 @@ from flybench.web_export import export_web_graph
 
 ROOT=Path(__file__).resolve().parents[1]
 
+
+def update_anatomy_units(report_path):
+    """Metadata-only update, without rerunning calibration, graph export or simulation."""
+    report=json.loads(report_path.read_text())
+    if report['status']!='CONFIRMED' or report['unit_nm']!=8:
+        raise ValueError('Soma units are not confirmed by anatomy comparison')
+    for directory in (ROOT/'apps/play/public/data',ROOT/'apps/play/public/data/coupling'):
+        path=directory/'brain.json';brain=json.loads(path.read_text())
+        original_nodes=brain['nodes']
+        brain['units']='Original somaLocation values use 8 nm voxel units, confirmed against official SWC soma/root coordinates; displayed positions remain normalized relative x/z coordinates. Anatomical camera orientation of this legacy map remains unverified. Evidence: docs/anatomy-soma-units.json.'
+        if directory.name=='coupling':
+            from flybench.experiment_v2 import save as save_compact
+            save_compact(path,brain)
+        else:write_json(path,brain)
+        assert json.loads(path.read_text())['nodes']==original_nodes
+        hashes=json.loads((directory/'HASHES.json').read_text())
+        hashes['brain.json']=dict(bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        write_json(directory/'HASHES.json',hashes)
+
 def pack_graph(path):
     raw=path.read_bytes();size=struct.unpack('<I',raw[8:12])[0];header=json.loads(raw[12:12+size]);payload=12+size;payload+=(-payload)%8
     def array(name):
@@ -104,4 +123,6 @@ def run(fixture=False,selection=None):
     write_json(ROOT/'evidence/V2E/game/export.json',dict(fixture=fixture,parameters=params,graph=runtime['graph_identity'],counts=runtime['counts'],brain_missing=brain['missing'],coordinate_provenance={k:v for k,v in brain.items() if k!='nodes'},files={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in out.iterdir()}))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--fixture',action='store_true');p.add_argument('--selection',type=Path);a=p.parse_args();run(a.fixture,a.selection)
+    p=argparse.ArgumentParser();p.add_argument('--fixture',action='store_true');p.add_argument('--selection',type=Path);p.add_argument('--anatomy-units-from',type=Path);a=p.parse_args()
+    if a.anatomy_units_from:update_anatomy_units(a.anatomy_units_from)
+    else:run(a.fixture,a.selection)

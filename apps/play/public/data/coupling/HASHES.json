@@ -1,1 +1,34 @@
-{"LICENSE-DATA.md":{"bytes":326,"sha256":"21659f46f8da2d23b91be0c532fe05ee6b5830c55d60bc3be2526c4210ac3de8"},"brain.json":{"bytes":365201,"sha256":"090c0345c70adc6e852aea891dfe8cfff8881d48e6290189e8756d2b81265459"},"circuit.flygraph.gz":{"bytes":370990,"sha256":"230f68fa528cba7deec5b1eaa01e48db3ac8eb6c9468e353d65aceb5071bc5cf"},"parity.json":{"bytes":971,"sha256":"4317fe72baf6ea869c83efe1c3f285b60b0d958ec9151de31768b7a04c33d7f8"},"runtime.json":{"bytes":17450,"sha256":"d4f952768e53416fe66af1aa7c43c649eddb88f8dc64c1ea06296ead884daaf0"},"targets.json.gz":{"bytes":491409,"sha256":"c01539d2b7e8144e16d0e0aa0ce185949e19e1caa5653c918fe7b91d9d27c647"}}
+{
+  "LICENSE-DATA.md": {
+    "bytes": 326,
+    "sha256": "21659f46f8da2d23b91be0c532fe05ee6b5830c55d60bc3be2526c4210ac3de8"
+  },
+  "brain.json": {
+    "bytes": 365330,
+    "sha256": "b9340e7b6e589cddd033c90921a90a94052da7da0d541d19c83bab3cdbf47023"
+  },
+  "circuit.flygraph.gz": {
+    "bytes": 370990,
+    "sha256": "230f68fa528cba7deec5b1eaa01e48db3ac8eb6c9468e353d65aceb5071bc5cf"
+  },
+  "parity.json": {
+    "bytes": 971,
+    "sha256": "4317fe72baf6ea869c83efe1c3f285b60b0d958ec9151de31768b7a04c33d7f8"
+  },
+  "runtime.json": {
+    "bytes": 17450,
+    "sha256": "d4f952768e53416fe66af1aa7c43c649eddb88f8dc64c1ea06296ead884daaf0"
+  },
+  "strength-demo.json": {
+    "bytes": 977,
+    "sha256": "9cc397e5232b6a27f8de9c4c9d76d81fe33a8ef01c7dfe96e3bca3e8fddcc32b"
+  },
+  "strength-targets.json.gz": {
+    "bytes": 491225,
+    "sha256": "4a2de09fc1fac56fa08c128c1afa515f7bdff1a01517fc987b040f995ecc92c5"
+  },
+  "targets.json.gz": {
+    "bytes": 491409,
+    "sha256": "c01539d2b7e8144e16d0e0aa0ce185949e19e1caa5653c918fe7b91d9d27c647"
+  }
+}

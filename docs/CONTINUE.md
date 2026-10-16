@@ -1,87 +1,72 @@
-# V2F publication repair a02
+# V2G real anatomy assets
 
-Status: COMPLETE_FOR_REVIEW, subject to the final-SHA acceptance receipt included
-in the review ZIP. The external a01 verdict accepts the science and requests
-publication repair; decisions/D-V2F-REVIEW-01.json and ledger.yaml preserve it
-verbatim. External acceptance of the publication repair remains pending.
+Status: COMPLETE_FOR_REVIEW, conditional on PASS from the final-commit acceptance
+receipt. No acceptance or publication is performed by the implementing agent.
+Base: f66b2100e43bb0a4683da7c5ffcfb0ef6124ad36, tag v2f-accepted.
+No push, tag, deployment or new scientific trial was performed.
 
-Repair base: 04f1f302c844653421a116c583a99da841a876ae.
-Blocked-gate checkpoint: ffcf0b115a6379e9a28338f725638f06758fd3a4.
-v2.1 freeze: 083bd2be2944c5dd773f670efc7b69445e207058.
-Both freeze manifests and all raw records remain unchanged. No experiment,
-resume, added null, git push, tag or deployment is authorized or performed.
-The requested regression/browser/bot acceptance workloads validate existing code.
+The owner replaced the initial all-branch-point rule with iterative terminal-twig
+pruning. The active display rule is profiles/anatomy-display-v1.json. Highlighted
+neurons remain at 3 µm desktop and 6 µm phone. Only interior thresholds increase,
+in 5 µm steps, and every failed and passing size attempt is recorded.
 
-## Public raw evidence
+## Completed assets
 
-The owner authorized separate evidence storage after the size gate failed.
-Archive: ~/flybench-archive/flybench-raw-records-v2e-v2f.tar.gz.
-Size: 2,201,225,419 bytes; SHA-256:
-7b808bdef63450414e10afa8dde96233a2c4b218240bfdc3688e67c69a4e19f2.
-Its 12,633 members are the audited inputs to both frozen verifiers, plus the
-requested progress logs. The archive bytes match the earlier measured stream.
-Manifest: archive/raw-records-manifest.json. Dataset guide: archive/DATA-README.md.
+- T1a phone: 1,163,036 gzip bytes; highlighted twig 6 µm, interior twig 20 µm, DP 1.5 µm.
+- T1a desktop: 2,753,201 gzip bytes; highlighted twig 3 µm, interior twig 15 µm, DP 0.5 µm.
+- T1b phone: 2,051,910 gzip bytes; highlighted twig 6 µm, interior twig 25 µm, DP 1.5 µm.
+- T1b desktop: 4,750,204 gzip bytes; highlighted twig 3 µm, interior twig 20 µm, DP 0.5 µm.
 
-Zenodo DRAFT: https://zenodo.org/deposit/23409752.
-Reserved DOI: 10.5281/zenodo.23409752, resolving only after owner publication.
-The archive, SHA256SUMS and DATA-README.md uploaded through streaming bucket PUT;
-all three local/remote MD5 comparisons pass. Full metadata and receipts are in
-evidence/V2F/zenodo-draft.json and zenodo-upload-checks.json. The owner alone may
-publish. Never invoke a publication endpoint or include credentials in artifacts.
+All 6,538 union skeletons were found. The 90 brain and 24 VNC labels have official
+names. The frame is +x horizontal, +z downward, projecting away y. Annotated
+R/L soma majorities and all six descending-neuron brain-above-VNC checks pass.
+Soma annotation units are 8 nm by absolute-coordinate comparison; correlations
+and the large root/soma disagreement remain explicit in docs/anatomy-soma-units.json.
+Roots need not be somata. No coordinates were invented or moved to match labels.
 
-## Restore and verify
+Every neuron has retained cable and tip counts in its provenance file. Every
+exported vertex selects an original SWC row. The raw verifier checks raw hashes,
+selection rows, ancestor paths and quantization. Raw-versus-pruned previews use
+the lowest body ID in each requested T1b group.
 
-```sh
-uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
-uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
-uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
-uv run python experiments/v2f_publish.py --check
-```
+The N-STRENGTH demo uses recorded index 43, seed 202910171376. Its regenerated
+target hash matches the stored V2F record. The original worker executes both
+shuffles in tests. The UI still selects N-SIGN; no mechanics or runtime profile
+changed. Legacy brain.json metadata was updated through the existing exporter.
 
-Use the locked environment and profiles/requirements-v2.1.txt. After owner
-publication, restore_evidence.py --download fetches the pinned public file URL.
-Restoration checks the full archive hash before extraction, refuses differing
-existing files, rejects unsafe paths and verifies every member. The older frozen
-verifier also compares recorded host metadata; exact equality requires its
-recorded platform and hardware-thread-count envelope. No metadata is substituted.
+The portable V2E recomputation checks all raw fields except hardware, then checks
+the exact existing compact publication view. It restores nothing and does not
+simulate. The original frozen verifiers and raw records remain unchanged.
 
-## Publication repair
-
-README leads with the combined result: earlier controls have a large rate gap,
-while N-STRENGTH removes most of it. All public numbers are generated from
-committed tables. T2 explicitly says measured wiring is faster than N-STRENGTH.
-The input-strength Gini explanation stays EXPLORATORY and is not presented as a
-preregistered mechanism test. Input-strength preservation is approximate through
-sign/contact bins, not exact numerical sums. Every family conclusion includes
-measured values versus null medians.
-
-The coupling heading is neutral. Its generated strength caveat is directly below
-the caption and burned into exported clips. Existing hero media was cropped from
-the same recorded pixels to remove the partners-only heading and stale footer;
-no new scientific recording or neural interpolation was generated.
-
-## Acceptance and review
-
-The a01 registry contained 15 commands; the prior statement of 16 was incorrect.
-The a02 registry has 16 commands after adding the dedicated offline evidence
-restore check. Acceptance must run on the final committed SHA itself. The report
-is evidence/V2F/acceptance/command-results.json; its submitted_code_sha must equal
-git rev-parse HEAD. No tracked file may change after that run. If a fix requires
-a new commit, rerun the full acceptance against that new SHA before bundling.
+## Commands
 
 ```sh
+uv sync --extra dev --locked
+uv pip install --no-deps -r profiles/requirements-v2.1.txt
+uv run python experiments/v2g_anatomy.py --fetch
+uv run python experiments/v2g_anatomy.py --build
+uv run python experiments/v2g_anatomy.py --verify-raw
+npm --prefix apps/play run test:anatomy
+npm --prefix apps/play run test:anatomy-browsers
+uv run python tools/recompute_v2e.py
 uv run python -m pytest -q
-uv run python tools/run_acceptance.py V2F --out evidence/V2F/acceptance
-uv run python tools/review_bundle.py --milestone V2F --attempt 2 --base 6f5276d021086580b04a81bad3a16b1a840beac7 --out reviews/V2F-a02.zip
+uv run python tools/run_acceptance.py V2G --out evidence/V2G/acceptance
+uv run python tools/review_bundle.py --milestone V2G --attempt 1 --base f66b2100e43bb0a4683da7c5ffcfb0ef6124ad36 --out reviews/V2G-a01.zip
 ```
 
-The bundle retains the original accepted base for a complete stage diff and the
-review narrative identifies the repair base separately. Include the archive
-manifest, draft metadata, upload checks, restore/verify logs, DATA-README.md,
-updated screenshots/clip and token-scan result. The large archive stays outside
-the repository and ZIP. Final ZIP path: reviews/V2F-a02.zip. Final submitted SHA
-is in the review-manifest.json and REVIEW.md to avoid a self-referential commit.
+There are 15 registered acceptance commands. The acceptance receipt's
+submitted_code_sha must equal git rev-parse HEAD, with a clean tree. Do not change
+a tracked file after final acceptance; a fix requires a new commit and full
+acceptance against it. Raw verification requires cached official downloads.
+Fresh-clone smoke uses committed assets and fixtures, offline.
 
-The token remains in ~/.config/flybench/zenodo_token and is read only at runtime.
-Before delivery scan the working tree, new logs and final ZIP for its exact bytes,
-reporting only PASS or FAIL. Do not publish the Zenodo draft, push Git or deploy.
+Raw downloads and parsed/volume caches stay ignored under data/. The anatomy lock
+preserves its original retrieval identities on reacquisition and rejects changes.
+All browser assets and provenance are committed. The bounded review ZIP includes
+phone transports, every preview, manifests, per-neuron retention measurements,
+decode screenshots and logs. Desktop transports and detailed source-row lists
+remain in the submitted checkout and are enumerated with hashes in large-files.json.
+
+The final SHA is recorded by acceptance and review manifests to avoid a
+self-referential commit. External review remains pending. All 122 scientific
+frozen hashes match. See docs/anatomy-v2g.md and evidence/V2G/REVIEW.md for details.

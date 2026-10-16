@@ -1,0 +1,21 @@
+{
+  "H0b": 4.400416508898145,
+  "asset": {
+    "bytes": 491225,
+    "file": "strength-targets.json.gz",
+    "sha256": "4a2de09fc1fac56fa08c128c1afa515f7bdff1a01517fc987b040f995ecc92c5"
+  },
+  "circuit": "T1a",
+  "family": "N-STRENGTH",
+  "family_median_H0b": 4.400416508898145,
+  "index": 43,
+  "protocol_sha256": "c4ed65c481373d1a3a4a29637878acae93c0a085fdff50914bb9d0f95d6b217d",
+  "schema": "flybench.coupling-strength-demo.v1",
+  "scope": "Data-only export of an existing null. UI is unchanged; no new scientific trial.",
+  "seed": 202910171376,
+  "selection_rule": "the T1a H0-STR N-STRENGTH null whose H0b equals the family median of the 499 values; ties go to the lowest index.",
+  "source_record": "evidence/V2F/results/H0-STR/T1a-N-STRENGTH-043.json.gz",
+  "source_record_sha256": "a6d75821f2e06eea83414fec277e2c2f67faa33c7b1ef5f25864b9bafafa5841",
+  "target_hash_check": "PASS",
+  "target_sha256": "ab33b3baef17f67f5e65ad00382fb9a8825447626947c3c6d13812d422177488"
+}

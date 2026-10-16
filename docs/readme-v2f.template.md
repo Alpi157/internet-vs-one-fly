@@ -87,12 +87,13 @@ Verify the existing raw records without simulating new trials:
 ```sh
 uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
 uv pip install --no-deps -r profiles/requirements-v2.1.txt
+uv run python tools/recompute_v2e.py
 uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
 uv run python experiments/v2f_publish.py --check
 ```
 
-The raw-record dataset DOI is [{{dataset_doi}}](https://doi.org/{{dataset_doi}}). `uv run python tools/restore_evidence.py --download` retrieves the checksum-pinned archive. Both frozen verifiers run offline after restoration; the older verifier also compares recorded host metadata, so its exact equality check requires the recorded platform and thread-count envelope. Verification processes the raw records without running a simulation. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
+The raw-record dataset DOI is [{{dataset_doi}}](https://doi.org/{{dataset_doi}}). `uv run python tools/restore_evidence.py --download` retrieves the checksum-pinned archive. Both frozen verifiers run offline after restoration; the older verifier also compares recorded host metadata, so its exact equality check requires the recorded platform and thread-count envelope. `tools/recompute_v2e.py` is independent of that frozen CLI verifier: it uses the same frozen analysis functions and compares every result field against the committed tables, ignoring only `hardware`. It restores nothing and works outside the recorded host envelope. Verification processes the raw records without running a simulation. Reproducing the registered experiment from scratch requires the pinned sources and graphs in the [data guide](docs/data-attribution.md), plus the exact commands and worker plan in the [protocol](docs/preregistration-v2.1.md). The completed run's elapsed time above is a measurement, not a runtime guarantee. Do not patch a frozen executable to continue an attempt.
 
 ## Limitations
 
