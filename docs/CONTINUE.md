@@ -1,72 +1,57 @@
-# V2G real anatomy assets
+# V2G repair attempt a02
 
-Status: COMPLETE_FOR_REVIEW, conditional on PASS from the final-commit acceptance
-receipt. No acceptance or publication is performed by the implementing agent.
-Base: f66b2100e43bb0a4683da7c5ffcfb0ef6124ad36, tag v2f-accepted.
-No push, tag, deployment or new scientific trial was performed.
+Status: STOP_ANATOMICAL_LANDMARK_GATE. Existing a01 anatomy assets are unchanged
+and do not implement the requested composite layout. The previously claimed
+frontal whole-CNS frame is invalid. External stage acceptance is not asserted.
 
-The owner replaced the initial all-branch-point rule with iterative terminal-twig
-pruning. The active display rule is profiles/anatomy-display-v1.json. Highlighted
-neurons remain at 3 µm desktop and 6 µm phone. Only interior thresholds increase,
-in 5 µm steps, and every failed and passing size attempt is recorded.
+Base: df787fa8c05591a39f4466b3c71872d902ecb6bc.
+The source, pruning, budget, demo, portable recompute and a01 acceptance portions
+were accepted by external review. The frame requires repair.
 
-## Completed assets
+The pinned 3D volumes yield brain +z posterior, +y ventral and +x fly left.
+The VNC set contrasts also yield +z posterior and +y ventral. One required
+individual dorsal/ventral ordering conflicts: LTct y=438.7949197017007 µm is
+more ventral than LegNp(T3)(R) y=429.72174902137596 µm by
+9.073170680324722 µm. Other tectulum comparisons support the opposite ordering.
+No sign or landmark was changed to conceal it.
 
-- T1a phone: 1,163,036 gzip bytes; highlighted twig 6 µm, interior twig 20 µm, DP 1.5 µm.
-- T1a desktop: 2,753,201 gzip bytes; highlighted twig 3 µm, interior twig 15 µm, DP 0.5 µm.
-- T1b phone: 2,051,910 gzip bytes; highlighted twig 6 µm, interior twig 25 µm, DP 1.5 µm.
-- T1b desktop: 4,750,204 gzip bytes; highlighted twig 3 µm, interior twig 20 µm, DP 0.5 µm.
+See docs/anatomy-v2g-a02-axis-audit.md and its JSON companion for all 114 original
+3D ROI centroids and 144 comparisons. The new non-frozen --audit-frame mode
+recomputes the centroids from the pinned ROI chunks, stops with exit 1 and leaves
+display assets untouched. Build and preview modes run this gate first.
 
-All 6,538 union skeletons were found. The 90 brain and 24 VNC labels have official
-names. The frame is +x horizontal, +z downward, projecting away y. Annotated
-R/L soma majorities and all six descending-neuron brain-above-VNC checks pass.
-Soma annotation units are 8 nm by absolute-coordinate comparison; correlations
-and the large root/soma disagreement remain explicit in docs/anatomy-soma-units.json.
-Roots need not be somata. No coordinates were invented or moved to match labels.
-
-Every neuron has retained cable and tip counts in its provenance file. Every
-exported vertex selects an original SWC row. The raw verifier checks raw hashes,
-selection rows, ancestor paths and quantization. Raw-versus-pruned previews use
-the lowest body ID in each requested T1b group.
-
-The N-STRENGTH demo uses recorded index 43, seed 202910171376. Its regenerated
-target hash matches the stored V2F record. The original worker executes both
-shuffles in tests. The UI still selects N-SIGN; no mechanics or runtime profile
-changed. Legacy brain.json metadata was updated through the existing exporter.
-
-The portable V2E recomputation checks all raw fields except hardware, then checks
-the exact existing compact publication view. It restores nothing and does not
-simulate. The original frozen verifiers and raw records remain unchanged.
-
-## Commands
+Exact command:
 
 ```sh
-uv sync --extra dev --locked
-uv pip install --no-deps -r profiles/requirements-v2.1.txt
-uv run python experiments/v2g_anatomy.py --fetch
-uv run python experiments/v2g_anatomy.py --build
-uv run python experiments/v2g_anatomy.py --verify-raw
-npm --prefix apps/play run test:anatomy
-npm --prefix apps/play run test:anatomy-browsers
-uv run python tools/recompute_v2e.py
-uv run python -m pytest -q
-uv run python tools/run_acceptance.py V2G --out evidence/V2G/acceptance
-uv run python tools/review_bundle.py --milestone V2G --attempt 1 --base f66b2100e43bb0a4683da7c5ffcfb0ef6124ad36 --out reviews/V2G-a01.zip
+uv run --offline python experiments/v2g_anatomy.py --audit-frame
 ```
 
-There are 15 registered acceptance commands. The acceptance receipt's
-submitted_code_sha must equal git rev-parse HEAD, with a clean tree. Do not change
-a tracked file after final acceptance; a fix requires a new commit and full
-acceptance against it. Raw verification requires cached official downloads.
-Fresh-clone smoke uses committed assets and fixtures, offline.
+Captured output and traceback:
 
-Raw downloads and parsed/volume caches stay ignored under data/. The anatomy lock
-preserves its original retrieval identities on reacquisition and rejects changes.
-All browser assets and provenance are committed. The bounded review ZIP includes
-phone transports, every preview, manifests, per-neuron retention measurements,
-decode screenshots and logs. Unchanged legacy publication media, desktop transports and detailed source-row lists
-remain in the submitted checkout and are enumerated with hashes in large-files.json.
+```text
+Decoded rois/fullbrain-roi-v4 labels 90 absent background chunks 353
+Decoded rois/malecns-vnc-neuropil-roi-v0 labels 24 absent background chunks 1916
+brain posterior z 1
+brain ventral y 1
+VNC posterior z 1
+VNC ventral y 1
+CONTRADICTION {"anatomical_positive": "ventral", "high": "LegNp(T3)(R)", "low": "LTct", "panel": "VNC", "passes": false, "signed_separation_um": -9.073170680324722}
+Traceback (most recent call last):
+  File "/home/alpi/Projects/FlyBench/experiments/v2g_anatomy.py", line 500, in <module>
+    if args.audit_frame:audit_frame()
+                        ^^^^^^^^^^^^^
+  File "/home/alpi/Projects/FlyBench/experiments/v2g_anatomy.py", line 143, in audit_frame
+    raise RuntimeError('STOP: contradictory anatomical landmark ordering; see evidence/V2G/a02/axis-audit.json. No assets re-exported.')
+RuntimeError: STOP: contradictory anatomical landmark ordering; see evidence/V2G/a02/axis-audit.json. No assets re-exported.
+```
 
-The final SHA is recorded by acceptance and review manifests to avoid a
-self-referential commit. External review remains pending. All 122 scientific
-frozen hashes match. See docs/anatomy-v2g.md and evidence/V2G/REVIEW.md for details.
+The composite split, neck offsets, giant-fiber soma check, lamina check,
+re-export, new previews, browser matrix and final acceptance are not run after
+the failed gate. No reviews/V2G-a02.zip has been built. Do not treat the previous
+a01 acceptance receipt as acceptance of this repair. No frozen file, scientific
+raw record, UI, mechanics, model, runtime profile or source lock is changed.
+No push, tag or deployment is authorized or performed.
+
+New tests check the 3D centroid algorithm against direct voxel enumeration and
+recompute the axis assignments and explicit stop from the full centroid report.
+The owner's anatomical direction is required before continuing past this gate.

@@ -9,6 +9,95 @@ NEURON = np.dtype([('body', '<u8'), ('first', '<u4'), ('count', '<u4'),
                    ('soma', '<u2', (2,)), ('flags', '<u4')])
 
 
+def roi_centroids(volume, scale, names):
+    """Voxel-centre centroids in original 3D source micrometres.
+
+    Accumulate one X slice at a time, independently of any display projection.
+    Offset and resolution are the official precomputed scale metadata.
+    """
+    counts = np.zeros(256, dtype=np.int64)
+    moments = np.zeros((256, 3), dtype=np.float64)
+    yy = np.repeat(np.arange(volume.shape[1]) + .5, volume.shape[2])
+    zz = np.tile(np.arange(volume.shape[2]) + .5, volume.shape[1])
+    for x in range(volume.shape[0]):
+        labels = volume[x].ravel()
+        c = np.bincount(labels, minlength=256)
+        counts += c
+        moments[:, 0] += c * (x + .5)
+        moments[:, 1] += np.bincount(labels, weights=yy, minlength=256)
+        moments[:, 2] += np.bincount(labels, weights=zz, minlength=256)
+    rows = []
+    for label in np.flatnonzero(counts[1:]) + 1:
+        if label not in names:
+            raise ValueError(f'Unnamed ROI label: {label}')
+        xyz = ((moments[label] / counts[label] + scale['voxel_offset'])
+               * np.asarray(scale['resolution']) / 1000)
+        rows.append(dict(label=int(label), name=names[label],
+                         voxels=int(counts[label]), centroid_um=xyz.tolist()))
+    return rows
+
+
+def anatomical_axis_audit(centroids, left_right_axis=0, left_right_sign=1):
+    """Infer axes from the requested landmark sets, then check every ordering.
+
+    Signs come only from set contrasts. No relation is discarded or averaged
+    away after assignment. A contradictory individual ordering fails the gate.
+    The existing annotated-soma rule supplies the horizontal axis and sign.
+    """
+    def select(panel, cores):
+        rows = [r for r in centroids[panel] if r['name'].split('(')[0] in cores]
+        if {r['name'].split('(')[0] for r in rows} != set(cores):
+            raise ValueError('Missing required anatomical landmark: ' + panel)
+        return rows
+
+    axes = []; relations = []
+    def infer(panel, meaning, low, high, available):
+        contrast = (np.mean([r['centroid_um'] for r in high], axis=0)
+                    - np.mean([r['centroid_um'] for r in low], axis=0))
+        axis = max(available, key=lambda a: abs(contrast[a]))
+        if contrast[axis] == 0:
+            raise ValueError('Zero landmark contrast: ' + meaning)
+        sign = 1 if contrast[axis] > 0 else -1
+        axes.append(dict(panel=panel, anatomical_positive=meaning,
+                         source_axis='xyz'[axis], axis=axis, sign=sign,
+                         contrast_xyz_um=contrast.tolist(),
+                         low_landmarks=[r['name'] for r in low],
+                         high_landmarks=[r['name'] for r in high]))
+        for a in low:
+            for b in high:
+                delta = sign * (b['centroid_um'][axis] - a['centroid_um'][axis])
+                relations.append(dict(panel=panel, anatomical_positive=meaning,
+                                      low=a['name'], high=b['name'],
+                                      signed_separation_um=float(delta), passes=bool(delta > 0)))
+        return axis, sign
+
+    available = [a for a in range(3) if a != left_right_axis]
+    ba, _ = infer('brain', 'posterior',
+                   select('brain', ('AL', 'aL', 'bL', 'gL', 'EB')),
+                   select('brain', ('CA', 'PB')), available)
+    bd, bs = infer('brain', 'ventral',
+                    select('brain', ('SMP', 'CA', 'PB')),
+                    select('brain', ('GNG', 'AL')), [a for a in available if a != ba])
+    for a in select('brain', ('aL',)):
+        side = a['name'][a['name'].index('('):]
+        b = next(r for r in select('brain', ('bL',)) if r['name'] == 'bL' + side)
+        delta = bs * (b['centroid_um'][bd] - a['centroid_um'][bd])
+        relations.append(dict(panel='brain', anatomical_positive='ventral',
+                              low=a['name'], high=b['name'],
+                              signed_separation_um=float(delta), passes=bool(delta > 0)))
+    legs = select('VNC', ('LegNp',))
+    va, _ = infer('VNC', 'posterior', [r for r in legs if '(T1)' in r['name']],
+                   [r for r in legs if '(T3)' in r['name']], available)
+    infer('VNC', 'ventral', select('VNC', ('NTct', 'WTct', 'HTct', 'IntTct', 'LTct')),
+          select('VNC', ('LegNp', 'mVAC')), [a for a in available if a != va])
+    failures = [r for r in relations if not r['passes']]
+    return dict(status='STOP' if failures else 'PASS',
+                rule='Set centroid contrasts assign axes/signs; every named low/high centroid pair must respect the resulting ordering. No contradictory pair is hidden by a group mean.',
+                left_right=dict(source_axis='xyz'[left_right_axis], axis=left_right_axis,
+                                sign=left_right_sign, anatomical_positive='fly left; viewer right'),
+                axes=axes, relations=relations, contradictions=failures)
+
+
 def read_swc(path):
     data = np.loadtxt(path, comments='#', ndmin=2)
     if data.shape[1] != 7 or not len(data) or not np.isfinite(data).all():

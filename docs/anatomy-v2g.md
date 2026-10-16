@@ -1,5 +1,11 @@
 # Real anatomy asset preparation
 
+> Repair a02 is stopped at an anatomical landmark conflict. The a01
+> whole-CNS view below was mislabeled as frontal and is superseded. The requested
+> composite layout has not been exported. See the [3D axis audit](anatomy-v2g-a02-axis-audit.md)
+> and [handoff](CONTINUE.md). Sources, pruning and transport results below remain
+> the a01 record, not validation of its anatomical view.
+
 Status: assets prepared for external review. Final-commit verification and acceptance are recorded separately under evidence/V2G/acceptance/.
 
 These are display assets derived from measured anatomy. There is no change to

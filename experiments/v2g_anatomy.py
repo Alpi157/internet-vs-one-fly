@@ -9,7 +9,7 @@ import gzip
 import time
 import numpy as np
 from flybench.anatomy_sources import SWC, ROIS, fetch_many, chunk_paths
-from flybench.anatomy import read_swc, unbranched_paths, simplify, simplified_tree, project, decode_segmentation, encode_arbors, decode_arbors, prune_terminal_twigs, cable_and_tips
+from flybench.anatomy import read_swc, unbranched_paths, simplify, simplified_tree, project, decode_segmentation, encode_arbors, decode_arbors, prune_terminal_twigs, cable_and_tips, roi_centroids, anatomical_axis_audit
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'apps/play/public/data/anatomy'
@@ -117,6 +117,32 @@ def annotations():
     import pyarrow.feather as feather
     path=ROOT/'data/raw/body-annotations-male-cns-v1.0-minconf-0.5.feather'
     return {int(r['bodyId']):r for r in feather.read_table(path,columns=['bodyId','somaLocation','somaSide','instance']).to_pylist()}
+
+
+def audit_frame():
+    """Outcome-neutral landmark gate. It never re-exports any display asset."""
+    verify_pinned_inputs()
+    centroids = {}
+    for panel, v in zip(('brain', 'VNC'), volumes()):
+        centroids[panel] = roi_centroids(v['volume'], v['scale'], v['names'])
+    prior = json.loads((OUT/'frame.json').read_text())
+    frame = prior['frame']
+    audit = anatomical_axis_audit(centroids, frame['axes'][0], frame['signs'][0])
+    report = dict(schema='flybench.anatomical-axis-audit.v1',
+                  source_lock_sha256=hashlib.sha256((ROOT/'profiles/anatomy-lock-v1.json').read_bytes()).hexdigest(),
+                  scale_um=1.024, coordinate_definition='Original source XYZ in micrometres, using occupied voxel centres; not display coordinates.',
+                  centroids=centroids, audit=audit,
+                  existing_soma_side_evidence=prior['evidence']['soma_side_majority'])
+    path = ROOT/'evidence/V2G/a02/axis-audit.json'
+    save(path, report)
+    for row in audit['axes']:
+        print(row['panel'],row['anatomical_positive'],row['source_axis'],row['sign'],flush=True)
+    if audit['contradictions']:
+        for failure in audit['contradictions']:
+            print('CONTRADICTION', json.dumps(failure,sort_keys=True),flush=True)
+        raise RuntimeError('STOP: contradictory anatomical landmark ordering; see evidence/V2G/a02/axis-audit.json. No assets re-exported.')
+    print('PASS: anatomical landmark axis gate',flush=True)
+    return report
 
 
 def verify_pinned_inputs():
@@ -318,6 +344,8 @@ def export_arbors(circuit, ids, brain, skeletons, frame, bbox, lod):
 
 
 def build(arbors_only=False):
+    # Never regenerate the mislabeled a01 frame while the anatomical gate fails.
+    audit_frame()
     inputs=verify_pinned_inputs()
     OUT.mkdir(parents=True,exist_ok=True);v=None if arbors_only else volumes(); annotation=annotations();c=circuits();skeletons={}
     for row in inputs:
@@ -470,11 +498,13 @@ def verify_assets(raw=False):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--fetch',action='store_true');parser.add_argument('--build',action='store_true');parser.add_argument('--arbors-only',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--verify-raw',action='store_true');parser.add_argument('--previews',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--fetch',action='store_true');parser.add_argument('--build',action='store_true');parser.add_argument('--arbors-only',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--verify-raw',action='store_true');parser.add_argument('--previews',action='store_true');parser.add_argument('--audit-frame',action='store_true');args=parser.parse_args()
+    if args.audit_frame:audit_frame()
     if args.fetch:acquire()
     if args.build:build(args.arbors_only)
     if args.verify or args.verify_raw:verify_assets(args.verify_raw)
     if args.previews:
+        audit_frame()
         manifest=json.loads((OUT/'manifest.json').read_text());c=circuits();roi=json.loads((OUT/'neuropils.json').read_text())
         preview(manifest,roi,c)
         selected={int(min((n for n in c['T1b'][1]['nodes'] if n['group']==g),key=lambda n:int(n['body_id']))['body_id']) for g in ('giant fiber','LC4','LPLC2')}
