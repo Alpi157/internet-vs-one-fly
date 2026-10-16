@@ -64,7 +64,7 @@ Raw downloads and parsed/volume caches stay ignored under data/. The anatomy loc
 preserves its original retrieval identities on reacquisition and rejects changes.
 All browser assets and provenance are committed. The bounded review ZIP includes
 phone transports, every preview, manifests, per-neuron retention measurements,
-decode screenshots and logs. Desktop transports and detailed source-row lists
+decode screenshots and logs. Unchanged legacy publication media, desktop transports and detailed source-row lists
 remain in the submitted checkout and are enumerated with hashes in large-files.json.
 
 The final SHA is recorded by acceptance and review manifests to avoid a

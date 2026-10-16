@@ -2105,6 +2105,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
+        if milestone == "V2G" and path.startswith("docs/media/") and not path.startswith("docs/media/anatomy/"):
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
+                            "reason": "Unchanged legacy publication media; all V2G anatomy previews and decode screenshots are included"})
+            continue
         if milestone == "V2G" and (path.endswith(".retention.json.gz") or path.endswith("-desktop.arbors.gz")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data), "reason": "Bounded V2G review: detailed source-row provenance or desktop arbor transport; phone transports, all manifests, retention summaries and previews included; full file in submitted checkout"})
             continue
