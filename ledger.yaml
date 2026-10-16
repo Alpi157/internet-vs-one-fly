@@ -99,7 +99,7 @@ stages:
   V2E: ACCEPTED
   V2F: SUBMITTED
   V2G: SUBMITTED
-  V2H: IMPLEMENTED_PENDING_VALIDATION
+  V2H: SUBMITTED_FOR_EXTERNAL_REVIEW
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -461,7 +461,7 @@ v2g_current:
     All brain rules and every other a02 requirement are unchanged. Continue from step 2 (the composite layout) through to reviews/V2G-a02.zip.
 
 v2h_current:
-  status: IMPLEMENTED_PENDING_VALIDATION
+  status: SUBMITTED_FOR_EXTERNAL_REVIEW
   base_sha: ae3e417ed6dd0882550b95b3ff29b56c751d60fa
   design_reference: docs/design/v4/DESIGN.md
   design_zip_sha256: fd8e7bd0a9c2bb8ae18b34438b8ce82d4968662a09712e637d260cfac39dd6f3
@@ -475,5 +475,6 @@ v2h_current:
   bots: evidence/V2H/bots/comparison.json; descriptive paired comparison, no target
   browser_evidence: evidence/V2H/browser/e2e.json
   external_acceptance: PENDING
+  bundle_limit: 48 MiB; dry bundle 23966349 bytes exceeded legacy 15 MiB
   main_pushed: false
   deployment_triggered: false

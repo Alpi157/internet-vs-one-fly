@@ -21,8 +21,9 @@ manifests, and proves frame equality without wall contact.
 `apps/play/public/data/display-v1.json` declares the fly's display length as
 2.0 arena units and the scale label as “1 fly length”. There is no conversion to
 physical fly size. The static brightfield is cached, with an inner meniscus at
-the actual arena boundary. The supplied fly SVG is rasterized once per device
-pixel ratio. Scale changes and airborne pose are presentation only. The hand's
+the actual arena boundary. The supplied fly SVG is assembled into one pose atlas and rasterized once per
+device pixel ratio. The original leg paths swing from the recorded gait counter;
+the original wing paths spread in the airborne pose. Body heading stays exact. Scale changes and airborne pose are presentation only. The hand's
 core reaches the actual hit radius at impact, marked by a dashed circle. The
 pill and rim clock use recorded ticks; game time pauses during recorded replay.
 
@@ -85,3 +86,7 @@ JS heap is reported only where the browser exposes it.
 There is no change to the neural model, kernel, graphs, runtime neural parameters,
 frozen records/results, or V2G anatomy. No push, tag or deployment is performed.
 Stage acceptance remains with the external reviewer.
+
+The existing review bundler needed a V2H-only 48 MiB bound: its dry run was
+23,966,349 bytes before additional clip/fallback checks, above the legacy 15 MiB
+bound. This keeps the entire mandated screenshot matrix and logs in one ZIP.

@@ -5,10 +5,35 @@ export class MicroscopeField {
     private layer = document.createElement('canvas');
     private sprite = document.createElement('canvas');
     private dpr = 0;
+    private cachedArenaPixels = 0;
     private image = new Image();
     private profile: any;
     private display: any;
-    constructor(canvas: HTMLCanvasElement, profile: any, display: any, base: string, onReady: () => void = () => { }) { this.canvas = canvas; this.c = canvas.getContext('2d')!; this.profile = profile; this.display = display; this.image.onload = () => { this.cache(); onReady(); }; this.image.src = base + 'art/fly.svg'; this.cache(); }
+    constructor(canvas: HTMLCanvasElement, profile: any, display: any, base: string, onReady: () => void = () => { }) { this.canvas = canvas; this.c = canvas.getContext('2d')!; this.profile = profile; this.display = display; this.image.onload = () => { this.cache(); onReady(); }; void this.loadFly(base); this.cache(); }
+    private async loadFly(base: string) {
+        const source = await fetch(base + 'art/fly.svg').then(r => r.text());
+        const doc = new DOMParser().parseFromString(source, 'image/svg+xml');
+        const svg = doc.documentElement, defs = svg.querySelector('defs')!, original = defs.querySelector('#fly')!;
+        svg.setAttribute('viewBox', '0 8 960 124');
+        svg.querySelector(':scope > use')!.remove();
+        // One SVG atlas and one rasterization per DPR: the approved art's actual
+        // legs and wings change pose; the body heading is never animated away.
+        for (let pose = 0; pose < 8; pose++) {
+            const fly = original.cloneNode(true) as Element; fly.id = 'pose-' + pose;
+            const swing = pose > 0 && pose < 7 ? Math.sin((pose - 1) / 6 * Math.PI * 2) * 4 : 0;
+            const legs = fly.querySelectorAll('[href="#legL"]');
+            legs[0].setAttribute('transform', `rotate(${swing} 54 51)`);
+            legs[1].setAttribute('transform', `translate(120 0) scale(-1 1) rotate(${-swing} 54 51)`);
+            if (pose === 7) {
+                const wings = fly.querySelectorAll('[href="#wingL"]');
+                wings[0].setAttribute('transform', 'rotate(35 52.5 49)');
+                wings[1].setAttribute('transform', 'translate(120 0) scale(-1 1) rotate(35 52.5 49)');
+            }
+            fly.querySelectorAll('[id]').forEach(e => e.removeAttribute('id')); defs.append(fly);
+            const use = doc.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#pose-' + pose); use.setAttribute('transform', `translate(${pose * 120} 0)`); svg.append(use);
+        }
+        this.image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+    }
     // The chamber margin is outside the playable radius, on every viewport.
     get arenaPixels() { return innerWidth < 900 ? 304 : 329; }
     point(x: number, y: number) { const scale = this.arenaPixels / this.profile.arena_radius; return [350 + x * scale, 350 - y * scale]; }
@@ -23,6 +48,7 @@ export class MicroscopeField {
     private cache() {
         const dpr = Math.min(devicePixelRatio || 1, 3);
         this.dpr = dpr;
+        this.cachedArenaPixels = this.arenaPixels;
         if (this.canvas.width !== 700 * dpr) {
             this.canvas.width = 700 * dpr;
             this.canvas.height = 700 * dpr;
@@ -80,7 +106,7 @@ export class MicroscopeField {
         c.fillStyle = '#1e231f';
         c.textAlign = 'center';
         c.fillText(this.display.scale_bar_label, 350, 652);
-        this.sprite.width = 160 * dpr;
+        this.sprite.width = 160 * 8 * dpr;
         this.sprite.height = 166 * dpr;
         if (this.image.complete && this.image.naturalWidth)
             this.sprite.getContext('2d')!.drawImage(this.image, 0, 0, this.sprite.width, this.sprite.height);
@@ -96,7 +122,7 @@ export class MicroscopeField {
         holdMs: number | null;
         lastImpact: any;
     }) {
-        if (this.dpr !== Math.min(devicePixelRatio || 1, 3))
+        if (this.dpr !== Math.min(devicePixelRatio || 1, 3) || this.cachedArenaPixels !== this.arenaPixels)
             this.cache();
         const c = this.c;
         c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
@@ -159,18 +185,10 @@ export class MicroscopeField {
             c.ellipse(8, 10, length * .3, length * .45, 0, 0, Math.PI * 2);
             c.fill();
             c.scale(1.06, 1.06);
-            c.fillStyle = '#fff9';
-            for (const sign of [-1, 1]) {
-                c.beginPath();
-                c.ellipse(sign * length * .28, 0, length * .23, length * .13, sign * .5, 0, Math.PI * 2);
-                c.fill();
-            }
         }
-        if (!options.reduced) {
-            const gait = Math.sin(f.gait * 12) * .025;
-            c.rotate(gait);
-        }
-        c.drawImage(this.sprite, -length * 120 / 124 / 2, -length / 2, length * 120 / 124, length);
+        const pose = options.reduced ? 0 : f.air ? 7 : f.gait > 0 ? 1 + Math.floor(f.gait * 12) % 6 : 0;
+        c.drawImage(this.sprite, pose * 160 * this.dpr, 0, 160 * this.dpr, 166 * this.dpr,
+            -length * 120 / 124 / 2, -length / 2, length * 120 / 124, length);
         c.restore();
         if (options.reticle || options.holdMs !== null) {
             const [ax, ay] = this.point(options.aim.x, options.aim.y);
