@@ -2131,6 +2131,10 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     diff_exclusions = [".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F", "V2G"} else []
     if milestone == "V2G":
         diff_exclusions.append(":(exclude)docs/media/anatomy")
+        # Complete new JSON inventories are already included in repo/, so the
+        # patch need not duplicate their large additions beside the full files.
+        diff_exclusions.extend([":(exclude)profiles/anatomy-lock-v1.json",
+                                ":(exclude)docs/anatomy-soma-units.json"])
     diff = git(root, "diff", "--binary", diff_base, submitted, "--", *diff_exclusions, text=False)
     assert isinstance(diff, bytes)
     entries["git_diff.patch"] = diff
