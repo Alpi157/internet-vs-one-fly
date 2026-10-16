@@ -30,6 +30,9 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    const meta=await page.locator('meta[property="og:image"]').getAttribute('content');if(meta!=='https://alpi157.github.io/internet-vs-one-fly/og-image.png')throw new Error('OG base path');
    if(!(await page.request.get(url+'/internet-vs-one-fly/og-image.png')).ok())throw new Error('Missing OG image');
    if(requests.some(v=>v.includes('/coupling/')||v.includes('/coupling-')))throw new Error('Coupling data eagerly loaded');
+   const publicResults=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
+   const copy=await page.locator('#finding-copy').innerText();
+   for(const text of [publicResults.original,...publicResults.summary,publicResults.limitations])if(!copy.includes(text))throw new Error('Public finding differs from generated results');
    await shot('start');await page.click('#start');
    const seen=new Set();
    for(let i=0;i<6;i++){
@@ -73,6 +76,8 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    runs.at(-1).live_game_fps=liveGameFPS;
    if(name==='webkit'&&viewport.width===390&&liveGameFPS<55)throw new Error('Live WebKit game below 55 fps');
    await page.click('#coupling');await page.waitForFunction(()=>window.couplingTest?.ready());
+   const labCopy=await page.locator('#coupling-results').textContent();
+   for(const text of publicResults.summary)if(!labCopy.includes(text))throw new Error('Coupling finding differs from generated results');
    const coupling=[];
    for(const scale of [.01,.03,.06]){
      await page.evaluate(s=>window.couplingTest.setScale(s),scale);

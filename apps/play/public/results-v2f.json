@@ -1,0 +1,256 @@
+{
+  "exploratory": [
+    "EXPLORATORY E1: measured leading signed eigenvalues are 3.04103 for T1a and 6.91182 for T2, above every family median; 2 null eigenvalues did not converge and remain missing. Structure and Spearman associations are descriptive, not a causal mechanism test.",
+    "EXPLORATORY E2a (glutamate treated as excitatory): measured rate 139.557 Hz versus null median 264.911 Hz; measured critical coupling 0.015 versus null median 0.01. Measured rate percentile 0%; critical-coupling percentile 100%. Both measured and shuffled wiring saturate under this sign assumption.",
+    "EXPLORATORY E3-low (lower noise): measured rate 1.52497 Hz versus null median 116.096 Hz; measured critical coupling >0.1 (censored) versus null median 0.03. Measured rate percentile 0%; critical-coupling percentile 100%.",
+    "EXPLORATORY E3-high (higher noise): measured rate 4.13383 Hz versus null median 119.603 Hz; measured critical coupling >0.1 (censored) versus null median 0.03. Measured rate percentile 0%; critical-coupling percentile 100%.",
+    "EXPLORATORY E2b: preregistered SKIPPED. Compiled predicted_nt_confidence is copied verbatim, but the source confidence semantics and its relationship to consensus_nt signs are not established. No threshold interpretation is invented."
+  ],
+  "families": [
+    "H0-STR (T1a), N-STRENGTH: the registered stability result did not replicate. H0a: Holm p 0.088, not significant; does not establish the stability difference; H0b: Holm p 0.088, not significant; does not establish the stability difference.",
+    "H0-FULL (FULL), N-SIGN: the stability difference holds under this model. H0b-FULL: Holm p 0.04, supports the registered stability direction.",
+    "H0-FULL (FULL), N-STRENGTH: the registered stability result did not replicate. H0b-FULL: Holm p 0.14, not significant; does not establish the stability difference.",
+    "H0-T2 (T2), N-FULL: the stability difference holds under this model. H0a: Holm p 0.02, supports the registered stability direction; H0b: Holm p 0.02, supports the registered stability direction.",
+    "H0-T2 (T2), N-SIGN: the stability difference holds under this model. H0a: Holm p 0.02, supports the registered stability direction; H0b: Holm p 0.02, supports the registered stability direction.",
+    "H0-T2 (T2), N-STRENGTH: the registered stability result did not replicate. H0a: Holm p 1, not significant; does not establish the stability difference; H0b: Holm p 0.02, opposite direction: measured rate is higher."
+  ],
+  "limitations": "Uniform model neurons, assumed transmitter signs and simplified inputs limit these findings to this model. Escape and walking comparisons remain insufficient; no claim concerns what living flies require.",
+  "original": "In this model, measured wiring stays stable at couplings where degree- and sign-matched shuffles saturate: the original circuit averaged 2.65 Hz at coupling 0.039, compared with null medians of 110.73 to 119.78 Hz, with Holm p 0.008 in each family.",
+  "schema": "flybench.public-results.v2f",
+  "source_sha256": {
+    "docs/results-v2e.json": "6d13f787280dc94e91c90289563ecc00327ce32217ee029c03011e3e76b1b44a",
+    "docs/results-v2f.json": "ea4e1004a72beaa1907280a9bb8610aba1bbb88a52e83c9f144aced31502f414",
+    "profiles/protocol-v2.1.json": "c4ed65c481373d1a3a4a29637878acae93c0a085fdff50914bb9d0f95d6b217d"
+  },
+  "summary": [
+    "The strength-preserving comparison did not replicate the registered stability result in the 2,641-neuron circuit: N-STRENGTH had Holm p 0.088 for both metrics.",
+    "The stability difference also holds in the full 166,700-neuron MaleCNS graph, under this model and for the families that reached significance. N-SIGN reached Holm p 0.04; N-STRENGTH did not replicate (Holm p 0.14).",
+    "The stability difference also holds in the 43,894-neuron circuit, under this model and for the families that reached significance. N-FULL and N-SIGN each reached Holm p 0.02 for both metrics; N-STRENGTH did not replicate: its critical-coupling comparison was not significant (Holm p 1), and its measured rate was higher, the opposite direction (Holm p 0.02)."
+  ],
+  "tables": [
+    {
+      "NA_excluded": 0,
+      "circuit": "T1a",
+      "classification": "CONFIRMATORY",
+      "effect": null,
+      "family": "N-STRENGTH",
+      "holm_p": 0.088,
+      "metric": "H0a",
+      "n_null": 499,
+      "null_band": [
+        0.08,
+        0.11
+      ],
+      "null_band_censored": [
+        false,
+        true
+      ],
+      "null_median": 0.1,
+      "null_median_censored": false,
+      "p": 0.06,
+      "percentile": 0.985,
+      "real": 0.11,
+      "real_censored": true,
+      "status": "COMPUTED",
+      "test": "H0-STR"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T1a",
+      "classification": "CONFIRMATORY",
+      "effect": -1.749734948882999,
+      "family": "N-STRENGTH",
+      "holm_p": 0.088,
+      "metric": "H0b",
+      "n_null": 499,
+      "null_band": [
+        2.66565694812571,
+        8.816019500189322
+      ],
+      "null_median": 4.400416508898145,
+      "p": 0.044,
+      "percentile": 0.021,
+      "real": 2.650681560015146,
+      "status": "COMPUTED",
+      "test": "H0-STR"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "FULL",
+      "classification": "CONFIRMATORY",
+      "effect": -21.5319400119976,
+      "family": "N-SIGN",
+      "holm_p": 0.04,
+      "metric": "H0b-FULL",
+      "n_null": 99,
+      "null_band": [
+        34.58554844031194,
+        38.89657612477504
+      ],
+      "null_median": 36.84143851229754,
+      "p": 0.02,
+      "percentile": 0.005,
+      "real": 15.309498500299942,
+      "status": "COMPUTED",
+      "test": "H0-FULL"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "FULL",
+      "classification": "CONFIRMATORY",
+      "effect": 0.8266136772645467,
+      "family": "N-STRENGTH",
+      "holm_p": 0.14,
+      "metric": "H0b-FULL",
+      "n_null": 99,
+      "null_band": [
+        13.439077294541091,
+        15.485337732453509
+      ],
+      "null_median": 14.482884823035395,
+      "p": 0.14,
+      "percentile": 0.935,
+      "real": 15.309498500299942,
+      "status": "COMPUTED",
+      "test": "H0-FULL"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": null,
+      "family": "N-FULL",
+      "holm_p": 0.02,
+      "metric": "H0a",
+      "n_null": 199,
+      "null_band": [
+        0.03,
+        0.039
+      ],
+      "null_band_censored": [
+        false,
+        false
+      ],
+      "null_median": 0.039,
+      "null_median_censored": false,
+      "p": 0.01,
+      "percentile": 0.9975,
+      "real": 0.11,
+      "real_censored": true,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": -62.076073039595386,
+      "family": "N-FULL",
+      "holm_p": 0.02,
+      "metric": "H0b",
+      "n_null": 199,
+      "null_band": [
+        52.64337432223083,
+        87.34147691028384
+      ],
+      "null_median": 72.07664714995215,
+      "p": 0.01,
+      "percentile": 0.0025,
+      "real": 10.00057411035677,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": null,
+      "family": "N-SIGN",
+      "holm_p": 0.02,
+      "metric": "H0a",
+      "n_null": 199,
+      "null_band": [
+        0.05,
+        0.06
+      ],
+      "null_band_censored": [
+        false,
+        false
+      ],
+      "null_median": 0.05,
+      "null_median_censored": false,
+      "p": 0.01,
+      "percentile": 0.9975,
+      "real": 0.11,
+      "real_censored": true,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": -19.657381418872742,
+      "family": "N-SIGN",
+      "holm_p": 0.02,
+      "metric": "H0b",
+      "n_null": 199,
+      "null_band": [
+        16.992138845855926,
+        42.20486125666377
+      ],
+      "null_median": 29.65795552922951,
+      "p": 0.01,
+      "percentile": 0.0025,
+      "real": 10.00057411035677,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": null,
+      "family": "N-STRENGTH",
+      "holm_p": 1.0,
+      "metric": "H0a",
+      "n_null": 199,
+      "null_band": [
+        0.11,
+        0.11
+      ],
+      "null_band_censored": [
+        true,
+        true
+      ],
+      "null_median": 0.11,
+      "null_median_censored": true,
+      "p": 1.0,
+      "percentile": 0.5,
+      "real": 0.11,
+      "real_censored": true,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    },
+    {
+      "NA_excluded": 0,
+      "circuit": "T2",
+      "classification": "CONFIRMATORY",
+      "effect": 5.014004191916891,
+      "family": "N-STRENGTH",
+      "holm_p": 0.02,
+      "metric": "H0b",
+      "n_null": 199,
+      "null_band": [
+        2.7236878616667424,
+        6.99636413860664
+      ],
+      "null_median": 4.986569918439878,
+      "p": 0.01,
+      "percentile": 0.9975,
+      "real": 10.00057411035677,
+      "status": "COMPUTED",
+      "test": "H0-T2"
+    }
+  ]
+}
