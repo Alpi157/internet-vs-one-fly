@@ -99,7 +99,7 @@ stages:
   V2E: ACCEPTED
   V2F: SUBMITTED
   V2G: SUBMITTED
-  V2H: SUBMITTED_FOR_EXTERNAL_REVIEW
+  V2H: SUBMITTED
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -383,7 +383,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: External review of V2G a02 composite anatomy. No push, tag or deployment.
+next_action: External review of V2H a01 microscope game UI. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56

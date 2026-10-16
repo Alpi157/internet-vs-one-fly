@@ -29,6 +29,7 @@ function cluster95(records: any[]) {
     return [draws[249], draws[9749]];
 }
 function wilson(k: number, n: number) { const z = 1.959963984540054, p = k / n, d = 1 + z * z / n, c = (p + z * z / (2 * n)) / d, h = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d; return [c - h, c + h]; }
+const descriptive = process.env.FLYBENCH_BOT_DESCRIPTIVE === '1';
 const started = performance.now(), results = [];
 for (const strategy of strategies) {
     let catches = 0, strikes = 0;
@@ -55,11 +56,11 @@ for (const strategy of strategies) {
         catches += game.catches;
         strikes += game.strikes;
     }
-    const row = { ...strategy, catches, strikes, catch_rate: catches / strikes, wilson95_nominal_independent_strikes: wilson(catches, strikes), cluster_bootstrap95: cluster95(records), target_pass: catches / strikes >= .1 && catches / strikes <= .7, records };
+    const row = { ...strategy, catches, strikes, catch_rate: catches / strikes, wilson95_nominal_independent_strikes: wilson(catches, strikes), cluster_bootstrap95: cluster95(records), ...(descriptive ? {} : { target_pass: catches / strikes >= .1 && catches / strikes <= .7 }), records };
     results.push(row);
     console.log(JSON.stringify({ ...row, records: undefined }));
 }
-const report = { profile_id: profile.profile_id, profile, rounds_per_strategy: rounds, reaction_delay_ms: 180, interval_method: '95% percentile bootstrap of independent six-strike rounds, 10000 resamples, stream 79 seed 2026600001; descriptive only, ten rounds per strategy', aim_noise: 'independent uniform +/-0.8 arena units on each axis, RNG stream 71, fixed across game versions', neural_profile: runtime.status, parameters: runtime.parameters, status: results.every(r => r.target_pass) ? 'PASS' : 'TARGET_MISSED', wall_seconds: (performance.now() - started) / 1000, results };
+const report = { profile_id: profile.profile_id, profile, rounds_per_strategy: rounds, reaction_delay_ms: 180, interval_method: '95% percentile bootstrap of independent six-strike rounds, 10000 resamples, stream 79 seed 2026600001; descriptive only, ten rounds per strategy', aim_noise: 'independent uniform +/-0.8 arena units on each axis, RNG stream 71, fixed across game versions', neural_profile: runtime.status, parameters: runtime.parameters, status: descriptive ? 'COMPLETE_DESCRIPTIVE_NO_TARGET' : results.every(r => r.target_pass) ? 'PASS' : 'TARGET_MISSED', wall_seconds: (performance.now() - started) / 1000, results };
 writeFileSync(resolve(out, `bots-v${profile.version}.json`), JSON.stringify(report, null, 2) + '\n');
 
 if(report.status!=='PASS' && process.env.FLYBENCH_BOT_DESCRIPTIVE!=='1')process.exitCode=1;

@@ -33,6 +33,9 @@ export class BrainView {
     private bounds: number[] = [];
     private scale = 1;
     private offset = [0, 0];
+    private shownFrame?: Frame;
+    private shownFrames: Frame[] = [];
+    private shownDim = false;
     private lastTick = -1;
     private lastMode = '';
     constructor(host: HTMLElement, base: string, nodes: any[], display: any) {
@@ -51,7 +54,7 @@ export class BrainView {
     private async load(base: string) {
         const start = performance.now();
         const root = base + 'data/anatomy/';
-        const [manifest, rois] = await Promise.all([fetch(root + 'manifest.json').then(r => r.json()), fetch(root + 'neuropils.json').then(r => r.json())]);
+        const [manifest, rois] = await Promise.all([fetch(root + 'manifest.json').then(r => r.json()), fetch(root + 'neuropils.json').then(r => r.json()), document.fonts.load('600 24px Atkinson')]);
         this.rois = rois;
         const asset = manifest.assets.find((a: any) => a.circuit === 'T1b' && a.lod === this.lod);
         const response = await fetch(root + asset.file);
@@ -260,6 +263,7 @@ export class BrainView {
             return;
         if (this.lastTick === frame.tick && this.lastMode === this.mode)
             return;
+        this.shownFrame=frame;this.shownFrames=frames;this.shownDim=dim;
         if (this.lastMode !== this.mode)
             this.prepare();
         this.lastTick = frame.tick;
@@ -349,6 +353,14 @@ export class BrainView {
             c.globalAlpha = 1;
             c.globalCompositeOperation = 'source-over';
         }
+    }
+    snapshotAt(frame: Frame, frames: Frame[], mode = 'brain') {
+        const previous = { frame: this.shownFrame, frames: this.shownFrames, dim: this.shownDim, mode: this.mode };
+        this.mode = mode; this.lastTick = -1; this.draw(frame, frames);
+        const snapshot = this.snapshot();
+        this.mode = previous.mode; this.lastTick = -1;
+        if (previous.frame) this.draw(previous.frame, previous.frames, previous.dim);
+        return snapshot;
     }
     snapshot() { const c = document.createElement('canvas'); c.width = this.canvas.width; c.height = this.canvas.height; const g = c.getContext('2d')!; g.drawImage(this.canvas, 0, 0); g.drawImage(this.overlay, 0, 0); return c; }
     get renderer() { return this.gl ? 'WebGL2' : 'Canvas soma fallback'; }

@@ -97,8 +97,9 @@ try {
                 await page.evaluate(() => window.flyTest.measureReplay(true));
                 const replayFPS = await fps(page);
                 await page.evaluate(() => window.flyTest.measureReplay(false));
+                const clipCapability=await page.evaluate(()=>({mediaRecorder:typeof MediaRecorder!=='undefined',canvasCapture:'captureStream' in HTMLCanvasElement.prototype}));
                 if(viewport.width===390 && await page.locator('#video').isEnabled()) {
-                    const [clip] = await Promise.all([page.waitForEvent('download',{timeout:20000}),page.click('#video')]);
+                    const [clip] = await Promise.all([page.waitForEvent('download',{timeout:20000}),(async()=>{await page.click('#video');await page.keyboard.press('Escape');await page.click('#replay-last');})()]);
                     const clipPath=resolve(out,`${prefix}-replay.${clip.suggestedFilename().split('.').at(-1)}`);await clip.saveAs(clipPath);
                     const bytes=readFileSync(clipPath),dimensions=await page.evaluate(({base64,mime})=>new Promise((resolve,reject)=>{const video=document.createElement('video');video.onloadedmetadata=()=>resolve([video.videoWidth,video.videoHeight]);video.onerror=()=>reject(Error('Unreadable replay clip'));video.src='data:'+mime+';base64,'+base64;}),{base64:bytes.toString('base64'),mime:clipPath.endsWith('.mp4')?'video/mp4':'video/webm'});assert.deepEqual(dimensions,[720,1280]);
                 }
@@ -181,6 +182,8 @@ try {
                     await page.keyboard.press('Enter');
                 }
                 assert.equal((await page.evaluate(() => window.flyTest.log())).inputs.length, profile.max_strikes);
+                // A completed-round modal must not keep the coupling lab inert.
+                await page.locator('#round-sheet [data-wiring]').click();await page.evaluate(()=>{window.couplingTest=undefined;});await page.click('#coupling');await page.locator('#coupling-canvas').waitFor({state:'visible'});await page.waitForFunction(()=>window.couplingTest?.ready());await page.click('#coupling-close');await page.locator('#round-sheet').waitFor({state:'visible'});
                 // Both existing labs remain reachable from Wiring lab.
                 await page.locator('#round-sheet [data-wiring]').click();
                 await page.click('#lab');
@@ -191,11 +194,11 @@ try {
                 await page.evaluate(() => window.flyTest.advance(10));
                 assert.equal((await page.evaluate(() => window.flyTest.log())).graph_identity.endsWith(':LC4'), true);
                 await page.locator('[data-wiring]:visible').first().click();
-                await page.click('#coupling');
+                await page.evaluate(()=>{window.couplingTest=undefined;});await page.click('#coupling');await page.locator('#coupling-canvas').waitFor({state:'visible'});
                 await page.waitForFunction(() => window.couplingTest?.ready());
                 await page.waitForFunction(() => window.couplingTest.state().panels[0]?.tick > 0);
                 assert(await page.locator('#coupling-canvas').isVisible());
-                const initialFiles = [...requests].filter(u => u.startsWith(origin)).map(u => u.split('/internet-vs-one-fly/')[1]?.split('?')[0] || 'index.html').filter(p => !p.includes('data/anatomy/') && !p.includes('circuit.flygraph') && !p.includes('favicon'));
+                const initialFiles = [...requests].filter(u => u.startsWith(origin)).map(u => u.split('/internet-vs-one-fly/')[1]?.split('?')[0] || 'index.html').filter(p => !p.includes('data/anatomy/') && p !== 'data/brain.json' && !p.includes('circuit.flygraph') && !p.includes('favicon'));
                 const unique = [...new Set(initialFiles)];
                 const initialSizes = unique.map(p => { const b = readFileSync(resolve(dist, p)); return { path: p, bytes: b.length, gzip_bytes: p.endsWith('.gz') || p.endsWith('.woff2') ? b.length : gzipSync(b).length }; });
                 assert.equal(external.length, 0, external.join('\n'));
@@ -203,7 +206,7 @@ try {
                 console.log(prefix, JSON.stringify({ liveFPS, replayFPS, renderer: state.renderer }));
                 assert(liveFPS >= (viewport.width === 390 ? 55 : 50), `live ${liveFPS}`);
                 assert(replayFPS >= 50, `replay ${replayFPS}`);
-                reports.push({ browser: name, version: browser.version(), viewport, status: 'PASS', live_fps: liveFPS, replay_fps: replayFPS, anatomy_load_ms: state.anatomyLoadMs, anatomy_lod: state.lod, renderer: state.renderer, js_heap_bytes: heap, initial_download_bytes: initialSizes.reduce((n, f) => n + f.bytes, 0), initial_gzip_bytes: initialSizes.reduce((n, f) => n + f.gzip_bytes, 0), initial_files: initialSizes, axe: scans, screenshots, external_requests: external, keyboard_full_round: 'PASS', focus_trap_escape_return: 'PASS', node_replay: 'PASS', labs: 'PASS', errors });
+                reports.push({ browser: name, version: browser.version(), viewport, status: 'PASS', live_fps: liveFPS, replay_fps: replayFPS, anatomy_load_ms: state.anatomyLoadMs, anatomy_lod: state.lod, renderer: state.renderer, js_heap_bytes: heap, initial_download_bytes: initialSizes.reduce((n, f) => n + f.bytes, 0), initial_gzip_bytes: initialSizes.reduce((n, f) => n + f.gzip_bytes, 0), initial_files: initialSizes, axe: scans, screenshots, external_requests: external, keyboard_full_round: 'PASS', focus_trap_escape_return: 'PASS', node_replay: 'PASS', labs: 'PASS', clip_capability:clipCapability, errors });
                 console.log(`${prefix}: PASS live ${liveFPS.toFixed(1)} fps, replay ${replayFPS.toFixed(1)} fps`);
                 if(viewport.width===390) {
                     const fallback=await context.newPage();await fallback.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return type==='webgl2'?null:get.call(this,type,...args);};});
@@ -225,7 +228,7 @@ try {
 finally {
     await new Promise(r => server.close(r));
 }
-const report = { status: reports.every(r => r.status === 'PASS') ? 'PASS' : 'FAIL', scope: 'Production Vite build; headless desktop host engines, not physical phones. rAF opportunities over 3 seconds during active worker gameplay and recorded replay. Initial requests exclude graph and anatomy, include UI, metadata, fonts and generated results. Gzip sizes are calculated; server sends uncompressed bytes. Anatomy load includes fetch, decompression, decode and GPU upload; heap is engine-exposed JS only.', reports };
+const report = { status: reports.every(r => r.status === 'PASS') ? 'PASS' : 'FAIL', scope: 'Production Vite build; headless desktop host engines, not physical phones. rAF opportunities over 3 seconds during active worker gameplay and recorded replay. Initial requests exclude graph, anatomy transports and the legacy soma map data/brain.json; include UI, runtime metadata, fonts and generated results. Gzip sizes are calculated; server sends uncompressed bytes. Anatomy load includes fetch, decompression, decode and GPU upload; heap is engine-exposed JS only.', reports };
 writeFileSync(resolve(out, 'e2e.json'), JSON.stringify(report, null, 2) + '\n');
 if (report.status !== 'PASS')
     process.exitCode = 1;

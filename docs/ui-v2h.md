@@ -38,7 +38,8 @@ the executed circuit. Phone LOD is selected for touch or widths below 900 CSS
 pixels; otherwise desktop LOD is used. The Brain crop is the default; Whole CNS
 uses the complete V2G composite. The scale bar is 100 µm in the asset coordinate
 system. Giant-fiber labels anchor to a recorded soma, and LC4/LPLC2 labels to
-the centroid of their displayed brain-panel skeleton vertices. Separate label
+the centroid of their displayed brain-panel skeleton vertices: the supplied
+assets do not provide a group-to-glomerulus mapping, so none is invented. Separate label
 slots avoid text collisions; leader lines retain the measured anchor positions.
 Missing soma coordinates remain missing.
 
@@ -78,8 +79,8 @@ three-browser/two-viewport screenshot matrix, axe results for each screen state,
 keyboard-only full rounds, replay re-execution checks and performance reports.
 Measurements use the existing headless harness and are not physical-phone
 measurements. FPS is rAF opportunity count during live worker execution or
-continuously looping recorded replay. Initial download excludes graph and
-anatomy and lists every included resource, both actual and calculated gzip
+continuously looping recorded replay. Initial download excludes graph, anatomy transports and the legacy soma map
+`data/brain.json`, and lists every included resource, both actual and calculated gzip
 bytes. Anatomy timing includes fetch, decompression, decode and GPU preparation;
 JS heap is reported only where the browser exposes it.
 
@@ -90,3 +91,8 @@ Stage acceptance remains with the external reviewer.
 The existing review bundler needed a V2H-only 48 MiB bound: its dry run was
 23,966,349 bytes before additional clip/fallback checks, above the legacy 15 MiB
 bound. This keeps the entire mandated screenshot matrix and logs in one ZIP.
+
+Video export captures its own recorded frame sequence; closing the sheet or
+starting another hand cannot introduce live activity into that clip. The tested
+headless WebKit exposes no canvas captureStream, so its video button is disabled;
+PNG sharing remains available. Browser capability flags are in the evidence.

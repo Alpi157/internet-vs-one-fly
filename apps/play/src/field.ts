@@ -121,10 +121,11 @@ export class MicroscopeField {
         reticle: boolean;
         holdMs: number | null;
         lastImpact: any;
-    }) {
+    }, output: HTMLCanvasElement = this.canvas) {
         if (this.dpr !== Math.min(devicePixelRatio || 1, 3) || this.cachedArenaPixels !== this.arenaPixels)
             this.cache();
-        const c = this.c;
+        if (output !== this.canvas && output.width !== this.canvas.width) { output.width = this.canvas.width; output.height = this.canvas.height; }
+        const c = output === this.canvas ? this.c : output.getContext('2d')!;
         c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
         c.clearRect(0, 0, 700, 700);
         c.drawImage(this.layer, 0, 0, 700, 700);

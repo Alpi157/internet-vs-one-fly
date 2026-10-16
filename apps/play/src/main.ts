@@ -99,13 +99,13 @@ $('pause-replay').onclick = () => { replayPaused = !replayPaused; if (!replayPau
     replayPinned = null;
     replayStart = performance.now() - replayIndex * 40;
 } $('pause-replay').innerHTML = replayPaused ? playIcon : pauseIcon; $('pause-replay').setAttribute('aria-label', replayPaused ? 'Play replay' : 'Pause replay'); };
-function drawTimeline(f: Frame) {
-    const c = timeline.getContext('2d')!;
+function drawTimeline(f: Frame, frames = replay, impact = lastImpact, output = timeline) {
+    const c = output.getContext('2d')!;
     c.fillStyle = '#0a0c0a';
     c.fillRect(0, 0, 720, 190);
-    if (!lastImpact || !brain)
+    if (!impact || !brain)
         return;
-    const first = lastImpact.tick - profile.replay_pre_ms * 2, last = lastImpact.tick, data = replay.filter(f => f.tick >= first && f.tick <= last), x = (t: number) => 180 + (t - first) / (last - first) * 515;
+    const first = impact.tick - profile.replay_pre_ms * 2, last = impact.tick, data = frames.filter(f => f.tick >= first && f.tick <= last), x = (t: number) => 180 + (t - first) / (last - first) * 515;
     const groups = new Map<number, string>(brain.nodes.map((n: any) => [n.index, n.group]));
     const population = brain.nodes.filter((n: any) => ['LC4', 'LPLC2'].includes(n.group)).length;
     const rates = data.map(v => v.spikes.reduce((n, e) => n + e.indices.filter(i => ['LC4', 'LPLC2'].includes(groups.get(i)!)).length, 0) / population / .01), maxRate = Math.max(1, ...rates);
@@ -266,7 +266,7 @@ const couplingHost = document.createElement('div');
 couplingHost.id = 'coupling-host';
 couplingHost.hidden = true;
 document.body.append(couplingHost);
-$('coupling').onclick = async () => { ($('wiring-sheet') as HTMLDialogElement).close(); send('pause'); couplingOpen = true; app.hidden = true; const { openCoupling } = await import('./coupling.ts'); await openCoupling(couplingHost, base, () => { couplingOpen = false; app.hidden = false; drawnTick = -1; if (started && !paused && !finished)
+$('coupling').onclick = async () => { for (const dialog of Array.from(document.querySelectorAll<HTMLDialogElement>('dialog[open]'))) dialog.close(); send('pause'); couplingOpen = true; app.hidden = true; const { openCoupling } = await import('./coupling.ts'); await openCoupling(couplingHost, base, () => { couplingOpen = false; app.hidden = false; drawnTick = -1; if (finished) showRound(); else if (started && !paused)
     send('resume'); }); };
 $('lab').onclick = async () => { const { openLab } = await import('./lab.ts'); openLab($('lab-panel'), async (mode) => { const { configureLab } = await import('./lab.ts'); const selected = await configureLab(mode, buffer, runtime, base); ($('wiring-sheet') as HTMLDialogElement).close(); ($('round-sheet') as HTMLDialogElement).close(); reset(); send('init', { buffer: selected.buffer, runtime: selected.runtime, profile, neuralSeed: 2026092802, environmentSeed: 8128, manual }); $('notice').textContent = selected.label + '; new round, explicit reset.'; }); };
 function reset() { started = false; paused = true; replaying = false; finished = false; ready = false; history.length = 0; impacts.length = 0; replay = []; lastImpact = null; used = 0; catches = 0; frame = { ...frame, tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, strike: null, impact: null, spikes: [], air: false, gait: 0 }; $('intro').hidden = false; drawnTick = -1; ($('replay-last') as HTMLButtonElement).disabled = true; updateStats(); }
@@ -282,20 +282,39 @@ function wrap(c: CanvasRenderingContext2D, text: string, x: number, y: number, w
 function bestEscape() { return impacts.filter(i => !i.caught && i.lead_ms !== null).sort((a, b) => b.lead_ms - a.lead_ms)[0]; }
 function number(c: CanvasRenderingContext2D, text: string, x: number, y: number, size: number) { c.font = `900 ${size}px Doto`; const parts = text.split('.'); c.fillText(parts[0], x, y); if (parts[1]) {
     x += c.measureText(parts[0]).width + size * .08;
-    c.fillRect(x, y - size * .22, size * .16, size * .16);
+    c.beginPath(); c.roundRect(x, y - size * .22, size * .16, size * .16, size * .056); c.fill();
     c.fillText(parts[1], x + size * .26, y);
 } }
 function shareCard() { const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 630; const c = canvas.getContext('2d')!; c.fillStyle = '#0a0c0a'; c.fillRect(0, 0, 1200, 630); c.fillStyle = '#e9ede6'; c.font = '900 38px Doto'; c.fillText('Catch the fly', 38, 62); const best = bestEscape(); const still = best ?? lastImpact; if (still && brainView?.ready) {
     const observed = history.filter(f => f.tick <= still.tick), f = observed.at(-1)!;
-    const mode = brainView.mode; brainView.mode = 'brain'; brainView.draw(f, observed); brainView.mode = mode;
-    c.drawImage(brainView.snapshot(), 24, 110, 600, 354);
+    c.drawImage(brainView.snapshotAt(f, observed), 24, 110, 600, 354);
     drawnTick = -1;
 } c.fillStyle = best ? '#63f29a' : '#e9ede6'; number(c, best ? String(best.lead_ms) : String(catches), 650, 240, 100); c.font = '700 25px Atkinson'; c.fillText(best ? 'ms' : 'caught', 650, 290); c.fillStyle = '#e9ede6'; c.font = '400 30px Atkinson'; wrap(c, best ? `A simulated fruit fly brain beat my hand by ${best.lead_ms} ms.` : `I caught the simulated fly ${catches} times in ${used} hands.`, 650, 355, 510, 40); c.fillStyle = '#c9d0c8'; c.font = '400 24px Atkinson'; c.fillText(shareURL, 38, 580); return canvas; }
-function composite(portrait = false) { if (!portrait)
-    return shareCard(); const canvas = document.createElement('canvas'); canvas.width = 720; canvas.height = 1280; const c = canvas.getContext('2d')!; c.fillStyle = '#000'; c.fillRect(0, 0, 720, 1280); c.fillStyle = '#e9ede6'; c.font = '900 36px Doto'; c.fillText('Catch the fly', 24, 46); c.drawImage(table, 60, 65, 600, 600); if (brainView?.ready) {
-    const snapshot = brainView.snapshot(), scale = Math.min(680 / snapshot.width, 400 / snapshot.height);
-    c.drawImage(snapshot, 360 - snapshot.width * scale / 2, 680, snapshot.width * scale, snapshot.height * scale);
-} c.drawImage(timeline, 20, 1085, 680, 179); c.font = '16px Atkinson'; c.fillText(shareURL, 20, 1270); return canvas; }
+const exportTable = document.createElement('canvas'), exportTimeline = document.createElement('canvas');
+exportTimeline.width = 720; exportTimeline.height = 190;
+function composite(portrait = false, recorded?: {frame: Frame, frames: Frame[], impact: any}) {
+    if (!portrait) return shareCard();
+    const canvas=document.createElement('canvas'); canvas.width=720; canvas.height=1280;
+    const c=canvas.getContext('2d')!; c.fillStyle='#000'; c.fillRect(0,0,720,1280);
+    c.fillStyle='#e9ede6'; c.font='900 36px Doto'; c.fillText('Catch the fly',24,46);
+    if (recorded) {
+        field.draw(recorded.frame,{reduced,frames:recorded.frames,aim:{x:0,y:0},reticle:false,holdMs:null,lastImpact:recorded.impact},exportTable);
+        drawTimeline(recorded.frame,recorded.frames,recorded.impact,exportTimeline);
+    }
+    c.drawImage(recorded?exportTable:table,60,65,600,600);
+    if (brainView?.ready) {
+        const snapshot=recorded?brainView.snapshotAt(recorded.frame,recorded.frames):brainView.snapshot();
+        const scale=Math.min(680/snapshot.width,400/snapshot.height);
+        c.drawImage(snapshot,360-snapshot.width*scale/2,680,snapshot.width*scale,snapshot.height*scale);
+    }
+    if(recorded) {
+        const f=recorded.frame,s=f.strike,impact=recorded.impact;
+        const text=s&&f.tick<s.impact_tick?`Hand lands in ${(s.impact_tick-f.tick)*.5} ms`:f.tick>=impact.tick?(impact.caught?'Caught':'Escaped'):'';
+        if(text){c.font='700 20px Atkinson';const w=c.measureText(text).width+32;c.fillStyle='#0b0d0bd1';c.beginPath();c.roundRect(360-w/2,90,w,40,20);c.fill();c.textAlign='center';c.fillStyle=text==='Escaped'?'#63f29a':'#e9ede6';c.fillText(text,360,117);c.textAlign='left';}
+    }
+    c.drawImage(recorded?exportTimeline:timeline,20,1085,680,179);c.fillStyle='#c9d0c8';c.font='16px Atkinson';c.fillText(shareURL,20,1270);return canvas;
+}
+
 function showRound() { send('pause'); replaying = false; paused = true; $('fly-score').textContent = String(impacts.length - catches); $('you-score').textContent = String(catches); $('hand-cells').innerHTML = Array.from({ length: profile.max_strikes }, (_, i) => `<div><span class="pip ${impacts[i] ? (impacts[i].caught ? 'caught' : 'escaped') : ''}" aria-hidden="true"></span><span>${i + 1}</span><span class="sr-only">${impacts[i] ? (impacts[i].caught ? 'Caught' : 'Escaped') : 'Unused'}</span></div>`).join(''); const card = shareCard(); card.setAttribute('role', 'img'); card.setAttribute('aria-label', bestEscape() ? `A simulated fruit fly brain beat my hand by ${bestEscape().lead_ms} ms.` : `${catches} caught in ${used} hands`); $('share-preview').replaceChildren(card); if (!($('round-sheet') as HTMLDialogElement).open)
     openSheet('round-sheet'); }
 $('share').onclick = () => shareCard().toBlob(async (blob) => { if (!blob)
@@ -313,11 +332,22 @@ $('play-again').onclick = () => location.reload();
 $('card').onclick = () => composite().toBlob(blob => { if (blob)
     save(blob, 'catch-the-fly.png'); });
 $('save-log').onclick = async () => save(new Blob([JSON.stringify(await request('log'), null, 2)], { type: 'application/json' }), 'flybench-round.json');
-$('video').onclick = async () => { if (!replay.length || !('MediaRecorder' in window))
-    return; const mime = ['video/webm;codecs=vp9', 'video/webm', 'video/mp4'].find(t => MediaRecorder.isTypeSupported(t)); if (!mime) {
-    $('notice').textContent = 'Video export unavailable. Save a result card instead.';
-    return;
-} const canvas = composite(true), c = canvas.getContext('2d')!, stream = canvas.captureStream(25), recorder = new MediaRecorder(stream, { mimeType: mime }), chunks: Blob[] = []; recorder.ondataavailable = e => chunks.push(e.data); recorder.onstop = () => { save(new Blob(chunks, { type: mime }), mime.includes('mp4') ? 'fly-replay.mp4' : 'fly-replay.webm'); stream.getTracks().forEach(t => t.stop()); }; replaying = true; replayPaused = false; replayPinned = null; replayStart = performance.now(); recorder.start(); const timer = setInterval(() => c.drawImage(composite(true), 0, 0), 40); setTimeout(() => { clearInterval(timer); recorder.stop(); }, replay.length * 40 + 100); };
+$('video').onclick = async () => {
+    if (!replay.length || !('MediaRecorder' in window)) return;
+    const mime=['video/webm;codecs=vp9','video/webm','video/mp4'].find(t=>MediaRecorder.isTypeSupported(t));
+    if (!mime) { $('notice').textContent='Video export unavailable. Save a result card instead.'; return; }
+    // Capture an immutable sequence. Closing the sheet or playing another hand
+    // cannot replace a recorded frame with live activity in the exported clip.
+    const recorded=replay.slice(),impact=structuredClone(lastImpact);
+    let index=0;
+    const canvas=composite(true,{frame:recorded[0],frames:recorded,impact}),c=canvas.getContext('2d')!;
+    const stream=canvas.captureStream(25),recorder=new MediaRecorder(stream,{mimeType:mime}),chunks:Blob[]=[];
+    recorder.ondataavailable=e=>chunks.push(e.data);
+    recorder.onstop=()=>{save(new Blob(chunks,{type:mime}),mime.includes('mp4')?'fly-replay.mp4':'fly-replay.webm');stream.getTracks().forEach(t=>t.stop());};
+    recorder.start();
+    const timer=setInterval(()=>{index++;if(index>=recorded.length){clearInterval(timer);recorder.stop();return;}c.drawImage(composite(true,{frame:recorded[index],frames:recorded,impact}),0,0);},10/profile.replay_speed);
+};
+
 (async () => {
     try {
         [runtime, profile, display, brain, buffer] = await Promise.all([fetch(base + 'data/runtime.json').then(r => r.json()), fetch(base + 'data/game.json').then(r => r.json()), fetch(base + 'data/display-v1.json').then(r => r.json()), fetch(base + 'data/brain.json').then(r => r.json()), fetchGraph(base + 'data/circuit.flygraph.gz')]);
