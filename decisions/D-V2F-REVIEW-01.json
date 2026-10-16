@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "decision_id": "D-V2F-REVIEW-01",
+  "classification": "EXTERNAL STAGE REVIEW VERDICT",
+  "stage": "V2F",
+  "attempt": 1,
+  "reviewer": "external (operator relay)",
+  "verdict_status": "SCIENCE ACCEPTED; PUBLICATION REPAIR REQUIRED",
+  "verdict": "V2F external review, attempt a01: SCIENCE ACCEPTED. 122/122 frozen hashes match, 3,655/3,655 task records present, all p-values and Holm adjustments reproduced independently from stored metrics. PUBLICATION REPAIR REQUIRED before main push: (1) README finding framing, (2) coupling lab framing, (3) public raw-record availability, (4) acceptance count and final-SHA acceptance."
+}

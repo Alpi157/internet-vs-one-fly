@@ -1,64 +1,48 @@
-# V2F review handoff
+# V2F publication repair a02
 
-Status: COMPLETE_FOR_REVIEW. External acceptance pending. No run is active.
-Do not rerun, resume or extend the scientific experiment. Do not edit any member
-of either freeze manifest or any raw task record. No main/tag push or deployment
-was performed in this finishing session.
+Status: BLOCKED_RAW_ARCHIVE_SIZE. The external a01 verdict accepts the science
+and requires publication repairs. It is recorded verbatim in
+decisions/D-V2F-REVIEW-01.json and ledger.yaml. Stage acceptance is not claimed.
 
-Base: 6f5276d021086580b04a81bad3a16b1a840beac7 (v2e-accepted).
-v2.1 freeze: 083bd2be2944c5dd773f670efc7b69445e207058.
-Tag prereg-v2.1 and branch prereg/v2.1 were published before execution; receipt:
-docs/preregistration-receipt-v2.1.json. Final submitted SHA is recorded in the
-review ZIP's REVIEW.md and review-manifest.json, avoiding a self-referential hash.
-Archive: reviews/V2F-a01.zip.
+Repair base: 04f1f302c844653421a116c583a99da841a876ae.
+Both frozen manifests remain unchanged; 122 distinct frozen files verified.
+No simulation, resume, raw-record edit, push, tag or deployment occurred.
 
-The queued script did run: evidence/V2F/analysis-after-run.log records successful
-analysis and verification on 2026-10-15 at 13:23 UTC. It wrote outputs under
-results/ but did not publish them into committed docs. This session independently
-reran both exact frozen commands successfully. No frozen code was patched.
+The operator's explicit size gate says to stop if the required evidence archive
+exceeds 50 MB. It fails:
 
-Integrity: both manifests PASS; 3,655 expected and found records. No STOP.json.
-H0-STR 500; H0-FULL 199; H0-T2 598; E1 2,058; E2a, E3-low and E3-high 100 each.
-All raw records remain unchanged locally and have SHA-256/size inventories.
+- Required files: 12,633, from actual reads of both frozen --verify
+  paths, plus the two explicitly requested progress logs.
+- Stored input file bytes: 2,229,611,176.
+- Deterministic tar.gz bytes: 2,201,225,419.
+- Limit: 50,000,000 bytes.
+- Compressed stream SHA-256:
+  7b808bdef63450414e10afa8dde96233a2c4b218240bfdc3688e67c69a4e19f2.
 
-Outcome: N-STRENGTH did not replicate on T1a, T2 or the full graph. T2 N-STRENGTH
-has a significant rate difference in the opposite direction. T2 N-FULL and
-N-SIGN, and full-graph N-SIGN, support the registered model stability direction.
-Every family is reported in docs/findings-v2f.md, docs/results-v2f.json and public
-copy. EXPLORATORY E1 retains two unconverged spectra as missing. E2b is
-preregistered SKIPPED, not a deviation, for unestablished confidence semantics.
+The size/hash were measured by streaming sorted USTAR entries through gzip,
+without writing or committing an archive. Entries use fixed mtime 0, uid/gid 0,
+mode 0644 and empty owner names; gzip level 9 uses an empty filename and mtime 0.
+The exact archive candidate file set equals the audited verification read set.
 
-Exact frozen verification commands, both passed:
+V2E inputs dominate: fixed-parameter records alone are 1,339,891,438 stored bytes;
+calibration 350,042,061; H2 341,240,288; H1 168,697,380. These are read by the
+unchanged verifier and cannot be replaced with summaries under this instruction.
+No raw files were rewritten or stripped.
+
+Both existing frozen verification commands passed during the read audit:
 
 ```sh
-uv run python experiments/v2f_analyze.py --out evidence/V2F/results
+uv run python experiments/v2e_analyze.py --out evidence/V2E/results --verify
 uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
 ```
 
-Public-copy generation/check, without simulation:
+Exact per-file read list: evidence/V2F/a02/verification-read-set.json.
+Per-file SHA-256 and size report: evidence/V2F/a02/archive-size-report.json.
+Logs: evidence/V2F/a02/inventory-and-verify.log and archive-size.log.
 
-```sh
-uv run python experiments/v2f_publish.py
-uv run python experiments/v2f_publish.py --check
-```
-
-README, public findings and browser results JSON are generated from committed
-tables and declared metadata. Tests reject inconsistent public copy. Browser
-checks verify displayed results against that JSON.
-
-Full standalone Python suite: 290 passed. Full registered V2F acceptance: PASS,
-16 checks including browser matrix, fresh clone, bots and frozen verification.
-Acceptance ran against 059428a1a55107aa52f8e806fef05149c58fee46. The final commit
-adds review status, publication dates from receipts and acceptance measurements;
-publication consistency and freeze checks were rerun after those documentation
-updates. Scientific code and game execution code are unchanged from acceptance.
-
-```sh
-uv run python tools/run_acceptance.py V2F --out evidence/V2F/acceptance
-uv run python tools/review_bundle.py --milestone V2F --attempt 1 --base 6f5276d021086580b04a81bad3a16b1a840beac7 --out reviews/V2F-a01.zip
-```
-
-Logs and complete figures are under evidence/V2F/. The archive excludes raw task
-records and graph arrays to fit the existing size limit; their hashes and sizes
-are retained. Redundant media is indexed in recording-inventory.json. No new
-review tooling was introduced. The next action is external review, not deployment.
+Publication repair stopped at this gate. No restore tool, new acceptance check,
+README/lab/media repair, final-SHA acceptance, or V2F-a02 review ZIP was produced.
+The existing a01 acceptance registry has 15 commands, not 16; its previous count
+claim was incorrect. The only persisted changes are the external verdict and this
+blocked handoff. The next action requires an operator decision about the size cap
+or a separate public storage mechanism. Do not rerun or extend the science.
