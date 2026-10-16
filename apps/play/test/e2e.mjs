@@ -77,6 +77,7 @@ try {
                 await page.mouse.up();
                 await page.evaluate(() => window.flyTest.advance(8));
                 await page.locator('#landing').waitFor({ state: 'visible' });
+                assert.equal(await page.locator('#strikes').innerText(),`Hand 1 of ${profile.max_strikes}`);assert(await page.locator('#pips .pip').first().evaluate(e=>e.classList.contains('current')));
                 await shot('mid-strike');
                 await page.evaluate(post => { const f=window.flyTest.state().frame; return window.flyTest.advance((f.strike.impact_tick+post*2-f.tick)/20); },profile.replay_post_ms);
                 await page.waitForFunction(() => window.flyTest.state().replaying);
@@ -127,7 +128,7 @@ try {
                     const intervals = hand === 2 ? 32 : 16;
                     await page.evaluate(n => window.flyTest.advance(n), intervals);
                     const impact = await page.evaluate(() => window.flyTest.state().frame.impact);
-                    assert(impact);
+                    assert(impact);assert.equal(await page.locator('#strikes').innerText(),`Hand ${hand+1} of ${profile.max_strikes}`);assert(await page.locator('#pips .pip').nth(hand).evaluate((e,caught)=>e.classList.contains(caught?'caught':'escaped'),impact.caught));
                     if (!impact.caught && !escaped) {
                         await shot('impact-escaped');
                         escaped = true;

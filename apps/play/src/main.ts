@@ -58,8 +58,16 @@ for (const d of Array.from(document.querySelectorAll<HTMLDialogElement>('dialog'
 }
 document.querySelectorAll<HTMLElement>('[data-how]').forEach(b => b.onclick = () => openSheet('how-sheet'));
 document.querySelectorAll<HTMLElement>('[data-wiring]').forEach(b => b.onclick = () => openSheet('wiring-sheet'));
-function updateStats() { if (!profile)
-    return; $('score').textContent = String(catches); $('strikes').textContent = `Hand ${Math.min(used + (replaying || finished ? 0 : 1), profile.max_strikes) || 1} of ${profile.max_strikes}`; $('pips').innerHTML = Array.from({ length: profile.max_strikes }, (_, i) => `<i class="pip ${impacts[i] ? (impacts[i].caught ? 'caught' : 'escaped') : i === used ? 'current' : ''}"></i>`).join(''); $('time').textContent = `${Math.max(0, (profile.round_ms - frame.tick * .5) / 1000).toFixed(1)} seconds remaining`; }
+function updateStats() {
+    if (!profile) return;
+    const activeStrike = frame.strike && frame.tick < frame.strike.impact_tick + profile.replay_post_ms * 2;
+    const hand = Math.max(1, Math.min(used + (activeStrike || replaying || finished ? 0 : 1), profile.max_strikes));
+    $('score').textContent = String(catches);
+    $('strikes').textContent = `Hand ${hand} of ${profile.max_strikes}`;
+    $('pips').innerHTML = Array.from({length:profile.max_strikes},(_,i)=>`<i class="pip ${impacts[i]?(impacts[i].caught?'caught':'escaped'):i===hand-1?'current':''}"></i>`).join('');
+    $('time').textContent = `${Math.max(0,(profile.round_ms-frame.tick*.5)/1000).toFixed(1)} seconds remaining`;
+}
+
 function sentence(impact: any) { if (!impact)
     return 'Every flash is a recorded spike.'; return (impact.lead_ms === null ? 'Its giant fiber did not fire before your hand landed.' : `Its giant fiber fired ${impact.lead_ms} ms before your hand landed.`) + (impact.escape_onset_lead_ms === null ? '' : ` Takeoff began ${impact.escape_onset_lead_ms} ms before impact.`); }
 function beginReplay() {
@@ -209,7 +217,6 @@ worker.onmessage = event => { const m = event.data; if (m.kind === 'ready') {
     simSpeed = m.simulation_wall_s_per_sim_s;
     ($('loom-size') as HTMLMeterElement).value = m.looming.size_feature ?? 0;
     ($('loom-expansion') as HTMLMeterElement).value = m.looming.expansion_feature ?? 0;
-    updateStats();
     if (frame.impact) {
         lastImpact = frame.impact;
         impacts.push(lastImpact);
@@ -222,6 +229,7 @@ worker.onmessage = event => { const m = event.data; if (m.kind === 'ready') {
             table.classList.add('shake');
         }
     }
+    updateStats();
     if (finished && !frame.strike) {
         paused = true;
         showRound();
