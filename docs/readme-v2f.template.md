@@ -15,7 +15,7 @@ Tap for a flick or hold for a slower, wider strike. Open the coupling lab to com
 
 {{limits}}
 
-The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published separately before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
+The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **{{original_date}}**, before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published on **{{robustness_date}}**, before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
 
 ![Measured circuit rate and N-SIGN null band across coupling](docs/media/T1a-N-SIGN-H0-curve.png)
 

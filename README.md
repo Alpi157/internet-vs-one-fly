@@ -19,7 +19,7 @@ The stability difference also holds in the 43,894-neuron circuit, under this mod
 
 Uniform model neurons, assumed transmitter signs and simplified inputs limit these findings to this model. Escape and walking comparisons remain insufficient; no claim concerns what living flies require.
 
-The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published separately before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
+The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **2026-10-14**, before execution. The [robustness protocol](docs/preregistration-v2.1.md) was published on **2026-10-15**, before its run; [the receipt records the exact UTC publication time and commit](docs/preregistration-receipt-v2.1.json).
 
 ![Measured circuit rate and N-SIGN null band across coupling](docs/media/T1a-N-SIGN-H0-curve.png)
 
