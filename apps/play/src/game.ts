@@ -50,6 +50,8 @@ export class Game {
     runtime: any;
     environmentSeed: number;
     neuralSeed: number;
+    // Read-only display copy of the encoder output; never fed back into simulation.
+    looming: Readonly<Record<string, number>> = Object.freeze({});
     inputs: Input[] = [];
     frames: Frame[] = [];
     impacts: any[] = [];
@@ -65,6 +67,8 @@ export class Game {
     done = false;
     lastImpact: any = null;
     constructor(buffer: ArrayBuffer, runtime: any, profile: any, neuralSeed: number, environmentSeed: number) {
+        if (profile.arena_shape === 'circle' && (!Number.isFinite(profile.arena_radius) || profile.arena_radius <= 0))
+            throw new Error('Invalid circle radius');
         for (const strike of profile.strikes) {
             const ticks = 8 / strike.speed / .5;
             if (!Number.isFinite(ticks) || Math.abs(ticks - Math.round(ticks / 20) * 20) > 1e-8)
@@ -83,7 +87,7 @@ export class Game {
     apply(input: Input) {
         if (this.done || this.strike || this.strikes >= this.profile.max_strikes)
             return false;
-        if (input.tick !== this.tick || input.tick % 20 || ![input.x, input.y, input.hold_ms].every(Number.isFinite) || input.hold_ms < 0 || Math.abs(input.x) > this.profile.arena_half_size || Math.abs(input.y) > this.profile.arena_half_size)
+        if (input.tick !== this.tick || input.tick % 20 || ![input.x, input.y, input.hold_ms].every(Number.isFinite) || input.hold_ms < 0 || (this.profile.arena_shape === 'circle' ? Math.hypot(input.x, input.y) > this.profile.arena_radius : Math.abs(input.x) > this.profile.arena_half_size || Math.abs(input.y) > this.profile.arena_half_size))
             throw new Error('Invalid authoritative input');
         const type = input.hold_ms < this.profile.hold_thresholds_ms[0] ? 0 : input.hold_ms < this.profile.hold_thresholds_ms[1] ? 1 : 2;
         const spec = this.profile.strikes[type];
@@ -98,6 +102,7 @@ export class Game {
         const start = this.tick, s = this.strike;
         const stimulus = s ? { active: start < s.impact_tick, aim_x: s.aim_x, aim_y: s.aim_y, elapsed_ms: (start - s.start_tick) * .5, downward_speed_per_ms: s.speed, hand_radius: s.radius } : { active: false, aim_x: 0, aim_y: 0, elapsed_ms: 0, downward_speed_per_ms: 0 };
         const value = this.runner.step(stimulus);
+        this.looming = Object.freeze({ ...value.encoded });
         // Integrate held movement, then collision, then newly decoded onset. Every
         // supported strike impact is aligned to a 10 ms control boundary.
         let body = this.runner.body;
@@ -106,6 +111,21 @@ export class Game {
         }
         else
             body = advanceBody(body, value.applied[1], value.applied[2]);
+        if (this.profile.arena_shape === 'circle') {
+            const radius = this.profile.arena_radius;
+            let distance = Math.hypot(body.x, body.y);
+            while (distance > radius) {
+                const nx = body.x / distance, ny = body.y / distance;
+                const factor = 2 * radius / distance - 1;
+                body.x *= factor; body.y *= factor;
+                const headingDot = body.heading_x * nx + body.heading_y * ny;
+                body.heading_x -= 2 * headingDot * nx;
+                body.heading_y -= 2 * headingDot * ny;
+                const airDot = this.airDirection[0] * nx + this.airDirection[1] * ny;
+                this.airDirection = [this.airDirection[0] - 2 * airDot * nx, this.airDirection[1] - 2 * airDot * ny];
+                distance = Math.hypot(body.x, body.y);
+            }
+        } else {
         const bound = this.profile.arena_half_size;
         for (const axis of ['x', 'y'] as const) {
             const heading = axis === 'x' ? 'heading_x' : 'heading_y';
@@ -115,6 +135,7 @@ export class Game {
                 body[heading] = -body[heading];
                 this.airDirection[index] = -this.airDirection[index];
             }
+        }
         }
         this.runner.body = body;
         let impact = null;

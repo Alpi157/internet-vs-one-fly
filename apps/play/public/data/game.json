@@ -1,6 +1,6 @@
 {
-  "profile_id": "flybench.game.v2.6",
-  "version": 6,
+  "profile_id": "flybench.game.v2.7",
+  "version": 7,
   "classification": "Game parameters only; selected frozen neural profile separate",
   "arena_half_size": 6,
   "render_size": 700,
@@ -37,5 +37,7 @@
   "replay_speed": 0.25,
   "recording_max_intervals": 3000,
   "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
-  "change_reason": "Version 5 used an unsupported impact duration not aligned to the 10 ms game interval and skipped collisions. Reject such configurations explicitly; preserve version 5 as failed development evidence. Test aligned 200 ms flick with radius 0.8, unchanged neural parameters and bots."
+  "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
+  "arena_shape": "circle",
+  "arena_radius": 6.770275002573076
 }

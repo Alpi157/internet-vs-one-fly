@@ -2933,6 +2933,243 @@
           "timeout_seconds": 1200
         }
       ]
+    },
+    "V2H": {
+      "description": "Under the microscope game UI; equal-area circle; unchanged frozen science and anatomy; production three-browser accessibility/network/performance evidence",
+      "commands": [
+        {
+          "name": "locked-development-environment",
+          "argv": [
+            "uv",
+            "sync",
+            "--extra",
+            "dev",
+            "--locked",
+            "--offline"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "pinned-v21-sparse-analysis-dependency",
+          "argv": [
+            "uv",
+            "pip",
+            "install",
+            "--offline",
+            "--no-deps",
+            "-r",
+            "profiles/requirements-v2.1.txt"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [
+            "profiles/requirements-v2.1.txt"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "full-python-regression",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "kernel-ts-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "ci",
+            "--offline"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-legacy-and-runner-parity",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2H/parity",
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "node-selected-parity",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2H/parity",
+            "node",
+            "packages/kernel-ts/test/runner.test.ts",
+            "--v2e"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "browser-matrix",
+          "argv": [
+            "env",
+            "FLYBENCH_EVIDENCE_OUT=evidence/V2H/parity",
+            "node",
+            "packages/kernel-ts/test/browser-parity.mjs",
+            "--v2e"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-install",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "ci",
+            "--offline"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-build",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "run",
+            "build"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "game-authority-replay-and-lesions",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "fresh-clone-offline-smoke",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "-c",
+            "import os,pathlib,subprocess,tempfile\nroot=pathlib.Path.cwd();clone=pathlib.Path(tempfile.mkdtemp(prefix='flybench-v2h-clone-'))/'repo'\nenv=os.environ.copy();env.pop('VIRTUAL_ENV',None);env['UV_OFFLINE']='1';env['PIP_NO_INDEX']='1'\nsubprocess.run(['git','clone','--no-hardlinks',str(root),str(clone)],check=True,env=env)\nhead=subprocess.check_output(['git','rev-parse','HEAD'],cwd=clone,text=True).strip();assert head==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();print('Fresh clone SHA:',head,flush=True)\ncommands=[['uv','sync','--extra','dev','--locked','--offline'],['uv','pip','install','--python',str(clone/'.venv/bin/python'),'--offline','--no-deps','-r','profiles/requirements-v2.1.txt'],['uv','run','--offline','python','-m','pytest','-q','tests/test_scaffold.py','tests/test_detmath.py','tests/test_encoder_v2.py','tests/test_v2e_freeze.py','tests/test_v2f_freeze.py','tests/test_v2f_publication.py','tests/test_anatomy.py','tests/test_anatomy_orientation.py'],['npm','--prefix','packages/kernel-ts','ci','--offline'],['npm','--prefix','packages/kernel-ts','run','test:fixture'],['npm','--prefix','apps/play','ci','--offline'],['npm','--prefix','apps/play','run','build'],['npm','--prefix','apps/play','test']]\nfor c in commands:print('COMMAND',c,flush=True);subprocess.run(c,cwd=clone,check=True,env=env)\n"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "frozen-v21-analysis-verification",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "experiments/v2f_analyze.py",
+            "--out",
+            "evidence/V2F/results",
+            "--verify"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "independent-v2e-recompute-ignore-only-hardware",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "tools/recompute_v2e.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "production-ui-accessibility-network-performance-matrix",
+          "argv": [
+            "node",
+            "apps/play/test/e2e.mjs"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 1200
+        },
+        {
+          "name": "bots-v26-paired",
+          "argv": [
+            "env",
+            "FLYBENCH_BOT_PROFILE=profiles/game-v2-history/game-v2.6.json",
+            "FLYBENCH_GAME_OUT=evidence/V2H/bots",
+            "FLYBENCH_BOT_DESCRIPTIVE=1",
+            "node",
+            "apps/play/test/bots.ts"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        },
+        {
+          "name": "bots-v27-paired",
+          "argv": [
+            "env",
+            "FLYBENCH_GAME_OUT=evidence/V2H/bots",
+            "FLYBENCH_BOT_DESCRIPTIVE=1",
+            "node",
+            "apps/play/test/bots.ts"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 600
+        }
+      ]
     }
   }
 }

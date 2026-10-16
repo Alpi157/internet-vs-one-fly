@@ -1,7 +1,7 @@
 import { Game } from './game.ts';
 let game: Game | null = null, paused = true, timer: any = null, manual = false;
 let wall = 0, steps = 0;
-function snapshot(frame: any) { return { kind: 'frame', frame, tick: game!.tick, catches: game!.catches, strikes: game!.strikes, done: game!.done, simulation_wall_s_per_sim_s: wall / (steps * .01) }; }
+function snapshot(frame: any) { return { kind: 'frame', frame, looming: game!.looming, tick: game!.tick, catches: game!.catches, strikes: game!.strikes, done: game!.done, simulation_wall_s_per_sim_s: wall / (steps * .01) }; }
 function step() {
     if (!game || paused || game.done)
         return;

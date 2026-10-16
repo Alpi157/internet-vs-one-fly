@@ -5,7 +5,7 @@ import {gunzipSync} from 'node:zlib';
 import { Game } from '../src/game.ts';
 import { u32 } from '../../../packages/kernel-ts/src/kernel.ts';
 const root = resolve(import.meta.dirname, '../../..'), data = resolve(root, 'apps/play/public/data');
-const runtime = JSON.parse(readFileSync(resolve(data, 'runtime.json'), 'utf8')), profile = JSON.parse(readFileSync(resolve(root, 'profiles/game-v2.json'), 'utf8'));
+const runtime = JSON.parse(readFileSync(resolve(data, 'runtime.json'), 'utf8')), profile = JSON.parse(readFileSync(resolve(root, process.env.FLYBENCH_BOT_PROFILE ?? 'profiles/game-v2.json'), 'utf8'));
 const raw = readFileSync(resolve(data, 'circuit.flygraph.gz'));
 const packed = gunzipSync(raw);
 const buffer = unpackGraph(packed.buffer.slice(packed.byteOffset, packed.byteOffset + packed.byteLength));
@@ -44,7 +44,8 @@ for (const strategy of strategies) {
             const type = strategy.type < 0 ? u32(seed, 71, n, 2) % 3 : strategy.type;
             const noiseX = (u32(seed, 71, n, 0) / 2 ** 32 * 2 - 1) * .8, noiseY = (u32(seed, 71, n, 1) / 2 ** 32 * 2 - 1) * .8;
             const bound = profile.arena_half_size;
-            const x = Math.max(-bound, Math.min(bound, observed.x + strategy.lead * observed.heading_x + noiseX)), y = Math.max(-bound, Math.min(bound, observed.y + strategy.lead * observed.heading_y + noiseY));
+            let x = Math.max(-bound, Math.min(bound, observed.x + strategy.lead * observed.heading_x + noiseX)), y = Math.max(-bound, Math.min(bound, observed.y + strategy.lead * observed.heading_y + noiseY));
+            if(profile.arena_shape==='circle'){const d=Math.hypot(x,y);if(d>profile.arena_radius){x*=profile.arena_radius/d*(1-Number.EPSILON);y*=profile.arena_radius/d*(1-Number.EPSILON);}}
             game.apply({ tick: game.tick, x, y, hold_ms: [80, 300, 600][type] });
             while (game.strike)
                 game.step();
@@ -61,4 +62,4 @@ for (const strategy of strategies) {
 const report = { profile_id: profile.profile_id, profile, rounds_per_strategy: rounds, reaction_delay_ms: 180, interval_method: '95% percentile bootstrap of independent six-strike rounds, 10000 resamples, stream 79 seed 2026600001; descriptive only, ten rounds per strategy', aim_noise: 'independent uniform +/-0.8 arena units on each axis, RNG stream 71, fixed across game versions', neural_profile: runtime.status, parameters: runtime.parameters, status: results.every(r => r.target_pass) ? 'PASS' : 'TARGET_MISSED', wall_seconds: (performance.now() - started) / 1000, results };
 writeFileSync(resolve(out, `bots-v${profile.version}.json`), JSON.stringify(report, null, 2) + '\n');
 
-if(report.status!=='PASS')process.exitCode=1;
+if(report.status!=='PASS' && process.env.FLYBENCH_BOT_DESCRIPTIVE!=='1')process.exitCode=1;

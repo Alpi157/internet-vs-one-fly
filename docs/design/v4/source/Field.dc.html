@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Microscope field with the fly</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: {{size}}px; height: {{size}}px; border-radius: 50%; overflow: hidden; background: #DADDD6; box-shadow: 0 0 0 6px #101210, 0 0 0 7px #2C312D; font-family: 'Atkinson Hyperlegible Next', sans-serif">
+<svg viewBox="0 0 358 358" width="100%" height="100%" style="display: block" role="img" aria-label="A small male fruit fly seen from above under a microscope, with the blurred shadow of a hand coming in from the top right">
+  <defs>
+    <radialGradient id="fieldBg" cx="46%" cy="44%" r="62%">
+      <stop offset="0" stop-color="#F2F2EC"/>
+      <stop offset="0.5" stop-color="#E6E7E0"/>
+      <stop offset="0.82" stop-color="#CFD2CA"/>
+      <stop offset="1" stop-color="#9DA39B"/>
+    </radialGradient>
+    <radialGradient id="rim" cx="50%" cy="50%" r="50%">
+      <stop offset="0.8" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0.94" stop-color="#000000" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="dust" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="defocus" filterUnits="userSpaceOnUse" x="-100" y="-200" width="700" height="700"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="flyShadow" filterUnits="userSpaceOnUse" x="-60" y="-60" width="260" height="300"><feGaussianBlur stdDeviation="4.5"/></filter>
+
+    <radialGradient id="thx" cx="40%" cy="34%" r="72%">
+      <stop offset="0" stop-color="#A38D78"/>
+      <stop offset="0.42" stop-color="#806954"/>
+      <stop offset="0.8" stop-color="#5E4B3A"/>
+      <stop offset="1" stop-color="#3E3127"/>
+    </radialGradient>
+    <radialGradient id="abd" cx="44%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#D6C2A2"/>
+      <stop offset="0.5" stop-color="#BBA07C"/>
+      <stop offset="1" stop-color="#7F6A52"/>
+    </radialGradient>
+    <radialGradient id="hd" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#B48B66"/>
+      <stop offset="1" stop-color="#7A5E46"/>
+    </radialGradient>
+    <radialGradient id="eye" cx="40%" cy="34%" r="74%">
+      <stop offset="0" stop-color="#9E2E33"/>
+      <stop offset="0.55" stop-color="#84212A"/>
+      <stop offset="1" stop-color="#4E0B10"/>
+    </radialGradient>
+    <pattern id="facet" width="0.9" height="0.78" patternUnits="userSpaceOnUse"><circle cx="0.45" cy="0.39" r="0.3" fill="#2A0508" fill-opacity="0.22"/></pattern>
+    <linearGradient id="wingFill" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#E9ECEE" stop-opacity="0.42"/>
+      <stop offset="0.5" stop-color="#D9E1E4" stop-opacity="0.3"/>
+      <stop offset="0.8" stop-color="#E6DCE6" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#EFEFEA" stop-opacity="0.2"/>
+    </linearGradient>
+    <clipPath id="abdClip"><path d="M60 64 C69 64 74.5 72 74.5 82 C74.5 94 69.5 104 60 105.5 C50.5 104 45.5 94 45.5 82 C45.5 72 51 64 60 64 Z"/></clipPath>
+
+    <g id="legL" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M54 41 L45 35.5" stroke="#6B5543" stroke-width="2.2"/>
+      <path d="M45 35.5 L38.5 24" stroke="#6B5543" stroke-width="1.5"/>
+      <path d="M38.5 24 L35.6 16 L34.4 12.6 L33.6 10.4" stroke="#4A3B2E" stroke-width="0.9"/>
+      <path d="M33.6 10.4 l-1.1 -1.4 M33.6 10.4 l0.6 -1.6" stroke="#2E241C" stroke-width="0.5"/>
+      <path d="M53 51 L38 52" stroke="#6B5543" stroke-width="2.3"/>
+      <path d="M38 52 L24.5 57" stroke="#6B5543" stroke-width="1.5"/>
+      <path d="M24.5 57 L16 61.5 L12.6 63.4 L10.2 64.6" stroke="#4A3B2E" stroke-width="0.9"/>
+      <path d="M10.2 64.6 l-1.6 -0.4 M10.2 64.6 l-0.8 1.4" stroke="#2E241C" stroke-width="0.5"/>
+      <path d="M54 60 L44.5 71" stroke="#6B5543" stroke-width="2.4"/>
+      <path d="M44.5 71 L36.5 88" stroke="#6B5543" stroke-width="1.6"/>
+      <path d="M36.5 88 L32.4 99 L31 103 L30.2 106" stroke="#4A3B2E" stroke-width="0.9"/>
+      <path d="M30.2 106 l-1.4 0.9 M30.2 106 l0.5 1.6" stroke="#2E241C" stroke-width="0.5"/>
+      <g stroke="#2E241C" stroke-width="0.35">
+        <path d="M41 30 l-2 -0.6"/><path d="M39.6 27 l-2 -0.4"/><path d="M31 54.6 l-0.6 -1.9"/><path d="M28 55.8 l-0.6 -1.9"/>
+        <path d="M41.6 77 l-1.9 -0.9"/><path d="M39.4 82 l-1.9 -0.8"/>
+      </g>
+    </g>
+
+    <g id="wingL">
+      <path d="M52.5 49 C45 55 37.6 68 36 84 C34.6 100 37.6 114 44.6 121 C51.6 127 61 125 64.6 115.4 C67.4 106.6 66.4 92 63.4 78 C61 66.4 57.6 54.6 52.5 49 Z" fill="url(#wingFill)" stroke="#7A6B5C" stroke-opacity="0.6" stroke-width="0.4"/>
+      <g fill="none" stroke="#5E4E40" stroke-linecap="round" stroke-opacity="0.75">
+        <path d="M52.5 49 C45 55 37.6 68 36 84 C34.6 100 37.6 114 44.6 121" stroke-width="0.75"/>
+        <path d="M49.4 56 C44.6 66 40.6 80 39.2 94 C38.6 100 38.6 105 39.4 109" stroke-width="0.42"/>
+        <path d="M51 57 C47.6 70 45.4 86 45 102 C44.8 110 45.4 116 46.6 122" stroke-width="0.42"/>
+        <path d="M53.6 58 C52 74 51.6 92 53 106 C53.6 113 54.6 119 56 124" stroke-width="0.42"/>
+        <path d="M56 58 C57.6 70 59.4 82 61 94 C61.8 100 63 106 64.4 110" stroke-width="0.42"/>
+        <path d="M45.3 88 L51.8 88.6" stroke-width="0.4"/>
+        <path d="M52.8 99 L61.4 96.4" stroke-width="0.4"/>
+      </g>
+      <path d="M42 72 C39.4 84 39 98 40.6 110" fill="none" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <g id="antL">
+      <ellipse cx="56.6" cy="20.6" rx="1.6" ry="2.1" fill="#9C7A5C"/>
+      <path d="M56.2 19 C55 16.6 53.2 15 50.4 14" stroke="#3A2E24" stroke-width="0.45" fill="none"/>
+      <path d="M54.4 16.3 l-0.2 -1.6 M53.2 15.3 l-0.5 -1.4 M52 14.6 l-0.7 -1.1 M54.6 16.6 l1.1 -0.9 M53 15.2 l1 -1" stroke="#3A2E24" stroke-width="0.25"/>
+    </g>
+
+    <g id="bristlesL" stroke="#17120E" stroke-linecap="round" fill="none">
+      <path d="M54.8 45.6 L53.6 53.6" stroke-width="0.5"/>
+      <path d="M54.9 54.8 L53.9 62.6" stroke-width="0.5"/>
+      <path d="M45.6 43.6 L42.6 49.6" stroke-width="0.45"/>
+      <path d="M45.2 53.8 L43 60" stroke-width="0.45"/>
+      <path d="M47.8 37.6 L44.4 41.6" stroke-width="0.42"/>
+      <path d="M57.2 70 L60.6 77.4" stroke-width="0.5"/>
+      <path d="M54.4 67.8 L53.2 75" stroke-width="0.45"/>
+      <path d="M55.2 24.8 L52.2 20.8" stroke-width="0.38"/>
+      <path d="M58.4 24.4 L57.4 20.6" stroke-width="0.34"/>
+      <path d="M52.6 27.6 L48.8 24.8" stroke-width="0.34"/>
+    </g>
+
+    <g id="fly">
+      <ellipse cx="66" cy="76" rx="25" ry="44" fill="#1F241F" fill-opacity="0.22" filter="url(#flyShadow)"/>
+      <use href="#legL"/>
+      <use href="#legL" transform="translate(120 0) scale(-1 1)"/>
+      <path d="M60 64 C69 64 74.5 72 74.5 82 C74.5 94 69.5 104 60 105.5 C50.5 104 45.5 94 45.5 82 C45.5 72 51 64 60 64 Z" fill="url(#abd)"/>
+      <g clip-path="url(#abdClip)">
+        <path d="M44 74.6 Q60 78.6 76 74.6 L76 76.8 Q60 81 44 76.8 Z" fill="#2C231C" fill-opacity="0.8"/>
+        <path d="M44 81.4 Q60 85.6 76 81.4 L76 84 Q60 88.4 44 84 Z" fill="#2C231C" fill-opacity="0.84"/>
+        <path d="M44 87.4 Q60 91.8 76 87.4 L76 91.6 Q60 96 44 91.6 Z" fill="#2A211B" fill-opacity="0.9"/>
+        <path d="M44 92.6 Q60 97 76 92.6 L76 108 L44 108 Z" fill="#1A1512"/>
+        <path d="M44 79 Q60 83 76 79" fill="none" stroke="#E2D2B6" stroke-opacity="0.35" stroke-width="0.5"/>
+        <ellipse cx="55" cy="74" rx="5" ry="7" fill="#FFFFFF" fill-opacity="0.12"/>
+      </g>
+      <path d="M60 64 C69 64 74.5 72 74.5 82 C74.5 94 69.5 104 60 105.5 C50.5 104 45.5 94 45.5 82 C45.5 72 51 64 60 64 Z" fill="none" stroke="#3F3226" stroke-opacity="0.5" stroke-width="0.5"/>
+      <use href="#wingL"/>
+      <use href="#wingL" transform="translate(120 0) scale(-1 1)"/>
+      <path d="M60 32.4 C70.4 32.4 77.2 40.6 77.2 50.6 C77.2 60.4 70.4 68.4 60 68.4 C49.6 68.4 42.8 60.4 42.8 50.6 C42.8 40.6 49.6 32.4 60 32.4 Z" fill="url(#thx)"/>
+      <path d="M57.4 36 L56.6 64 M62.6 36 L63.4 64 M51 40 L49.6 62 M69 40 L70.4 62" stroke="#4A3B2E" stroke-opacity="0.16" stroke-width="1.8" fill="none"/>
+      <path d="M51.6 66 Q60 75.6 68.4 66 Q60 69 51.6 66 Z" fill="#6A5442"/>
+      <path d="M51.6 66 Q60 75.6 68.4 66" fill="none" stroke="#3A2E24" stroke-opacity="0.5" stroke-width="0.4"/>
+      <ellipse cx="54" cy="42" rx="8" ry="6" fill="#FFFFFF" fill-opacity="0.07"/>
+      <path d="{{microchaetae}}" fill="#2A2019" fill-opacity="0.6"/>
+      <use href="#bristlesL"/>
+      <use href="#bristlesL" transform="translate(120 0) scale(-1 1)"/>
+      <path d="M60 19.8 C70.6 19.8 76.6 24.6 76.6 29.2 C76.6 33.4 70 35.6 60 35.6 C50 35.6 43.4 33.4 43.4 29.2 C43.4 24.6 49.4 19.8 60 19.8 Z" fill="url(#hd)"/>
+      <path d="M54.6 21.6 Q60 20.6 65.4 21.6 L64 33.6 Q60 34.4 56 33.6 Z" fill="#B88A5C" fill-opacity="0.55"/>
+      <path id="eyeL" d="M44.2 21.4 C48.8 19.9 53.2 21.8 54.3 25.8 C55.3 30.2 53.4 34.8 48.8 35.8 C44.4 36.6 41.6 33 41.4 28.6 C41.2 25.2 42.2 22.4 44.2 21.4 Z" fill="url(#eye)"/>
+      <path d="M44.2 21.4 C48.8 19.9 53.2 21.8 54.3 25.8 C55.3 30.2 53.4 34.8 48.8 35.8 C44.4 36.6 41.6 33 41.4 28.6 C41.2 25.2 42.2 22.4 44.2 21.4 Z" fill="url(#facet)"/>
+      <path d="M75.8 21.4 C71.2 19.9 66.8 21.8 65.7 25.8 C64.7 30.2 66.6 34.8 71.2 35.8 C75.6 36.6 78.4 33 78.6 28.6 C78.8 25.2 77.8 22.4 75.8 21.4 Z" fill="url(#eye)"/>
+      <path d="M75.8 21.4 C71.2 19.9 66.8 21.8 65.7 25.8 C64.7 30.2 66.6 34.8 71.2 35.8 C75.6 36.6 78.4 33 78.6 28.6 C78.8 25.2 77.8 22.4 75.8 21.4 Z" fill="url(#facet)"/>
+      <ellipse cx="46" cy="24.6" rx="1.5" ry="0.9" fill="#FFFFFF" fill-opacity="0.26" transform="rotate(-24 46 24.6)"/>
+      <ellipse cx="70" cy="24.6" rx="1.5" ry="0.9" fill="#FFFFFF" fill-opacity="0.26" transform="rotate(-24 70 24.6)"/>
+      <path d="M58 25.6 L62 25.6 L60 29.2 Z" fill="#3B2C21" fill-opacity="0.8"/>
+      <g fill="#E8D8C2" fill-opacity="0.75"><circle cx="58.9" cy="26.2" r="0.42"/><circle cx="61.1" cy="26.2" r="0.42"/><circle cx="60" cy="28.2" r="0.42"/></g>
+      <use href="#antL"/>
+      <use href="#antL" transform="translate(120 0) scale(-1 1)"/>
+    </g>
+  </defs>
+
+  <rect width="358" height="358" fill="url(#fieldBg)"/>
+  <path d="{{dustA}}" fill="#6E766E" fill-opacity="0.32" filter="url(#dust)"/>
+  <path d="{{dustB}}" fill="#8E968C" fill-opacity="0.3"/>
+  <path d="M38 236 C52 228 60 240 74 232 C84 226 92 230 98 224" fill="none" stroke="#8C948A" stroke-opacity="0.35" stroke-width="0.7"/>
+  <path d="M268 286 C276 294 290 292 296 302" fill="none" stroke="#8C948A" stroke-opacity="0.3" stroke-width="0.6"/>
+
+  <g transform="translate(150 196) rotate(-28) scale(0.62) translate(-60 -72)">
+    <use href="#fly"/>
+  </g>
+
+  <g filter="url(#defocus)" fill="#211C19" opacity="{{hand}}">
+    <g transform="translate(330 4) rotate(46) scale(1.22)">
+      <rect x="-60" y="-120" width="120" height="160" rx="46"/>
+      <rect x="-52" y="12" width="25" height="100" rx="12.5" transform="rotate(7 -40 12)"/>
+      <rect x="-21" y="16" width="26" height="116" rx="13" transform="rotate(2 -8 16)"/>
+      <rect x="10" y="12" width="25" height="106" rx="12.5" transform="rotate(-4 22 12)"/>
+      <rect x="39" y="4" width="21" height="86" rx="10.5" transform="rotate(-10 49 4)"/>
+      <rect x="-64" y="-44" width="27" height="94" rx="13.5" transform="rotate(44 -50 -44)"/>
+    </g>
+  </g>
+
+  <rect width="358" height="358" fill="url(#rim)"/>
+
+  <g opacity="{{scaleOpacity}}" font-family="Atkinson Hyperlegible Next, sans-serif">
+    <line x1="144.5" y1="318" x2="213.5" y2="318" stroke="#1E231F" stroke-width="2.4"/>
+    <line x1="144.5" y1="313" x2="144.5" y2="323" stroke="#1E231F" stroke-width="1.2"/>
+    <line x1="213.5" y1="313" x2="213.5" y2="323" stroke="#1E231F" stroke-width="1.2"/>
+    <text x="179" y="338" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E231F">1 fly length</text>
+  </g>
+</svg>
+<sc-if value="{{pill}}" hint-placeholder-val="{{true}}">
+  <p style="position: absolute; left: 50%; top: 5.6%; transform: translateX(-50%); margin: 0; display: flex; align-items: center; gap: 0.55em; padding: 0.42em 0.95em 0.42em 0.8em; border-radius: 999px; background: rgba(11,13,11,0.82); color: #F2F4F0; font-size: {{pillFont}}px; font-weight: 700; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums"><span style="width: 0.58em; height: 0.58em; border-radius: 50%; background: #63F29A; flex: none"></span>{{pillText}}</p>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"size":{"editor":"int","default":358},"hand":{"editor":"range","min":0,"max":1,"step":0.05,"default":0.85},"lands":{"editor":"int","default":88},"pill":{"editor":"boolean","default":true},"scale":{"editor":"boolean","default":true},"$preview":{"width":358,"height":358}}'>
+class Component extends DCLogic {
+  rng(seed) {
+    var s = seed;
+    return function () { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+  }
+  dots(n, seed, rMin, rMax, cx, cy, spread, fn) {
+    var rnd = this.rng(seed), d = '';
+    for (var i = 0; i < n; i++) {
+      var p = fn(rnd);
+      var r = rMin + rnd() * (rMax - rMin);
+      d += 'M' + (p[0] - r).toFixed(2) + ' ' + p[1].toFixed(2) + 'a' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 1 0 ' + (2 * r).toFixed(2) + ' 0a' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 1 0 ' + (-2 * r).toFixed(2) + ' 0';
+    }
+    return d;
+  }
+  geo() {
+    if (this._g) return this._g;
+    var disc = function (rnd) { var a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 172; return [179 + Math.cos(a) * r, 179 + Math.sin(a) * r]; };
+    var hairs = function (rnd) {
+      var row = Math.floor(rnd() * 8), t = rnd();
+      var x = 50.6 + row * 2.7 + (rnd() - 0.5) * 0.8;
+      var y = 37 + t * 26;
+      var dx = x - 60, dy = (y - 50.4) / 1.06;
+      if (dx * dx + dy * dy > 15.5 * 15.5) { x = 60 + dx * 0.8; }
+      return [x, y];
+    };
+    this._g = {
+      dustA: this.dots(46, 41, 0.6, 1.9, 179, 179, 172, disc),
+      dustB: this.dots(26, 77, 0.4, 1.1, 179, 179, 172, disc),
+      micro: this.dots(64, 9, 0.22, 0.34, 60, 50, 14, hairs)
+    };
+    return this._g;
+  }
+  renderVals() {
+    var p = this.props, g = this.geo();
+    return {
+      size: p.size ?? 358,
+      hand: p.hand ?? 0.85,
+      pillText: 'Hand lands in ' + (p.lands ?? 88) + ' ms',
+      pill: p.pill ?? true,
+      pillFont: Math.min(17, (p.size ?? 358) * 13.5 / 358).toFixed(1),
+      scaleOpacity: (p.scale ?? true) ? 1 : 0,
+      dustA: g.dustA,
+      dustB: g.dustB,
+      microchaetae: g.micro
+    };
+  }
+}
+</script>
+</body>
+</html>

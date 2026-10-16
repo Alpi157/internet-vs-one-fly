@@ -35,6 +35,21 @@ def update_anatomy_units(report_path):
         hashes['brain.json']=dict(bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         write_json(directory/'HASHES.json',hashes)
 
+def update_game_only():
+    """Re-export product identity without touching graph, neural data or anatomy."""
+    out=ROOT/'apps/play/public/data'
+    runtime=json.loads((out/'runtime.json').read_text())
+    for name in ('profiles/game-v2.json','apps/play/src/game.ts'):
+        runtime['profile_hashes'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+    write_json(out/'runtime.json',runtime)
+    shutil.copyfile(ROOT/'profiles/game-v2.json',out/'game.json')
+    hashes=json.loads((out/'HASHES.json').read_text())
+    for name in ('runtime.json','game.json','display-v1.json'):
+        path=out/name
+        hashes[name]=dict(bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+    write_json(out/'HASHES.json',hashes)
+
+
 def pack_graph(path):
     raw=path.read_bytes();size=struct.unpack('<I',raw[8:12])[0];header=json.loads(raw[12:12+size]);payload=12+size;payload+=(-payload)%8
     def array(name):
@@ -123,6 +138,7 @@ def run(fixture=False,selection=None):
     write_json(ROOT/'evidence/V2E/game/export.json',dict(fixture=fixture,parameters=params,graph=runtime['graph_identity'],counts=runtime['counts'],brain_missing=brain['missing'],coordinate_provenance={k:v for k,v in brain.items() if k!='nodes'},files={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in out.iterdir()}))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--fixture',action='store_true');p.add_argument('--selection',type=Path);p.add_argument('--anatomy-units-from',type=Path);a=p.parse_args()
-    if a.anatomy_units_from:update_anatomy_units(a.anatomy_units_from)
+    p=argparse.ArgumentParser();p.add_argument('--game-only',action='store_true');p.add_argument('--fixture',action='store_true');p.add_argument('--selection',type=Path);p.add_argument('--anatomy-units-from',type=Path);a=p.parse_args()
+    if a.game_only:update_game_only()
+    elif a.anatomy_units_from:update_anatomy_units(a.anatomy_units_from)
     else:run(a.fixture,a.selection)

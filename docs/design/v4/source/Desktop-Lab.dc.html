@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wiring lab, desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+input[type=range]{accent-color:#E9EDE6}
+</style>
+</helmet>
+<div style="min-height: 900px; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; display: flex; flex-direction: column">
+
+  <header style="width: 100%; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 18px 40px 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+    <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 18px">
+      <a href="Desktop-Game.dc.html" style="font-family: 'Doto', sans-serif; font-size: 30px; line-height: 1.1; font-weight: 900; color: #E9EDE6; text-decoration: none">Catch the fly</a>
+      <span style="font-size: 14px; line-height: 1.4; color: #9BA59C">5,555 neurons, wired as mapped in a real male fruit fly</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px">
+      <a href="Desktop-Game.dc.html" style="height: 44px; box-sizing: border-box; padding: 0 16px; border-radius: 22px; color: #C9D0C8; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Play</a>
+      <a href="Desktop-Lab.dc.html" aria-current="page" style="height: 44px; box-sizing: border-box; padding: 0 16px; border-radius: 22px; background: #1A1E1B; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Wiring lab</a>
+      <a href="#how" style="height: 44px; box-sizing: border-box; padding: 0 16px; border-radius: 22px; color: #C9D0C8; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">How it works</a>
+      <a href="https://github.com/Alpi157/internet-vs-one-fly" style="height: 44px; box-sizing: border-box; padding: 0 16px; border-radius: 22px; color: #C9D0C8; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px">Code and data
+        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M6 3 H13 V10 M13 3 L4 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main style="width: 100%; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 20px 40px 32px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px">
+
+    <section aria-label="Controls" style="flex: 1 1 340px; max-width: 400px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+      <h1 style="margin: 0; font-family: 'Doto', sans-serif; font-size: 52px; line-height: 1.08; font-weight: 900">Scramble the wiring</h1>
+      <p style="margin: 0; font-size: 17px; line-height: 1.5; color: #C9D0C8; text-wrap: pretty">Same neurons, each with the same number of excitatory and inhibitory partners. Only who connects to whom is shuffled, and the shuffled brains run hot. Then also keep each neuron’s total input strength: most of the gap closes. In this model, how unevenly input strength is spread matters more than which partners connect.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 2px; padding: 16px 16px 12px; border-radius: 16px; background: #0A0C0A; box-shadow: 0 0 0 1px #1F2420">
+        <p style="margin: 0 0 8px; font-size: 15px; line-height: 1.3; font-weight: 700">Shuffle type</p>
+        <div role="radiogroup" aria-label="Shuffle type" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 3px; border-radius: 24px; box-shadow: inset 0 0 0 1px #3A413B">
+      <button role="radio" aria-checked="{{signOn}}" onClick="{{pickSign}}" style="height: 40px; border-radius: 20px; border: none; background: {{signBg}}; color: {{signFg}}; font-size: 14px; font-weight: 700; cursor: pointer">Shuffle partners</button>
+      <button role="radio" aria-checked="{{strOn}}" onClick="{{pickStrength}}" style="height: 40px; border-radius: 20px; border: none; background: {{strBg}}; color: {{strFg}}; font-size: 14px; font-weight: 700; cursor: pointer">Keep input strength</button>
+    </div>
+        <p style="margin: 6px 0 14px; font-size: 13px; line-height: 1.35; color: #9BA59C">{{modeNote}}</p>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+          <label for="dstrength" style="font-size: 15px; line-height: 1.3; font-weight: 700">Connection strength</label>
+          <span style="font-size: 15px; line-height: 1.3; font-variant-numeric: tabular-nums; color: #C9D0C8">{{strengthLabel}}</span>
+        </div>
+        <input id="dstrength" type="range" min="0" max="9" step="1" value="{{idx}}" onChange="{{onSlide}}" aria-valuetext="{{strengthLabel}}" style="width: 100%; height: 36px; margin: 0">
+        <div style="position: relative; height: 26px; font-size: 12px; line-height: 1.3; color: #9BA59C">
+          <span style="position: absolute; left: 0; top: 8px">Weaker</span>
+          <span style="position: absolute; left: calc(7.25px + (100% - 16px) * 0.5556); top: 0; width: 1.5px; height: 7px; background: #C9D0C8"></span>
+          <span style="position: absolute; left: calc(8px + (100% - 16px) * 0.5556); top: 8px; transform: translateX(-50%); white-space: nowrap; color: #C9D0C8">Fly-calibrated</span>
+          <span style="position: absolute; right: 0; top: 8px">Stronger</span>
+        </div>
+      </div>
+
+      <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md" style="font-size: 15px; line-height: 1.45">Both tests were registered before they ran. Read the results</a>
+
+      <button style="height: 52px; border-radius: 26px; border: none; background: #E9EDE6; color: #0A0C0A; font-size: 16px; font-weight: 700; cursor: pointer">Drop the hand on both</button>
+    </section>
+
+    <section aria-label="Results" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <p style="margin: 0; font-size: 16px; line-height: 1.3; font-weight: 700">Real wiring</p>
+          <dc-import name="Brain" w="{{434}}" h="{{364}}" lplc2="{{m.lplc2}}" lc4="{{m.lc4}}" gf="{{m.gf}}" dn="{{m.dn}}" interior="{{m.interior}}" seizure="{{m.seizure}}" labels="{{false}}" hint-size="434px,364px"></dc-import>
+          <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px">
+            <span style="font-family: 'Doto', sans-serif; font-size: 44px; line-height: 1.05; font-weight: 900; font-variant-numeric: tabular-nums"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%)">{{measuredRate}}</span><span aria-hidden="true">{{mN.i}}<sc-if value="{{mN.has}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>{{mN.f}}</sc-if></span></span>
+            <span style="font-size: 14px; line-height: 1.3; color: #9BA59C">spikes a second, per neuron</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <p style="margin: 0; font-size: 16px; line-height: 1.3; font-weight: 700">{{shuffleLabel}}</p>
+          <dc-import name="Brain" w="{{434}}" h="{{364}}" lplc2="{{s.lplc2}}" lc4="{{s.lc4}}" gf="{{s.gf}}" dn="{{s.dn}}" interior="{{s.interior}}" seizure="{{s.seizure}}" labels="{{false}}" hint-size="434px,364px"></dc-import>
+          <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px">
+            <span style="font-family: 'Doto', sans-serif; font-size: 44px; line-height: 1.05; font-weight: 900; font-variant-numeric: tabular-nums"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%)">{{shuffledRate}}</span><span aria-hidden="true">{{sN.i}}<sc-if value="{{sN.has}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>{{sN.f}}</sc-if></span></span>
+            <span style="font-size: 14px; line-height: 1.3; color: #9BA59C">spikes a second, per neuron</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <p style="margin: 0; font-size: 14px; line-height: 1.3; font-weight: 700">Spikes a second, per neuron</p>
+        <svg viewBox="0 0 816 170" width="100%" role="img" aria-label="{{chartLabel}}" style="display: block">
+          <g font-family="Atkinson Hyperlegible Next, sans-serif" font-size="12" fill="#9BA59C">
+            <text x="32" y="{{ch.y200}}" text-anchor="end">200</text>
+            <text x="32" y="{{ch.y100}}" text-anchor="end">100</text>
+            <text x="32" y="{{ch.y0}}" text-anchor="end">0</text>
+            <text x="40" y="166">0.005</text>
+            <text x="814" y="166" text-anchor="end">0.1</text>
+            <text x="427" y="166" text-anchor="middle">Connection strength</text>
+          </g>
+          <line x1="40" y1="{{ch.y50}}" x2="814" y2="{{ch.y50}}" stroke="#5A625B" stroke-dasharray="3 4"/>
+          <path d="{{ch.otherBand}}" fill="none" stroke="#63F29A" stroke-opacity="0.32" stroke-width="1" stroke-dasharray="2 3"/>
+          <path d="{{ch.band}}" fill="#63F29A" fill-opacity="0.26" stroke="#63F29A" stroke-opacity="0.55" stroke-width="1"/>
+          <path d="{{ch.line}}" stroke="#E9EDE6" stroke-width="2.2" fill="none"/>
+          <line x1="40" y1="{{ch.base}}" x2="814" y2="{{ch.base}}" stroke="#3A413B"/>
+          <line x1="{{ch.marker}}" y1="4" x2="{{ch.marker}}" y2="{{ch.base}}" stroke="#E9EDE6" stroke-width="1.2"/>
+        </svg>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px 20px; padding-left: 40px; font-size: 13px; line-height: 1.35; color: #9BA59C">
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 2px; background: #E9EDE6"></span>Real wiring</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 10px; background: rgba(99,242,154,0.4)"></span>Middle 95% of 499 shuffled wirings</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 1px dashed rgba(99,242,154,0.7)"></span>The other shuffle type</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 1px dashed #5A625B"></span>50 spikes a second</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { idx: 5, mode: 'sign' };
+  }
+  levels(rate) {
+    var f = Math.min(1, rate / 120);
+    return {
+      lplc2: (0.15 + 0.85 * f).toFixed(2),
+      lc4: (0.12 + 0.88 * f).toFixed(2),
+      gf: (rate > 40 ? 1 : 0.12).toFixed(2),
+      dn: (0.08 + 0.92 * f).toFixed(2),
+      interior: (0.1 + 0.9 * f).toFixed(2),
+      seizure: Math.max(0, Math.min(0.55, (rate - 40) / 160)).toFixed(2)
+    };
+  }
+  chart(W, H, l, r, t, b, idx, mode) {
+    var S = [0.005, 0.01, 0.015, 0.02, 0.03, 0.039, 0.05, 0.06, 0.08, 0.1];
+    var bands = {
+      sign: { lo: [0.9, 2.0, 2.9, 4.95, 65, 102, 129, 146, 172, 191], hi: [1.47, 2.57, 4.95, 40, 104, 136, 161, 178, 204, 220] },
+      strength: { lo: [0.9, 1.7, 1.8, 1.9, 2.2, 2.67, 3.4, 4.5, 12, 30], hi: [1.6, 2.5, 2.8, 3.4, 4.5, 8.82, 14, 22, 48, 80] }
+    };
+    var me = [1.5, 2.0, 2.0, 2.0, 2.3, 2.65, 3.0, 3.6, 22, 39];
+    var X = function (s) { return (l + (s - 0.005) / 0.095 * (W - l - r)).toFixed(1); };
+    var Y = function (v) { return (H - b - v / 220 * (H - t - b)).toFixed(1); };
+    var path = function (bd) {
+      var d = 'M' + S.map(function (s, i) { return X(s) + ' ' + Y(bd.hi[i]); }).join(' L');
+      return d + ' L' + S.slice().reverse().map(function (s, i) { return X(s) + ' ' + Y(bd.lo[bd.lo.length - 1 - i]); }).join(' L') + ' Z';
+    };
+    var line = 'M' + S.map(function (s, i) { return X(s) + ' ' + Y(me[i]); }).join(' L');
+    return { band: path(bands[mode]), otherBand: path(bands[mode === 'sign' ? 'strength' : 'sign']), line: line, marker: X(S[idx]), y50: Y(50), y0: (Number(Y(0)) + 4).toFixed(1), y100: (Number(Y(100)) + 4).toFixed(1), y200: (Number(Y(200)) + 4).toFixed(1), base: Y(0) };
+  }
+  renderVals() {
+    var grid = [0.005, 0.01, 0.015, 0.02, 0.03, 0.039, 0.05, 0.06, 0.08, 0.1];
+    var measured = [1.5, 2.0, 2.0, 2.0, 2.3, 2.65, 3.0, 3.6, 22, 39];
+    var shuffledBy = {
+      sign: [1.3, 2.3, 4.0, 22, 85, 119.8, 145, 162, 188, 205],
+      strength: [1.4, 2.0, 2.1, 2.3, 2.8, 4.4, 6.1, 8.9, 24, 45]
+    };
+    var idx = this.state.idx, mode = this.state.mode;
+    var shuffled = shuffledBy[mode];
+    var s = grid[idx];
+    var fmt = function (v) { return v < 10 ? v.toFixed(2).replace(/0$/, '') : String(Math.round(v)); };
+    var parts = function (t) { var a = t.split('.'); return { i: a[0], f: a[1] || '', has: a.length > 1 }; };
+    var self = this;
+    var on = function (yes) { return { bg: yes ? '#E9EDE6' : 'transparent', fg: yes ? '#0A0C0A' : '#C9D0C8' }; };
+    var a = on(mode === 'sign'), b = on(mode === 'strength');
+    return {
+      idx: idx,
+      strengthLabel: String(s),
+      measuredRate: fmt(measured[idx]),
+      shuffledRate: fmt(shuffled[idx]),
+      mN: parts(fmt(measured[idx])),
+      sN: parts(fmt(shuffled[idx])),
+      m: this.levels(measured[idx]),
+      s: this.levels(shuffled[idx]),
+      ch: this.chart(816, 150, 40, 2, 6, 2, idx, mode),
+      signOn: mode === 'sign' ? 'true' : 'false',
+      strOn: mode === 'strength' ? 'true' : 'false',
+      signBg: a.bg, signFg: a.fg, strBg: b.bg, strFg: b.fg,
+      shuffleLabel: mode === 'sign' ? 'Shuffled partners' : 'Shuffled, strength kept',
+      modeNote: mode === 'sign' ? 'Each neuron\u2019s total input strength changes.' : 'Total input strength kept. The gap mostly closes.',
+      chartLabel: mode === 'sign' ? 'Firing rate against connection strength. Measured wiring stays low; partner shuffles pass 50 spikes a second near 0.03.' : 'Firing rate against connection strength. Shuffles that keep input strength stay close to the measured wiring.',
+      pickSign: function () { self.setState({ mode: 'sign' }); },
+      pickStrength: function () { self.setState({ mode: 'strength' }); },
+      onSlide: function (e) { self.setState({ idx: Number(e.target.value) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

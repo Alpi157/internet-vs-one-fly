@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fly brain, confocal view</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: {{w}}px; height: {{h}}px; background: #030403; border-radius: 12px; overflow: hidden; font-family: 'Atkinson Hyperlegible Next', sans-serif; color: #C9D0C8">
+<svg viewBox="0 0 358 300" width="100%" height="100%" style="display: block" role="img" aria-label="Front view of the fly brain and nerve cord. Magenta shows the brain tissue, green shows the neurons of the escape circuit, brighter where they fired.">
+  <defs>
+    <filter id="bsoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="bhaze" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.2"/></filter>
+    <filter id="bglow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="bglow2" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="grainA" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" seed="11" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.74  0 0 0 0 0.27  0 0 0 0 0.68  0 0 0 2.1 -0.86" result="c"/>
+      <feComposite in="c" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="grainB" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.93  0 0 0 0 0.52  0 0 0 0 0.88  0 0 0 2.3 -0.9" result="c"/>
+      <feComposite in="c" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="mottle" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="5" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.01  0 0 0 0 0.016  0 0 0 0 0.01  0 0 0 -2.4 1.25" result="c"/>
+      <feComposite in="c" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <radialGradient id="vig" cx="50%" cy="42%" r="64%">
+      <stop offset="0.55" stop-color="#030403" stop-opacity="0"/>
+      <stop offset="1" stop-color="#030403" stop-opacity="0.72"/>
+    </radialGradient>
+
+    <g id="opticL">
+      <path d="M22 44 C10 64 8 112 22 146 C17 112 16 76 22 44 Z"/>
+      <path d="M40 36 C26 42 19 66 19 92 C19 118 27 140 42 150 C54 144 62 124 63 96 C64 68 56 44 40 36 Z"/>
+      <path d="M58 66 C54 80 54 118 60 134 C66 128 70 110 70 96 C70 82 66 70 58 66 Z"/>
+      <path d="M64 58 C60 74 60 120 66 140 C76 134 86 118 86 98 C86 78 76 62 64 58 Z"/>
+    </g>
+    <g id="np">
+      <use href="#opticL"/>
+      <use href="#opticL" transform="translate(358 0) scale(-1 1)"/>
+      <path d="M179 20 C160 19 128 22 112 34 C98 44 92 60 92 76 C92 86 88 92 86 98 C86 110 92 122 102 132 C112 142 128 150 144 154 C156 158 164 162 168 168 L190 168 C194 162 202 158 214 154 C230 150 246 142 256 132 C266 122 272 110 272 98 C270 92 266 86 266 76 C266 60 260 44 246 34 C230 22 198 19 179 20 Z"/>
+      <path d="M168 166 L190 166 L189 184 L169 184 Z"/>
+      <path d="M170 180 C158 184 148 190 147 202 C146 214 143 224 144 236 C145 250 147 258 149 270 C151 282 160 292 168 304 L190 304 C198 292 207 282 209 270 C211 258 213 250 214 236 C215 224 212 214 211 202 C210 190 200 184 188 180 Z"/>
+    </g>
+    <g id="brightL">
+      <path d="M140 82 C138 70 136 58 136 47 C136 41 140 38 144 40 C148 42 148 50 147 58 C146 66 146 74 147 82 Z"/>
+      <path d="M144 79 C154 77 166 79 177 83 L177 91 C166 89 154 87 144 88 Z"/>
+      <circle cx="158" cy="133" r="12.5"/>
+      <ellipse cx="165" cy="201" rx="11.5" ry="12.5"/>
+      <ellipse cx="164" cy="234" rx="13.5" ry="14.5"/>
+      <ellipse cx="165" cy="266" rx="11.5" ry="12.5"/>
+      <path d="M38 44 C29 52 25 70 25 92 C25 114 31 132 41 142 C49 134 54 118 55 96 C56 72 50 52 38 44 Z"/>
+    </g>
+    <g id="bright">
+      <use href="#brightL"/>
+      <use href="#brightL" transform="translate(358 0) scale(-1 1)"/>
+      <path d="M158 64 C166 56 192 56 200 64 C196 70 162 70 158 64 Z"/>
+      <path d="M170 100 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 Z M175.6 100 a3.4 3.4 0 1 1 6.8 0 a3.4 3.4 0 1 1 -6.8 0 Z" fill-rule="evenodd"/>
+    </g>
+    <g id="seamsL" fill="none">
+      <path d="M40 36 C26 42 19 66 19 92 C19 118 27 140 42 150"/>
+      <path d="M40 36 C56 44 64 68 63 96 C62 124 54 144 42 150"/>
+      <path d="M64 58 C60 74 60 120 66 140"/>
+      <path d="M86 98 C86 78 76 62 64 58 M86 98 C86 118 76 134 66 140"/>
+      <path d="M140 82 C138 70 136 58 136 47 C136 41 140 38 144 40 C148 42 148 50 147 58 C146 66 146 74 147 82"/>
+      <path d="M144 79 C154 77 166 79 177 83 M144 88 C154 87 166 89 177 91"/>
+      <circle cx="158" cy="133" r="12.5"/>
+      <path d="M96 60 C104 66 112 70 120 72"/>
+      <path d="M112 120 C124 130 136 140 146 146"/>
+      <ellipse cx="165" cy="201" rx="11.5" ry="12.5"/>
+      <ellipse cx="164" cy="234" rx="13.5" ry="14.5"/>
+      <ellipse cx="165" cy="266" rx="11.5" ry="12.5"/>
+    </g>
+  </defs>
+
+  <rect width="358" height="300" fill="#030403"/>
+  <use href="#np" fill="{{tissue}}" fill-opacity="0.26" filter="url(#bsoft)"/>
+  <use href="#np" fill="#FFFFFF" filter="url(#grainA)" opacity="0.9"/>
+  <use href="#bright" fill="#FFFFFF" filter="url(#grainB)" opacity="0.5"/>
+  <use href="#np" fill="{{tissue}}" fill-opacity="0.1"/>
+  <use href="#np" fill="#FFFFFF" filter="url(#mottle)" opacity="0.55"/>
+  <g fill="none" stroke="#030403" stroke-opacity="0.62" stroke-width="1.3" filter="url(#bhaze)">
+    <use href="#seamsL"/>
+    <use href="#seamsL" transform="translate(358 0) scale(-1 1)"/>
+    <path d="M158 64 C166 56 192 56 200 64 C196 70 162 70 158 64 Z"/>
+    <path d="M156 45 Q179 37 202 45"/>
+    <path d="M179 182 L179 300"/>
+  </g>
+  <path d="{{layers}}" fill="none" stroke="#030403" stroke-opacity="0.42" stroke-width="0.8"/>
+  <path d="{{glomeruli}}" fill="none" stroke="#030403" stroke-opacity="0.34" stroke-width="0.7"/>
+  <ellipse cx="179" cy="124" rx="7" ry="12" fill="#030403" filter="url(#bhaze)"/>
+  <rect width="358" height="300" fill="url(#vig)"/>
+  <use href="#np" fill="{{activity}}" opacity="{{seizure}}" filter="url(#bsoft)"/>
+
+  <g fill="none" stroke="{{activity}}" stroke-linecap="round" filter="url(#bglow)">
+    <path d="{{tangle}}" stroke-width="0.35" stroke-opacity="{{interior}}"/>
+    <path d="{{dn}}" stroke-width="0.6" stroke-opacity="{{dnOp}}"/>
+    <path d="{{lc4Fine}}" stroke-width="0.42" stroke-opacity="{{lc4}}"/>
+    <path d="{{lc4Axon}}" stroke-width="0.6" stroke-opacity="{{lc4}}"/>
+    <path d="{{lplc2Fine}}" stroke-width="0.42" stroke-opacity="{{lplc2}}"/>
+    <path d="{{lplc2Axon}}" stroke-width="0.62" stroke-opacity="{{lplc2}}"/>
+  </g>
+  <path d="{{somata}}" fill="{{activity}}" fill-opacity="{{interior}}" filter="url(#bglow)"/>
+  <g fill="none" stroke="{{activity}}" stroke-linecap="round" stroke-opacity="{{gf}}" filter="url(#bglow2)">
+    <path d="{{gfDend}}" stroke-width="0.9"/>
+    <path d="{{gfAxon}}" stroke-width="1.9"/>
+  </g>
+  <path d="{{gfSoma}}" fill="{{activity}}" fill-opacity="{{gf}}" filter="url(#bglow2)"/>
+
+  <g opacity="{{labelOpacity}}" font-family="Atkinson Hyperlegible Next, sans-serif" font-size="11.5" font-weight="600" fill="#E9EDE6" stroke="#030403" stroke-width="3" stroke-linejoin="round" paint-order="stroke">
+    <path d="M147 29 L128 15" fill="none" stroke="#C9D0C8" stroke-width="0.8"/>
+    <text x="125" y="17" text-anchor="end">Giant fiber</text>
+    <path d="M257 82 L280 28" fill="none" stroke="#C9D0C8" stroke-width="0.8"/>
+    <text x="283" y="27">LC4</text>
+    <path d="M255 108 L252 172" fill="none" stroke="#C9D0C8" stroke-width="0.8"/>
+    <text x="236" y="185">LPLC2</text>
+    <path d="M218 246 L224 246" fill="none" stroke="#C9D0C8" stroke-width="0.8"/>
+    <text x="227" y="246">Jump motor</text>
+    <text x="227" y="260">neuron</text>
+    <g font-size="10.5" font-weight="400" fill="#9BA59C">
+      <text x="10" y="291">Illustration</text>
+      <text x="345" y="281" text-anchor="end">100 µm</text>
+    </g>
+    <path d="M290 288 L345 288" stroke="#C9D0C8" stroke-width="2" fill="none"/>
+  </g>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"w":{"editor":"int","default":358},"h":{"editor":"int","default":300},"lplc2":{"editor":"range","min":0,"max":1,"step":0.05,"default":0.95},"lc4":{"editor":"range","min":0,"max":1,"step":0.05,"default":0.6},"gf":{"editor":"range","min":0,"max":1,"step":0.05,"default":1},"dn":{"editor":"range","min":0,"max":1,"step":0.05,"default":0.2},"interior":{"editor":"range","min":0,"max":1,"step":0.05,"default":0.25},"seizure":{"editor":"range","min":0,"max":1,"step":0.05,"default":0},"labels":{"editor":"boolean","default":true},"activity":{"editor":"color","default":"#63F29A"},"tissue":{"editor":"color","default":"#C24FB8"},"$preview":{"width":358,"height":300}}'>
+class Component extends DCLogic {
+  rng(seed) {
+    var s = seed >>> 0;
+    return function () { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
+  }
+  geo() {
+    if (this._geo) return this._geo;
+    var f = function (v) { return v.toFixed(1); };
+    var side = 1;
+    var X = function (x) { return side > 0 ? x : 358 - x; };
+    var P = function (x, y) { return f(X(x)) + ' ' + f(y); };
+    var tuft = function (out, x, y, ang, len, depth, rnd) {
+      var x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+      var bend = (rnd() - 0.5) * len * 0.6;
+      var cx = (x + x2) / 2 - Math.sin(ang) * bend, cy = (y + y2) / 2 + Math.cos(ang) * bend;
+      out.push('M' + P(x, y) + 'Q' + P(cx, cy) + ' ' + P(x2, y2));
+      if (depth > 0) {
+        var k = rnd() < 0.65 ? 2 : 1;
+        for (var i = 0; i < k; i++) tuft(out, x2, y2, ang + (i === 0 ? -1 : 1) * (0.35 + rnd() * 0.5), len * (0.5 + rnd() * 0.25), depth - 1, rnd);
+      }
+    };
+    var circ = function (x, y, r) {
+      return 'M' + P(x - r, y) + 'a' + f(r) + ' ' + f(r) + ' 0 1 0 ' + f(2 * r) + ' 0a' + f(r) + ' ' + f(r) + ' 0 1 0 ' + f(-2 * r) + ' 0';
+    };
+    var inEll = function (rnd, e) {
+      var a = rnd() * Math.PI * 2, r = Math.sqrt(rnd());
+      return [e[0] + Math.cos(a) * e[2] * r, e[1] + Math.sin(a) * e[3] * r];
+    };
+    var g = { lplc2Fine: [], lplc2Axon: [], lc4Fine: [], lc4Axon: [], gfDend: [], gfAxon: [], gfSoma: [], dn: [], tangle: [], somata: [], layers: [], glomeruli: [] };
+
+    for (side = 1; side >= -1; side -= 2) {
+      var rnd = this.rng(side > 0 ? 101 : 202);
+      var N = 14, i, t, x, y, k;
+      var G = [104, 104];
+      for (i = 0; i < N; i++) {
+        t = (i + 0.5) / N;
+        y = 66 + t * 68 + (rnd() - 0.5) * 3;
+        x = 62 + 5 * Math.sin(t * Math.PI) + (rnd() - 0.5) * 3;
+        var a0 = rnd() * Math.PI / 2;
+        for (k = 0; k < 4; k++) tuft(g.lplc2Fine, x, y, a0 + k * Math.PI / 2 + (rnd() - 0.5) * 0.4, 4 + rnd() * 3.5, 1, rnd);
+        var gx = G[0] + (rnd() - 0.5) * 6, gy = G[1] + (rnd() - 0.5) * 6;
+        g.lplc2Axon.push('M' + P(x, y) + 'C' + P(x + 14, y + (rnd() - 0.5) * 6) + ' ' + P(gx - 16, gy + (y - gy) * 0.3) + ' ' + P(gx, gy));
+        for (k = 0; k < 3; k++) tuft(g.lplc2Fine, gx, gy, rnd() * Math.PI * 2, 2 + rnd() * 2, 0, rnd);
+      }
+      var G2 = [105, 84];
+      for (i = 0; i < 10; i++) {
+        t = (i + 0.5) / 10;
+        y = 62 + t * 74 + (rnd() - 0.5) * 3;
+        x = 73 + 5 * Math.sin(t * Math.PI) + (rnd() - 0.5) * 3;
+        for (k = 0; k < 4; k++) tuft(g.lc4Fine, x, y, Math.PI * (0.75 + rnd() * 0.5) + (k - 1.5) * 0.35, 3.5 + rnd() * 3, 1, rnd);
+        var hx = G2[0] + (rnd() - 0.5) * 5, hy = G2[1] + (rnd() - 0.5) * 5;
+        g.lc4Axon.push('M' + P(x, y) + 'C' + P(x + 10, y + (rnd() - 0.5) * 5) + ' ' + P(hx - 12, hy + (y - hy) * 0.35) + ' ' + P(hx, hy));
+        for (k = 0; k < 3; k++) tuft(g.lc4Fine, hx, hy, rnd() * Math.PI * 2, 1.6 + rnd() * 1.8, 0, rnd);
+      }
+
+      g.gfSoma.push(circ(150, 31, 2.7));
+      g.gfDend.push('M' + P(150, 31) + 'C' + P(149.5, 44) + ' ' + P(147, 58) + ' ' + P(143, 68));
+      g.gfDend.push('M' + P(143, 68) + 'C' + P(134, 71) + ' ' + P(121, 77) + ' ' + P(112, 88));
+      var tips = [[104, 81], [100, 87], [106, 95], [101, 101], [108, 106], [99, 108]];
+      for (k = 0; k < tips.length; k++) {
+        g.gfDend.push('M' + P(112, 88) + 'Q' + P((112 + tips[k][0]) / 2 + (rnd() - 0.5) * 3, (88 + tips[k][1]) / 2) + ' ' + P(tips[k][0], tips[k][1]));
+        tuft(g.gfDend, tips[k][0], tips[k][1], rnd() * Math.PI * 2, 2 + rnd() * 1.5, 0, rnd);
+      }
+      g.gfDend.push('M' + P(143, 68) + 'C' + P(148, 72) + ' ' + P(153, 75) + ' ' + P(158, 79));
+      tuft(g.gfDend, 158, 79, 0.2, 3, 1, rnd);
+      g.gfAxon.push('M' + P(143, 68) + 'C' + P(150, 84) + ' ' + P(163, 98) + ' ' + P(168, 114) + 'C' + P(171, 126) + ' ' + P(173, 146) + ' ' + P(174, 166) + 'L' + P(174.5, 200) + 'C' + P(175, 214) + ' ' + P(175, 224) + ' ' + P(174.6, 230) + 'C' + P(174, 236) + ' ' + P(167, 240) + ' ' + P(158, 240));
+      g.gfSoma.push(circ(157.4, 240, 1.8));
+      g.gfDend.push('M' + P(158, 241) + 'C' + P(154, 244) + ' ' + P(150, 246) + ' ' + P(146, 246) + 'L' + P(138, 247));
+      g.gfSoma.push(circ(161.5, 247.5, 1.6));
+      g.gfDend.push('M' + P(161.5, 247.5) + 'Q' + P(159, 243) + ' ' + P(157.6, 241));
+
+      var somaDN = [[124, 30], [133, 147], [112, 126]];
+      for (i = 0; i < somaDN.length; i++) {
+        var s0 = somaDN[i], nx = 171 + i * 1.6 + (rnd() - 0.5);
+        g.dn.push(circ(s0[0], s0[1], 1.6).replace(/M/, 'M'));
+        for (k = 0; k < 3; k++) tuft(g.dn, s0[0] + 8, s0[1] + (s0[1] < 100 ? 30 : -6), rnd() * Math.PI * 2, 4 + rnd() * 3, 1, rnd);
+        g.dn.push('M' + P(s0[0], s0[1]) + 'C' + P(s0[0] + 10, s0[1] + (s0[1] < 100 ? 40 : 6)) + ' ' + P(nx - 4, 150) + ' ' + P(nx, 168) + 'L' + P(nx + 0.5, 282));
+        var legs = [[165, 201], [164, 234], [165, 266]];
+        for (k = 0; k < legs.length; k++) {
+          var ly = legs[k][1] + (rnd() - 0.5) * 6;
+          g.dn.push('M' + P(nx + 0.3, ly - 6) + 'Q' + P(nx - 4, ly - 2) + ' ' + P(legs[k][0] + (rnd() - 0.5) * 4, ly));
+          tuft(g.dn, legs[k][0], ly, Math.PI * (0.7 + rnd() * 0.6), 3 + rnd() * 3, 1, rnd);
+        }
+      }
+
+      var regions = [[132, 92, 40, 54], [44, 94, 16, 46], [74, 98, 8, 34], [164, 236, 12, 46]];
+      for (i = 0; i < 46; i++) {
+        var R = regions[i % 4 === 3 ? 3 : (i % 3)];
+        var p0 = inEll(rnd, R), p1 = inEll(rnd, R);
+        g.tangle.push('M' + P(p0[0], p0[1]) + 'C' + P(p0[0] + (rnd() - 0.5) * 30, p0[1] + (rnd() - 0.5) * 30) + ' ' + P(p1[0] + (rnd() - 0.5) * 30, p1[1] + (rnd() - 0.5) * 30) + ' ' + P(p1[0], p1[1]));
+      }
+      for (i = 0; i < 64; i++) {
+        var sx, sy, u = rnd();
+        if (i % 3 === 0) { var a = -Math.PI * (0.52 + rnd() * 0.42); sx = 179 + Math.cos(a) * 96 * (1.0 + rnd() * 0.06); sy = 92 + Math.sin(a) * 76 * (1.0 + rnd() * 0.08); }
+        else if (i % 3 === 1) { var b = Math.PI * (0.6 + rnd() * 0.8); sx = 40 + Math.cos(b) * 26 * (1.0 + rnd() * 0.1); sy = 93 + Math.sin(b) * 60 * (0.95 + rnd() * 0.1); }
+        else { sx = 86 + rnd() * 8; sy = 36 + rnd() * 30 + (u < 0.5 ? 0 : 84); }
+        g.somata.push(circ(sx, sy, 0.8 + rnd() * 0.7));
+      }
+
+      for (k = 1; k <= 4; k++) {
+        g.layers.push('M' + P(40 + k * 2.6, 38 + k * 2) + 'C' + P(28 + k * 3.6, 46 + k) + ' ' + P(22 + k * 3.8, 68) + ' ' + P(22 + k * 3.8, 92) + 'C' + P(22 + k * 3.8, 116) + ' ' + P(30 + k * 3.2, 137 - k) + ' ' + P(42 + k * 2.4, 147 - k * 1.6));
+      }
+      for (k = 1; k <= 2; k++) {
+        g.layers.push('M' + P(64 + k * 6, 60 + k * 2) + 'C' + P(62 + k * 6, 80) + ' ' + P(62 + k * 6, 118) + ' ' + P(67 + k * 5, 138 - k * 2));
+      }
+      for (i = 0; i < 16; i++) {
+        var ga = i / 16 * Math.PI * 2 + rnd() * 0.2, gr = i < 6 ? 4 : 8.4;
+        if (i >= 6) ga = (i - 6) / 10 * Math.PI * 2 + rnd() * 0.3;
+        g.glomeruli.push(circ(158 + Math.cos(ga) * gr, 133 + Math.sin(ga) * gr, 2.6 + rnd() * 0.8));
+      }
+    }
+    var out = {};
+    for (var key in g) out[key] = g[key].join('');
+    this._geo = out;
+    return out;
+  }
+  renderVals() {
+    var p = this.props, g = this.geo();
+    var lift = function (v, d) { var x = Number(v ?? d); return (0.1 + 0.9 * x).toFixed(2); };
+    return Object.assign({}, g, {
+      w: p.w ?? 358,
+      h: p.h ?? 300,
+      lplc2: lift(p.lplc2, 0.95),
+      lc4: lift(p.lc4, 0.6),
+      gf: lift(p.gf, 1),
+      dnOp: lift(p.dn, 0.2),
+      interior: lift(p.interior, 0.25),
+      seizure: p.seizure ?? 0,
+      labelOpacity: (p.labels ?? true) ? 1 : 0,
+      activity: p.activity ?? '#63F29A',
+      tissue: p.tissue ?? '#C24FB8'
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Keep the approved design reference and upstream art/licenses byte-for-byte.
+docs/design/v4/** -whitespace
+apps/play/public/art/fly.svg -whitespace
+apps/play/public/fonts/*-OFL.txt -whitespace

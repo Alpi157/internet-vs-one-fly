@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Round summary</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 24px; overflow: hidden">
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <p style="margin: 0; font-size: 13px; line-height: 1.3; color: #9BA59C">Round over</p>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 15px; line-height: 1.3; color: #C9D0C8">The fly</span>
+        <span style="font-family: 'Doto', sans-serif; font-size: 72px; line-height: 1; font-weight: 900; color: #63F29A">4</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 15px; line-height: 1.3; color: #C9D0C8">You</span>
+        <span style="font-family: 'Doto', sans-serif; font-size: 72px; line-height: 1; font-weight: 900">2</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px" role="list" aria-label="Your six hands">
+      <sc-for list="{{hands}}" as="h" hint-placeholder-count="6">
+        <div role="listitem" aria-label="{{h.label}}" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 0; border-radius: 12px; background: #0E110E">
+          <span style="width: 16px; height: 16px; box-sizing: border-box; border-radius: 50%; background: {{h.fill}}; border: 2px solid {{h.ring}}"></span>
+          <span style="font-size: 12px; line-height: 1.2; color: #9BA59C; font-variant-numeric: tabular-nums">{{h.n}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display: flex; gap: 16px; font-size: 13px; line-height: 1.3; color: #9BA59C">
+      <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #E9EDE6"></span>Caught</span>
+      <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; box-sizing: border-box; border-radius: 50%; border: 2px solid #63F29A"></span>Escaped</span>
+    </div>
+  </div>
+
+  <figure style="margin: 0; border-radius: 18px; background: #050605; box-shadow: 0 0 0 1px #262B27; overflow: hidden; display: flex; flex-direction: column">
+    <dc-import name="Brain" w="{{358}}" h="{{236}}" lplc2="{{0.85}}" lc4="{{0.5}}" gf="{{1}}" dn="{{0.1}}" interior="{{0.2}}" seizure="{{0}}" labels="{{false}}" hint-size="358px,236px"></dc-import>
+    <figcaption style="padding: 4px 16px 16px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'Doto', sans-serif; font-size: 44px; line-height: 1.1; font-weight: 900; font-variant-numeric: tabular-nums"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%)">21.5 ms</span><span aria-hidden="true">21<span aria-hidden="true" style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>5 ms</span></span>
+      <span style="font-size: 16px; line-height: 1.4; color: #E9EDE6; text-wrap: pretty">A fruit fly brain beat my hand by 21.5 ms.</span>
+      <span style="font-size: 12px; line-height: 1.3; color: #9BA59C">alpi157.github.io/internet-vs-one-fly</span>
+    </figcaption>
+  </figure>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto">
+    <div style="display: flex; gap: 12px">
+      <button style="flex: 1; height: 52px; border-radius: 26px; border: 1px solid #3A413B; background: transparent; color: #E9EDE6; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 10 V2 M4.5 5.5 L8 2 L11.5 5.5 M3 8.5 V13.5 H13 V8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Share
+      </button>
+      <a href="Main.dc.html" style="flex: 1; height: 52px; border-radius: 26px; background: #E9EDE6; color: #0A0C0A; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">Play again</a>
+    </div>
+    <a href="Lab.dc.html" style="min-height: 56px; box-sizing: border-box; padding: 8px 4px 8px 0; border-top: 1px solid #262B27; color: #E9EDE6; text-decoration: none; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <span style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 16px; line-height: 1.35; font-weight: 700">Is it the wiring, or just speed?</span>
+        <span style="font-size: 14px; line-height: 1.35; color: #9BA59C">Scramble its connections and find out</span>
+      </span>
+      <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" style="flex: none"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var outcomes = ['caught', 'caught', 'escaped', 'escaped', 'escaped', 'escaped'];
+    return {
+      hands: outcomes.map(function (o, i) {
+        return {
+          n: String(i + 1),
+          label: 'Hand ' + (i + 1) + ', ' + o,
+          fill: o === 'caught' ? '#E9EDE6' : 'transparent',
+          ring: o === 'caught' ? '#E9EDE6' : '#63F29A'
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

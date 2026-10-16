@@ -11,9 +11,13 @@
     "bytes": 1079079,
     "sha256": "078924efb86db5a60fac5fc397c16b5db611765a8671114eccdd51bfb684c24b"
   },
+  "display-v1.json": {
+    "bytes": 285,
+    "sha256": "076e58f2dfbbea4d0b0a692140acb0803c2472ad395e748c4880e9bca8dfbf1a"
+  },
   "game.json": {
-    "bytes": 1367,
-    "sha256": "a254fc68d12f321b80982d02b1eb17bd9d4f810eead9eef982498fdc1d132c77"
+    "bytes": 1261,
+    "sha256": "5b2ef26a008032f512724e9368f15d1a318bc049eb7e55b582bb04c7e8254230"
   },
   "lab-targets.json.gz": {
     "bytes": 1481741,
@@ -21,6 +25,6 @@
   },
   "runtime.json": {
     "bytes": 87137,
-    "sha256": "9c0c3d4dec0f6b54177176d06801e5beb69ca370cc01ca52e0abb5dff54938cb"
+    "sha256": "9e72b56d7282a1ad21eee16549862bc34cae4d334b576008b5bfdbf75e0d754c"
   }
 }

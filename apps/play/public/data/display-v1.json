@@ -1,0 +1,9 @@
+{
+  "profile_id": "flybench.display.v1",
+  "fly_length_arena_units": 2.0,
+  "scale_bar_label": "1 fly length",
+  "spike_decay_tau_ms": 60,
+  "spike_alpha_threshold": 0.02,
+  "lod_rule": "phone on touch or width below 900 CSS pixels; desktop otherwise",
+  "anatomy_scale_bar_um": 100
+}

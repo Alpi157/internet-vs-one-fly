@@ -1,0 +1,38 @@
+[
+  {
+    "file": "atkinson-400.woff2",
+    "source": "https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW37LQhtA.ttf",
+    "source_sha256": "833b4e79c549e3f407fecf03b5c9e6dbfb94a80c86f35fe4f12d32b5936eccba",
+    "sha256": "3d05d3229eb963f53596d31a856e27306b5156e6a4fe1597310b884516c8389a",
+    "family": "Atkinson Hyperlegible Next",
+    "weight": 400,
+    "subset": "U+0020-00FF plus punctuation, arrows, minus"
+  },
+  {
+    "file": "atkinson-600.woff2",
+    "source": "https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW3MrMhtA.ttf",
+    "source_sha256": "b8ee2866e707e26b26aca96741b756cfda3e44b1ede220d8c986bd0bc6eaac6d",
+    "sha256": "2de20af9306ad443ea455d7e418b5c7672680ccf1fb6b8489e3fba0d8bb54fc8",
+    "family": "Atkinson Hyperlegible Next",
+    "weight": 600,
+    "subset": "U+0020-00FF plus punctuation, arrows, minus"
+  },
+  {
+    "file": "atkinson-700.woff2",
+    "source": "https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW3C7MhtA.ttf",
+    "source_sha256": "708c1182ee6d789bc9674e5eea52e9cfe814ad29bdfb55f3670a12e83dd0fb19",
+    "sha256": "4961e8e8c200dd18ee164f3d9e4600f4a13555283f07767c3a51ee22dbae7d33",
+    "family": "Atkinson Hyperlegible Next",
+    "weight": 700,
+    "subset": "U+0020-00FF plus punctuation, arrows, minus"
+  },
+  {
+    "file": "doto-900.woff2",
+    "source": "https://fonts.gstatic.com/s/doto/v3/t5tJIRMbNJ6TQG7Il_EKPqP9zTnvqqGNcuvLMt1JIphFkeWezw.ttf",
+    "source_sha256": "ccda3caf38fe38bfe03957d5314827d58c39face3fa4d5ba0be0e88bf91f60aa",
+    "sha256": "b8fafe79fcfa69745def275dd82d60856a8b27cc70815379cad3017e5ca6530c",
+    "family": "Doto",
+    "weight": 900,
+    "subset": "U+0020-00FF plus punctuation, arrows, minus"
+  }
+]

@@ -5959,7 +5959,7 @@
     "w_noise": 0.3175750723556395
   },
   "profile_hashes": {
-    "apps/play/src/game.ts": "f8437362969833c0605d346bf8ef9052bb9615fe5aba1f08042d0125b0cb4d9c",
+    "apps/play/src/game.ts": "a35f8ebd31e7c6622b1a80551f76ca6fbaebcbd5def46f4ec845ebc29b712803",
     "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
     "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",
     "packages/kernel-ts/src/encoding.ts": "70f405847269535b7cf49d16f527138d0984060a415e3aa9bcdd353b137e4efc",
@@ -5969,7 +5969,7 @@
     "packages/kernel-ts/src/worker.ts": "99826612531e0fd02d5a8fc951a4981439e1f6899c30429b0a39244a8f777c3b",
     "profiles/decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",
     "profiles/encoder-v2-draft.json": "f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8",
-    "profiles/game-v2.json": "a254fc68d12f321b80982d02b1eb17bd9d4f810eead9eef982498fdc1d132c77",
+    "profiles/game-v2.json": "5b2ef26a008032f512724e9368f15d1a318bc049eb7e55b582bb04c7e8254230",
     "profiles/model-v2d-provisional.json": "2d4c3ad34120af9479c168d8bed7d880797a0ad7f7445a23fd8faae11247ed57",
     "profiles/noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
     "profiles/noise-v2.json": "74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e",

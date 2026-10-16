@@ -99,6 +99,7 @@ stages:
   V2E: ACCEPTED
   V2F: SUBMITTED
   V2G: SUBMITTED
+  V2H: IMPLEMENTED_PENDING_VALIDATION
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -458,3 +459,21 @@ v2g_current:
     Record this amendment verbatim in docs/anatomy-v2g-a02-axis-audit.md and in the ledger. State that it was issued by the external reviewer after the gate stopped, and why. If any of the new strict checks fails, stop again and report.
 
     All brain rules and every other a02 requirement are unchanged. Continue from step 2 (the composite layout) through to reviews/V2G-a02.zip.
+
+v2h_current:
+  status: IMPLEMENTED_PENDING_VALIDATION
+  base_sha: ae3e417ed6dd0882550b95b3ff29b56c751d60fa
+  design_reference: docs/design/v4/DESIGN.md
+  design_zip_sha256: fd8e7bd0a9c2bb8ae18b34438b8ce82d4968662a09712e637d260cfac39dd6f3
+  game_profile: profiles/game-v2.7.json
+  display_profile: apps/play/public/data/display-v1.json
+  scope: game and replay UI only; labs retained for V2I
+  acceptance_commands: 16
+  acceptance: final-SHA receipt under evidence/V2H/acceptance
+  display_notes: docs/ui-v2h.md
+  looming_input: actual RunnerV2 encoded output; kernel unchanged
+  bots: evidence/V2H/bots/comparison.json; descriptive paired comparison, no target
+  browser_evidence: evidence/V2H/browser/e2e.json
+  external_acceptance: PENDING
+  main_pushed: false
+  deployment_triggered: false
