@@ -41,6 +41,8 @@ function bots(profile:any,seeds:number[],one=false){
    const b=game.runner.body,fall=8/profile.strikes[type].speed;
    let x=b.x+(bot===2?b.heading_x*game.runner.held[1]*fall:0),y=b.y+(bot===2?b.heading_y*game.runner.held[1]*fall:0);
    const d=Math.hypot(x,y);if(d>profile.arena_radius){x*=profile.arena_radius/d*(1-Number.EPSILON);y*=profile.arena_radius/d*(1-Number.EPSILON);}
+   // Keep the declared boundary projection inside despite hypot rounding.
+   while(Math.hypot(x,y)>profile.arena_radius){x*=1-2*Number.EPSILON;y*=1-2*Number.EPSILON;}
    game.apply({tick:game.tick,x,y,hold_ms:[80,300,600][type]});while(game.strike&&!game.done)game.step();records.push({bot,seed,trial,censored:false,...game.lastImpact});
   }
  }
