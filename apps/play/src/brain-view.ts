@@ -39,8 +39,10 @@ export class BrainView {
     private lastTick = -1;
     private lastMode = '';
     private circuit: string;
-    constructor(host: HTMLElement, base: string, nodes: any[], display: any, circuit = 'T1b') {
+    private quality: { resolutionScale: number; glow: boolean };
+    constructor(host: HTMLElement, base: string, nodes: any[], display: any, circuit = 'T1b', quality = { resolutionScale: 1, glow: true }) {
         this.circuit = circuit;
+        this.quality = quality;
         this.nodes = nodes;
         this.display = display;
         this.lod = matchMedia('(pointer: coarse)').matches || innerWidth < 900 ? 'phone' : 'desktop';
@@ -129,8 +131,8 @@ export class BrainView {
     private point(p: number[]) { return [p[0] * this.scale + this.offset[0], p[1] * this.scale + this.offset[1]]; }
     private prepare() {
         const width = 720, height = this.mode === 'brain' ? 424 : 1040;
-        this.canvas.width = width;
-        this.canvas.height = height;
+        this.canvas.width = Math.round(width * this.quality.resolutionScale);
+        this.canvas.height = Math.round(height * this.quality.resolutionScale);
         this.overlay.width = width;
         this.overlay.height = height;
         const contours = this.rois.rois.filter((r: any) => this.mode === 'whole' || r.panel === 0).flatMap((r: any) => r.contours_um).flat();
@@ -303,7 +305,7 @@ export class BrainView {
             gl.useProgram(this.lineProgram);
             gl.uniform1i(gl.getUniformLocation(this.lineProgram, 'activity'), 1);
             gl.uniform1i(gl.getUniformLocation(this.lineProgram, 'brainOnly'), this.mode === 'brain' ? 1 : 0);
-            gl.uniform4f(gl.getUniformLocation(this.lineProgram, 'transform'), 2 * this.scale / this.canvas.width, -2 * this.scale / this.canvas.height, 2 * this.offset[0] / this.canvas.width - 1, 1 - 2 * this.offset[1] / this.canvas.height);
+            gl.uniform4f(gl.getUniformLocation(this.lineProgram, 'transform'), 2 * this.scale / this.overlay.width, -2 * this.scale / this.overlay.height, 2 * this.offset[0] / this.overlay.width - 1, 1 - 2 * this.offset[1] / this.overlay.height);
             gl.enable(gl.BLEND);
             const bind = (buffer: WebGLBuffer) => { gl.bindBuffer(gl.ARRAY_BUFFER, buffer); const p = gl.getAttribLocation(this.lineProgram, 'p'), n = gl.getAttribLocation(this.lineProgram, 'neuron'); gl.enableVertexAttribArray(p); gl.vertexAttribPointer(p, 2, gl.FLOAT, false, 16, 0); gl.enableVertexAttribArray(n); gl.vertexAttribPointer(n, 1, gl.FLOAT, false, 16, 8); const panel = gl.getAttribLocation(this.lineProgram, 'panel'); gl.enableVertexAttribArray(panel); gl.vertexAttribPointer(panel, 1, gl.FLOAT, false, 16, 12); };
             bind(this.lines);
@@ -323,10 +325,12 @@ export class BrainView {
             gl.drawElements(gl.LINES, count, gl.UNSIGNED_INT, 0);
             bind(this.somaBuffer);
             gl.uniform1i(gl.getUniformLocation(this.lineProgram, 'dots'), 1);
+            if (this.quality.glow) {
             gl.uniform1f(gl.getUniformLocation(this.lineProgram, 'pointSize'), 7);
             gl.uniform1f(gl.getUniformLocation(this.lineProgram, 'glow'), .25);
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
             gl.drawArrays(gl.POINTS, 0, this.somaCount);
+            }
             gl.uniform1f(gl.getUniformLocation(this.lineProgram, 'pointSize'), 3);
             gl.uniform1f(gl.getUniformLocation(this.lineProgram, 'glow'), 1);
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -365,6 +369,6 @@ export class BrainView {
         if (previous.frame) this.draw(previous.frame, previous.frames, previous.dim);
         return snapshot;
     }
-    snapshot() { const c = document.createElement('canvas'); c.width = this.canvas.width; c.height = this.canvas.height; const g = c.getContext('2d')!; g.drawImage(this.canvas, 0, 0); g.drawImage(this.overlay, 0, 0); return c; }
+    snapshot() { const c = document.createElement('canvas'); c.width = this.canvas.width; c.height = this.canvas.height; const g = c.getContext('2d')!; g.drawImage(this.canvas, 0, 0); g.drawImage(this.overlay, 0, 0, c.width, c.height); return c; }
     get renderer() { return this.gl ? 'WebGL2' : 'Canvas soma fallback'; }
 }

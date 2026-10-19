@@ -2158,8 +2158,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
 
     add_base(entries, root, base, submitted)
     evidence_root = root / "evidence" / milestone
-    if milestone in {"V2I", "V2J"} and attempt == 2:
-        evidence_root /= "a02"
+    if milestone in {"V2I", "V2J"} and attempt >= 2:
+        evidence_root /= f"a{attempt:02d}"
     add_evidence(
         entries,
         evidence_root,
@@ -2347,7 +2347,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             if isinstance(value, dict):
                 m09_evidence[name] = value
     if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H", "V2I", "V2J"}:
-        if attempt not in ({1, 2} if milestone in {"V2F", "V2G", "V2I", "V2J"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
+        if attempt not in ({1, 2, 3} if milestone == "V2J" else {1, 2} if milestone in {"V2F", "V2G", "V2I"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires a registered attempt and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.
         narrative = (evidence_root / "REVIEW.md").read_text(encoding="utf-8")

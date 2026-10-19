@@ -59,7 +59,7 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
     if(closed)return;runtime=rt;original=buf;targets={'N-SIGN':sign,'N-STRENGTH':str};strength=meta;profile=pr;results=published;scale=results.registered_coupling;
     views=[0,1].map(i=>{
       const target=host.querySelector<HTMLElement>(`#lab-brain-${i}`)!;
-      const view=new BrainView(target,base,brain.nodes,display,'T1a');
+      const view=new BrainView(target,base,brain.nodes,display,'T1a',{resolutionScale:2/3,glow:false});
       const caption=target.querySelector('.anatomy-caption')!,details=document.createElement('details');
       details.className='anatomy-info';details.innerHTML='<summary>About this anatomy</summary>';details.append(caption);target.append(details);return view;
     });

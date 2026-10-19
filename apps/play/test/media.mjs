@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {serve,root,dist,prefix} from './site-server.mjs';
 const hash=b=>createHash('sha256').update(b).digest('hex');
+async function legacyCapture(){
 const media=resolve(root,'docs/media'),evidence=resolve(root,'evidence/V2I/a02');mkdirSync(evidence,{recursive:true});
 const provenancePath=resolve(media,'media-provenance.json');
 const profile=JSON.parse(readFileSync(resolve(dist,'data/game.json'))),results=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
@@ -71,3 +72,49 @@ try{
  writeFileSync(provenancePath,JSON.stringify(provenance,null,2)+'\n');
  }
 }finally{await browser.close();await new Promise(r=>server.close(r));}
+
+}
+
+async function captureA03(){
+ const media=resolve(root,'docs/media'),evidence=resolve(root,'evidence/V2J/a03'),frames='/tmp/flybench-v2j-a03-media-frames';
+ const provenancePath=resolve(media,'media-provenance.json'),previous=JSON.parse(readFileSync(provenancePath));
+ const protocol=JSON.parse(readFileSync(resolve(root,'profiles/walking-a03.json'))),profile=JSON.parse(readFileSync(resolve(dist,'data/game.json'))),results=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
+ const selection={...protocol.hero},declaration=JSON.stringify(selection,null,2)+'\n';
+ // The committed protocol and this provenance precede every selected seed and capture.
+ assert.equal(readFileSync(resolve(evidence,'hero-selection-declaration.json'),'utf8'),declaration);
+ const provenance={schema:'flybench.media.v2j.a03',capture_code_sha256:hash(readFileSync(import.meta.filename)),base_commit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),viewport:{width:1440,height:900},display_only:true,game:{selection},lab:previous.lab,lab_historical_capture_commit:previous.historical_capture_commit??previous.lab_historical_capture_commit??previous.base_commit,assets:{}};
+ writeFileSync(provenancePath,JSON.stringify(provenance,null,2)+'\n');
+ mkdirSync(frames,{recursive:true});assert.equal((await import('node:fs')).readdirSync(frames).length,0,'Fresh capture directory required');
+ const browser=await chromium.launch({headless:true}),{server,origin}=await serve(),external=[];
+ try{
+  const page=await browser.newPage({viewport:provenance.viewport});await page.route('**/*',r=>{const u=r.request().url();if(!u.startsWith(origin)&&!u.startsWith('data:')&&!u.startsWith('blob:')){external.push(u);return r.abort();}return r.continue();});
+  await page.goto(origin+prefix+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady);await page.evaluate(()=>document.fonts.ready);
+  const reset=async seed=>{await page.evaluate(seed=>window.flyTest.resetSeed(seed),seed);await page.waitForFunction(()=>window.flyTest.ready());await page.click('#start');};
+  const strike=async()=>page.evaluate(()=>{const b=window.flyTest.state().frame.body;window.flyTest.strike(b.x,b.y,300);return {x:b.x,y:b.y};});
+  const trials=[];let seed=selection.first_seed;
+  for(;;seed++){
+   await reset(seed);await page.evaluate(()=>window.flyTest.advance(150));const aim=await strike();await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.state().replaying);
+   const state=await page.evaluate(()=>window.flyTest.state());trials.push({seed,aim,caught:state.catches>0});console.log('Hero selection',seed,state.catches?'caught':'escaped');if(!state.catches)break;assert(trials.length<10000);
+  }
+  selection.tried=trials.length;selection.trials=trials;selection.declaration_sha256=hash(declaration);writeFileSync(resolve(evidence,'hero-selection.json'),JSON.stringify({selection,code_sha:provenance.base_commit},null,2)+'\n');
+  await reset(seed);let index=0;const observations=[];
+  const capture=async()=>{await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));await page.screenshot({path:resolve(frames,`game-${String(index++).padStart(3,'0')}.png`)});observations.push(await page.evaluate(()=>({state:window.flyTest.state(),pill:document.getElementById('landing').textContent,stamp:document.getElementById('impact-label').textContent})));};
+  for(let i=0;i<30;i++){await capture();await page.evaluate(()=>window.flyTest.advance(5));}
+  const aim=await strike();
+  while(!(await page.evaluate(()=>window.flyTest.state().replaying))){await page.evaluate(()=>window.flyTest.advance(1));await capture();}
+  const log=await page.evaluate(()=>window.flyTest.log());assert.equal(log.neural_seed,seed);assert.deepEqual(log.inputs,[{tick:3000,...aim,hold_ms:300}]);assert.equal(log.schema,'flybench.game-round.v3');
+  const impact=observations.map(o=>o.state.frame.impact).find(Boolean);assert(impact&&!impact.caught);assert(observations.some(o=>o.state.frame.air));const liveFrames=index;
+  const clock=new Date();await page.clock.install({time:clock});await page.clock.pauseAt(new Date(clock.getTime()+1000));await page.evaluate(()=>{window.flyTest.showReplay();window.flyTest.measureReplay(true);});const replayTicks=[];
+  for(let i=0;i<60;i++){await page.clock.runFor(50);replayTicks.push(await page.evaluate(()=>window.flyTest.state().replayTick));await page.screenshot({path:resolve(frames,`game-${String(index++).padStart(3,'0')}.png`)});}
+  assert(new Set(replayTicks).size>20);assert(replayTicks.every((t,i)=>!i||t<replayTicks[i-1]||t-replayTicks[i-1]<=40));
+  await page.evaluate(()=>{window.flyTest.measureReplay(false);window.flyTest.showRecorded('flash');});await page.clock.runFor(100);await page.screenshot({path:resolve(media,'game-still.png')});
+  const recordedTick=await page.evaluate(()=>window.flyTest.state().replayTick),brain=await page.evaluate(()=>window.flyTest.brainSnapshot()),brainBytes=Buffer.from(brain.split(',')[1],'base64');writeFileSync(resolve(evidence,'hero-recorded-brain.png'),brainBytes);
+  const card=await page.evaluate(async({brain,count})=>{const c=document.createElement('canvas');c.width=1200;c.height=630;const g=c.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,1200,630);await document.fonts.load('900 72px Doto');const im=new Image();im.src=brain;await im.decode();g.drawImage(im,625,135,550,324);g.fillStyle='#e9ede6';g.font='900 72px Doto';g.fillText('Catch the fly',48,125);g.font='400 29px Atkinson';[`${count.toLocaleString('en-US')} neurons, wired as mapped`,'in a real male fruit fly.','Try to catch it.'].forEach((s,i)=>g.fillText(s,48,245+i*44));g.fillStyle='#7fefaa';g.font='400 24px Atkinson';g.fillText('alpi157.github.io/internet-vs-one-fly/',48,563);return c.toDataURL();},{brain,count:results.circuit_counts.game});writeFileSync(resolve(root,'apps/play/public/og-image.png'),Buffer.from(card.split(',')[1],'base64'));
+  provenance.game={selection,neural_seed:seed,environment_seed:selection.environment_seed,log,impact,frames:index,live_frames:liveFrames,walk_frames:30,frame_duration_ms:50,walk_slowdown_factor:1,live_slowdown_factor:5,replay_seconds:3,replay_speed:profile.replay_speed,replay_loop:true,replay_ticks:replayTicks,source:'Authoritative UI input hook at tick 3000, fixed 300 ms slap. Walk: five 10 ms intervals per 50 ms frame (real speed). Strike: one interval per frame (5x slower). Ordinary recorded replay: quarter speed, explicit loop.',observed_takeoff:observations.some(o=>o.state.frame.air),observed_countdown:observations.some(o=>o.pill.includes('ms')),observed_escape_stamp:observations.some(o=>o.stamp==='Escaped'),og:{source:selection.og_rule,brain_frame_sha256:hash(brainBytes),recorded_tick:recordedTick,kind:'Site card, no personal score'}};
+  assert(provenance.game.observed_escape_stamp);provenance.external_requests=external;assert.equal(external.length,0);
+  for(const file of ['apps/play/public/data/runtime.json','apps/play/public/data/game.json','apps/play/public/data/coupling/runtime.json','apps/play/public/data/coupling/strength-demo.json','apps/play/public/data/anatomy/manifest.json','apps/play/public/og-image.png','apps/play/public/favicon.svg','docs/media/game-still.png','docs/media/coupling-still.png','docs/media/coupling-hero.gif']){const b=readFileSync(resolve(root,file));provenance.assets[file]={...previous.assets[file],bytes:b.length,sha256:hash(b)};}
+  provenance.capture_source_sha256=Object.fromEntries(['main.ts','coupling.ts','coupling-worker.ts','brain-view.ts','field.ts','style.css','game.ts','worker.ts'].map(f=>['apps/play/src/'+f,hash(readFileSync(resolve(root,'apps/play/src/'+f)))]));
+  writeFileSync(resolve(evidence,'media-game-round.json'),JSON.stringify({log,impact,observations},null,2)+'\n');writeFileSync(provenancePath,JSON.stringify(provenance,null,2)+'\n');
+ }finally{await browser.close();await new Promise(r=>server.close(r));}
+}
+if(process.argv.includes('--a03'))await captureA03();else await legacyCapture();

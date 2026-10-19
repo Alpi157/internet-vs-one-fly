@@ -1,0 +1,22 @@
+{
+  "decision_id": "D-V2J-SELECT-01",
+  "date": "2026-10-19",
+  "authority": "Owner instruction for V2J a03",
+  "decision": "Activate A (calm) as game profile v2.8, with exactly its previewed drive and body/arena/strike rules; no retuning.",
+  "reason_verbatim": "the owner played all four presets in the dev preview on 2026-10-19 and chose A (\"calm\") as the most realistic.",
+  "evidence": {
+    "profiles/owner-walking-a02.json": "5163808dc46a1656d04e533d171e0a1f61a4150a2cace441c66e7a5a3988095b",
+    "profiles/owner-walking-a02-selected.json": "fec5ee89b30dda85bb86ff5543e8a5998e62cace77c4fe6aaa182515d443ef90",
+    "evidence/V2J/a02/presets/A.json": "54cde78ca1aab7d6c6c32fae4c4977260b42dc8850c04d5fd6923c4bed65daaf",
+    "evidence/V2J/a02/selection/offer.json": "fec5ee89b30dda85bb86ff5543e8a5998e62cace77c4fe6aaa182515d443ef90"
+  },
+  "safety": {
+    "false_takeoffs": true,
+    "whole_circuit": true,
+    "resting_swat": true,
+    "replay": true,
+    "drive_parity": true
+  },
+  "scope": "Declared game design; no biological superiority claim. Lab has no walking drive. The a01 FAIL and all a02 records remain unchanged.",
+  "external_stage_acceptance": "PENDING; owner choice authorizes activation, implementing agent does not accept the stage."
+}

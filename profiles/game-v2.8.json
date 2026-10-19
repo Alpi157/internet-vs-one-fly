@@ -1,7 +1,7 @@
 {
   "profile_id": "flybench.game.v2.8",
   "version": 8,
-  "classification": "Game-only declared internal exploration current; frozen calibrated neural model unchanged",
+  "classification": "Game parameters only; selected frozen neural profile separate",
   "arena_half_size": 6,
   "render_size": 700,
   "round_ms": 30000,
@@ -37,12 +37,17 @@
   "replay_speed": 0.25,
   "recording_max_intervals": 3000,
   "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
-  "change_reason": "Declared autonomous walking-port current; no hand access; strike, arena and takeoff unchanged",
+  "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
   "arena_shape": "circle",
   "arena_radius": 6.770275002573076,
   "walking_drive": {
     "schema": "flybench.walking-input.v1",
-    "selected": null,
+    "selected": {
+      "forward": 1.5,
+      "turn_sigma": 0.5,
+      "walk_seconds": 1.5,
+      "stop_seconds": 1
+    },
     "current_units": "kernel held input current",
     "stream": 97,
     "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
@@ -61,104 +66,13 @@
       "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
     },
     "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
-    "grid": {
-      "forward": [
-        1.5,
-        1.75,
-        2.0
-      ],
-      "turn_sigma": [
-        0.5,
-        1.0
-      ],
-      "walk_seconds": [
-        1.0,
-        1.5
-      ],
-      "stop_seconds": [
-        0.6,
-        1.0
-      ]
-    },
-    "targets": {
-      "median_walking_speed_fly_lengths_s": [
-        1.5,
-        3.0
-      ],
-      "median_walk_bout_s": [
-        0.5,
-        2.0
-      ],
-      "median_stop_bout_s": [
-        0.3,
-        1.5
-      ],
-      "walking_fraction": [
-        0.4,
-        0.7
-      ],
-      "mean_grid_coverage_min": 0.5,
-      "false_takeoffs_s_max": 0.05,
-      "whole_rate_hz_max_exclusive": 50,
-      "swat_physical_escape_min": "paired v2.7 resting-strike baseline",
-      "bot1_catch": [
-        0.2,
-        0.35
-      ],
-      "bot2_catch": [
-        0.35,
-        0.55
-      ]
-    },
-    "measurement": {
-      "grid_seeds": [
-        101,
-        102,
-        103,
-        104
-      ],
-      "validation_seeds": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20
-      ],
-      "environment_seed_rule": "1000+neural_seed",
-      "quiet_seconds": 30,
-      "fly_length_arena_units": 2,
-      "walking": "grounded |applied forward speed| >= 0.002 arena units/ms; turn-only intervals reported separately; median speed across walking intervals",
-      "bouts": "maximal contiguous walking/nonwalking segments; exclude round-edge censored segments from medians, retain every segment",
-      "coverage": "2-unit square cells centered on lattice (0,0); denominator cells whose centers lie inside circular arena; only centers-in-arena cells counted; grounded positions; at least half means most for this game-design gate",
-      "bot_rounds_per_seed": 1,
-      "bot_strikes_per_round": 6,
-      "bot_schedule": "warmup 1500 ms, then strike after 1000 ms quiet gap; one type per round, all three types; current position or current held velocity times fall time; no aim noise/delay for bots 1 and 2; project outside aim to arena boundary",
-      "resting_strikes": "same protocol as baseline (two five-strike rounds per seed/type); censor if no 200 ms rest before round end; no force-stop",
-      "bot3": "existing 10 strategies, unchanged seeds, reaction delay and aim noise; descriptive"
-    },
-    "selection": {
-      "passing": "All target bounds pass on pooled grid seeds, including bot1/bot2 across equally weighted strike types. Resting swat physical escape >= paired baseline and no censoring. Then validate selected point on 20 seeds, with failures explicit; no replacement or grid expansion.",
-      "distance": "sum of squared normalized deviations: speed (x-2.25)/.75, walk median (x-1.25)/.75, stop median (x-.9)/.6, walking fraction (x-.55)/.15, coverage (x-1)/.5, bot1 (x-.275)/.075, bot2 (x-.45)/.10; ties lowest forward, then lowest sigma, then grid order",
-      "no_pass": "Report TARGET_MISSED and no selected production point; preserve all metrics. No silent retuning."
-    },
     "copy": {
       "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
-      "lab": "Lab simulations have no walking drive."
-    }
-  }
+      "lab": "Lab simulations have no walking drive.",
+      "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+    },
+    "selection_decision": "decisions/D-V2J-SELECT-01.json",
+    "history": "docs/walking-v2j.md"
+  },
+  "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
 }

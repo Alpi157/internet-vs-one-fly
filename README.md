@@ -71,7 +71,9 @@ Open the localhost URL printed by Vite with the `/internet-vs-one-fly/` base pat
 
 ## For scientists
 
+The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks.
 
+[Walking design and evidence](docs/walking-v2j.md)
 
 Lab simulations have no walking drive.
 

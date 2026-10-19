@@ -5,7 +5,7 @@ import {resolve} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {serveDev,root,prefix} from './owner-server.mjs';
 import {overlaps} from './overlap.mjs';
-const selection=JSON.parse(readFileSync(resolve(root,'profiles/owner-walking-a02-selected.json'))),out=resolve(root,'evidence/V2J/a02/preview');mkdirSync(out,{recursive:true});
+const selection=JSON.parse(readFileSync(resolve(root,'profiles/owner-walking-a02-selected.json'))),out=resolve(root,process.env.FLYBENCH_OWNER_PREVIEW_OUT??'evidence/V2J/a03/preview');mkdirSync(out,{recursive:true});
 const axe=readFileSync(resolve(root,'apps/play/node_modules/axe-core/axe.min.js'),'utf8'),reports=[];
 const {server,origin}=await serveDev();
 const persist=()=>writeFileSync(resolve(out,'matrix.json'),JSON.stringify({sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),reports},null,2)+'\n');

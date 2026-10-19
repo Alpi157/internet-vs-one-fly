@@ -15,7 +15,7 @@ def test_v2i_keeps_science_mechanics_runtime_and_anatomy_bytes():
     paths = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE], cwd=ROOT, text=True).splitlines()
     protected = [p for p in paths if p.startswith(('src/', 'packages/kernel-ts/src/', 'apps/play/public/data/', 'docs/media/anatomy/')) or p in ('apps/play/src/game.ts', 'apps/play/src/worker.ts', 'docs/results-v2e.json', 'docs/results-v2f.json')]
     # V2J adds an opt-in game adapter and updates its metadata only.
-    allowed={'apps/play/src/game.ts','apps/play/public/data/runtime.json','apps/play/public/data/HASHES.json'}
+    allowed={'apps/play/src/game.ts','apps/play/public/data/runtime.json','apps/play/public/data/HASHES.json','apps/play/public/data/game.json'}
     for name in protected:
         if name in allowed:continue
         expected = subprocess.check_output(['git', 'show', f'{BASE}:{name}'], cwd=ROOT)

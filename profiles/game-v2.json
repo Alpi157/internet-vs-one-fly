@@ -1,6 +1,6 @@
 {
-  "profile_id": "flybench.game.v2.7",
-  "version": 7,
+  "profile_id": "flybench.game.v2.8",
+  "version": 8,
   "classification": "Game parameters only; selected frozen neural profile separate",
   "arena_half_size": 6,
   "render_size": 700,
@@ -39,5 +39,40 @@
   "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
   "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
   "arena_shape": "circle",
-  "arena_radius": 6.770275002573076
+  "arena_radius": 6.770275002573076,
+  "walking_drive": {
+    "schema": "flybench.walking-input.v1",
+    "selected": {
+      "forward": 1.5,
+      "turn_sigma": 0.5,
+      "walk_seconds": 1.5,
+      "stop_seconds": 1
+    },
+    "current_units": "kernel held input current",
+    "stream": 97,
+    "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+    "ports": [
+      "forward",
+      "backward",
+      "turn_left",
+      "turn_right"
+    ],
+    "backward_current": 0,
+    "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+    "ou": {
+      "tau_seconds": 0.75,
+      "decay": 0.9867551618071957,
+      "innovation_scale": 0.16221667807859647,
+      "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+    },
+    "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+    "copy": {
+      "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+      "lab": "Lab simulations have no walking drive.",
+      "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+    },
+    "selection_decision": "decisions/D-V2J-SELECT-01.json",
+    "history": "docs/walking-v2j.md"
+  },
+  "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
 }

@@ -26,7 +26,7 @@ export function profileFor(id:string,forward?:number,takeoffSpeed?:number){
   takeoff_speed:takeoffSpeed??entry.takeoff_speed,owner_preset:{id,name:entry.name,production:false},
   physics_disclosure:id==='C'?entry.physics_disclosure:'Takeoff speed and all body rules as in v2.7.'};
 }
-export function identityRuntime(profile:any){return {...structuredClone(runtime),profile_hashes:{...runtime.profile_hashes,owner_playtest_profile:sha(profile)}};}
+export function identityRuntime(profile:any){return profile.owner_preset?{...structuredClone(runtime),profile_hashes:{...runtime.profile_hashes,owner_playtest_profile:sha(profile)}}:structuredClone(runtime);}
 export function newGame(profile:any,seed:number,environmentSeed=1000+seed){return new Game(buffer,identityRuntime(profile),profile,seed,environmentSeed);}
 function segments(flags:(boolean|null)[]){
  const result:any[]=[];let start=0,prior=flags[0];
