@@ -102,6 +102,7 @@ stages:
   V2H: SUBMITTED
   V2I: SUBMITTED
   V2J: SUBMITTED
+  V2K: IN_PROGRESS
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -385,7 +386,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: Review V2J a03 owner-selected A activation, final-SHA safety/software receipts and media. No push, tag or deployment.
+next_action: Complete V2K impact-record wording, reflex hero and final-SHA software evidence. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -556,3 +557,13 @@ v2j_current:
     external_acceptance: PENDING
     main_pushed: false
     deployment_triggered: false
+
+v2k_current:
+  status: IN_PROGRESS_EXTERNAL_REVIEW_PENDING
+  attempt: a01
+  base: 88945ca780d5fc12e59a51e2f5aec1d9d2556377
+  game_profile: flybench.game.v2.8
+  scope: Impact-record wording and declared reflex hero only; mechanics, walking, lab and science unchanged.
+  protocol: profiles/media-v2k.json
+  history: docs/media/history/v2j-a03-provenance.json
+  evidence: evidence/V2K

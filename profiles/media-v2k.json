@@ -1,0 +1,25 @@
+{
+  "schema": "flybench.media.v2k.a01",
+  "base_sha": "88945ca780d5fc12e59a51e2f5aec1d9d2556377",
+  "reason": "The a03 rule admitted a walking escape and therefore did not demonstrate the reflex. Preserve its complete provenance as history; select a pre-impact neural takeoff escape for the new hero.",
+  "history": "docs/media/history/v2j-a03-provenance.json",
+  "hero": {
+    "rule": "First neural seed in ascending integer order whose single swat escapes with a recorded neural takeoff onset strictly before impact. Walk 1500 ms, observe the current body position at tick 3000, aim there, fixed 600 ms hold. Environment seed 8128. Every tried seed is retained; no aesthetic selection.",
+    "first_seed": 1,
+    "environment_seed": 8128,
+    "warmup_intervals": 150,
+    "hold_ms": 600,
+    "aim": "Current body position at 1500 ms; no lead",
+    "walk_slowdown_factor": 1,
+    "strike_slowdown_factor": 5,
+    "frame_duration_ms": 50,
+    "replay_seconds": 3,
+    "replay_speed": 0.25,
+    "output_width": 960,
+    "max_bytes": 8000000,
+    "og_rule": "Recorded hero replay frame with maximum observed spike count",
+    "lab_media": "Existing clip and still retained byte-identical."
+  },
+  "dry_run": "Seed 101 only, excluded from ascending selection: exercise authoritative 1500 ms walk, current-position 600 ms swat, capture and replay procedure before the declaration freeze commit.",
+  "wording": "Impact-record presentation only. No changes to game v2.8, physics, walking drive, neural model, recorded spikes or lab."
+}

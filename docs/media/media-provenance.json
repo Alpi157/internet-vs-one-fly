@@ -1,7 +1,7 @@
 {
-  "schema": "flybench.media.v2j.a03",
-  "capture_code_sha256": "96c8db71e1dd1cdeeaff2aad60e34d73ff4af86aa021b451a30de09762e1c908",
-  "base_commit": "773d604f6f8962911f6febb9407fccbb49a96b79",
+  "schema": "flybench.media.v2k.a01",
+  "capture_code_sha256": "ab3238afce02656ee82786106965c065593f2bc97eb614934c748631b68956a3",
+  "base_commit": "88945ca780d5fc12e59a51e2f5aec1d9d2556377",
   "viewport": {
     "width": 1440,
     "height": 900
@@ -9,11 +9,11 @@
   "display_only": true,
   "game": {
     "selection": {
-      "rule": "First neural seed in ascending integer order whose single slap escapes. Walk 1500 ms, observe the current fly position at tick 3000, aim there and apply a fixed 300 ms hold slap. Environment seed fixed at 8128. No other outcome enters selection.",
+      "rule": "First neural seed in ascending integer order whose single swat escapes with a recorded neural takeoff onset strictly before impact. Walk 1500 ms, observe the current body position at tick 3000, aim there, fixed 600 ms hold. Environment seed 8128. Every tried seed is retained; no aesthetic selection.",
       "first_seed": 1,
       "environment_seed": 8128,
       "warmup_intervals": 150,
-      "hold_ms": 300,
+      "hold_ms": 600,
       "aim": "Current body position at 1500 ms; no lead",
       "walk_slowdown_factor": 1,
       "strike_slowdown_factor": 5,
@@ -23,157 +23,7 @@
       "output_width": 960,
       "max_bytes": 8000000,
       "og_rule": "Recorded hero replay frame with maximum observed spike count",
-      "lab_media": "Existing clip and still retained byte-identical.",
-      "tried": 1,
-      "trials": [
-        {
-          "seed": 1,
-          "aim": {
-            "x": 5.75580366624397,
-            "y": 0.1283229401921836
-          },
-          "caught": false
-        }
-      ],
-      "declaration_sha256": "51a6fd0eb0ef1bd43f0ec4db502acc0d3d42eff52fe1594238d263673b5af0aa"
-    },
-    "neural_seed": 1,
-    "environment_seed": 8128,
-    "log": {
-      "schema": "flybench.game-round.v3",
-      "neural_seed": 1,
-      "environment_seed": 8128,
-      "profile_hashes": {
-        "apps/play/src/game-runner.ts": "7b4e640bd8b9a43b708b8b28a1a595fd7887a2138022bcb856cdb91c11cf199b",
-        "apps/play/src/game.ts": "6d2ae78ea667af75998f62ee6396cf08b1426b28abff8e47419d1c6b7aa1df33",
-        "apps/play/src/walking-drive.ts": "5d196192d16250a59d34abb8d7824806ba97333c3718726760eb868d4d7251dd",
-        "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
-        "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",
-        "packages/kernel-ts/src/encoding.ts": "70f405847269535b7cf49d16f527138d0984060a415e3aa9bcdd353b137e4efc",
-        "packages/kernel-ts/src/kernel.ts": "aeee4d0f78c8c5315000ed7029731115d42f0c493c662656dfac747a2ec33541",
-        "packages/kernel-ts/src/runner.ts": "1df47bd363be79d3c2cdee2854273dc6b7b0990b6d2339425f4eca3007499750",
-        "packages/kernel-ts/src/transport.ts": "ebe7f4966dd7cc8b369ffcf365ed8f0d0399aca922bbf46d617cc788adb8a554",
-        "packages/kernel-ts/src/worker.ts": "99826612531e0fd02d5a8fc951a4981439e1f6899c30429b0a39244a8f777c3b",
-        "profiles/decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",
-        "profiles/encoder-v2-draft.json": "f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8",
-        "profiles/game-v2.json": "331898d758e3da15de0aa2342d36319caa11706e6fc0ce73d940d698649e4af8",
-        "profiles/model-v2d-provisional.json": "2d4c3ad34120af9479c168d8bed7d880797a0ad7f7445a23fd8faae11247ed57",
-        "profiles/noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
-        "profiles/noise-v2.json": "74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e",
-        "profiles/ports-v2.json": "0eb28f41195107a5f59e947bc37d8e29d168c351e77efa1238d8f2361d47b751",
-        "profiles/turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7",
-        "src/flybench/game_runner_v28.py": "9a0e6733947b2c5db661d9492431252d660be2d441e713abc5ab33cea25d1250",
-        "src/flybench/walking_drive.py": "515eee064957fd66add566af8687d35cd8de0a3c7da933951cfa840cb5d88a00"
-      },
-      "graph_identity": "52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858",
-      "inputs": [
-        {
-          "tick": 3000,
-          "x": 5.75580366624397,
-          "y": 0.1283229401921836,
-          "hold_ms": 300
-        }
-      ],
-      "end_tick": 3720,
-      "digest": "fd059f07d9f8236a2ab7f7e6284a2a2aa4ab2659ff8d69653d80923d81c1f70a",
-      "gaps": []
-    },
-    "impact": {
-      "tick": 3320,
-      "caught": false,
-      "position": {
-        "x": 4.718522640450478,
-        "y": 0.01825768278956705
-      },
-      "aim": {
-        "x": 5.75580366624397,
-        "y": 0.1283229401921836
-      },
-      "radius": 0.8,
-      "type": "slap",
-      "lead_ms": null,
-      "escape_onset_lead_ms": null
-    },
-    "frames": 126,
-    "live_frames": 66,
-    "walk_frames": 30,
-    "frame_duration_ms": 50,
-    "walk_slowdown_factor": 1,
-    "live_slowdown_factor": 5,
-    "replay_seconds": 3,
-    "replay_speed": 0.25,
-    "replay_loop": true,
-    "replay_ticks": [
-      2600,
-      2640,
-      2660,
-      2700,
-      2720,
-      2740,
-      2760,
-      2780,
-      2820,
-      2840,
-      2860,
-      2900,
-      2920,
-      2940,
-      2960,
-      2980,
-      3020,
-      3040,
-      3060,
-      3100,
-      3120,
-      3140,
-      3160,
-      3180,
-      3220,
-      3240,
-      3260,
-      3300,
-      3320,
-      3340,
-      3360,
-      3380,
-      3420,
-      3440,
-      3460,
-      3500,
-      3520,
-      3540,
-      3560,
-      3580,
-      3620,
-      3640,
-      3660,
-      3700,
-      3720,
-      2600,
-      2620,
-      2640,
-      2680,
-      2700,
-      2720,
-      2760,
-      2780,
-      2800,
-      2820,
-      2840,
-      2880,
-      2900,
-      2920,
-      2960
-    ],
-    "source": "Authoritative UI input hook at tick 3000, fixed 300 ms slap. Walk: five 10 ms intervals per 50 ms frame (real speed). Strike: one interval per frame (5x slower). Ordinary recorded replay: quarter speed, explicit loop.",
-    "observed_takeoff": true,
-    "observed_countdown": true,
-    "observed_escape_stamp": true,
-    "og": {
-      "source": "Recorded hero replay frame with maximum observed spike count",
-      "brain_frame_sha256": "39b4e352b22be44bebda76d16a0d845c14dd4fecb48fc2f39d069ec207f782ca",
-      "recorded_tick": 3320,
-      "kind": "Site card, no personal score"
+      "lab_media": "Existing clip and still retained byte-identical."
     }
   },
   "lab": {
@@ -10834,91 +10684,7 @@
     "frame_duration_ms": 100,
     "frames": 80
   },
+  "history": "docs/media/history/v2j-a03-provenance.json",
   "lab_historical_capture_commit": "f7ee0eabd0b8efaf24e32f2f093164d526a35892",
-  "assets": {
-    "apps/play/public/data/runtime.json": {
-      "bytes": 87559,
-      "sha256": "6ce2bfb72a21ec901b4a7adcce65f33a6aef2e482de7f3602e33bd4e20c26f8a"
-    },
-    "apps/play/public/data/game.json": {
-      "bytes": 2883,
-      "sha256": "331898d758e3da15de0aa2342d36319caa11706e6fc0ce73d940d698649e4af8"
-    },
-    "apps/play/public/data/coupling/runtime.json": {
-      "bytes": 17450,
-      "sha256": "d4f952768e53416fe66af1aa7c43c649eddb88f8dc64c1ea06296ead884daaf0"
-    },
-    "apps/play/public/data/coupling/strength-demo.json": {
-      "bytes": 977,
-      "sha256": "9cc397e5232b6a27f8de9c4c9d76d81fe33a8ef01c7dfe96e3bca3e8fddcc32b"
-    },
-    "apps/play/public/data/anatomy/manifest.json": {
-      "bytes": 18622,
-      "sha256": "dd1929d45e0fd2276b6ae0301cb5233e3768f116477c3742844f83479ff73ef0"
-    },
-    "apps/play/public/og-image.png": {
-      "bytes": 284828,
-      "sha256": "8fe789f1deebce61445cddfcb0bb0a57e8d6a3a1dbd13ce6b8e705ab03041782"
-    },
-    "apps/play/public/favicon.svg": {
-      "bytes": 13302,
-      "sha256": "ceeda8ccb7f36bcd80aa0774f95312b14152219b1927aa0fb8389e6d2bab930b"
-    },
-    "docs/media/game-still.png": {
-      "bytes": 395286,
-      "sha256": "c0d5718f7e8507120225c437e4fe0eeebbabb91b20da8948b05e6c8629f56f5a"
-    },
-    "docs/media/coupling-still.png": {
-      "bytes": 306739,
-      "sha256": "1e2cc5ee7ca3e6c91c1308938244ed0e85d8124e72105ef4545952469e3aff32"
-    },
-    "docs/media/coupling-hero.gif": {
-      "bytes": 7275901,
-      "sha256": "60d215fbe65703a421862da6244ce8daf68278d43cff54e0c4e69875cce894da",
-      "frames": 80,
-      "source_frames": 80,
-      "size": [
-        960,
-        600
-      ],
-      "frame_duration_ms": 100,
-      "palette_colors": 96
-    },
-    "docs/media/game-hero.gif": {
-      "bytes": 6209991,
-      "sha256": "84e0908ee9d82f2b9ad4dab53ca05c372b045464b9a7ca0c24021b6f8aba86b3",
-      "frames": 126,
-      "source_frames": 126,
-      "size": [
-        960,
-        600
-      ],
-      "frame_duration_ms": 50,
-      "palette_colors": 96
-    },
-    "apps/play/public/icon-180.png": {
-      "bytes": 17805,
-      "sha256": "11e124e57a823a77789b490c35861a0b27ca0169640c43c65079bbb990d9141c"
-    },
-    "apps/play/public/icon-192.png": {
-      "bytes": 19754,
-      "sha256": "58d06921cc853df4b4712b349608f9c0dc336cbd00bfbc912edaf32e3c2258bd"
-    },
-    "apps/play/public/icon-512.png": {
-      "bytes": 94562,
-      "sha256": "717e6cf29a45e69d900bf8b0999e439e2eb4632edd429ac17dbb0391ba7ec42b"
-    }
-  },
-  "external_requests": [],
-  "capture_source_sha256": {
-    "apps/play/src/main.ts": "4cd155542cad74698e0caf788a63c9202112b95285464df9f21a824cb5f10931",
-    "apps/play/src/coupling.ts": "2a492f7f3bdfe17f7c85d0ec008b2341340372b2fe441bc64b1969bb8fde5870",
-    "apps/play/src/coupling-worker.ts": "93d744918e116f09c1e4861018754e0a53655d3a2780475bc3432fd9232058a3",
-    "apps/play/src/brain-view.ts": "82a34ce3692806cc957574c118557982764e50cafdaf0c6247f9e1c230529a0b",
-    "apps/play/src/field.ts": "4f6c240831d4db7dfbb7546a5db445f3a16fc9a8f8d7fe61ada1fce70238a09f",
-    "apps/play/src/style.css": "3f7fb63b26eca422f1c5a3ad2c56f007da75ecc088f93807733781f4139603a4",
-    "apps/play/src/game.ts": "6d2ae78ea667af75998f62ee6396cf08b1426b28abff8e47419d1c6b7aa1df33",
-    "apps/play/src/worker.ts": "674b8297d92f26df9ee6626fcbc9735cbff78a2f782f6fd5f7eed4b23268a09f"
-  },
-  "conversion_source_sha256": "d4fb258a59579a1433c900dffaab95d9b3ae3bb95cb87dcdf26de75c98d5db58"
+  "assets": {}
 }

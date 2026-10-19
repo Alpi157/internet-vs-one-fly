@@ -4,9 +4,9 @@ Try to swat a simulated fly driven by measured fruit-fly wiring, then replay the
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)**
 
-![A walking fly, one slap, the Escaped stamp, and recorded spikes in quarter-speed replay](docs/media/game-hero.gif)
+![A walking fly takes off before one swat lands; the Escaped stamp and quarter-speed replay show recorded giant fiber spikes](docs/media/game-hero.gif)
 
-Walking runs at real speed. The slap and takeoff are slowed 5x, followed by 3 s of quarter-speed recorded replay. [Capture rule, seeds tried and identities](docs/media/media-provenance.json).
+Walking runs at real speed. The swat and takeoff are slowed 5x, followed by 3 s of quarter-speed recorded replay with the giant fiber lit. Takeoff began before impact. [Capture rule, seeds tried and identities](docs/media/media-provenance.json).
 
 - **Science:** [preregistered comparisons](docs/preregistration-v2.1.md), a stricter input-strength control that overturned part of the headline, and [raw records with a DOI](https://doi.org/10.5281/zenodo.23409752).
 - **Engineering:** [bit-exact parity across Python, Numba, TypeScript and three browsers](packages/kernel-ts/test/browser-parity.mjs), WebGL rendering of [real neuron skeletons](docs/ui-v2h.md), and [reproducible acceptance](tools/acceptance.json).

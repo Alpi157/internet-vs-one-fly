@@ -1,4 +1,5 @@
 import './style.css';
+import { impactSentence, impactAnnouncement, bestTakeoffEscape, shareSentence, type ImpactOutcome } from './outcome.ts';
 import { fetchGraph } from '../../../packages/kernel-ts/src/transport.ts';
 import { loadResults, renderResults } from './results.ts';
 import { MicroscopeField } from './field.ts';
@@ -12,7 +13,7 @@ app.innerHTML = `<main><header><div><h1>Catch the fly</h1><div class="subtitle-s
 <dialog id="replay-sheet" aria-label="Last hand replay"><div class="grabber"></div><button class="icon close" data-close aria-label="Close replay">${closeIcon}</button><div id="replay-slot"></div></dialog>
 <dialog id="how-sheet" aria-labelledby="how-title"><div class="grabber"></div><button class="icon close" data-close aria-label="Close How it works">${closeIcon}</button><h2 id="how-title">What is real here?</h2><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p id="science-status"></p><p id="walking-disclosure" hidden></p><p>No wiring-superiority or human usability result is claimed.</p><div class="links"><a href="./how-it-works.html">How it works: model, findings and data</a><a href="./preregistration.html">Original preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.1.md">Robustness preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md">Findings</a><a id="dataset-link">Zenodo dataset</a></div><div class="settings"><label><input type="checkbox" id="reduce">Reduced motion</label><label><input type="checkbox" id="sound" checked>Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button></div><details><summary>Registered results</summary><div id="finding-copy"></div></details></dialog>
 <dialog id="wiring-sheet" aria-labelledby="wiring-title"><div class="grabber"></div><button class="icon close" data-close aria-label="Close Wiring lab">${closeIcon}</button><h2 id="wiring-title">Wiring lab</h2><p>Is it the wiring, or just speed?</p><button id="coupling">Scramble its connections and find out</button><button id="lab">Open lesion lab</button><div id="lab-panel" hidden></div></dialog>
-<dialog id="round-sheet" aria-labelledby="round-title"><div class="grabber"></div><h2 id="round-title">Round over</h2><div class="summary-grid"><div><div class="scoreboard"><div><span>The fly</span><strong id="fly-score" class="escaped"></strong></div><span>vs</span><div><span>You</span><strong id="you-score"></strong></div></div><div id="hand-cells"></div><p class="round-legend">Filled: caught · Green ring: escaped · Empty: unused</p></div><div id="share-preview"></div></div><div class="round-actions"><button id="share">Share</button><button id="play-again" class="primary">Play again</button></div><p>Is it the wiring, or just speed?</p><button data-wiring>Scramble its connections and find out →</button></dialog>`;
+<dialog id="round-sheet" aria-labelledby="round-title"><div class="grabber"></div><h2 id="round-title">Round over</h2><div class="summary-grid"><div><div class="scoreboard"><div><span>The fly</span><strong id="fly-score" class="escaped"></strong></div><span>vs</span><div><span>You</span><strong id="you-score"></strong></div></div><div id="hand-cells"></div><p class="round-legend">Filled: caught · Green ring: escaped · Empty: unused</p><p id="round-caption"></p></div><div id="share-preview"></div></div><div class="round-actions"><button id="share">Share</button><button id="play-again" class="primary">Play again</button></div><p>Is it the wiring, or just speed?</p><button data-wiring>Scramble its connections and find out →</button></dialog>`;
 const $ = (id: string) => document.getElementById(id)!, table = $('table') as HTMLCanvasElement, timeline = $('timeline') as HTMLCanvasElement;
 const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' }), manual = new URLSearchParams(location.search).has('test');
 let runtime: any, profile: any, display: any, brain: any, buffer: ArrayBuffer, field: MicroscopeField, brainView: BrainView | undefined;
@@ -69,8 +70,6 @@ function updateStats() {
     $('time').textContent = `${Math.max(0,(profile.round_ms-frame.tick*.5)/1000).toFixed(1)} seconds remaining`;
 }
 
-function sentence(impact: any) { if (!impact)
-    return 'Every flash is a recorded spike.'; return (impact.lead_ms === null ? 'Its giant fiber did not fire before your hand landed.' : `Its giant fiber fired ${impact.lead_ms} ms before your hand landed.`) + (impact.escape_onset_lead_ms === null ? '' : ` Takeoff began ${impact.escape_onset_lead_ms} ms before impact.`); }
 function beginReplay() {
     if (!replay.length)
         return;
@@ -84,7 +83,7 @@ function beginReplay() {
     $('brain-title').textContent = lastImpact.caught ? 'Caught' : 'Escaped';
     $('brain-title').classList.toggle('escaped', !lastImpact.caught);
     $('replay-badge').textContent = `Hand ${used} of ${profile.max_strikes}`;
-    $('caption').textContent = sentence(lastImpact);
+    $('caption').textContent = impactSentence(lastImpact);
     $('brain-panel').classList.add('active');
     $('continue').textContent = finished ? 'Round summary' : 'Next hand';
     ($('video') as HTMLButtonElement).disabled = !('MediaRecorder' in window) || !('captureStream' in table);
@@ -223,7 +222,7 @@ worker.onmessage = event => { const m = event.data; if (m.kind === 'ready') {
         lastImpact = frame.impact;
         impacts.push(lastImpact);
         tone(lastImpact.caught);
-        $('announcer').textContent = `${lastImpact.caught ? 'Caught' : 'Escaped'}. Hand ${used} of ${profile.max_strikes}.`;
+        $('announcer').textContent = impactAnnouncement(lastImpact, used, profile.max_strikes);
         if (!reduced) {
             navigator.vibrate?.(lastImpact.caught ? [30, 20, 40] : 15);
             table.classList.remove('shake');
@@ -306,17 +305,17 @@ function wrap(c: CanvasRenderingContext2D, text: string, x: number, y: number, w
     }
     line += word + ' ';
 } c.fillText(line, x, y); }
-function bestEscape() { return impacts.filter(i => !i.caught && i.lead_ms !== null).sort((a, b) => b.lead_ms - a.lead_ms)[0]; }
+function bestEscape() { return bestTakeoffEscape(impacts); }
 function number(c: CanvasRenderingContext2D, text: string, x: number, y: number, size: number) { c.font = `900 ${size}px Doto`; const parts = text.split('.'); c.fillText(parts[0], x, y); if (parts[1]) {
     x += c.measureText(parts[0]).width + size * .08;
     c.beginPath(); c.roundRect(x, y - size * .22, size * .16, size * .16, size * .056); c.fill();
     c.fillText(parts[1], x + size * .26, y);
 } }
-function shareCard() { const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 630; const c = canvas.getContext('2d')!; c.fillStyle = '#0a0c0a'; c.fillRect(0, 0, 1200, 630); c.fillStyle = '#e9ede6'; c.font = '900 38px Doto'; c.fillText('Catch the fly', 38, 62); const best = bestEscape(); const still = best ?? lastImpact; if (still && brainView?.ready) {
+function shareCard() { const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 630; const c = canvas.getContext('2d')!; c.fillStyle = '#0a0c0a'; c.fillRect(0, 0, 1200, 630); c.fillStyle = '#e9ede6'; c.font = '900 38px Doto'; c.fillText('Catch the fly', 38, 62); const best = bestEscape(), timed = best?.lead_ms !== null && best?.lead_ms !== undefined; const still = best ?? lastImpact; if (still && brainView?.ready) {
     const observed = history.filter(f => f.tick <= still.tick), f = observed.at(-1)!;
     c.drawImage(brainView.snapshotAt(f, observed), 24, 110, 600, 354);
     drawnTick = -1;
-} c.fillStyle = best ? '#63f29a' : '#e9ede6'; number(c, best ? String(best.lead_ms) : String(catches), 650, 240, 100); c.font = '700 25px Atkinson'; c.fillText(best ? 'ms' : 'caught', 650, 290); c.fillStyle = '#e9ede6'; c.font = '400 30px Atkinson'; wrap(c, best ? `A simulated fruit fly brain beat my hand by ${best.lead_ms} ms.` : `I caught the simulated fly ${catches} ${catches===1?'time':'times'} in ${used} ${used===1?'hand':'hands'}.`, 650, 355, 510, 40); c.fillStyle = '#c9d0c8'; c.font = '400 24px Atkinson'; c.fillText(shareURL, 38, 580); c.font='400 18px Atkinson'; c.fillText(`Game profile v2.${profile.version}`,38,610); return canvas; }
+} c.fillStyle = best ? '#63f29a' : '#e9ede6'; number(c, timed ? best!.lead_ms.toLocaleString('en-US') : String(catches), 650, 240, 100); c.font = '700 25px Atkinson'; c.fillText(timed ? 'ms' : 'caught', 650, 290); c.fillStyle = '#e9ede6'; c.font = '400 30px Atkinson'; wrap(c, shareSentence(impacts, catches, used), 650, 355, 510, 40); c.fillStyle = '#c9d0c8'; c.font = '400 24px Atkinson'; c.fillText(shareURL, 38, 580); c.font='400 18px Atkinson'; c.fillText(`Game profile v2.${profile.version}`,38,610); return canvas; }
 const exportTable = document.createElement('canvas'), exportTimeline = document.createElement('canvas');
 exportTimeline.width = 720; exportTimeline.height = 190;
 function composite(portrait = false, recorded?: {frame: Frame, frames: Frame[], impact: any}) {
@@ -342,7 +341,7 @@ function composite(portrait = false, recorded?: {frame: Frame, frames: Frame[], 
     c.drawImage(recorded?exportTimeline:timeline,20,1085,680,179);c.fillStyle='#c9d0c8';c.font='16px Atkinson';c.fillText(shareURL,20,1270);return canvas;
 }
 
-function showRound() { send('pause'); replaying = false; paused = true; $('fly-score').textContent = String(impacts.length - catches); $('you-score').textContent = String(catches); $('hand-cells').innerHTML = Array.from({ length: profile.max_strikes }, (_, i) => `<div><span class="pip ${impacts[i] ? (impacts[i].caught ? 'caught' : 'escaped') : ''}" aria-hidden="true"></span><span>${i + 1}</span><span class="sr-only">${impacts[i] ? (impacts[i].caught ? 'Caught' : 'Escaped') : 'Unused'}</span></div>`).join(''); const card = shareCard(); card.setAttribute('role', 'img'); card.setAttribute('aria-label', `Game profile v2.${profile.version}. ` + (bestEscape() ? `A simulated fruit fly brain beat my hand by ${bestEscape().lead_ms} ms.` : `${catches} caught in ${used} hands`)); $('share-preview').replaceChildren(card); if (!($('round-sheet') as HTMLDialogElement).open)
+function showRound() { send('pause'); replaying = false; paused = true; $('fly-score').textContent = String(impacts.length - catches); $('you-score').textContent = String(catches); $('hand-cells').innerHTML = Array.from({ length: profile.max_strikes }, (_, i) => `<div><span class="pip ${impacts[i] ? (impacts[i].caught ? 'caught' : 'escaped') : ''}" aria-hidden="true"></span><span>${i + 1}</span><span class="sr-only">${impacts[i] ? ((impacts[i].caught ? 'Caught. ' : 'Escaped. ') + impactSentence(impacts[i])) : 'Unused'}</span></div>`).join(''); const card = shareCard(); card.setAttribute('role', 'img'); card.setAttribute('aria-label', `Game profile v2.${profile.version}. ` + shareSentence(impacts, catches, used)); $('round-caption').textContent = lastImpact ? impactSentence(lastImpact) : ''; $('share-preview').replaceChildren(card); if (!($('round-sheet') as HTMLDialogElement).open)
     openSheet('round-sheet'); }
 $('share').onclick = () => shareCard().toBlob(async (blob) => { if (!blob)
     return; const file = new File([blob], 'catch-the-fly.png', { type: 'image/png' }); if (navigator.canShare?.({ files: [file] })) {
@@ -397,5 +396,16 @@ $('video').onclick = async () => {
 })();
 requestAnimationFrame(animate);
 if (manual)
-    (window as any).flyTest = { ready: () => ready, start, resetSeed: (neuralSeed:number) => { reset(); send('init', {buffer,runtime,profile,neuralSeed,environmentSeed:8128,manual:true}); }, brainSnapshot: () => brainView?.snapshot().toDataURL(), arenaBounds: () => { const r=table.getBoundingClientRect(), radius=r.width*field.arenaPixels/700;return {x:r.x+r.width/2-radius,y:r.y+r.height/2-radius,right:r.x+r.width/2+radius,bottom:r.y+r.height/2+radius}; }, startLive: () => { reset(); send('init', { buffer, runtime, profile, neuralSeed: 2026092802, environmentSeed: 8128, manual: false }); }, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: continueGame, log: () => request('log'), state: () => ({ frame, replayTick: replay[replayIndex]?.tick, catches, used, finished, replaying, simSpeed, paintCount, reduced, anatomyReady: brainView?.ready, anatomyLoadMs: brainView?.loadMs, lod: brainView?.lod, renderer: brainView?.renderer }), measureReplay: (enabled: boolean) => { loopReplay = enabled; replayPaused = false; replayPinned = null; replayStart = performance.now(); }, showReplay: beginReplay, showRecorded: (kind: string) => { const index = kind === 'takeoff' ? replay.findIndex(f => f.air) : replay.reduce((best, f, i) => f.spikes.reduce((n, e) => n + e.indices.length, 0) > (replay[best]?.spikes.reduce((n, e) => n + e.indices.length, 0) ?? -1) ? i : best, 0); if (index < 0)
+    (window as any).flyTest = { ready: () => ready, start, resetSeed: (neuralSeed:number) => { reset(); send('init', {buffer,runtime,profile,neuralSeed,environmentSeed:8128,manual:true}); }, brainSnapshot: () => brainView?.snapshot().toDataURL(), arenaBounds: () => { const r=table.getBoundingClientRect(), radius=r.width*field.arenaPixels/700;return {x:r.x+r.width/2-radius,y:r.y+r.height/2-radius,right:r.x+r.width/2+radius,bottom:r.y+r.height/2+radius}; }, startLive: () => { reset(); send('init', { buffer, runtime, profile, neuralSeed: 2026092802, environmentSeed: 8128, manual: false }); }, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: continueGame, log: () => request('log'), state: () => ({ frame, lastImpact, replayFrame: replay[replayIndex], replayTick: replay[replayIndex]?.tick, catches, used, finished, replaying, simSpeed, paintCount, reduced, anatomyReady: brainView?.ready, anatomyLoadMs: brainView?.loadMs, lod: brainView?.lod, renderer: brainView?.renderer }), measureReplay: (enabled: boolean) => { loopReplay = enabled; replayPaused = false; replayPinned = null; replayStart = performance.now(); }, recordedFrames: () => structuredClone(replay), showReplay: beginReplay, presentOutcomes: (records: ImpactOutcome[], summary = false) => {
+        // Presentation fixtures only, under ?test=1. Recorded spike frames are
+        // retained verbatim; no worker/simulation state or observations change.
+        if (!replay.length) throw new Error('A recorded hand is required');
+        for (const dialog of Array.from(document.querySelectorAll<HTMLDialogElement>('dialog[open]'))) dialog.close();
+        $('desktop-brain').append($('brain-panel'));
+        const template = lastImpact;
+        impacts.splice(0, impacts.length, ...records.map(r => ({ ...template, ...r })));
+        lastImpact = impacts.at(-1); used = records.length; catches = records.filter(r => r.caught).length;
+        $('announcer').textContent = impactAnnouncement(lastImpact, used, profile.max_strikes);
+        if (summary) showRound(); else beginReplay();
+    }, showRecorded: (kind: string) => { const index = kind === 'takeoff' ? replay.findIndex(f => f.air) : replay.reduce((best, f, i) => f.spikes.reduce((n, e) => n + e.indices.length, 0) > (replay[best]?.spikes.reduce((n, e) => n + e.indices.length, 0) ?? -1) ? i : best, 0); if (index < 0)
             return false; replayPinned = index; replayIndex = index; replayPaused = true; drawnTick = -1; return true; } };

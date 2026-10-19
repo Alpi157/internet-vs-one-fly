@@ -5,6 +5,8 @@ import {resolve} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {serve,root,dist,prefix} from './site-server.mjs';
 import {overlaps} from './overlap.mjs';
+import {outcomes} from './outcome-fixtures.ts';
+const outcomeMode=process.argv.includes('--outcomes');
 const out=resolve(root,process.env.FLYBENCH_V2J_BROWSER_OUT??'evidence/V2J/browser');mkdirSync(out,{recursive:true});
 const axe=readFileSync(resolve(root,'apps/play/node_modules/axe-core/axe.min.js'),'utf8'),reports=[];
 const {server,origin}=await serve(),url=origin+prefix;
@@ -40,7 +42,30 @@ try{
     assert((await overlaps(page)).collisions.some(c=>c.a.label==='Collision'||c.b.label==='Collision'),'Overlap detector must catch unrelated visible text/control');
     await page.evaluate(()=>{document.getElementById('overlap-probe').remove();document.getElementById('overlap-probe-text').remove();});
     await page.click('#start');await page.evaluate(()=>window.flyTest.advance(150));await shot('game');
-    await page.evaluate(()=>{const b=window.flyTest.state().frame.body;window.flyTest.strike(b.x,b.y,300);});await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.state().replaying);await shot('replay');await page.click('#continue');
+    await page.evaluate(()=>{const b=window.flyTest.state().frame.body;window.flyTest.strike(b.x,b.y,300);});await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.state().replaying);
+    if(outcomeMode){
+     const recorded=await page.evaluate(()=>JSON.stringify(window.flyTest.recordedFrames()));
+     for(const fixture of outcomes){
+      await page.evaluate(record=>window.flyTest.presentOutcomes([record]),fixture.record);
+      assert.equal(await page.locator('#caption').innerText(),fixture.sentence);
+      assert.equal(await page.locator('#announcer').textContent(),`${fixture.record.caught?'Caught':'Escaped'}. Hand 1 of 6. ${fixture.sentence}`);
+      assert.equal(await page.locator('#replay-sheet').evaluate(e=>e.open),viewport.width<900);
+      await shot(`${fixture.name}-${viewport.width<900?'replay-sheet':'desktop-panel'}`);
+      await page.evaluate(record=>window.flyTest.presentOutcomes([record],true),fixture.record);
+      assert.equal(await page.locator('#round-caption').innerText(),fixture.sentence);
+      assert((await page.locator('#hand-cells').textContent()).includes(fixture.sentence));
+      const share=await page.locator('#share-preview canvas').getAttribute('aria-label');
+      if(fixture.name.startsWith('walkout'))assert.equal(share,'Game profile v2.8. A simulated fruit fly walked out from under my hand.');
+      if(fixture.name==='takeoff-gf')assert.equal(share,'Game profile v2.8. A simulated fruit fly brain beat my hand by 42.5 ms.');
+      if(fixture.name==='takeoff-no-gf')assert.equal(share,'Game profile v2.8. A simulated fruit fly took off before my hand landed.');
+      await shot(`${fixture.name}-round-summary`);
+     }
+     await page.evaluate(records=>window.flyTest.presentOutcomes(records,true),[{caught:false,lead_ms:100,escape_onset_lead_ms:null},outcomes[0].record]);
+     assert.equal(await page.locator('#share-preview canvas').getAttribute('aria-label'),'Game profile v2.8. A simulated fruit fly brain beat my hand by 42.5 ms.');
+     assert.equal(await page.evaluate(()=>JSON.stringify(window.flyTest.recordedFrames())),recorded,'Presentation fixtures must never alter recorded activity');
+     assert.equal(external.length,0);assert.equal(errors.length,0,errors.join('\n'));report.status='PASS';report.fixture_source='Synthetic impact metadata for eight presentation branches; the authoritative recorded spike frames remain byte-identical.';continue;
+    }
+    await shot('replay');await page.click('#continue');
     for(let i=1;i<6;i++){await page.evaluate(()=>window.flyTest.strike(0,0,300));await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.state().replaying);await page.click('#continue');}
     await shot('round-summary');
     await page.goto(url+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady);await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready());await shot('lab-shuffle');await page.click('#silence-tab');await shot('lab-silence');

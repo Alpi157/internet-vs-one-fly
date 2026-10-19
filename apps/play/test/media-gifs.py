@@ -1,9 +1,9 @@
 from pathlib import Path
 from PIL import Image
 import hashlib,json,sys
-root=Path(__file__).resolve().parents[3];frames=Path('/tmp/flybench-v2j-a03-media-frames' if '--a03' in sys.argv else '/tmp/flybench-v2i-a02-media-frames')
+root=Path(__file__).resolve().parents[3];frames=Path('/tmp/flybench-v2k-media-frames' if '--v2k' in sys.argv else '/tmp/flybench-v2j-a03-media-frames' if '--a03' in sys.argv else '/tmp/flybench-v2i-a02-media-frames')
 p=root/'docs/media/media-provenance.json';provenance=json.loads(p.read_text())
-for prefix,name in ([('game','game-hero.gif')] if '--a03' in sys.argv else [('game','game-hero.gif'),('lab','coupling-hero.gif')]):
+for prefix,name in ([('game','game-hero.gif')] if '--a03' in sys.argv or '--v2k' in sys.argv else [('game','game-hero.gif'),('lab','coupling-hero.gif')]):
  sequence=[]
  # One palette keeps unchanged UI pixels stable, allowing lossless GIF delta rectangles.
  samples=sorted(frames.glob(prefix+'-*.png'))[::10]
