@@ -2130,7 +2130,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             continue
         if reason:
             raise BundleError(f"tracked forbidden path {path!r}: {reason}")
-        if len(data) > MAX_INCLUDED_FILE_BYTES:
+        file_limit = 8_000_000 if milestone == "V2I" and path in {"docs/media/game-hero.gif", "docs/media/coupling-hero.gif"} else MAX_INCLUDED_FILE_BYTES
+        if len(data) > file_limit:
             raise BundleError(f"tracked path {path!r} exceeds the bounded M01 snapshot limit")
         entries[f"repo/{path}"] = data
         repo_paths.append(path)
@@ -2157,6 +2158,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
 
     add_base(entries, root, base, submitted)
     evidence_root = root / "evidence" / milestone
+    if milestone == "V2I" and attempt == 2:
+        evidence_root /= "a02"
     add_evidence(
         entries,
         evidence_root,
@@ -2344,7 +2347,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             if isinstance(value, dict):
                 m09_evidence[name] = value
     if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H", "V2I"}:
-        if attempt not in ({1, 2} if milestone in {"V2F", "V2G"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
+        if attempt not in ({1, 2} if milestone in {"V2F", "V2G", "V2I"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires a registered attempt and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.
         narrative = (evidence_root / "REVIEW.md").read_text(encoding="utf-8")
@@ -2417,7 +2420,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     # The V2H dry bundle measured 23,966,349 bytes before clip/fallback evidence.
     # Its mandatory 3-browser x 2-viewport screen matrix must remain complete.
     # V2I dry bundle: 54,971,103 bytes, retaining both complete browser matrices and media.
-    archive_limit = (64 if milestone == "V2I" else 48) * 1024 * 1024 if milestone in {"V2H", "V2I"} else MAX_ARCHIVE_BYTES
+    archive_limit = ((96 if attempt == 2 else 64) if milestone == "V2I" else 48) * 1024 * 1024 if milestone in {"V2H", "V2I"} else MAX_ARCHIVE_BYTES
     if len(value) >= archive_limit:
         raise BundleError(f"review bundle is {len(value)} bytes, exceeding the {archive_limit // (1024 * 1024)} MiB review limit")
     return value

@@ -39,6 +39,12 @@ def test_registered_bands_and_missing_tails():
     public=json.loads((ROOT/'apps/play/public/results-v2f.json').read_text())
     runtime=json.loads((ROOT/'apps/play/public/data/runtime.json').read_text())
     assert public['calibrated_coupling']==runtime['parameters']['s']
+    protocol=json.loads((ROOT/'profiles/protocol-v2.1.json').read_text())
+    registered=float(re.search(r's=([0-9.]+)',protocol['H0']['H0b']).group(1))
+    assert public['registered_coupling']==registered
+    assert public['chart']['registered_coupling']==registered
+    assert public['chart']['game_coupling']==runtime['parameters']['s']
+    assert public['circuit_counts']=={'lab':len(json.loads((ROOT/'apps/play/public/data/coupling/brain.json').read_text())['nodes']),'game':runtime['counts']['N']}
 
 
 def test_pages_manual_only_and_local_assets():
@@ -67,9 +73,22 @@ def test_recorded_media_provenance():
         if name.endswith('.gif'):
             assert len(data)<8_000_000
             assert Image.open(ROOT/name).n_frames==meta['frames']
+    assert hashlib.sha256((ROOT/'apps/play/test/media.mjs').read_bytes()).hexdigest()==manifest['capture_code_sha256']
+    assert hashlib.sha256((ROOT/'apps/play/test/media-gifs.py').read_bytes()).hexdigest()==manifest['conversion_source_sha256']
     for name,digest in manifest['capture_source_sha256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
     assert Image.open(ROOT/'apps/play/public/og-image.png').size==(1200,630)
     runtime=json.loads((ROOT/'apps/play/public/data/runtime.json').read_text())
-    assert manifest['lab']['coupling']==runtime['parameters']['s']
+    public=json.loads((ROOT/'apps/play/public/results-v2f.json').read_text())
+    assert manifest['lab']['coupling']==public['registered_coupling']
+    assert manifest['game']['selection']['tried']==manifest['game']['neural_seed']-manifest['game']['selection']['first_seed']+1
+    assert not manifest['game']['impact']['caught']
     assert manifest['game']['log']['inputs']
+    assert manifest['game']['observed_takeoff'] and manifest['game']['observed_countdown'] and manifest['game']['observed_escape_stamp']
+    assert len(set(manifest['game']['replay_ticks']))>20
+    assert manifest['game']['frame_duration_ms']<=1000/12
+    assert manifest['lab']['frame_duration_ms']<=100
+    assert manifest['game']['replay_seconds']>=3
+    declaration=manifest['game']['selection'].copy()
+    for key in ['tried','trials','declaration_sha256']:declaration.pop(key)
+    assert hashlib.sha256((json.dumps(declaration,indent=2)+'\n').encode()).hexdigest()==manifest['game']['selection']['declaration_sha256']

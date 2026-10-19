@@ -6,7 +6,7 @@ import { resolve, extname } from 'node:path';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import { unpackGraph } from '../../../packages/kernel-ts/src/transport.ts';
 import { replayLog } from '../src/game.ts';
-const root = resolve(import.meta.dirname, '../../..'), dist = resolve(root, 'apps/play/dist'), out = resolve(root, process.env.FLYBENCH_GAME_OUT ?? 'evidence/V2I/game');
+const root = resolve(import.meta.dirname, '../../..'), dist = resolve(root, 'apps/play/dist'), out = resolve(root, process.env.FLYBENCH_GAME_OUT ?? 'evidence/V2I/a02/game');
 mkdirSync(out, { recursive: true });
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.png': 'image/png' };
 const server = createServer((req, res) => { try {
@@ -40,7 +40,7 @@ try {
         let browser;
         try {
             browser = await engine.launch({ headless: true });
-            for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }, { width: 1280, height: 720 }]) {
+            for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }, { width: 1280, height: 720 }, { width: 1366, height: 768 }]) {
                 const context = await browser.newContext({ viewport, serviceWorkers: 'block' }), external = [], errors = [], requests = new Set(), screenshots = [], scans = [];
                 let initial = true;
                 context.on('request', r => { if (initial)

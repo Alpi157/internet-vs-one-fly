@@ -4,7 +4,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {serve,root,dist,prefix} from './site-server.mjs';
-const out=resolve(root,process.env.FLYBENCH_LAB_OUT??'evidence/V2I/browser');mkdirSync(out,{recursive:true});
+const out=resolve(root,process.env.FLYBENCH_LAB_OUT??'evidence/V2I/a02/browser');mkdirSync(out,{recursive:true});
 const {server,origin}=await serve(),url=origin+prefix,results=JSON.parse(readFileSync(resolve(dist,'results-v2f.json'))),runtime=JSON.parse(readFileSync(resolve(dist,'data/runtime.json')));
 const axe=readFileSync(resolve(root,'apps/play/node_modules/axe-core/axe.min.js'),'utf8'),reports=[];
 async function fps(page){return page.evaluate(()=>new Promise(resolve=>{let count=0;const start=performance.now();function next(t){count++;if(t-start>=3000)resolve(count/((t-start)/1000));else requestAnimationFrame(next);}requestAnimationFrame(next);}));}
@@ -12,29 +12,42 @@ try{
  for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
   if(process.env.FLYBENCH_BROWSER&&process.env.FLYBENCH_BROWSER!==name)continue;
   const browser=await engine.launch({headless:true});
-  try{for(const viewport of [{width:390,height:844},{width:1440,height:900},{width:1280,height:720}]){
+  try{for(const viewport of [{width:390,height:844},{width:1440,height:900},{width:1280,height:720},{width:1366,height:768}]){
    const context=await browser.newContext({viewport,serviceWorkers:'block'}),external=[],errors=[],scans=[],shots=[],performanceRows=[];
-   const report={browser:name,version:browser.version(),viewport,status:'RUNNING',axe:scans,screenshots:shots,fps:performanceRows,external_requests:external,errors};reports.push(report);
+   const report={browser:name,version:browser.version(),viewport,status:'RUNNING',axe:scans,screenshots:shots,fps:performanceRows,external_requests:external,errors,bounds:[]};reports.push(report);
    await context.route('**/*',route=>{const u=route.request().url();if(!u.startsWith(origin)&&!u.startsWith('data:')&&!u.startsWith('blob:')){external.push(u);return route.abort();}return route.continue();});
    const page=await context.newPage();page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.status()>=400&&!r.url().includes('missing-page'))errors.push(`${r.status()} ${r.url()}`);});
-   async function scan(state){await page.addScriptTag({content:axe});const r=await page.evaluate(async()=>{const r=await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),incomplete:r.incomplete.map(v=>({id:v.id,impact:v.impact}))};});scans.push({state,...r});assert.equal(r.violations.length,0,JSON.stringify({state,...r}));}
+   async function scan(state){await page.addScriptTag({content:axe});const r=await page.evaluate(async()=>{const r=await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),incomplete:r.incomplete.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))};});scans.push({state,...r});assert(!r.incomplete.some(v=>v.id==='aria-prohibited-attr'),JSON.stringify(r));assert.equal(r.violations.length,0,JSON.stringify({state,...r}));}
    async function shot(state,scroll=true){if(scroll)await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(100);const file=`${name}-${viewport.width}x${viewport.height}-${state}.png`;await page.screenshot({path:resolve(out,file)});shots.push(file);await scan(state);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');}
-   await page.goto(url+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready());await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready(),{timeout:60000});
-   assert.equal(await page.evaluate(()=>window.couplingTest.state().scale),runtime.parameters.s);
+   async function gameBounds(state){
+    await page.evaluate(()=>scrollTo(0,0));
+    const arena=await page.evaluate(()=>window.flyTest.arenaBounds());
+    const buttons=await page.locator('#app>main button:visible').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {text:n.textContent,x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
+    for(const r of [arena,...buttons])assert(r.x>=-.5&&r.y>=0&&r.right<=viewport.width+.5&&r.bottom<=viewport.height,`${state}: ${JSON.stringify(r)}`);
+    const row={state,arena,buttons};report.bounds.push(row);return row;
+   }
+   async function sliderBounds(){
+    const labels=await page.locator('.slider-ticks span').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {text:n.textContent,x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
+    for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){const a=labels[i],b=labels[j];assert(a.right<=b.x||b.right<=a.x||a.bottom<=b.y||b.bottom<=a.y,JSON.stringify(labels));}
+    assert(labels.every(r=>r.x>=0&&r.right<=viewport.width),JSON.stringify(labels));report.bounds.push({state:'slider-labels',labels});
+   }
+   await page.goto(url+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady);await page.evaluate(()=>document.fonts.ready);const normal=await gameBounds('game-normal');await shot('game-normal');await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready(),{timeout:60000});
+   assert.equal(await page.evaluate(()=>window.couplingTest.state().scale),results.registered_coupling);
    for(const family of ['N-SIGN','N-STRENGTH']){
-    await page.locator(`input[value="${family}"]`).check();await page.waitForFunction(()=>window.couplingTest?.ready());await page.waitForTimeout(1000);
-    const before=await page.evaluate(()=>window.couplingTest.state());const rate=await fps(page);const after=await page.evaluate(()=>window.couplingTest.state());assert(after.panels[0].tick>before.panels[0].tick);assert(after.paintCount>before.paintCount);
-    performanceRows.push({family,coupling:after.scale,raf_fps:rate,simulation_speed:after.speed,renderers:after.renderers});assert(rate>=50,`${name} ${family} ${rate} fps`);
+    await page.locator(`input[value="${family}"]`).check();await page.waitForFunction(()=>window.couplingTest?.ready());await page.waitForTimeout(1000);assert.equal(await page.evaluate(()=>window.couplingTest.state().scale),results.registered_coupling);await sliderBounds();
+    const before=await page.evaluate(()=>({...window.couplingTest.state(),wall:performance.now()}));const rate=await fps(page);const after=await page.evaluate(()=>({...window.couplingTest.state(),wall:performance.now()}));assert(after.panels[0].tick>before.panels[0].tick);assert(after.paintCount>before.paintCount);
+    performanceRows.push({family,coupling:after.scale,raf_fps:rate,simulation_speed:(after.panels[0].tick-before.panels[0].tick)*.5/(after.wall-before.wall),cumulative_simulation_speed:after.speed,renderers:after.renderers});assert(rate>=50,`${name} ${family} ${rate} fps`);
     for(const p of after.panels)assert(Math.abs(p.rate-p.counts.reduce((a,b)=>a+b,0)/p.counts.length/p.seconds)<1e-10);
-    await shot(family==='N-SIGN'?'lab-partners-calibrated':'lab-strength-calibrated');
+    await shot(family==='N-SIGN'?'lab-partners-registered':'lab-strength-registered');
     // Capture the chart separately where the full phone page necessarily scrolls.
-    await page.locator('.lab-chart').scrollIntoViewIfNeeded();await shot(family+'-chart',false);
+    await page.locator('.lab-chart').scrollIntoViewIfNeeded();await shot(family+'-chart',false);assert(viewport.width>=900||(await page.locator('#coupling-canvas').boundingBox()).height*190/260>=180);
+    await page.evaluate(s=>window.couplingTest.setScale(s),results.calibrated_coupling);assert.equal(await page.locator('#coupling-value-note').textContent(),'The game runs at this strength.');
    }
    // Independent radio groups: one Whole CNS must not uncheck the other panel.
    await page.locator('#lab-brain-0 input[value=whole]').check();assert(await page.locator('#lab-brain-1 input[value=brain]').isChecked());await page.locator('#lab-brain-0 input[value=brain]').check();
    await page.evaluate(s=>window.couplingTest.setScale(s),Math.max(...results.chart.measured.map(p=>p.s)));await page.waitForFunction(()=>window.couplingTest.ready());await shot('lab-highest');await page.click('#coupling-drop');await page.waitForFunction(()=>document.getElementById('coupling-status').textContent.includes('Hand stimulus applied.'));
    await page.click('#silence-tab');await shot('lab-silence');assert(!await page.locator('#full-shuffle').isVisible());
-   await page.click('[data-lesion=LC4]');await page.locator('#circuit-badge').waitFor({state:'visible'});await page.waitForFunction(()=>window.flyTest.ready());await page.evaluate(()=>window.flyTest.advance(10));await shot('game-silenced');assert.equal(await page.locator('#circuit-label').textContent(),'LC4 silenced');assert((await page.evaluate(()=>window.flyTest.log())).graph_identity.endsWith(':LC4'));
+   await page.click('[data-lesion=LC4]');await page.locator('#circuit-badge').waitFor({state:'visible'});await page.waitForFunction(()=>window.flyTest.ready());await page.evaluate(()=>window.flyTest.advance(10));await shot('game-silenced');const silenced=await gameBounds('game-silenced');assert.equal(silenced.arena.y,normal.arena.y,'Badge must not change field height');assert((await page.locator('#restore-wiring').boundingBox()).height>=44);assert.equal(await page.locator('#circuit-label').textContent(),'LC4 silenced');assert((await page.evaluate(()=>window.flyTest.log())).graph_identity.endsWith(':LC4'));
    await page.click('#restore-wiring');await page.locator('#circuit-badge').waitFor({state:'hidden'});await page.waitForFunction(()=>window.flyTest.ready());assert(!await page.locator('#circuit-badge').isVisible());assert((await page.evaluate(()=>window.flyTest.log())).graph_identity.endsWith(':real'));
    await page.goto(url+'how-it-works.html');await page.evaluate(()=>document.fonts.ready);await shot('how-top');await page.locator('#finding').scrollIntoViewIfNeeded();await shot('how-finding',false);assert.equal(await page.locator('#finding tbody tr').count(),results.comparison_rows.length);
    for(const file of ['model.html','preregistration.html']){await page.goto(url+file);assert(await page.locator('#finding').isVisible());assert.equal(await page.locator('meta[name=theme-color]').getAttribute('content'),'#000000');}
@@ -49,5 +62,5 @@ try{
   }}catch(e){reports.at(-1).status='FAIL';reports.at(-1).failure=String(e);console.error(name,e);}finally{await browser.close();}
  }
 }finally{await new Promise(r=>server.close(r));}
-const report={sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),status:reports.every(r=>r.status==='PASS')?'PASS':'FAIL',scope:'Production build. Headless desktop engines at three CSS viewports. FPS is rAF opportunities over 3 seconds while both recorded-spike BrainViews and both worker simulations advance. Not physical phone measurements.',reports};
+const report={sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),status:reports.every(r=>r.status==='PASS')?'PASS':'FAIL',scope:'Production build. Headless desktop engines at four CSS viewports. FPS is rAF opportunities over 3 seconds while both recorded-spike BrainViews and both worker simulations advance. Not physical phone measurements.',reports};
 writeFileSync(resolve(out,'matrix.json'),JSON.stringify(report,null,2)+'\n');if(report.status!=='PASS')process.exitCode=1;

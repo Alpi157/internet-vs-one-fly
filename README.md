@@ -4,7 +4,7 @@ Try to swat a simulated fly driven by measured fruit-fly wiring, then replay the
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)**
 
-![A played hand followed by its recorded BrainView replay](docs/media/game-hero.gif)
+![A keyboard-played escape, its countdown and takeoff, then recorded spikes and the moving quarter-speed replay timeline](docs/media/game-hero.gif)
 
 - **Science:** [preregistered comparisons](docs/preregistration-v2.1.md), a stricter input-strength control that overturned part of the headline, and [raw records with a DOI](https://doi.org/10.5281/zenodo.23409752).
 - **Engineering:** [bit-exact parity across Python, Numba, TypeScript and three browsers](packages/kernel-ts/test/browser-parity.mjs), WebGL rendering of [real neuron skeletons](docs/ui-v2h.md), and [reproducible acceptance](tools/acceptance.json).
@@ -32,7 +32,7 @@ The [original pre-registration](docs/preregistration-v2.md) was publicly timesta
 
 ![Measured rate versus the earlier N-SIGN shuffles; the stricter control removes most of this gap](docs/media/T1a-N-SIGN-H0-curve.png)
 
-![Recorded lab switching from partner shuffle to input-strength control at the game-calibrated coupling](docs/media/coupling-hero.gif)
+![Live BrainViews at the registered test strength, switching from Shuffle partners to Keep input strength](docs/media/coupling-hero.gif)
 
 The lab recording switches between the existing fixed-rule N-SIGN and median-rate N-STRENGTH demos. Live numbers are separate from registered results. [Media provenance](docs/media/media-provenance.json) records seeds, identities and capture details.
 

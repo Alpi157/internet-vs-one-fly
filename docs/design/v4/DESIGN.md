@@ -117,7 +117,7 @@ Shape and spacing:
   - "Each neuron's total input strength changes.";
   - or "Total input strength kept. The gap mostly closes."
 - Two BrainViews: "Real wiring", and "Shuffled partners" or "Shuffled, strength kept". Under each, Doto rate + "spikes a second".
-- Connection-strength slider, with a "Fly-calibrated" tick computed from the real grid position.
+- Connection-strength slider, with "Game setting" and "Registered test" ticks computed from the real grid and metadata. The a02 reviewer correction distinguishes the game calibration from the H0b test strength.
 - Chart: the selected family's band filled, the other family's band as a dashed outline, the measured line, a 50 Hz reference and the marker.
 - Link: "Both tests were registered before they ran. Read the results". Primary button "Drop the hand on both".
 

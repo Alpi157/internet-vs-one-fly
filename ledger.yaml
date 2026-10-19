@@ -384,7 +384,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: External review of V2I a01 wiring lab and launch readiness. No push, tag or deployment.
+next_action: External review of V2I a02 coupling, viewport and recorded-media repair. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -482,10 +482,10 @@ v2h_current:
 
 v2i_current:
   status: SUBMITTED_FOR_EXTERNAL_REVIEW
-  base: 0498868a9470e9be2f9037207e6cc5421b80e299
-  scope: wiring lab, generated scientific pages, viewport summary fix, recorded media
+  base: 05784243254e3b299cfc0ad8b377495df9e4578f
+  scope: V2I a02 coupling identities, log chart, viewport fit and escape media
   scientific_change: none
   documentation: docs/ui-v2i.md
-  acceptance: final-SHA receipt under evidence/V2I/acceptance
-  browser_evidence: evidence/V2I/browser/matrix.json
+  acceptance: final-SHA receipt under evidence/V2I/a02/acceptance
+  browser_evidence: evidence/V2I/a02/browser/matrix.json
   media_provenance: docs/media/media-provenance.json

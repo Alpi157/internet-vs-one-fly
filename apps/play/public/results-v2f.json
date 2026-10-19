@@ -198,6 +198,7 @@
         ]
       }
     ],
+    "game_coupling": 0.01,
     "measured": [
       {
         "rate_hz": 1.8906853464596742,
@@ -245,11 +246,23 @@
       }
     ],
     "reference_hz": 50.0,
+    "registered_coupling": 0.039,
     "source_sha256": "227cb37f8ecb4bbb34995fc674867ca60cf5c199ee20d22cfae55477da743795",
     "sources": {
       "N-SIGN": "evidence/V2E/results/tables.json",
       "N-STRENGTH": "docs/results-v2f.json: metrics H0-STR:T1a:N-STRENGTH:*"
-    }
+    },
+    "x_ticks": [
+      0.005,
+      0.01,
+      0.02,
+      0.039,
+      0.1
+    ]
+  },
+  "circuit_counts": {
+    "game": 5555,
+    "lab": 2641
   },
   "combined": "A stricter preregistered control that also approximately keeps each neuron's total input strength removes most of that gap.",
   "comparison_rows": [
@@ -481,6 +494,7 @@
   "limitations": "These results apply only to this simplified model, with no claims about living flies. A non-significant result does not establish equivalence. Escape and walking comparisons remain insufficient.",
   "mechanism": "EXPLORATORY: the earlier shuffles flattened the input-strength distribution in T1a (Gini about 0.47, versus 0.65 measured), while N-STRENGTH kept it close (about 0.64). This suggests that, in this model, stability mainly reflects how unevenly input strength is spread across neurons rather than which partners connect. This explanation was not a preregistered mechanism test; the E1 descriptors were preregistered as exploratory.",
   "original": "In this model, measured wiring stays calm at couplings where shuffles that keep each neuron's partner counts and signs saturate.",
+  "registered_coupling": 0.039,
   "schema": "flybench.public-results.v2f",
   "source_sha256": {
     "docs/results-v2e.json": "6d13f787280dc94e91c90289563ecc00327ce32217ee029c03011e3e76b1b44a",
