@@ -36,3 +36,5 @@
 .stats strong{line-height:1.25}.stats>div{row-gap:4px}
 
 .scoreboard strong{padding-top:4px}
+
+@media(min-width:900px){.subtitle-slot{margin-top:4px}}

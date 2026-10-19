@@ -156,7 +156,11 @@ excluding owned contents, clipped screen-reader text and modal-occluded content.
 Canvas graphics are checked separately by arena bounds, not treated as text boxes.
 It runs on every captured state in all three browser harnesses, and a deliberate
 collision checks that the detector detects an actual overlap. Font line-box
-collisions in the game counter and phone summary were also repaired.
+collisions in the game counter and phone summary were also repaired. The initial
+final check additionally caught a heading/Restore overlap; desktop subtitle
+clearance fixes it. That check and its WebKit lab FPS failure are retained under
+`evidence/V2J/initial-final-check/`. A WebKit-only recheck measured 53.2 to 62.3
+fps without changing its threshold. The final full acceptance reruns all checks.
 
 All browser-dependent number-format calls explicitly use en-US. Other numeric
 copy uses locale-independent String/toFixed or explicit Python formatting. The

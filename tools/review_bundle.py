@@ -2423,7 +2423,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     archive_limit = ((96 if attempt == 2 else 64) if milestone == "V2I" else 48) * 1024 * 1024 if milestone in {"V2H", "V2I", "V2J"} else MAX_ARCHIVE_BYTES
     if milestone == "V2J":
         # Retain six-size/three-engine/locale matrices, regression captures and failed dry runs.
-        archive_limit = 192 * 1024 * 1024
+        archive_limit = 256 * 1024 * 1024
     if len(value) >= archive_limit:
         raise BundleError(f"review bundle is {len(value)} bytes, exceeding the {archive_limit // (1024 * 1024)} MiB review limit")
     return value
