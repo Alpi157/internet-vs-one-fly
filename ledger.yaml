@@ -507,3 +507,12 @@ v2j_current:
   evidence: evidence/V2J
   acceptance: final-SHA receipt under evidence/V2J/acceptance; design gate FAIL
   media: review-only unselected point 0; production v2.8 hero not recorded
+  a02:
+    status: PROTOCOL_DRY_RUN_COMPLETE
+    base_sha: 7070bb17087fbb930e0d96b0d4d5e5fa95df0663
+    decision: decisions/D-V2J-DESIGN-02.json
+    protocol: profiles/owner-walking-a02.json
+    scope: safety-gated dev-only owner presets; production remains v2.7
+    evidence: evidence/V2J/a02
+    a01_gate: FAIL retained unchanged
+    external_acceptance: PENDING

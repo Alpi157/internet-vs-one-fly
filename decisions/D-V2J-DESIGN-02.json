@@ -1,0 +1,28 @@
+{
+  "decision_id": "D-V2J-DESIGN-02",
+  "status": "OWNER_AUTHORIZED_PREVIEW_PENDING_REVIEW",
+  "authority": "Owner/reviewer V2J a02 instruction, 2026-10-19",
+  "supersedes": "Only a02 game-design selection criteria, not the a01 evidence or FAIL gate",
+  "reviewer_decision_verbatim": [
+    "Your stop was correct, and the a01 grid stays on record unchanged.",
+    "The failure is mostly in the reviewer\u2019s targets. The 1.5 to 3 fly-lengths-per-second band sits where the forward neurons fire sparsely, so walking comes in short pushes. The decoded 10 ms bout metric measures those pushes, not what a player sees: the point-0 recording visibly crosses the arena.",
+    "Game feel will be chosen by the owner playing, not by bot targets."
+  ],
+  "evidence": [
+    "docs/walking-v2j.md",
+    "evidence/V2J/drive/selection.json",
+    "evidence/V2J/drive/point-0.json",
+    "evidence/V2J/drive/point-3.json",
+    "evidence/V2J/drive/point-8.json",
+    "evidence/V2J/media/walking-10s.webm",
+    "evidence/V2J/acceptance/command-results.json",
+    "reviews/V2J-a01.zip"
+  ],
+  "a01": "24 points, zero passes; TARGET_MISSED and acceptance FAIL stay unchanged. Point 0 median decoded bout 0.09 s but path 38.14 fly lengths and grid coverage 70.95%.",
+  "new_protocol": "profiles/owner-walking-a02.json",
+  "protocol_sha256": "d054322714a348049518ba3a17374edc79ad3458b49ca96b2861dd90d507cc40",
+  "scope": "Dev-only safety-gated presets A/B/C/D; production remains v2.7. Random walking current and C takeoff speed are disclosed game design. No biological claim.",
+  "resting_swat_protocol_change": "Independent rounds avoid variable accumulated strike history and preserve a strict 200-opportunity denominator. Matched v2.7 control is run; both its rate and original 88% baseline are required. Censored rounds count as nonescape.",
+  "hard_boundaries": "Frozen files, raw/registered records, kernel, graphs, frozen neural parameters and V2G anatomy byte-identical. No lab walking current. No third-party requests; no push, tag or deployment. Only C may change takeoff speed as explicitly authorized; all other body/arena/strike rules stay v2.7.",
+  "dry_run": "One seed, 1 s quiet plus one bot opportunity/variant and one resting swat, excluded from selection; pipeline validation before protocol commit."
+}

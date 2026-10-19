@@ -6,7 +6,7 @@ import {WalkingDrive} from '../src/walking-drive.ts';
 import {GameRunner} from '../src/game-runner.ts';
 import {readGraph} from '../../../packages/kernel-ts/src/kernel.ts';
 import {unpackGraph} from '../../../packages/kernel-ts/src/transport.ts';
-const root=new URL('../../../',import.meta.url).pathname,out=root+'evidence/V2J/parity';mkdirSync(out,{recursive:true});
+const root=new URL('../../../',import.meta.url).pathname,out=process.env.FLYBENCH_WALKING_PARITY_OUT??root+'evidence/V2J/parity';mkdirSync(out,{recursive:true});
 const packed=gunzipSync(readFileSync(root+'apps/play/public/data/circuit.flygraph.gz')),buffer=unpackGraph(packed.buffer.slice(packed.byteOffset,packed.byteOffset+packed.byteLength));
 const graphPath=mkdtempSync('/tmp/flybench-v2j-parity-')+'/circuit.webbin';writeFileSync(graphPath,Buffer.from(buffer));
 execFileSync(root+'.venv/bin/python',['tests/walking_reference.py',out,graphPath],{cwd:root,stdio:'inherit'});

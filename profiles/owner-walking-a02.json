@@ -1,0 +1,159 @@
+{
+  "schema": "flybench.owner-walking-presets.v1",
+  "profile_id": "flybench.game.v2.8.owner-a02",
+  "classification": "Owner playtest only; game design, not registered biology",
+  "production_profile": "flybench.game.v2.7",
+  "base_sha": "7070bb17087fbb930e0d96b0d4d5e5fa95df0663",
+  "presets": {
+    "A": {
+      "name": "calm",
+      "a01_point": 3,
+      "drive": {
+        "forward": 1.5,
+        "turn_sigma": 0.5,
+        "walk_seconds": 1.5,
+        "stop_seconds": 1
+      },
+      "takeoff_speed": 0.018
+    },
+    "B": {
+      "name": "busy",
+      "a01_point": 8,
+      "drive": {
+        "forward": 1.75,
+        "turn_sigma": 0.5,
+        "walk_seconds": 1,
+        "stop_seconds": 0.6
+      },
+      "takeoff_speed": 0.018
+    },
+    "D": {
+      "name": "middle",
+      "drive": {
+        "forward": null,
+        "turn_sigma": 0.5,
+        "walk_seconds": 1,
+        "stop_seconds": 0.6
+      },
+      "forward_candidates": [
+        1.6,
+        1.65,
+        1.7
+      ],
+      "selection": "Lowest amplitude whose pooled median completed visible walking bout is at least 0.3 s on seeds 101..104; drop if none",
+      "takeoff_speed": 0.018
+    },
+    "C": {
+      "name": "busy, quicker takeoff",
+      "drive_from": "B",
+      "takeoff_speed_candidates": [
+        0.027,
+        0.036,
+        0.045,
+        0.054
+      ],
+      "selection": "Lowest speed with bot 4 unrestricted flick catch rate <= 0.65 on seeds 101..104, six opportunities per seed; drop if none. All candidates retained.",
+      "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Duration, heading, jitter, onset and reflection rules remain v2.7."
+    }
+  },
+  "drive_protocol": "profiles/walking-grid-v1.json (algorithm and stream unchanged; a01 target gate remains FAIL)",
+  "measurement": {
+    "selection_seeds": [
+      101,
+      102,
+      103,
+      104
+    ],
+    "validation_seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "environment_seed_rule": "1000+neural_seed",
+    "quiet_seconds": 30,
+    "fly_length_arena_units": 2,
+    "visible_path": "Trailing 200 ms boxcar average of body position; derivative at 10 ms = displacement from t-200 ms to t / 200 ms. No future samples. Initial 200 ms and any window containing airborne movement are excluded.",
+    "visible_walking": "Smoothed grounded speed > 0.5 fly lengths/s; maximal contiguous bouts/stops; exclude left/right/air-gap censored segments from medians, retain them. Speed median over visible walking intervals.",
+    "decoded_walking": "Same a01: grounded absolute applied forward >= 0.002 arena units/ms; completed bouts/stops, speed and fraction retained.",
+    "coverage": "Same a01 2-unit cells, 37 centers within arena, grounded positions only",
+    "bot_ids": [
+      1,
+      2,
+      4
+    ],
+    "strike_holds_ms": [
+      80,
+      300,
+      600
+    ],
+    "bot_opportunities_per_seed_type": 6,
+    "bot_warmup_ms": 1500,
+    "bot_quiet_gap_ms": 1000,
+    "bot_1": "Observe current body position; aim there after any reaction delay",
+    "bot_2": "Observe body position and current held translational velocity; lead by velocity times strike fall time; add same delay/noise rules as bot 1",
+    "bot_4": "After warmup/gap, observe consecutive 150 ms grounded body intervals with speed <= 0.5 fly lengths/s (rotation in place allowed); then aim at observed position after any reaction delay. No forced stop.",
+    "human_like": {
+      "reaction_delay_ms": 200,
+      "aim_noise_units": 0.3,
+      "noise_rule": "Existing bot stream 71: independent uniform +/-0.3 on x/y, u32(neural_seed,71,opportunity,axis); identical across presets",
+      "unrestricted": "zero delay, zero noise"
+    },
+    "bot_boundary": "Project aim just inside circular boundary, identical deterministic rounding guard as a01",
+    "bot_censoring": "Six opportunities per 30 s round; censor if no still interval/impact by round end. Catch rate uses resolved impacts; report censored separately and no attempt count substituted for resolved count.",
+    "resting_swat": "200 independent 30 s rounds: 20 neural seeds x 10 environment seeds (1000+seed+100*trial). First grounded 200 ms below a01 moving deadband (absolute forward < .002, absolute turn < .0005), aim perfectly with hold 600 ms. Neural state persists inside round. No force-stop. Matched v2.7 control rerun and original a01 baseline 0.88 both retained.",
+    "resting_swat_censoring": "Any unresolved opportunity counts as a nonescape for the conservative safety probability, while resolved-only escape and censoring are also reported.",
+    "speed_summary": "Median pooled interval speeds during each walking definition; per-seed medians also reported"
+  },
+  "safety": {
+    "false_takeoffs_per_s_max": 0.05,
+    "whole_circuit_hz_max_exclusive": 50,
+    "resting_swat_escape_min": 0.88,
+    "resting_swat_comparison": "Conservative 200-opportunity rate >= original a01 v2.7 baseline 0.88 AND >= matched a02 v2.7 control",
+    "replay": "Exact reexecution digest with effective profile identity, no gaps",
+    "parity": "Bit-exact Python/TypeScript drive currents and state for every preset over 3000 intervals; reset and neural parity retained"
+  },
+  "offering_rule": "A/B fixed, D/C chosen only by their declared rules; offer only presets passing every safety gate. No speed/bout/bot target otherwise. Owner chooses feel by playing.",
+  "preview": {
+    "dev_only": true,
+    "parameter": "preview",
+    "values": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "production": "No preview module, preset data or URL activation path in production bundle; ordinary production v2.7 unchanged"
+  },
+  "media": {
+    "neural_seed": 1,
+    "environment_seed": 1001,
+    "seconds": 10,
+    "fps": 20,
+    "per_offered_preset": [
+      "no threat",
+      "bot 4 unrestricted flick, warmup 1.5 s then stop-150 ms pattern with 1 s gaps; continue round after recorded replay"
+    ],
+    "only_recorded_spikes": true
+  },
+  "copy": {
+    "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+    "lab": "Lab simulations have no walking drive."
+  }
+}
