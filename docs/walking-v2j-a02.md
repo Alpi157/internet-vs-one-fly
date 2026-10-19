@@ -165,6 +165,6 @@ Open these URLs in the Windows browser:
 
 ## Validation status
 
-Full final-SHA acceptance is registered as `V2J-a02` and its receipt is `evidence/V2J/a02/acceptance/command-results.json`. It includes the full Python/Node suites, fresh-clone offline smoke, frozen-science verification and independent recomputation, three-browser production/lab checks, the 120-state production overlap/locale matrix, owner current parity and safety checks, production preview exclusion, and the dev preview matrix. The a01 gate is not rerun or relabeled. External owner playtest and acceptance remain pending.
+Full final-SHA acceptance is registered as `V2J-a02` and its receipt is `evidence/V2J/a02/acceptance/command-results.json`. It includes the full Python/Node suites, fresh-clone offline smoke, frozen-science verification and independent recomputation, three-browser production/lab checks, the 120-state production overlap/locale matrix, owner current parity and safety checks, production preview exclusion, and the dev preview matrix with a live ≥55 fps check for every offered preset. The a01 gate is not rerun or relabeled. External owner playtest and acceptance remain pending.
 
 No third-party requests, push, tag or deployment are authorized or performed.

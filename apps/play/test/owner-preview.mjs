@@ -37,6 +37,11 @@ try{
      assert.match(await page.locator('#caption').innerText(),/giant fiber (fired|did not fire)/);await capture('replay');
      const log=await page.evaluate(()=>window.flyTest.log());assert.equal(log.schema,'flybench.game-round.v3');assert.equal(log.profile_hashes.owner_playtest_profile,entry.profile_sha256);
      report.replay_sentence=await page.locator('#caption').innerText();report.recorded_spikes=f.spikes.reduce((n,e)=>n+e.indices.length,0);report.log=log;
+     if(engineName==='chromium'&&viewport.width===1440&&locale==='en-US'){
+      await page.evaluate(()=>window.flyTest.startLive());await page.waitForFunction(()=>window.flyTest.ready());await page.click('#start');
+      const measured=await page.evaluate(()=>new Promise(resolve=>{let frames=0;const start=performance.now(),tick=window.flyTest.state().frame.tick;function next(now){frames++;if(now-start>=3000){resolve({fps:frames/((now-start)/1000),simulated_seconds:(window.flyTest.state().frame.tick-tick)*.0005,wall_seconds:(now-start)/1000});}else requestAnimationFrame(next);}requestAnimationFrame(next);}));
+      report.live_performance=measured;assert(measured.fps>=55,`Preview ${id} fps ${measured.fps}`);
+     }
      assert.deepEqual(errors,[]);assert.deepEqual(external,[]);report.status='PASS';
     }catch(e){report.status='FAIL';report.error=String(e);persist();throw e;}finally{persist();await context.close();}
    }
