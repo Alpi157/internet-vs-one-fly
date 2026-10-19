@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "../../.venv/bin/python ../../experiments/v2f_publish.py --check && ../../.venv/bin/python build-og.py && tsc --noEmit && vite build",
-    "test": "node test/game.test.ts && node test/lab.test.ts && node test/coupling.test.ts && node test/anatomy.test.ts && node test/strength-demo.test.ts && node test/ui.test.ts",
+    "test": "node test/game.test.ts && node test/lab.test.ts && node test/coupling.test.ts && node test/anatomy.test.ts && node test/strength-demo.test.ts && node test/ui.test.ts && node test/walking-invariants.ts",
     "test:e2e": "node test/e2e.mjs",
     "bots": "node test/bots.ts",
     "test:anatomy": "node test/anatomy.test.ts && node test/strength-demo.test.ts",

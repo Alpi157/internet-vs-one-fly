@@ -69,8 +69,8 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
     host.querySelector('#registered-title')!.textContent=`Registered results, ${results.chart.families[0].n} shuffles per family`;
     host.querySelector('#reference-label')!.textContent=`┄ ${results.chart.reference_hz} Hz reference`;
     host.querySelector('#grid-note')!.textContent=results.chart.caption;
-    host.querySelector('#coupling-caveat')!.textContent=results.lab_caveat+' '+results.bin_note+' '+results.limitations;
-    host.querySelector('#coupling-identity')!.textContent=`${brain.nodes.length.toLocaleString()} neurons per simulation. Live rates use observed spikes over up to 250 simulated ms. Chart: no-threat registered rates, per neuron. Display fade is smoothing only.`;
+    host.querySelector('#coupling-caveat')!.textContent=results.lab_drive_disclosure+' '+results.lab_caveat+' '+results.bin_note+' '+results.limitations;
+    host.querySelector('#coupling-identity')!.textContent=`${brain.nodes.length.toLocaleString('en-US')} neurons per simulation. Live rates use observed spikes over up to 250 simulated ms. Chart: no-threat registered rates, per neuron. Display fade is smoothing only.`;
     reset();requestAnimationFrame(animate);
     (window as any).couplingTest={ready:()=>panels.length===2&&views.every(v=>v.ready),setScale:(s:number)=>{if(!runtime.grid.includes(s))throw Error('Off-grid coupling');scale=s;reset();},setFamily:(f:string)=>{const input=host.querySelector<HTMLInputElement>(`input[value="${f}"]`)!;input.checked=true;family=f;scale=results.registered_coupling;reset();},state:()=>({scale,family,generation,panels:panels.map(p=>({rate:p.rate,tick:p.tick,counts:Array.from(p.counts),seconds:p.seconds})),speed,paintCount,renderers:views.map(v=>v.renderer)}),draw:drawChart};
   }catch(e){worker.terminate();status.textContent='Lab data could not load: '+String(e);throw e;}

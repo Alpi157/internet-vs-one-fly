@@ -14,7 +14,10 @@ BASE = '0498868a9470e9be2f9037207e6cc5421b80e299'
 def test_v2i_keeps_science_mechanics_runtime_and_anatomy_bytes():
     paths = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE], cwd=ROOT, text=True).splitlines()
     protected = [p for p in paths if p.startswith(('src/', 'packages/kernel-ts/src/', 'apps/play/public/data/', 'docs/media/anatomy/')) or p in ('apps/play/src/game.ts', 'apps/play/src/worker.ts', 'docs/results-v2e.json', 'docs/results-v2f.json')]
+    # V2J adds an opt-in game adapter and updates its metadata only.
+    allowed={'apps/play/src/game.ts','apps/play/public/data/runtime.json','apps/play/public/data/HASHES.json'}
     for name in protected:
+        if name in allowed:continue
         expected = subprocess.check_output(['git', 'show', f'{BASE}:{name}'], cwd=ROOT)
         assert (ROOT/name).read_bytes() == expected, name
     for manifest in ['profiles/freeze-v2.json', 'profiles/freeze-v2.1.json']:
@@ -66,8 +69,11 @@ def test_pages_manual_only_and_local_assets():
 def test_recorded_media_provenance():
     from PIL import Image
     manifest=json.loads((ROOT/'docs/media/media-provenance.json').read_text())
+    capture_commit=manifest.get('historical_capture_commit')
+    def captured(name):
+        return subprocess.check_output(['git','show',f'{capture_commit}:{name}'],cwd=ROOT) if capture_commit else (ROOT/name).read_bytes()
     for name,meta in manifest['assets'].items():
-        data=(ROOT/name).read_bytes()
+        data=captured(name)
         assert len(data)==meta['bytes']
         assert hashlib.sha256(data).hexdigest()==meta['sha256'],name
         if name.endswith('.gif'):
@@ -76,7 +82,7 @@ def test_recorded_media_provenance():
     assert hashlib.sha256((ROOT/'apps/play/test/media.mjs').read_bytes()).hexdigest()==manifest['capture_code_sha256']
     assert hashlib.sha256((ROOT/'apps/play/test/media-gifs.py').read_bytes()).hexdigest()==manifest['conversion_source_sha256']
     for name,digest in manifest['capture_source_sha256'].items():
-        assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
+        assert hashlib.sha256(captured(name)).hexdigest()==digest,name
     assert Image.open(ROOT/'apps/play/public/og-image.png').size==(1200,630)
     runtime=json.loads((ROOT/'apps/play/public/data/runtime.json').read_text())
     public=json.loads((ROOT/'apps/play/public/results-v2f.json').read_text())

@@ -1,3 +1,4 @@
+import {overlaps} from './overlap.mjs';
 import assert from 'node:assert/strict';
 import { chromium, firefox, webkit } from '../../../packages/kernel-ts/node_modules/playwright/index.mjs';
 import { createServer } from 'node:http';
@@ -62,7 +63,7 @@ try {
                 await page.evaluate(() => document.fonts.ready);
                 initial = false;
                 async function scan(state) { const result = await page.evaluate(async () => { const r = await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } }); return { violations: r.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })), incomplete: r.incomplete.map(v => ({ id: v.id, impact: v.impact })) }; }); scans.push({ state, ...result }); const bad = result.violations.filter(v => ['critical', 'serious'].includes(v.impact)); assert.equal(bad.length, 0, JSON.stringify({ state, bad })); }
-                async function shot(state) { await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(80); const file = `${prefix}-${state}.png`; await page.screenshot({ path: resolve(out, file) }); screenshots.push(file); await scan(state); }
+                async function shot(state) { await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(80); const file = `${prefix}-${state}.png`; await page.screenshot({ path: resolve(out, file) }); screenshots.push(file); const collisions=await overlaps(page); assert.equal(collisions.collisions.length,0,JSON.stringify({state,...collisions})); await scan(state); }
                 await shot('start');
                 assert(await page.evaluate(() => document.fonts.check('900 32px Doto') && document.fonts.check('400 16px Atkinson')));
                 const board = await page.locator('#table').boundingBox();

@@ -1,3 +1,4 @@
+import {overlaps} from './overlap.mjs';
 import assert from 'node:assert/strict';
 import {chromium,firefox,webkit} from '../../../packages/kernel-ts/node_modules/playwright/index.mjs';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
@@ -18,7 +19,7 @@ try{
    await context.route('**/*',route=>{const u=route.request().url();if(!u.startsWith(origin)&&!u.startsWith('data:')&&!u.startsWith('blob:')){external.push(u);return route.abort();}return route.continue();});
    const page=await context.newPage();page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.status()>=400&&!r.url().includes('missing-page'))errors.push(`${r.status()} ${r.url()}`);});
    async function scan(state){await page.addScriptTag({content:axe});const r=await page.evaluate(async()=>{const r=await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),incomplete:r.incomplete.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))};});scans.push({state,...r});assert(!r.incomplete.some(v=>v.id==='aria-prohibited-attr'),JSON.stringify(r));assert.equal(r.violations.length,0,JSON.stringify({state,...r}));}
-   async function shot(state,scroll=true){if(scroll)await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(100);const file=`${name}-${viewport.width}x${viewport.height}-${state}.png`;await page.screenshot({path:resolve(out,file)});shots.push(file);await scan(state);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');}
+   async function shot(state,scroll=true){if(scroll)await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(100);const file=`${name}-${viewport.width}x${viewport.height}-${state}.png`;await page.screenshot({path:resolve(out,file)});shots.push(file);const collisions=await overlaps(page);assert.equal(collisions.collisions.length,0,JSON.stringify({state,...collisions}));await scan(state);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');}
    async function gameBounds(state){
     await page.evaluate(()=>scrollTo(0,0));
     const arena=await page.evaluate(()=>window.flyTest.arenaBounds());

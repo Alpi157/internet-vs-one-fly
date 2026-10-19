@@ -30,4 +30,11 @@
 }
 @media(max-width:899px){.subtitle-slot{height:42px;margin-top:10px}#subtitle{margin-top:0}#lab-circuit{order:4;margin:0}.lab-chart svg{height:260px!important}}
 
+/* Tabs occupy their own row for both Shuffle and Silence, at every desktop width. */
+@media(min-width:900px){.lab-tabs{position:static;width:max-content;max-width:100%;margin-bottom:24px}.lab-left{padding-top:0}}
+
+.stats strong{line-height:1.25}.stats>div{row-gap:4px}
+
+.scoreboard strong{padding-top:4px}
+
 .science-page article{max-width:1000px;margin:32px auto}.science-page h1{font-size:52px;white-space:normal}.science-page h2{font-size:32px;margin-top:40px}.science-page .lede{font-size:22px}.science-page p{line-height:1.65}.science-page p a{display:inline;min-height:0}.science-page .wordmark{font:900 28px Doto;color:#e9ede6;text-decoration:none}.table-scroll{overflow:auto;border:1px solid #687369;border-radius:14px;margin:24px 0}table{border-collapse:collapse;min-width:800px;font-size:14px}th,td{padding:14px;text-align:left;border-bottom:1px solid #262b27}th{background:#0a0c0a}pre{overflow:auto;padding:20px;border:1px solid #687369;border-radius:14px;font-size:13px}section{scroll-margin-top:20px}@media(max-width:899px){.science-page h1{font-size:34px}.science-page h2{font-size:28px}.science-page article{margin-top:24px}.science-page header{margin-bottom:8px}}

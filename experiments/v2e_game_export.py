@@ -39,7 +39,7 @@ def update_game_only():
     """Re-export product identity without touching graph, neural data or anatomy."""
     out=ROOT/'apps/play/public/data'
     runtime=json.loads((out/'runtime.json').read_text())
-    for name in ('profiles/game-v2.json','apps/play/src/game.ts'):
+    for name in ('profiles/game-v2.json','apps/play/src/game.ts','apps/play/src/game-runner.ts','apps/play/src/walking-drive.ts','src/flybench/game_runner_v28.py','src/flybench/walking_drive.py'):
         runtime['profile_hashes'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
     write_json(out/'runtime.json',runtime)
     shutil.copyfile(ROOT/'profiles/game-v2.json',out/'game.json')

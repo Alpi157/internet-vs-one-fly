@@ -5959,7 +5959,9 @@
     "w_noise": 0.3175750723556395
   },
   "profile_hashes": {
-    "apps/play/src/game.ts": "a35f8ebd31e7c6622b1a80551f76ca6fbaebcbd5def46f4ec845ebc29b712803",
+    "apps/play/src/game-runner.ts": "7b4e640bd8b9a43b708b8b28a1a595fd7887a2138022bcb856cdb91c11cf199b",
+    "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
+    "apps/play/src/walking-drive.ts": "5d196192d16250a59d34abb8d7824806ba97333c3718726760eb868d4d7251dd",
     "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
     "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",
     "packages/kernel-ts/src/encoding.ts": "70f405847269535b7cf49d16f527138d0984060a415e3aa9bcdd353b137e4efc",
@@ -5974,7 +5976,9 @@
     "profiles/noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
     "profiles/noise-v2.json": "74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e",
     "profiles/ports-v2.json": "0eb28f41195107a5f59e947bc37d8e29d168c351e77efa1238d8f2361d47b751",
-    "profiles/turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7"
+    "profiles/turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7",
+    "src/flybench/game_runner_v28.py": "9a0e6733947b2c5db661d9492431252d660be2d441e713abc5ab33cea25d1250",
+    "src/flybench/walking_drive.py": "515eee064957fd66add566af8687d35cd8de0a3c7da933951cfa840cb5d88a00"
   },
   "profile_identities": {
     "decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",

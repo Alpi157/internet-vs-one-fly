@@ -10904,5 +10904,7 @@
     "apps/play/src/game.ts": "a35f8ebd31e7c6622b1a80551f76ca6fbaebcbd5def46f4ec845ebc29b712803",
     "apps/play/src/worker.ts": "674b8297d92f26df9ee6626fcbc9735cbff78a2f782f6fd5f7eed4b23268a09f"
   },
-  "conversion_source_sha256": "2f7926ccd319b1fda60508736dd40dc151b2c5eb629aefb820394ad482b70d15"
+  "conversion_source_sha256": "2f7926ccd319b1fda60508736dd40dc151b2c5eb629aefb820394ad482b70d15",
+  "historical_capture_commit": "f7ee0eabd0b8efaf24e32f2f093164d526a35892",
+  "historical_capture_note": "Preserved V2I v2.7 hero. V2J has not selected a passing v2.8 point; these captures are not evidence for v2.8. Validate captured sources/assets against historical_capture_commit."
 }

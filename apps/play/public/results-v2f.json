@@ -485,7 +485,9 @@
     "H0-T2 (T2), N-SIGN: the stability difference holds under this model. H0a: measured >0.1 (censored) versus null median 0.05, Holm p 0.02, supports the registered stability direction; H0b: measured 10.0006 versus null median 29.658, Holm p 0.02, supports the registered stability direction.",
     "H0-T2 (T2), N-STRENGTH: the registered stability result did not replicate. H0a: measured >0.1 (censored) versus null median >0.1 (censored), Holm p 1, not significant; does not establish the stability difference; H0b: measured 10.0006 versus null median 4.98657, Holm p 0.02, opposite direction: measured rate is higher."
   ],
+  "game_profile_id": "flybench.game.v2.7",
   "lab_caveat": "This shuffle keeps each neuron's excitatory and inhibitory partner counts and signs, but not its total input strength. Shuffles that also approximately keep input strength stay almost as calm as measured wiring: in the registered T1a comparison at coupling 0.039, measured wiring averaged 2.65 Hz, N-SIGN 119.78 Hz and N-STRENGTH 4.40 Hz (N-STRENGTH Holm p 0.088).",
+  "lab_drive_disclosure": "Lab simulations have no walking drive.",
   "lab_heading": "Measured vs shuffled wiring",
   "lab_seeds": {
     "environment": 8128,
@@ -731,5 +733,6 @@
       "status": "COMPUTED",
       "test": "H0-T2"
     }
-  ]
+  ],
+  "walking_disclosure": ""
 }

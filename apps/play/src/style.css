@@ -29,3 +29,10 @@
 #brain-panel .anatomy-caption{font-size:11px;margin:4px 0}#timeline{max-height:90px;margin:8px 0;object-fit:contain}.playback{margin:8px 0}.desktop-wiring{display:none}
 }
 @media(max-width:899px){.subtitle-slot{height:42px;margin-top:10px}#subtitle{margin-top:0}#lab-circuit{order:4;margin:0}.lab-chart svg{height:260px!important}}
+
+/* Tabs occupy their own row for both Shuffle and Silence, at every desktop width. */
+@media(min-width:900px){.lab-tabs{position:static;width:max-content;max-width:100%;margin-bottom:24px}.lab-left{padding-top:0}}
+
+.stats strong{line-height:1.25}.stats>div{row-gap:4px}
+
+.scoreboard strong{padding-top:4px}

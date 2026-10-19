@@ -183,6 +183,15 @@ H0a is critical coupling; >0.1 means censored above the tested grid. The stored 
     manifest=read('archive/raw-records-manifest.json')
     values['dataset_doi']=manifest['reserved_doi']
     values['coupling']=str(coupling)
+    game_profile=read('profiles/game-v2.json')
+    drive=game_profile.get('walking_drive',{})
+    declared_copy=read('profiles/game-v2.8.json')['walking_drive']['copy']
+    walking_copy=declared_copy['game'] if drive.get('selected') else ''
+    public['game_profile_id']=game_profile['profile_id']
+    public['walking_disclosure']=walking_copy
+    public['lab_drive_disclosure']=declared_copy['lab']
+    values['walking_disclosure']=walking_copy
+    values['lab_drive_disclosure']=declared_copy['lab']
     template=(ROOT/'docs/readme-v2f.template.md').read_text()
     for key,value in values.items():template=template.replace('{{'+key+'}}',value)
     assert '{{' not in template
@@ -195,7 +204,7 @@ H0a is critical coupling; >0.1 means censored above the tested grid. The stored 
     repo='https://github.com/Alpi157/internet-vs-one-fly'
     body=f"""<h1>How it works</h1><p class="lede">Measured wiring. A simplified model. Results you can check.</p>
 <section id="real"><h2>What is real here?</h2><p>The connections come from MaleCNS. The game executes {counts['N']:,} neurons and {counts['source_accepted_E']:,} directed connections representing {counts['represented_source_contacts']:,} biological contacts. Original body IDs are recoverable; contacts remain separate from executable weights.</p><p>Every flash comes from a recorded spike. Replay displays recorded observations. It does not invent activity between frames.</p></section>
-<section id="model"><h2>The model</h2><p>The model passed the calibration registered in {runtime['protocol_tag']}. Its selected connection strength is {runtime['parameters']['s']}, from the frozen calibration grid. The selection rule is {html.escape(runtime['selection_rule'][0].lower()+runtime['selection_rule'][1:])}.</p><p>Uniform current-based LIF neurons use assumed source transmitter signs. Unknown signs are disabled. Feature-level vision supplies size and expansion. A motor decoder receives only neural activity, with no hand coordinates, distance or future collision information. Walking and escape are neural; body physics and takeoff are simplified. The previous motor command drives the current interval.</p><p>Normal rounds preserve neural state. Changing a lab control explicitly resets both simulations with the same noise seed. Display fading smooths recorded spikes only.</p></section>
+<section id="model"><h2>The model</h2><p>The model passed the calibration registered in {runtime['protocol_tag']}. Its selected connection strength is {runtime['parameters']['s']}, from the frozen calibration grid. The selection rule is {html.escape(runtime['selection_rule'][0].lower()+runtime['selection_rule'][1:])}.</p><p>Uniform current-based LIF neurons use assumed source transmitter signs. Unknown signs are disabled. Feature-level vision supplies size and expansion. A motor decoder receives only neural activity, with no hand coordinates, distance or future collision information. Walking and escape are neural; body physics and takeoff are simplified. The previous motor command drives the current interval.</p><p>{html.escape(walking_copy)}</p><p>Normal rounds preserve neural state. {html.escape(declared_copy['lab'])} Changing a lab control explicitly resets both simulations with the same noise seed. Display fading smooths recorded spikes only.</p></section>
 <section id="finding"><h2>The finding</h2>{paragraphs([original,combined])}<p>Rates at registered connection strength {coupling}, in spikes a second per neuron:</p>{html_table(comparison_table)}{paragraphs([mechanism,bin_note,limits])}<a href="{repo}/blob/main/docs/findings-v2f.md">Full family results and limitations</a></section>
 <section id="preregistrations"><h2>Registered before the runs</h2><p>The original protocol was publicly timestamped on {values['original_date']}, tag <a href="{repo}/tree/prereg-v2">prereg-v2</a>. The robustness protocol was publicly timestamped on {values['robustness_date']}, tag <a href="{repo}/tree/prereg-v2.1">prereg-v2.1</a>. Frozen manifests pin code, graph identities, seeds, assumptions and analysis.</p></section>
 <section id="verify"><h2>Data and verification</h2><p>The raw-record dataset is <a href="https://doi.org/{values['dataset_doi']}">{values['dataset_doi']}</a>. Download the checksum-pinned archive, then recompute the published tables without simulating new trials.</p><pre tabindex="0" role="region" aria-label="Verification commands"><code>uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz

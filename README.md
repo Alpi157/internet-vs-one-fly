@@ -71,6 +71,10 @@ Open the localhost URL printed by Vite with the `/internet-vs-one-fly/` base pat
 
 ## For scientists
 
+
+
+Lab simulations have no walking drive.
+
 The game executes a calibrated **5,555-neuron** circuit. The coupling lab executes **2,641 neurons** in each simulation. The full accepted graph contains **166,700 neurons**. Original body IDs and contact counts remain separate from executable weights. Unknown signs remain disabled. BrainView uses pinned MaleCNS skeletons in a composite of the brain frontal view and nerve cord underside view, simplified for display.
 
 The model uses uniform current-based LIF neurons, assumed source signs, feature-level vision, declared turn-direction assumptions and abstract takeoff physics. Noise excludes visual and decoder ports. Moving the coupling slider explicitly resets both simulations with the same seed; normal game rounds retain neural state. Dropping the hand adds visual input to both neural simulations.
