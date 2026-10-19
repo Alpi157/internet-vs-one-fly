@@ -1,0 +1,74 @@
+[
+  {
+    "file": "docs/architecture.md",
+    "em_dashes": 0,
+    "en_dashes": 12,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "docs/history/ledger-v1.yaml",
+    "em_dashes": 33,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/environment-v0.1.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/game-v0.1.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/game-v0.2.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/game-v0.3.json",
+    "em_dashes": 2,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/intervention-direct-visual-to-dnp01-zero-v0.1.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/live.json",
+    "em_dashes": 2,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/looming-controls.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/model-reference-v0.1.json",
+    "em_dashes": 3,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/model-v0.1.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  },
+  {
+    "file": "profiles/numerical-criteria-v0.1.json",
+    "em_dashes": 1,
+    "en_dashes": 0,
+    "reason": "Frozen scientific identity, unchanged history/authority, result or anatomy asset"
+  }
+]

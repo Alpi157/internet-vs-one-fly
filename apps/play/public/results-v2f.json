@@ -1,5 +1,256 @@
 {
   "bin_note": "N-STRENGTH preserves incoming partner counts within sign and contact-count bins; its preservation of total input strength is approximate.",
+  "calibrated_coupling": 0.01,
+  "chart": {
+    "caption": "Both families used the same registered grid: 0.005, 0.0075, 0.01, 0.015, 0.02, 0.03, 0.039, 0.05, 0.06, 0.08, 0.1. N-STRENGTH at 0.1: 94 stopped tails are missing; the complete-family band ends before that point. Bands show the middle 95% of shuffles, not confidence intervals. Lines join observed grid points; no missing observations are filled.",
+    "families": [
+      {
+        "family": "N-SIGN",
+        "grid": [
+          0.005,
+          0.0075,
+          0.01,
+          0.015,
+          0.02,
+          0.03,
+          0.039,
+          0.05,
+          0.06,
+          0.08,
+          0.1
+        ],
+        "missing": [],
+        "n": 499,
+        "points": [
+          {
+            "band": [
+              1.9810299129117757,
+              2.0372198031048847
+            ],
+            "s": 0.005
+          },
+          {
+            "band": [
+              2.2236226808027264,
+              2.3979912911775845
+            ],
+            "s": 0.0075
+          },
+          {
+            "band": [
+              2.514066641423703,
+              2.931880916319576
+            ],
+            "s": 0.01
+          },
+          {
+            "band": [
+              3.238286633850814,
+              5.180410829231352
+            ],
+            "s": 0.015
+          },
+          {
+            "band": [
+              4.302586141613025,
+              40.128226050738355
+            ],
+            "s": 0.02
+          },
+          {
+            "band": [
+              65.54041272245362,
+              104.07599394168875
+            ],
+            "s": 0.03
+          },
+          {
+            "band": [
+              101.71613498674745,
+              135.69438091631957
+            ],
+            "s": 0.039
+          },
+          {
+            "band": [
+              129.55591442635364,
+              161.24184399848542
+            ],
+            "s": 0.05
+          },
+          {
+            "band": [
+              146.87000757288905,
+              178.41336898901932
+            ],
+            "s": 0.06
+          },
+          {
+            "band": [
+              171.69862552063614,
+              204.20309825823554
+            ],
+            "s": 0.08
+          },
+          {
+            "band": [
+              191.18068439984853,
+              219.99825255585003
+            ],
+            "s": 0.1
+          }
+        ]
+      },
+      {
+        "family": "N-STRENGTH",
+        "grid": [
+          0.005,
+          0.0075,
+          0.01,
+          0.015,
+          0.02,
+          0.03,
+          0.039,
+          0.05,
+          0.06,
+          0.08,
+          0.1
+        ],
+        "missing": [
+          {
+            "missing": 94,
+            "observed": 405,
+            "s": 0.1
+          }
+        ],
+        "n": 499,
+        "points": [
+          {
+            "band": [
+              1.8883528966300644,
+              1.9266243847027642
+            ],
+            "s": 0.005
+          },
+          {
+            "band": [
+              1.9447141234380916,
+              2.034727375993942
+            ],
+            "s": 0.0075
+          },
+          {
+            "band": [
+              1.9827110942824688,
+              2.1382307837940173
+            ],
+            "s": 0.01
+          },
+          {
+            "band": [
+              2.055469519121545,
+              2.4646336614918596
+            ],
+            "s": 0.015
+          },
+          {
+            "band": [
+              2.1519926164331693,
+              3.13718667171526
+            ],
+            "s": 0.02
+          },
+          {
+            "band": [
+              2.3828161681181372,
+              5.977341915940932
+            ],
+            "s": 0.03
+          },
+          {
+            "band": [
+              2.66565694812571,
+              8.816019500189322
+            ],
+            "s": 0.039
+          },
+          {
+            "band": [
+              3.1655509276789093,
+              12.696047898523286
+            ],
+            "s": 0.05
+          },
+          {
+            "band": [
+              3.764052442256721,
+              19.06077622112836
+            ],
+            "s": 0.06
+          },
+          {
+            "band": [
+              6.133831881862931,
+              59.12267322983719
+            ],
+            "s": 0.08
+          }
+        ]
+      }
+    ],
+    "measured": [
+      {
+        "rate_hz": 1.8906853464596742,
+        "s": 0.005
+      },
+      {
+        "rate_hz": 1.9563990912533131,
+        "s": 0.0075
+      },
+      {
+        "rate_hz": 2.004600530102234,
+        "s": 0.01
+      },
+      {
+        "rate_hz": 2.089568345323741,
+        "s": 0.015
+      },
+      {
+        "rate_hz": 2.169897765997728,
+        "s": 0.02
+      },
+      {
+        "rate_hz": 2.35638015903067,
+        "s": 0.03
+      },
+      {
+        "rate_hz": 2.650681560015146,
+        "s": 0.039
+      },
+      {
+        "rate_hz": 3.0606209769026886,
+        "s": 0.05
+      },
+      {
+        "rate_hz": 3.5738735327527453,
+        "s": 0.06
+      },
+      {
+        "rate_hz": 22.05496024233245,
+        "s": 0.08
+      },
+      {
+        "rate_hz": 38.50240439227565,
+        "s": 0.1
+      }
+    ],
+    "reference_hz": 50.0,
+    "source_sha256": "227cb37f8ecb4bbb34995fc674867ca60cf5c199ee20d22cfae55477da743795",
+    "sources": {
+      "N-SIGN": "evidence/V2E/results/tables.json",
+      "N-STRENGTH": "docs/results-v2f.json: metrics H0-STR:T1a:N-STRENGTH:*"
+    }
+  },
   "combined": "A stricter preregistered control that also approximately keeps each neuron's total input strength removes most of that gap.",
   "comparison_rows": [
     {
@@ -205,6 +456,7 @@
     }
   ],
   "comparison_table": "| Graph | Measured rate | Earlier shuffle medians and Holm p | N-STRENGTH median and Holm p | Verdict |\n|---|---:|---|---|---|\n| T1a | 2.65 Hz | N-FULL 113.67 Hz (Holm p 0.008); N-CONTEXT 110.73 Hz (Holm p 0.008); N-SIGN 119.78 Hz (Holm p 0.008) | N-STRENGTH 4.40 Hz (Holm p 0.088) | The stricter control removes most of the rate gap; its comparison is not significant. |\n| Full MaleCNS | 15.31 Hz | N-SIGN 36.84 Hz (Holm p 0.04) | N-STRENGTH 14.48 Hz (Holm p 0.14) | No significant rate difference from the stricter control. |\n| T2 | 10.00 Hz | N-FULL 72.08 Hz (Holm p 0.02); N-SIGN 29.66 Hz (Holm p 0.02) | N-STRENGTH 4.99 Hz (Holm p 0.02) | Measured wiring is faster than N-STRENGTH, the opposite direction. |",
+  "dataset_doi": "10.5281/zenodo.23409752",
   "exploratory": [
     "EXPLORATORY E1: measured leading signed eigenvalues are 3.04103 for T1a and 6.91182 for T2, above every family median; 2 null eigenvalues did not converge and remain missing. Structure and Spearman associations are descriptive, not a causal mechanism test.",
     "EXPLORATORY E2a (glutamate treated as excitatory): measured rate 139.557 Hz versus null median 264.911 Hz; measured critical coupling 0.015 versus null median 0.01. Measured rate percentile 0%; critical-coupling percentile 100%. Both measured and shuffled wiring saturate under this sign assumption.",
@@ -222,6 +474,10 @@
   ],
   "lab_caveat": "This shuffle keeps each neuron's excitatory and inhibitory partner counts and signs, but not its total input strength. Shuffles that also approximately keep input strength stay almost as calm as measured wiring: in the registered T1a comparison at coupling 0.039, measured wiring averaged 2.65 Hz, N-SIGN 119.78 Hz and N-STRENGTH 4.40 Hz (N-STRENGTH Holm p 0.088).",
   "lab_heading": "Measured vs shuffled wiring",
+  "lab_seeds": {
+    "environment": 8128,
+    "neural": 2027101401
+  },
   "limitations": "These results apply only to this simplified model, with no claims about living flies. A non-significant result does not establish equivalence. Escape and walking comparisons remain insufficient.",
   "mechanism": "EXPLORATORY: the earlier shuffles flattened the input-strength distribution in T1a (Gini about 0.47, versus 0.65 measured), while N-STRENGTH kept it close (about 0.64). This suggests that, in this model, stability mainly reflects how unevenly input strength is spread across neurons rather than which partners connect. This explanation was not a preregistered mechanism test; the E1 descriptors were preregistered as exploratory.",
   "original": "In this model, measured wiring stays calm at couplings where shuffles that keep each neuron's partner counts and signs saturate.",

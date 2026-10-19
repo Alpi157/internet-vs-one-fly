@@ -4,7 +4,7 @@ This card freezes an M04 candidate for later numerical implementation. No simula
 
 ## Scientific status
 
-Every parameter in this card is a **MODEL ASSUMPTION — not a MaleCNS measurement**. The candidate is a normalized leaky integrate-and-fire model with `tau_m = 20 ms`, `tau_s = 5 ms`, rest `0`, reset `0`, threshold `1`, refractory period `2 ms`, and delay `1 ms`.
+Every parameter in this card is a **MODEL ASSUMPTION, not a MaleCNS measurement**. The candidate is a normalized leaky integrate-and-fire model with `tau_m = 20 ms`, `tau_s = 5 ms`, rest `0`, reset `0`, threshold `1`, refractory period `2 ms`, and delay `1 ms`.
 
 M05 must study timesteps `0.5 ms`, `0.25 ms`, and `0.1 ms` and determine which, if any, meets the later numerical criteria. M04 makes no numerical-acceptance claim.
 

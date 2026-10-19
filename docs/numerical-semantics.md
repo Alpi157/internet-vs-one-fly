@@ -1,6 +1,6 @@
 # M05 reference numerical semantics
 
-This document defines the readable float64 oracle for the normalized LIF candidate. All neural parameters are **MODEL ASSUMPTIONS — not MaleCNS measurements**. The integration and event-order rules are project numerical conventions, not physiology validation.
+This document defines the readable float64 oracle for the normalized LIF candidate. All neural parameters are **MODEL ASSUMPTIONS, not MaleCNS measurements**. The integration and event-order rules are project numerical conventions, not physiology validation.
 
 ## Equations and state
 

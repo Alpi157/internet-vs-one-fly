@@ -1,11 +1,14 @@
 # Catch the Fly
 
-A simulated fly driven by measured neural wiring. Try to swat it, then compare measured and shuffled wiring under the same model.
+Try to swat a simulated fly driven by measured fruit-fly wiring, then replay the spikes behind its escape.
 
-![Recorded N-SIGN comparison; strength-preserving shuffles stay almost as calm as measured wiring](docs/media/coupling-hero.gif)
+**[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)**
 
-**[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)** · Live after deployment.
-Tap for a flick or hold for a slower, wider strike. Open the coupling lab to compare measured and scrambled wiring side by side.
+![A played hand followed by its recorded BrainView replay](docs/media/game-hero.gif)
+
+- **Science:** [preregistered comparisons](docs/preregistration-v2.1.md), a stricter input-strength control that overturned part of the headline, and [raw records with a DOI](https://doi.org/{{dataset_doi}}).
+- **Engineering:** [bit-exact parity across Python, Numba, TypeScript and three browsers](packages/kernel-ts/test/browser-parity.mjs), WebGL rendering of [real neuron skeletons](docs/ui-v2h.md), and [reproducible acceptance](tools/acceptance.json).
+- **Game:** aim, hold and drop your hand; replay recorded spikes, shuffle partners or silence a circuit in the wiring lab. No account or tracking.
 
 ## The finding
 
@@ -25,7 +28,9 @@ The [original pre-registration](docs/preregistration-v2.md) was publicly timesta
 
 ![Measured rate versus the earlier N-SIGN shuffles; the stricter control removes most of this gap](docs/media/T1a-N-SIGN-H0-curve.png)
 
-The hero recording demonstrates N-SIGN only. The stricter control is described in the table above. Its scramble was selected by the fixed median-critical-coupling rule. Heat and rate meters use recorded simulation spikes.
+![Recorded lab switching from partner shuffle to input-strength control at the game-calibrated coupling](docs/media/coupling-hero.gif)
+
+The lab recording switches between the existing fixed-rule N-SIGN and median-rate N-STRENGTH demos. Live numbers are separate from registered results. [Media provenance](docs/media/media-provenance.json) records seeds, identities and capture details.
 
 ## How it works
 
@@ -46,8 +51,6 @@ Visual features enter neural input ports. Spikes reach a motor decoder that rece
 - Bit-exact state-digest checks cover Python, Numba, TypeScript, Chromium, Firefox and WebKit within the declared execution envelope.
 - Publicly timestamped protocols and freeze manifests pin code, graph identities, assumptions, seeds and analysis before confirmatory execution.
 - Atomic per-task results and deterministic seeds support resume independently of worker scheduling. The robustness run took **{{hours}} hours** on a **{{threads}}-thread** host, with peak process RSS **{{peak}} GiB**.
-- Cached canvas rendering raised mobile-viewport WebKit frame opportunities from **{{before}} to {{after}} fps** in the comparable measurement window. Active mobile gameplay measured **{{live}} fps**; the coupling lab measured **{{labfps}} fps**. These are headless desktop engines, not physical iPhone measurements.
-- The recorded initial compressed build scope is **{{initial}} MB**, with the **{{coupling}} MB** coupling lab and **{{lesion}} MB** lesion lab loaded separately. Missing neural observations remain missing.
 - Offline fixtures, cross-runtime parity, scripted bots, browser screenshots, production base-path checks and fresh-clone acceptance make the implementation inspectable. [Measurement details](docs/measurements-v2f.json) state each scope.
 
 ## Run locally
@@ -64,7 +67,7 @@ Open the localhost URL printed by Vite with the `/internet-vs-one-fly/` base pat
 
 ## For scientists
 
-The game executes a calibrated **{{game_n}}-neuron** circuit. The coupling lab executes **{{lab_n}} neurons** in each simulation. The full accepted graph contains **{{full_n}} neurons**. Original body IDs and contact counts remain separate from executable weights. Unknown signs remain disabled. Soma maps use relative coordinates with unverified physical units and anatomical orientation.
+The game executes a calibrated **{{game_n}}-neuron** circuit. The coupling lab executes **{{lab_n}} neurons** in each simulation. The full accepted graph contains **{{full_n}} neurons**. Original body IDs and contact counts remain separate from executable weights. Unknown signs remain disabled. BrainView uses pinned MaleCNS skeletons in a composite of the brain frontal view and nerve cord underside view, simplified for display.
 
 The model uses uniform current-based LIF neurons, assumed source signs, feature-level vision, declared turn-direction assumptions and abstract takeoff physics. Noise excludes visual and decoder ports. Moving the coupling slider explicitly resets both simulations with the same seed; normal game rounds retain neural state. Dropping the hand adds visual input to both neural simulations.
 

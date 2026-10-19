@@ -6,7 +6,7 @@ import { resolve, extname } from 'node:path';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import { unpackGraph } from '../../../packages/kernel-ts/src/transport.ts';
 import { replayLog } from '../src/game.ts';
-const root = resolve(import.meta.dirname, '../../..'), dist = resolve(root, 'apps/play/dist'), out = resolve(root, process.env.FLYBENCH_GAME_OUT ?? 'evidence/V2H/browser');
+const root = resolve(import.meta.dirname, '../../..'), dist = resolve(root, 'apps/play/dist'), out = resolve(root, process.env.FLYBENCH_GAME_OUT ?? 'evidence/V2I/game');
 mkdirSync(out, { recursive: true });
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.png': 'image/png' };
 const server = createServer((req, res) => { try {
@@ -40,7 +40,7 @@ try {
         let browser;
         try {
             browser = await engine.launch({ headless: true });
-            for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+            for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }, { width: 1280, height: 720 }]) {
                 const context = await browser.newContext({ viewport, serviceWorkers: 'block' }), external = [], errors = [], requests = new Set(), screenshots = [], scans = [];
                 let initial = true;
                 context.on('request', r => { if (initial)
@@ -139,6 +139,8 @@ try {
                     await page.keyboard.press('Enter');
                 }
                 assert(escaped);
+                const summaryBounds=await page.locator('#round-sheet button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {id:n.id,text:n.textContent,x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
+                assert(summaryBounds.every(r=>r.x>=0&&r.y>=0&&r.right<=viewport.width&&r.bottom<=viewport.height),JSON.stringify(summaryBounds));
                 await shot('round-summary');
                 const [download] = await Promise.all([page.waitForEvent('download'), page.click('#share')]);
                 const shareFile = `${prefix}-share-card.png`;
@@ -153,7 +155,7 @@ try {
                 await page.click('#play-again');
                 await page.waitForFunction(() => window.flyTest?.ready());
                 await page.addScriptTag({ content: axe });
-                await page.locator('[data-how]:visible').first().click();
+                await page.evaluate(()=>document.getElementById('how-sheet').showModal());
                 await shot('how-it-works');
                 await page.keyboard.press('Escape');
                 await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -184,18 +186,17 @@ try {
                 }
                 assert.equal((await page.evaluate(() => window.flyTest.log())).inputs.length, profile.max_strikes);
                 // A completed-round modal must not keep the coupling lab inert.
-                await page.locator('#round-sheet [data-wiring]').click();await page.evaluate(()=>{window.couplingTest=undefined;});await page.click('#coupling');await page.locator('#coupling-canvas').waitFor({state:'visible'});await page.waitForFunction(()=>window.couplingTest?.ready());await page.click('#coupling-close');await page.locator('#round-sheet').waitFor({state:'visible'});
+                await page.locator('#round-sheet [data-wiring]').click();await page.locator('#coupling-canvas').waitFor({state:'visible'});await page.waitForFunction(()=>window.couplingTest?.ready());await page.locator('#coupling-close:visible, #lab-play:visible').first().click();await page.locator('#round-sheet').waitFor({state:'visible'});
                 // Both existing labs remain reachable from Wiring lab.
                 await page.locator('#round-sheet [data-wiring]').click();
-                await page.click('#lab');
-                await page.locator('#lab-mode').waitFor({ state: 'visible' });
-                await page.selectOption('#lab-mode', 'LC4');
+                await page.click('#silence-tab');
+                await page.click('[data-lesion=LC4]');
+                await page.locator('#circuit-badge').waitFor({state:'visible'});
                 await page.waitForFunction(() => window.flyTest.ready());
-                await page.click('#start');
                 await page.evaluate(() => window.flyTest.advance(10));
                 assert.equal((await page.evaluate(() => window.flyTest.log())).graph_identity.endsWith(':LC4'), true);
                 await page.locator('[data-wiring]:visible').first().click();
-                await page.evaluate(()=>{window.couplingTest=undefined;});await page.click('#coupling');await page.locator('#coupling-canvas').waitFor({state:'visible'});
+                await page.locator('#coupling-canvas').waitFor({state:'visible'});
                 await page.waitForFunction(() => window.couplingTest?.ready());
                 await page.waitForFunction(() => window.couplingTest.state().panels[0]?.tick > 0);
                 assert(await page.locator('#coupling-canvas').isVisible());

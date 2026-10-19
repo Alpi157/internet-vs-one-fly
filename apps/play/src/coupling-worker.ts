@@ -25,7 +25,7 @@ function tick(){
       if(g.frames.length>100)g.frames.shift();
       const seconds=queues[index].length*.01;
       return {tick:g.tick,body:frame.body,air:frame.air,strike:frame.strike,impact:frame.impact,
-        counts:sums[index].slice(),seconds,rate:sums[index].reduce((a,b)=>a+b,0)/counts.length/seconds};
+        frames:g.frames.slice(-5),counts:sums[index].slice(),seconds,rate:sums[index].reduce((a,b)=>a+b,0)/counts.length/seconds};
     });
     steps++;
     if(steps%5===0)self.postMessage({kind:'frame',panels,generation,speed:steps*.01/((performance.now()-started)/1000)});

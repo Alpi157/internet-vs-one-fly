@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import html
 import json
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -39,6 +40,42 @@ def table(rows):
         band = ', '.join(num(v, m) for v in r['null_band'])
         lines.append(f"| {r['test']} | {r['circuit']} | {r['family']} | {m} | {num(r['real'],m)} | {num(r['null_median'],m)} | [{band}] | {num(r['p'])} | {num(r['holm_p'])} | {verdict(r)} |")
     return '\n'.join(lines)
+
+
+def lab_chart():
+    """Presentation projection, preserving stopped tails instead of imputing them."""
+    import numpy as np
+    original = read('docs/results-v2e-lab-curves.json')
+    assert original['source_sha256'] == read('docs/results-v2e.json')['source_tables_sha256']
+    full = ROOT / original['source']
+    if full.exists():
+        assert hashlib.sha256(full.read_bytes()).hexdigest() == original['source_sha256']
+        metrics = json.loads(full.read_text())['metrics']
+        assert all(metrics[k]['curve'] == v for k, v in original['metrics'].items())
+    robustness = read('docs/results-v2f.json')['metrics']
+    families = []
+    for family, curves in [('N-SIGN', [v for k,v in original['metrics'].items() if ':N-SIGN:' in k]), ('N-STRENGTH', [v['curve'] for k,v in robustness.items() if k.startswith('H0-STR:T1a:N-STRENGTH:')])]:
+        grid = sorted(set.union(*[set(p['s'] for p in c) for c in curves]))
+        points = []
+        missing = []
+        for scale in grid:
+            values = [p['rate_hz'] for c in curves for p in c if p['s'] == scale]
+            if len(values) != len(curves):
+                missing.append(dict(s=scale, observed=len(values), missing=len(curves)-len(values)))
+                continue
+            points.append(dict(s=scale, band=np.percentile(values,[2.5,97.5]).tolist()))
+        families.append(dict(family=family,n=len(curves),grid=grid,points=points,missing=missing))
+    measured = original['metrics']['H0:T1a:REAL:0']
+    assert measured == robustness['H0-STR:T1a:REAL:0']['curve']
+    grid_text = ', '.join(str(x) for x in families[0]['grid'])
+    same = families[0]['grid'] == families[1]['grid']
+    caption = ('Both families used the same registered grid: '+grid_text+'. ' if same else 'Families used different grids; each is drawn on its own grid. ')
+    for f in families:
+        for m in f['missing']:
+            caption += f"{f['family']} at {m['s']}: {m['missing']} stopped tails are missing; the complete-family band ends before that point. "
+    caption += 'Bands show the middle 95% of shuffles, not confidence intervals. Lines join observed grid points; no missing observations are filled.'
+    protocol = read('profiles/protocol-v2.1.json')
+    return dict(measured=measured,families=families,reference_hz=float(re.search(r'>=([0-9.]+) Hz',protocol['H0']['H0a'])[1]),caption=caption,sources={'N-SIGN':original['source'],'N-STRENGTH':'docs/results-v2f.json: metrics H0-STR:T1a:N-STRENGTH:*'},source_sha256=original['source_sha256'])
 
 
 def outputs():
@@ -100,7 +137,7 @@ def outputs():
         exp.append(f"EXPLORATORY {test} ({label}): measured rate {num(b['real'])} Hz versus null median {num(b['null_median'])} Hz; measured critical coupling {num(a['real'],'H0a')} versus null median {num(a['null_median'],'H0a')}. Measured rate percentile {num(b['percentile']*100)}%; critical-coupling percentile {num(a['percentile']*100)}%." + (' Both measured and shuffled wiring saturate under this sign assumption.' if test=='E2a' else ''))
     skipped = next(v for v in r['exploratory'] if v['test']=='E2b')
     exp.append('EXPLORATORY E2b: preregistered '+skipped['status']+'. '+skipped['reason'])
-    public = dict(schema='flybench.public-results.v2f',source_sha256={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in ['docs/results-v2e.json','docs/results-v2f.json','profiles/protocol-v2.1.json']},original=original,combined=combined,summary=summary,comparison_rows=comparison_rows,comparison_table=comparison_table,mechanism=mechanism,bin_note=bin_note,lab_heading=lab_heading,lab_caveat=lab_caveat,families=family_lines,limitations=limits,exploratory=exp,tables=r['tables'])
+    public = dict(dataset_doi=read('archive/raw-records-manifest.json')['reserved_doi'],chart=lab_chart(),calibrated_coupling=runtime['parameters']['s'],lab_seeds={'neural':p['H0']['seeds'][0],'environment':8128},schema='flybench.public-results.v2f',source_sha256={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in ['docs/results-v2e.json','docs/results-v2f.json','profiles/protocol-v2.1.json']},original=original,combined=combined,summary=summary,comparison_rows=comparison_rows,comparison_table=comparison_table,mechanism=mechanism,bin_note=bin_note,lab_heading=lab_heading,lab_caveat=lab_caveat,families=family_lines,limitations=limits,exploratory=exp,tables=r['tables'])
     full_table = table(r['tables'])
     paragraphs = original+'\n\n'+combined+'\n\n'+'\n\n'.join(summary)+'\n\n'+bin_note
     figures = '\n'.join(f"![{block['test']} {family} observed rate curve](media/v2f/{block['circuit']}-{family}-curve.png)" for block in p['confirmatory'] for family in block['families'])
@@ -142,11 +179,33 @@ H0a is critical coupling; >0.1 means censored above the tested grid. The stored 
     template=(ROOT/'docs/readme-v2f.template.md').read_text()
     for key,value in values.items():template=template.replace('{{'+key+'}}',value)
     assert '{{' not in template
-    html_summary=''.join('<p>'+html.escape(x)+'</p>' for x in [original,combined,*summary,bin_note,mechanism,limits])
-    page='<!doctype html><meta name="viewport" content="width=device-width"><title>Protocol and results</title><h1>Registered model comparisons</h1>'+html_summary+'<a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md">Full findings and EXPLORATORY checks</a> · <a href="https://github.com/Alpi157/internet-vs-one-fly/tree/prereg-v2.1">Frozen robustness protocol</a>\n'
     counts=runtime['counts']
-    model=f'<!doctype html><meta name="viewport" content="width=device-width"><title>What is real here?</title><h1>What is real here?</h1><p>This export executes {counts["N"]:,} neurons and {counts["source_accepted_E"]:,} directed connections representing {counts["represented_source_contacts"]:,} contacts.</p><p>{html.escape(limits)} Unknown signs are disabled. Missing soma positions appear in a labeled band; physical units and anatomical orientation are unverified.</p><a href="preregistration.html">Results, including families that did not replicate</a> · <a href="https://male-cns.janelia.org/download/">MaleCNS source and CC-BY attribution</a>\n'
-    return {'README.md':template,'docs/findings-v2f.md':findings,'apps/play/public/results-v2f.json':json.dumps(public,indent=2,sort_keys=True)+'\n','apps/play/public/preregistration.html':page,'apps/play/public/model.html':model}
+    def paragraphs(items):
+        return ''.join('<p>'+html.escape(x)+'</p>' for x in items)
+    def html_table(markdown):
+        rows=[line.strip('|').split('|') for line in markdown.splitlines()]
+        return '<div class="table-scroll" role="region" aria-label="Registered graph comparison" tabindex="0"><table><thead><tr>'+''.join('<th scope="col">'+html.escape(v.strip())+'</th>' for v in rows[0])+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+html.escape(v.strip())+'</td>' for v in row)+'</tr>' for row in rows[2:])+'</tbody></table></div>'
+    repo='https://github.com/Alpi157/internet-vs-one-fly'
+    body=f"""<h1>How it works</h1><p class="lede">Measured wiring. A simplified model. Results you can check.</p>
+<section id="real"><h2>What is real here?</h2><p>The connections come from MaleCNS. The game executes {counts['N']:,} neurons and {counts['source_accepted_E']:,} directed connections representing {counts['represented_source_contacts']:,} biological contacts. Original body IDs are recoverable; contacts remain separate from executable weights.</p><p>Every flash comes from a recorded spike. Replay displays recorded observations. It does not invent activity between frames.</p></section>
+<section id="model"><h2>The model</h2><p>The model passed the calibration registered in {runtime['protocol_tag']}. Its selected connection strength is {runtime['parameters']['s']}, from the frozen calibration grid. The selection rule is: {html.escape(runtime['selection_rule'])}.</p><p>Uniform current-based LIF neurons use assumed source transmitter signs. Unknown signs are disabled. Feature-level vision supplies size and expansion. A motor decoder receives only neural activity, with no hand coordinates, distance or future collision information. Walking and escape are neural; body physics and takeoff are simplified. The previous motor command drives the current interval.</p><p>Normal rounds preserve neural state. Changing a lab control explicitly resets both simulations with the same noise seed. Display fading smooths recorded spikes only.</p></section>
+<section id="finding"><h2>The finding</h2>{paragraphs([original,combined])}<p>Rates at registered connection strength {coupling}, in spikes a second per neuron:</p>{html_table(comparison_table)}{paragraphs([mechanism,bin_note,limits])}<a href="{repo}/blob/main/docs/findings-v2f.md">Full family results and limitations</a></section>
+<section id="preregistrations"><h2>Registered before the runs</h2><p>The original protocol was publicly timestamped on {values['original_date']}, tag <a href="{repo}/tree/prereg-v2">prereg-v2</a>. The robustness protocol was publicly timestamped on {values['robustness_date']}, tag <a href="{repo}/tree/prereg-v2.1">prereg-v2.1</a>. Frozen manifests pin code, graph identities, seeds, assumptions and analysis.</p></section>
+<section id="verify"><h2>Data and verification</h2><p>The raw-record dataset is <a href="https://doi.org/{values['dataset_doi']}">{values['dataset_doi']}</a>. Download the checksum-pinned archive, then recompute the published tables without simulating new trials.</p><pre tabindex="0" aria-label="Verification commands"><code>uv run python tools/restore_evidence.py --archive /path/to/flybench-raw-records-v2e-v2f.tar.gz
+uv run python tools/recompute_v2e.py
+uv run python experiments/v2f_analyze.py --out evidence/V2F/results --verify
+uv run python experiments/v2f_publish.py --check</code></pre><p>The portable original-results check ignores only recorded hardware metadata. <a href="{repo}/blob/main/README.md">See the README</a> for locked dependencies and the frozen verifier's supported host envelope.</p></section>
+<section id="anatomy"><h2>Real anatomy, credited</h2><p>Brain: front view. Nerve cord: underside view. Real MaleCNS neuron skeletons, simplified for display. The fly's right appears on the viewer's left. Display layout bridges are not continuous anatomical projections. Missing coordinates stay missing.</p><p>MaleCNS is published by the Male CNS Connectome project, including FlyEM at HHMI Janelia, Cambridge, MRC LMB and Google Research. Underlying and derived anatomy is <a href="{repo}/blob/main/LICENSE-DATA.md">CC-BY</a>; code is MIT. <a href="https://male-cns.janelia.org/download/">MaleCNS source</a>. <a href="{repo}/blob/main/profiles/anatomy-lock-v1.json">Pinned anatomy sources and hashes</a>.</p></section>
+<section id="limitations"><h2>Limitations</h2>{paragraphs([limits])}<p>The strength-preserving comparisons did not replicate the registered stability result. There is no learning, plasticity, realistic biomechanics, human-player study, public verification service or shared score. Scripted bots are engineering evidence, not human usability evidence. Exploratory associations do not establish a mechanism or biological necessity.</p></section>"""
+    site='https://alpi157.github.io/internet-vs-one-fly/'
+    def page(name,title,content):
+        return f'''<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000"><title>{title} | Catch the fly</title><meta name="description" content="Measured MaleCNS wiring, a simplified neural model, and registered results you can verify."><meta property="og:title" content="{title} | Catch the fly"><meta property="og:type" content="website"><meta property="og:description" content="Measured wiring. Recorded spikes. Registered comparisons and their limitations."><meta property="og:url" content="{site}{name}"><meta property="og:image" content="{site}og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./icon-180.png"><link rel="stylesheet" href="./site.css"></head><body><main class="science-page"><header><a class="wordmark" href="./">Catch the fly</a><nav aria-label="Main"><a href="./">Play</a><a href="./?lab=1">Wiring lab</a><a href="./how-it-works.html" aria-current="page">How it works</a><a href="{repo}">Code and data ↗</a></nav></header><a href="./">‹ Back to the game</a><article>{content}</article></main></body></html>\n'''.replace('href="./','href="/internet-vs-one-fly/')
+    css=(ROOT/'apps/play/src/style.css').read_text().replace('../public/fonts/','./fonts/')
+    css += '\n.science-page article{max-width:1000px;margin:32px auto}.science-page h1{font-size:52px;white-space:normal}.science-page h2{font-size:32px;margin-top:40px}.science-page .lede{font-size:22px}.science-page p{line-height:1.65}.science-page p a{display:inline;min-height:0}.science-page .wordmark{font:900 28px Doto;color:#e9ede6;text-decoration:none}.table-scroll{overflow:auto;border:1px solid #687369;border-radius:14px;margin:24px 0}table{border-collapse:collapse;min-width:800px;font-size:14px}th,td{padding:14px;text-align:left;border-bottom:1px solid #262b27}th{background:#0a0c0a}pre{overflow:auto;padding:20px;border:1px solid #687369;border-radius:14px;font-size:13px}section{scroll-margin-top:20px}@media(max-width:899px){.science-page h1{font-size:34px}.science-page h2{font-size:28px}.science-page article{margin-top:24px}.science-page header{margin-bottom:8px}}\n'
+    pages={name:page(name,title,body) for name,title in [('how-it-works.html','How it works'),('model.html','Model and findings'),('preregistration.html','Protocols and findings')]}
+    pages['404.html']=page('404.html','Page not found','<h1>Page not found</h1><p>Return to the game or read about the model and its registered results.</p><a href="'+site+'">Play Catch the fly</a>')
+    return {'README.md':template,'docs/findings-v2f.md':findings,'apps/play/public/results-v2f.json':json.dumps(public,indent=2,sort_keys=True)+'\n','apps/play/public/site.css':css,**{'apps/play/public/'+name:content for name,content in pages.items()}}
+
 
 
 def main():

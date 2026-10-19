@@ -1,10 +1,9 @@
 import {readGraph} from '../../../packages/kernel-ts/src/kernel.ts';
-export function openLab(panel:HTMLElement,onChange:(mode:string)=>Promise<void>){
-    panel.hidden=!panel.hidden;
-    if(panel.dataset.initialized)return;
-    panel.dataset.initialized='true';
-    panel.innerHTML='<h2>Lesion lab</h2><p>Each change resets the round and reruns the neural simulation. The activity meter reports recorded whole-circuit spikes per neuron per second over the last 10 ms.</p><label>Experiment <select id="lab-mode"><option value="real">Measured wiring</option><option value="LC4">LC4 lesion</option><option value="LPLC2">LPLC2 lesion</option><option value="giant-fiber">Giant-fiber lesion</option><option value="turning-DN">Turning-DN lesion</option><option value="scramble">Scrambled wiring</option></select></label><p>Scrambled wiring: fixed-parameter scramble, not calibrated. N-FULL seed 202710159999. Lesions silence their neurons, including incoming/outgoing edges and direct drive.</p>';
-    panel.querySelector('select')!.onchange=async e=>{const select=e.target as HTMLSelectElement;select.disabled=true;try{await onChange(select.value);}finally{select.disabled=false;}};
+export function openLab(panel:HTMLElement,onChange:(mode:string)=>Promise<void>,seed?:number){
+    panel.hidden=false;
+    panel.innerHTML=`<h1>Silence a circuit</h1><p>Start a fresh round with a neural circuit silenced. Restore measured wiring at any time from the game header.</p><div class="lesion-options">${[['LC4','LC4'],['LPLC2','LPLC2'],['giant-fiber','Giant fiber'],['turning-DN','Turning DN']].map(([value,label])=>`<button data-lesion="${value}">${label}</button>`).join('')}</div><p>Silencing removes incoming and outgoing connections and direct drive for the selected neurons. Each change resets the round.</p><details><summary>More</summary><button data-lesion="scramble" id="full-shuffle">Uncalibrated full shuffle${seed===undefined?'':`, seed ${seed}`}</button><p>This N-FULL shuffle uses the game's fixed parameters. It is not a calibrated control.</p></details>`;
+    if(seed===undefined)fetch(import.meta.env.BASE_URL+'data/runtime.json').then(r=>r.json()).then(r=>{panel.querySelector('#full-shuffle')!.textContent=`Uncalibrated full shuffle, seed ${r.lab_seed}`;});
+    panel.querySelectorAll<HTMLButtonElement>('[data-lesion]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await onChange(b.dataset.lesion!);}finally{b.disabled=false;}});
 }
 export async function configureLab(mode:string,buffer:ArrayBuffer,runtime:any,base:string){
     const config=structuredClone(runtime);const copy=buffer.slice(0);const graph=readGraph(copy);

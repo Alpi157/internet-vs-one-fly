@@ -2105,9 +2105,13 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
-        if milestone == "V2H" and (path.startswith("docs/media/") or path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}):
+        if milestone == "V2I" and path.startswith(("docs/design/v4/screens/", "docs/design/v4/source/")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
-                            "reason": "Unchanged prior-stage media/scientific inventory; available in submitted checkout. V2H includes all new screen evidence."})
+                            "reason": "Unchanged design reference images/source; DESIGN.md and all new implementation screenshots are included"})
+            continue
+        if milestone in {"V2H", "V2I"} and ((path.startswith("docs/media/") and not (milestone == "V2I" and path in {"docs/media/game-hero.gif", "docs/media/game-still.png", "docs/media/coupling-hero.gif", "docs/media/coupling-still.png", "docs/media/media-provenance.json"})) or path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}):
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
+                            "reason": "Unchanged prior-stage media/scientific inventory; available in submitted checkout. The current stage includes all new screen evidence."})
             continue
         if milestone == "V2G" and attempt == 2 and path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}:
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
@@ -2120,7 +2124,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         if milestone == "V2G" and (path.endswith(".retention.json.gz") or path.endswith("-desktop.arbors.gz")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data), "reason": "Bounded V2G review: detailed source-row provenance or desktop arbor transport; phone transports, all manifests, retention summaries and previews included; full file in submitted checkout"})
             continue
-        if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone in {"V2E", "V2F", "V2G", "V2H"} and path.startswith("apps/play/public/data/") and not (milestone == "V2H" and path in {"apps/play/public/data/runtime.json", "apps/play/public/data/game.json", "apps/play/public/data/display-v1.json", "apps/play/public/data/HASHES.json"}) and not (milestone == "V2G" and (path.startswith("apps/play/public/data/anatomy/") or path in {"apps/play/public/data/coupling/strength-demo.json", "apps/play/public/data/coupling/strength-targets.json.gz", "apps/play/public/data/brain.json", "apps/play/public/data/HASHES.json", "apps/play/public/data/coupling/brain.json", "apps/play/public/data/coupling/HASHES.json"})))):
+        if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H", "V2I"} and (pure.parts[0] == "data" or pure.suffix in {".npy", ".npz", ".webbin"} or (milestone in {"V2E", "V2F", "V2G", "V2H", "V2I"} and path.startswith("apps/play/public/data/") and not (milestone in {"V2H", "V2I"} and path in {"apps/play/public/data/runtime.json", "apps/play/public/data/game.json", "apps/play/public/data/display-v1.json", "apps/play/public/data/HASHES.json"}) and not (milestone == "V2G" and (path.startswith("apps/play/public/data/anatomy/") or path in {"apps/play/public/data/coupling/strength-demo.json", "apps/play/public/data/coupling/strength-targets.json.gz", "apps/play/public/data/brain.json", "apps/play/public/data/HASHES.json", "apps/play/public/data/coupling/brain.json", "apps/play/public/data/coupling/HASHES.json"})))):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
                             "reason": "Stage exclusion of compiled graph arrays and legacy runtime assets; restore from the submitted checkout"})
             continue
@@ -2136,9 +2140,11 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     entries["ledger.yaml"] = commit_blob(root, submitted, "ledger.yaml")
     entries["tree.txt"] = ("\n".join(repo_paths) + "\n").encode("utf-8")
     entries["git_status.txt"] = status.encode("utf-8")
-    diff_exclusions = [".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F", "V2G", "V2H"} else []
-    if milestone == "V2H":
+    diff_exclusions = [".", ":(exclude)apps/play/public/data"] if milestone in {"V2E", "V2F", "V2G", "V2H", "V2I"} else []
+    if milestone in {"V2H", "V2I"}:
         diff_exclusions.extend([":(exclude)docs/design/v4/screens", ":(exclude)docs/design/v4/source"])
+    if milestone == "V2I":
+        diff_exclusions.append(":(exclude)docs/media")
     if milestone == "V2G":
         diff_exclusions.append(":(exclude)docs/media/anatomy")
         # Complete new JSON inventories are already included in repo/, so the
@@ -2337,7 +2343,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
                 continue
             if isinstance(value, dict):
                 m09_evidence[name] = value
-    if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H"}:
+    if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H", "V2I"}:
         if attempt not in ({1, 2} if milestone in {"V2F", "V2G"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires a registered attempt and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.
@@ -2410,7 +2416,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     value = archive.getvalue()
     # The V2H dry bundle measured 23,966,349 bytes before clip/fallback evidence.
     # Its mandatory 3-browser x 2-viewport screen matrix must remain complete.
-    archive_limit = 48 * 1024 * 1024 if milestone == "V2H" else MAX_ARCHIVE_BYTES
+    archive_limit = 48 * 1024 * 1024 if milestone in {"V2H", "V2I"} else MAX_ARCHIVE_BYTES
     if len(value) >= archive_limit:
         raise BundleError(f"review bundle is {len(value)} bytes, exceeding the {archive_limit // (1024 * 1024)} MiB review limit")
     return value

@@ -38,12 +38,15 @@ export class BrainView {
     private shownDim = false;
     private lastTick = -1;
     private lastMode = '';
-    constructor(host: HTMLElement, base: string, nodes: any[], display: any) {
+    private circuit: string;
+    constructor(host: HTMLElement, base: string, nodes: any[], display: any, circuit = 'T1b') {
+        this.circuit = circuit;
         this.nodes = nodes;
         this.display = display;
         this.lod = matchMedia('(pointer: coarse)').matches || innerWidth < 900 ? 'phone' : 'desktop';
         host.innerHTML = `<div class="segments" role="radiogroup" aria-label="Anatomy view"><label><input type="radio" name="brain-mode" value="brain" checked>Brain</label><label><input type="radio" name="brain-mode" value="whole">Whole CNS</label></div><div class="brain-image"><canvas aria-label="Recorded neural activity on MaleCNS anatomy"></canvas><canvas class="brain-labels" aria-hidden="true"></canvas><span class="brain-loading" role="status">Loading real neuron skeletons…</span></div><p class="anatomy-caption">${ANATOMY_CAPTION}</p>`;
         this.canvas = host.querySelector('canvas')!;
+        host.querySelectorAll<HTMLInputElement>('input').forEach(input => input.name = `${host.id}-brain-mode`);
         this.overlay = host.querySelector('.brain-labels')!;
         this.gl = this.canvas.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: true });
         if (!this.gl)
@@ -56,7 +59,7 @@ export class BrainView {
         const root = base + 'data/anatomy/';
         const [manifest, rois] = await Promise.all([fetch(root + 'manifest.json').then(r => r.json()), fetch(root + 'neuropils.json').then(r => r.json()), document.fonts.load('600 24px Atkinson')]);
         this.rois = rois;
-        const asset = manifest.assets.find((a: any) => a.circuit === 'T1b' && a.lod === this.lod);
+        const asset = manifest.assets.find((a: any) => a.circuit === this.circuit && a.lod === this.lod);
         const response = await fetch(root + asset.file);
         const buffer = await new Response(response.body!.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
         this.anatomy = decodeArbors(buffer);
