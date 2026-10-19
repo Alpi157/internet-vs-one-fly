@@ -117,7 +117,7 @@
     },
     "bot_boundary": "Project aim just inside circular boundary, identical deterministic rounding guard as a01",
     "bot_censoring": "Six opportunities per 30 s round; censor if no still interval/impact by round end. Catch rate uses resolved impacts; report censored separately and no attempt count substituted for resolved count.",
-    "resting_swat": "200 independent 30 s rounds: 20 neural seeds x 10 environment seeds (1000+seed+100*trial). First grounded 200 ms below a01 moving deadband (absolute forward < .002, absolute turn < .0005), aim perfectly with hold 600 ms. Neural state persists inside round. No force-stop. Matched v2.7 control rerun and original a01 baseline 0.88 both retained.",
+    "resting_swat": "Exact a01 schedule: 20 neural seeds x two independent five-strike rounds. Environment seed 1000+seed+100*round. Before each swat wait for 200 ms grounded below original moving deadbands (absolute forward < .002, absolute turn < .0005). Neural state persists across the five strikes; no force-stop. Each round retains the original 30 s limit.",
     "resting_swat_censoring": "Any unresolved opportunity counts as a nonescape for the conservative safety probability, while resolved-only escape and censoring are also reported.",
     "speed_summary": "Median pooled interval speeds during each walking definition; per-seed medians also reported"
   },
@@ -125,7 +125,7 @@
     "false_takeoffs_per_s_max": 0.05,
     "whole_circuit_hz_max_exclusive": 50,
     "resting_swat_escape_min": 0.88,
-    "resting_swat_comparison": "Conservative 200-opportunity escape rate >= original a01 v2.7 baseline 0.88. The independent-round a02 v2.7 rerun is descriptive and not an additional gate.",
+    "resting_swat_comparison": "Conservative escape probability over all 200 scheduled opportunities >= original matched a01 v2.7 176/200 = 0.88. A rerun must reproduce the original v2.7 control. Prior independent-round results are descriptive only.",
     "replay": "Exact reexecution digest with effective profile identity, no gaps",
     "parity": "Bit-exact Python/TypeScript drive currents and state for every preset over 3000 intervals; reset and neural parity retained"
   },
@@ -156,5 +156,5 @@
     "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
     "lab": "Lab simulations have no walking drive."
   },
-  "amendment": "decisions/D-V2J-PROTOCOL-03.json: remove an unrequested additional control gate, retain all measured rates and interim flags"
+  "amendment": "decisions/D-V2J-PROTOCOL-04.json: restore exact a01 repeated-strike workload for the safety comparison; retained D-V2J-PROTOCOL-03 and all prior records."
 }

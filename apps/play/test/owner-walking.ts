@@ -103,10 +103,34 @@ export function restingSwat(profile:any,seeds:number[],trials=10){
  const resolved=records.filter(r=>!r.censored),escaped=resolved.filter(r=>!r.caught).length;
  return {records,opportunities:records.length,resolved:resolved.length,censored:records.length-resolved.length,escapes:escaped,conservative_escape_probability:escaped/records.length,resolved_escape_probability:escaped/resolved.length};
 }
+export function originalRestingSwat(profile:any,seeds:number[],rounds=2){
+ const records:any[]=[];
+ for(const seed of seeds)for(let round=0;round<rounds;round++){
+  const g=newGame(profile,seed,1000+seed+100*round);
+  for(let trial=0;trial<5;trial++){
+   let rest=0;while(!g.done&&rest<20){const f=g.step();rest=!f.air&&Math.abs(f.applied[1])<.002&&Math.abs(f.applied[2])<.0005?rest+1:0;}
+   if(g.done){records.push({seed,round,trial,censored:true});continue;}
+   const aim=project(g.runner.body.x,g.runner.body.y,profile.arena_radius);g.apply({tick:g.tick,...aim,hold_ms:600});const impactTick=g.strike.impact_tick;
+   while(g.strike&&!g.done)g.step();
+   const impact=g.lastImpact?.tick===impactTick?g.lastImpact:null;
+   records.push({seed,round,trial,environment_seed:1000+seed+100*round,censored:!impact,...impact});
+  }
+ }
+ const resolved=records.filter(r=>!r.censored),escapes=resolved.filter(r=>!r.caught).length;
+ return {protocol:'Exact a01 repeated-strike schedule',records,opportunities:records.length,resolved:resolved.length,censored:records.length-resolved.length,escapes,conservative_escape_probability:escapes/records.length,resolved_escape_probability:escapes/resolved.length};
+}
 async function main(){
  mkdirSync(out,{recursive:true});const cmd=process.argv[2],id=process.argv[3],seeds=protocol.measurement.validation_seeds;
  const receipt={code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),protocol_sha256:createHash('sha256').update(readFileSync(root+'profiles/owner-walking-a02.json')).digest('hex')};
- if(cmd==='--dry-run'){
+ if(cmd==='--swat-dry'){
+  const swat=originalRestingSwat(profileFor('A'),[101],1);save('original-swat/dry-run.json',{...receipt,classification:'PIPELINE_ONLY_EXCLUDED_FROM_SAFETY',swat});console.log('PASS original-schedule dry run',swat.opportunities,swat.censored);
+ }else if(cmd==='--swat-original'){
+  const original=id==='baseline',prior=original?null:load(`evidence/V2J/a02/presets/${id}.json`),profile=original?old:prior.profile;
+  const swat=originalRestingSwat(profile,seeds);save(`original-swat/${id}.json`,{...receipt,swat});
+  if(original){if(swat.conservative_escape_probability!==.88||swat.censored!==0)throw Error('Original control does not reproduce a01 176/200');}
+  else {const result={...prior,swat,swat_revision:{...receipt,reason:'D-V2J-PROTOCOL-04: exact original repeated-strike workload; independent-round outputs retained'},offered:false,gates:{...prior.gates,resting_swat:swat.conservative_escape_probability>=.88}};save(`presets/${id}.json`,result);}
+  console.log(id,'original swat',swat.escapes,'/',swat.opportunities,'censored',swat.censored,'conservative',swat.conservative_escape_probability);
+ }else if(cmd==='--dry-run'){
   const p=profileFor('A'),q=await quiet(p,101,1),b=bots(p,[101],true),s=restingSwat(p,[101],1);
   save('dry-run.json',{...receipt,classification:'PIPELINE_ONLY_EXCLUDED_FROM_SELECTION',quiet:q,bot:b,swat:s});console.log('PASS dry run',b.rates.length,'bot/type/limit combinations');
  }else if(cmd==='--D'){
