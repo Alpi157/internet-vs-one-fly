@@ -1,7 +1,7 @@
 {
   "schema": "flybench.media.v2j.a03",
   "capture_code_sha256": "96c8db71e1dd1cdeeaff2aad60e34d73ff4af86aa021b451a30de09762e1c908",
-  "base_commit": "cae30f3dc7a06f8425905a529b14a6d8113db1d4",
+  "base_commit": "773d604f6f8962911f6febb9407fccbb49a96b79",
   "viewport": {
     "width": 1440,
     "height": 900
@@ -45,7 +45,7 @@
       "environment_seed": 8128,
       "profile_hashes": {
         "apps/play/src/game-runner.ts": "7b4e640bd8b9a43b708b8b28a1a595fd7887a2138022bcb856cdb91c11cf199b",
-        "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
+        "apps/play/src/game.ts": "6d2ae78ea667af75998f62ee6396cf08b1426b28abff8e47419d1c6b7aa1df33",
         "apps/play/src/walking-drive.ts": "5d196192d16250a59d34abb8d7824806ba97333c3718726760eb868d4d7251dd",
         "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
         "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",
@@ -75,7 +75,7 @@
         }
       ],
       "end_tick": 3720,
-      "digest": "b3847554d9765c02ab9ba5e78a5a8531489c5dcbea40d2f8eb9263aede1e8b81",
+      "digest": "fd059f07d9f8236a2ab7f7e6284a2a2aa4ab2659ff8d69653d80923d81c1f70a",
       "gaps": []
     },
     "impact": {
@@ -10838,7 +10838,7 @@
   "assets": {
     "apps/play/public/data/runtime.json": {
       "bytes": 87559,
-      "sha256": "8ebf796de545cd6160dd1bddc973334f5c1fe5c9f8824f5ae2bd0e63badafebf"
+      "sha256": "6ce2bfb72a21ec901b4a7adcce65f33a6aef2e482de7f3602e33bd4e20c26f8a"
     },
     "apps/play/public/data/game.json": {
       "bytes": 2883,
@@ -10885,8 +10885,8 @@
       "palette_colors": 96
     },
     "docs/media/game-hero.gif": {
-      "bytes": 6222922,
-      "sha256": "a79b3dde641475fb98e98d7a56ef987a11e84019fa857447d006af112eb8eacb",
+      "bytes": 6209991,
+      "sha256": "84e0908ee9d82f2b9ad4dab53ca05c372b045464b9a7ca0c24021b6f8aba86b3",
       "frames": 126,
       "source_frames": 126,
       "size": [
@@ -10917,7 +10917,7 @@
     "apps/play/src/brain-view.ts": "82a34ce3692806cc957574c118557982764e50cafdaf0c6247f9e1c230529a0b",
     "apps/play/src/field.ts": "4f6c240831d4db7dfbb7546a5db445f3a16fc9a8f8d7fe61ada1fce70238a09f",
     "apps/play/src/style.css": "3f7fb63b26eca422f1c5a3ad2c56f007da75ecc088f93807733781f4139603a4",
-    "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
+    "apps/play/src/game.ts": "6d2ae78ea667af75998f62ee6396cf08b1426b28abff8e47419d1c6b7aa1df33",
     "apps/play/src/worker.ts": "674b8297d92f26df9ee6626fcbc9735cbff78a2f782f6fd5f7eed4b23268a09f"
   },
   "conversion_source_sha256": "d4fb258a59579a1433c900dffaab95d9b3ae3bb95cb87dcdf26de75c98d5db58"

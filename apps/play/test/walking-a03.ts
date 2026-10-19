@@ -52,7 +52,8 @@ if(!isMainThread){parentPort!.postMessage(bots(profile,workerData.seeds,workerDa
  const summary=summarize(rows),bot=await parallelBots(protocol.measurement_seeds);console.log('A bots complete');
  const swat=originalRestingSwat(profile,protocol.measurement_seeds),baseline=originalRestingSwat(old,protocol.measurement_seeds);assert.equal(baseline.escapes,176);assert.equal(baseline.censored,0);
  const g=botRound(profile,1,4,0,false,2).game,log=await g.log();await replayLog(buffer,runtime,profile,log);await parity();
- const differences={summary_equal:JSON.stringify(summary)===JSON.stringify(prior.summary),bot_rates_equal:JSON.stringify(bot.rates)===JSON.stringify(prior.bot.rates),bot_records_equal:JSON.stringify(bot.records)===JSON.stringify(prior.bot.records),swat_equal:JSON.stringify(swat)===JSON.stringify(prior.swat)};
+ const physical=(r:any)=>{const {log,...record}=r;return record;};
+ const differences={quiet_records_equal:rows.every(r=>JSON.stringify(physical(r))===JSON.stringify(physical(load(`evidence/V2J/a02/presets/A/quiet-${r.seed}.json`)))),summary_equal:JSON.stringify(summary)===JSON.stringify(prior.summary),bot_rates_equal:JSON.stringify(bot.rates)===JSON.stringify(prior.bot.rates),bot_records_equal:JSON.stringify(bot.records)===JSON.stringify(prior.bot.records),swat_equal:JSON.stringify(swat)===JSON.stringify(prior.swat)};
  const gates={false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50,resting_swat:swat.conservative_escape_probability>=.88,replay:true,drive_parity:true};
  save('A.json',{...receipt(),summary,bot,swat,baseline,replay:{status:'PASS',log},gates,differences_from_a02:differences});
  console.log(JSON.stringify({summary,gates,differences},null,2));assert(Object.values(gates).every(Boolean));assert(Object.values(differences).every(Boolean),'Report differences; never silently retune');
