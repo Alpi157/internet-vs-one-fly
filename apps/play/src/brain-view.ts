@@ -130,9 +130,10 @@ export class BrainView {
     }
     private point(p: number[]) { return [p[0] * this.scale + this.offset[0], p[1] * this.scale + this.offset[1]]; }
     private prepare() {
+        const resolutionScale = this.gl ? this.quality.resolutionScale : 1;
         const width = 720, height = this.mode === 'brain' ? 424 : 1040;
-        this.canvas.width = Math.round(width * this.quality.resolutionScale);
-        this.canvas.height = Math.round(height * this.quality.resolutionScale);
+        this.canvas.width = Math.round(width * resolutionScale);
+        this.canvas.height = Math.round(height * resolutionScale);
         this.overlay.width = width;
         this.overlay.height = height;
         const contours = this.rois.rois.filter((r: any) => this.mode === 'whole' || r.panel === 0).flatMap((r: any) => r.contours_um).flat();

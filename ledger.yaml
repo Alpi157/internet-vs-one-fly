@@ -385,7 +385,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: Review V2J a01 TARGET_MISSED (0/24 passing drive points) and completed layout/locale repair. No push, tag or deployment.
+next_action: Review V2J a03 owner-selected A activation, final-SHA safety/software receipts and media. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -529,3 +529,25 @@ v2j_current:
     original_swat_freeze_sha: f4f8989
     matched_swat_baseline: 176/200; identical to a01
     matched_swat_escapes_A_B_C_D: [185, 180, 194, 184] # denominator 200, censoring counted as nonescape
+
+  a03:
+    status: SUBMITTED_FOR_EXTERNAL_REVIEW
+    base_sha: 3084b7831a67d46945215fabeeb84f61ae189a05
+    decision: decisions/D-V2J-SELECT-01.json
+    owner_playtest_date: '2026-10-19'
+    chosen_preset: A (calm); owner found it most realistic
+    protocol: profiles/walking-a03.json
+    protocol_freeze_sha: 8fa7d5c
+    active_game_profile: flybench.game.v2.8
+    retuning: NONE; exact preview A physics and walking drive
+    prior_records: a01 FAIL and all a02 records unchanged
+    evidence: evidence/V2J/a03
+    report: docs/walking-v2j.md
+    acceptance: final-SHA receipt under evidence/V2J/a03/acceptance
+    lab_rendering: 480 px activity canvases with 720 px labels; extra glow pass removed; simulation unchanged
+    hero_rule: first escaping seed ascending; walk 1500 ms then current-position slap hold 300 ms; environment 8128
+    hero_seed: 1
+    hero_seeds_tried: 1
+    external_acceptance: PENDING
+    main_pushed: false
+    deployment_triggered: false

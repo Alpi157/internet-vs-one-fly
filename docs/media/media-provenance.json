@@ -1,7 +1,7 @@
 {
-  "schema": "flybench.media.v2i.a02",
-  "capture_code_sha256": "eeb396435add12260935f448283391253a5bac202fd54ed03b0b35e647d900ad",
-  "base_commit": "05784243254e3b299cfc0ad8b377495df9e4578f",
+  "schema": "flybench.media.v2j.a03",
+  "capture_code_sha256": "96c8db71e1dd1cdeeaff2aad60e34d73ff4af86aa021b451a30de09762e1c908",
+  "base_commit": "8fa7d5c47d3c58814a278ad8638e969bf5289b3b",
   "viewport": {
     "width": 1440,
     "height": 900
@@ -9,33 +9,44 @@
   "display_only": true,
   "game": {
     "selection": {
-      "declared_at": "2026-10-19T06:01:27.727Z",
-      "rule": "First neural seed in ascending integer order whose first hand escapes. Fixed aim at the initial fly, no warmup, fixed Enter-key hold. Environment seed is held fixed. No other outcome enters selection.",
+      "rule": "First neural seed in ascending integer order whose single slap escapes. Walk 1500 ms, observe the current fly position at tick 3000, aim there and apply a fixed 300 ms hold slap. Environment seed fixed at 8128. No other outcome enters selection.",
       "first_seed": 1,
-      "aim": {
-        "x": 0,
-        "y": 0
-      },
-      "warmup_intervals": 0,
-      "hold_ms": 340,
       "environment_seed": 8128,
+      "warmup_intervals": 150,
+      "hold_ms": 300,
+      "aim": "Current body position at 1500 ms; no lead",
+      "walk_slowdown_factor": 1,
+      "strike_slowdown_factor": 5,
+      "frame_duration_ms": 50,
+      "replay_seconds": 3,
+      "replay_speed": 0.25,
+      "output_width": 960,
+      "max_bytes": 8000000,
+      "og_rule": "Recorded hero replay frame with maximum observed spike count",
+      "lab_media": "Existing clip and still retained byte-identical.",
       "tried": 1,
       "trials": [
         {
           "seed": 1,
+          "aim": {
+            "x": 5.75580366624397,
+            "y": 0.1283229401921836
+          },
           "caught": false
         }
       ],
-      "declaration_sha256": "6a59339c7fd5d91b74da5f051419ce1223d053ca1b1b819fa814b792b1246e06"
+      "declaration_sha256": "51a6fd0eb0ef1bd43f0ec4db502acc0d3d42eff52fe1594238d263673b5af0aa"
     },
     "neural_seed": 1,
     "environment_seed": 8128,
     "log": {
-      "schema": "flybench.game-round.v2",
+      "schema": "flybench.game-round.v3",
       "neural_seed": 1,
       "environment_seed": 8128,
       "profile_hashes": {
-        "apps/play/src/game.ts": "a35f8ebd31e7c6622b1a80551f76ca6fbaebcbd5def46f4ec845ebc29b712803",
+        "apps/play/src/game-runner.ts": "7b4e640bd8b9a43b708b8b28a1a595fd7887a2138022bcb856cdb91c11cf199b",
+        "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
+        "apps/play/src/walking-drive.ts": "5d196192d16250a59d34abb8d7824806ba97333c3718726760eb868d4d7251dd",
         "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
         "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",
         "packages/kernel-ts/src/encoding.ts": "70f405847269535b7cf49d16f527138d0984060a415e3aa9bcdd353b137e4efc",
@@ -45,119 +56,123 @@
         "packages/kernel-ts/src/worker.ts": "99826612531e0fd02d5a8fc951a4981439e1f6899c30429b0a39244a8f777c3b",
         "profiles/decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",
         "profiles/encoder-v2-draft.json": "f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8",
-        "profiles/game-v2.json": "5b2ef26a008032f512724e9368f15d1a318bc049eb7e55b582bb04c7e8254230",
+        "profiles/game-v2.json": "db9b4f9f8c8a01681e1eb378b3e01cf5d7f20b32168a6bfb56d2d8d494a4abf1",
         "profiles/model-v2d-provisional.json": "2d4c3ad34120af9479c168d8bed7d880797a0ad7f7445a23fd8faae11247ed57",
         "profiles/noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
         "profiles/noise-v2.json": "74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e",
         "profiles/ports-v2.json": "0eb28f41195107a5f59e947bc37d8e29d168c351e77efa1238d8f2361d47b751",
-        "profiles/turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7"
+        "profiles/turn-directions-v1.json": "56e269c3553855c42b45fde926f57fab5b302cfadfe636048f0cf63ab57571c7",
+        "src/flybench/game_runner_v28.py": "9a0e6733947b2c5db661d9492431252d660be2d441e713abc5ab33cea25d1250",
+        "src/flybench/walking_drive.py": "515eee064957fd66add566af8687d35cd8de0a3c7da933951cfa840cb5d88a00"
       },
       "graph_identity": "52690bb7f3f9677a605a0bf74d4f69031983005fb4900515ce02273699b3d858",
       "inputs": [
         {
-          "tick": 0,
-          "x": 0,
-          "y": 0,
-          "hold_ms": 340
+          "tick": 3000,
+          "x": 5.75580366624397,
+          "y": 0.1283229401921836,
+          "hold_ms": 300
         }
       ],
-      "end_tick": 720,
-      "digest": "3e8c07f9275e487cb641b7b1973c95d928a79f05d7b8c19b4e54513950d730d7",
+      "end_tick": 3720,
+      "digest": "eaecfa33d6d0ab603cc8b5cf7a83e596952241d15dffee9c7906df7c44b2581f",
       "gaps": []
     },
     "impact": {
-      "tick": 320,
+      "tick": 3320,
       "caught": false,
       "position": {
-        "x": 1.9309184860710253,
-        "y": 0.4381253247065032
+        "x": 4.718522640450478,
+        "y": 0.01825768278956705
       },
       "aim": {
-        "x": 0,
-        "y": 0
+        "x": 5.75580366624397,
+        "y": 0.1283229401921836
       },
       "radius": 0.8,
       "type": "slap",
-      "lead_ms": 111.5,
-      "escape_onset_lead_ms": 110
+      "lead_ms": null,
+      "escape_onset_lead_ms": null
     },
-    "frames": 96,
-    "live_frames": 36,
+    "frames": 126,
+    "live_frames": 66,
+    "walk_frames": 30,
     "frame_duration_ms": 50,
+    "walk_slowdown_factor": 1,
     "live_slowdown_factor": 5,
     "replay_seconds": 3,
     "replay_speed": 0.25,
     "replay_loop": true,
     "replay_ticks": [
-      40,
-      60,
-      80,
-      120,
-      140,
-      160,
-      180,
-      200,
-      240,
-      260,
-      280,
-      320,
-      340,
-      360,
-      380,
-      400,
-      440,
-      460,
-      480,
-      520,
-      540,
-      560,
-      580,
-      600,
-      640,
-      660,
-      680,
-      720,
-      20,
-      40,
-      60,
-      80,
-      120,
-      140,
-      160,
-      200,
-      220,
-      240,
-      260,
-      280,
-      320,
-      340,
-      360,
-      400,
-      420,
-      440,
-      460,
-      480,
-      520,
-      540,
-      560,
-      600,
-      620,
-      640,
-      660,
-      680,
-      720,
-      20,
-      40,
-      80
+      2600,
+      2640,
+      2660,
+      2700,
+      2720,
+      2740,
+      2760,
+      2780,
+      2820,
+      2840,
+      2860,
+      2900,
+      2920,
+      2940,
+      2960,
+      2980,
+      3020,
+      3040,
+      3060,
+      3100,
+      3120,
+      3140,
+      3160,
+      3180,
+      3220,
+      3240,
+      3260,
+      3300,
+      3320,
+      3340,
+      3360,
+      3380,
+      3420,
+      3440,
+      3460,
+      3500,
+      3520,
+      3540,
+      3560,
+      3580,
+      3620,
+      3640,
+      3660,
+      3700,
+      3720,
+      2600,
+      2620,
+      2640,
+      2680,
+      2700,
+      2720,
+      2760,
+      2780,
+      2800,
+      2820,
+      2840,
+      2880,
+      2900,
+      2920,
+      2960
     ],
-    "source": "Real Enter key input. Live phase advances one recorded control interval per frame; replay uses the ordinary quarter-speed renderer, looped to show three seconds of playback.",
+    "source": "Authoritative UI input hook at tick 3000, fixed 300 ms slap. Walk: five 10 ms intervals per 50 ms frame (real speed). Strike: one interval per frame (5x slower). Ordinary recorded replay: quarter speed, explicit loop.",
     "observed_takeoff": true,
     "observed_countdown": true,
     "observed_escape_stamp": true,
     "og": {
       "source": "Recorded hero replay frame with maximum observed spike count",
-      "brain_frame_sha256": "b638326fec20df121396ec20742d0eb3cf4f9e6d679a3a8dd7e0e5d1dbe0d1b9",
-      "recorded_tick": 320,
+      "brain_frame_sha256": "39b4e352b22be44bebda76d16a0d845c14dd4fecb48fc2f39d069ec207f782ca",
+      "recorded_tick": 3320,
       "kind": "Site card, no personal score"
     }
   },
@@ -10819,14 +10834,15 @@
     "frame_duration_ms": 100,
     "frames": 80
   },
+  "lab_historical_capture_commit": "f7ee0eabd0b8efaf24e32f2f093164d526a35892",
   "assets": {
     "apps/play/public/data/runtime.json": {
-      "bytes": 87137,
-      "sha256": "9e72b56d7282a1ad21eee16549862bc34cae4d334b576008b5bfdbf75e0d754c"
+      "bytes": 87559,
+      "sha256": "128c2d9090e033d41045bfc25f06e04665185b5bfee62154dbef72cc7dfb19c9"
     },
     "apps/play/public/data/game.json": {
-      "bytes": 1261,
-      "sha256": "5b2ef26a008032f512724e9368f15d1a318bc049eb7e55b582bb04c7e8254230"
+      "bytes": 2880,
+      "sha256": "db9b4f9f8c8a01681e1eb378b3e01cf5d7f20b32168a6bfb56d2d8d494a4abf1"
     },
     "apps/play/public/data/coupling/runtime.json": {
       "bytes": 17450,
@@ -10841,32 +10857,20 @@
       "sha256": "dd1929d45e0fd2276b6ae0301cb5233e3768f116477c3742844f83479ff73ef0"
     },
     "apps/play/public/og-image.png": {
-      "bytes": 283042,
-      "sha256": "bf52acd947e63cf07a377536e7e12de6db922cf7a83daf366c8f70bac1236a78"
+      "bytes": 284828,
+      "sha256": "8fe789f1deebce61445cddfcb0bb0a57e8d6a3a1dbd13ce6b8e705ab03041782"
     },
     "apps/play/public/favicon.svg": {
       "bytes": 13302,
       "sha256": "ceeda8ccb7f36bcd80aa0774f95312b14152219b1927aa0fb8389e6d2bab930b"
     },
     "docs/media/game-still.png": {
-      "bytes": 414833,
-      "sha256": "51925f4e470261e3453b09e12ee250297d0b05676777b28e2e4a371106c0047b"
+      "bytes": 395286,
+      "sha256": "c0d5718f7e8507120225c437e4fe0eeebbabb91b20da8948b05e6c8629f56f5a"
     },
     "docs/media/coupling-still.png": {
       "bytes": 306739,
       "sha256": "1e2cc5ee7ca3e6c91c1308938244ed0e85d8124e72105ef4545952469e3aff32"
-    },
-    "docs/media/game-hero.gif": {
-      "bytes": 7842457,
-      "sha256": "80824d26c4f9b3b559b5e879fae30177dcca2f408b6dc2ffdf21b5ace007e105",
-      "frames": 96,
-      "source_frames": 96,
-      "size": [
-        880,
-        550
-      ],
-      "frame_duration_ms": 50,
-      "palette_colors": 96
     },
     "docs/media/coupling-hero.gif": {
       "bytes": 7275901,
@@ -10878,6 +10882,18 @@
         600
       ],
       "frame_duration_ms": 100,
+      "palette_colors": 96
+    },
+    "docs/media/game-hero.gif": {
+      "bytes": 6210966,
+      "sha256": "cf752b355b589fb78c2cb33989806b9cee9f42e20183c6627038a6f79c99f101",
+      "frames": 126,
+      "source_frames": 126,
+      "size": [
+        960,
+        600
+      ],
+      "frame_duration_ms": 50,
       "palette_colors": 96
     },
     "apps/play/public/icon-180.png": {
@@ -10895,16 +10911,14 @@
   },
   "external_requests": [],
   "capture_source_sha256": {
-    "apps/play/src/main.ts": "3e5a0d9508a6a25486daa6487c88fa05a21a258d4c36b91ef2040022515d95d7",
-    "apps/play/src/coupling.ts": "5c0323b81bbd9d1d4006b5f058124c01da1a09ff5736fb38a6e2ad82d3a6c78e",
-    "apps/play/src/coupling-worker.ts": "0512ed6a6fee8a9f00dd7799b93730739806fa694231e703594148c3d39adb01",
-    "apps/play/src/brain-view.ts": "9b2d9c1ca5f9b2ab4155359ca143f0bf06693c6391486a4fb49f858d46f05cb5",
+    "apps/play/src/main.ts": "4cd155542cad74698e0caf788a63c9202112b95285464df9f21a824cb5f10931",
+    "apps/play/src/coupling.ts": "2a492f7f3bdfe17f7c85d0ec008b2341340372b2fe441bc64b1969bb8fde5870",
+    "apps/play/src/coupling-worker.ts": "93d744918e116f09c1e4861018754e0a53655d3a2780475bc3432fd9232058a3",
+    "apps/play/src/brain-view.ts": "91b68fb7031169ae5cb9c98d0f942e879ba9b9d4bf363f466793f8f07c4804c1",
     "apps/play/src/field.ts": "4f6c240831d4db7dfbb7546a5db445f3a16fc9a8f8d7fe61ada1fce70238a09f",
-    "apps/play/src/style.css": "70d532f553c156b597a35dba318594826fe74f9e8c80280b4104ff5970845cbc",
-    "apps/play/src/game.ts": "a35f8ebd31e7c6622b1a80551f76ca6fbaebcbd5def46f4ec845ebc29b712803",
+    "apps/play/src/style.css": "3f7fb63b26eca422f1c5a3ad2c56f007da75ecc088f93807733781f4139603a4",
+    "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
     "apps/play/src/worker.ts": "674b8297d92f26df9ee6626fcbc9735cbff78a2f782f6fd5f7eed4b23268a09f"
   },
-  "conversion_source_sha256": "2f7926ccd319b1fda60508736dd40dc151b2c5eb629aefb820394ad482b70d15",
-  "historical_capture_commit": "f7ee0eabd0b8efaf24e32f2f093164d526a35892",
-  "historical_capture_note": "Preserved V2I v2.7 hero. V2J has not selected a passing v2.8 point; these captures are not evidence for v2.8. Validate captured sources/assets against historical_capture_commit."
+  "conversion_source_sha256": "d4fb258a59579a1433c900dffaab95d9b3ae3bb95cb87dcdf26de75c98d5db58"
 }

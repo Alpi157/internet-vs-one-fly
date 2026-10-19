@@ -13,14 +13,14 @@ function save(p:string,v:any){mkdirSync(out+'/'+p.split('/').slice(0,-1).join('/
 const receipt=()=>({code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),protocol_sha256:hash('profiles/walking-a03.json'),profile_sha256:hash('profiles/game-v2.json')});
 function samePreview(){
  const reference=load('profiles/owner-walking-a02-selected.json').presets.A.profile;
- const normalize=(p:any)=>{p=structuredClone(p);for(const k of ['profile_id','owner_preset'])delete p[k];for(const k of ['copy','selection_decision','history'])delete p.walking_drive[k];return p;};
+ const normalize=(p:any)=>{p=structuredClone(p);for(const k of ['profile_id','owner_preset','change_reason'])delete p[k];for(const k of ['copy','selection_decision','history'])delete p.walking_drive[k];return p;};
  assert.deepEqual(normalize(profile),normalize(reference),'No engine parameter may differ from preview A');assert.equal(profile.profile_id,'flybench.game.v2.8');
  assert.deepEqual(profile,load('apps/play/public/data/game.json'));
 }
 function preservation(){
  for(const [p,v] of Object.entries(load('evidence/V2J/a03/prior-preservation.json').files) as any[])assert.equal(hash(p),v.sha256,`Prior record changed: ${p}`);
  for(const [p,h] of Object.entries(load('evidence/V2J/a02/a01-preservation.json').files))assert.equal(hash(p),h,`a01 changed: ${p}`);
- for(const name of ['profiles/freeze-v2.json','profiles/freeze-v2.1.json'])for(const [p,h] of Object.entries(load(name).files))assert.equal(hash(p),h,`Frozen: ${p}`);
+ for(const name of ['evidence/V2J/frozen-check.json','evidence/V2J/protected-assets.json','profiles/freeze-v2.json','profiles/freeze-v2.1.json'])for(const [p,h] of Object.entries(load(name).files))assert.equal(hash(p),h,`Frozen: ${p}`);
 }
 async function parity(){
  mkdirSync(out+'/parity',{recursive:true});save('parity/profiles.json',{A:profile});
@@ -45,7 +45,7 @@ if(cmd==='--dry'){
  save('A.json',{...receipt(),summary,bot,swat,baseline,replay:{status:'PASS',log},gates,differences_from_a02:differences});
  console.log(JSON.stringify({summary,gates,differences},null,2));assert(Object.values(gates).every(Boolean));assert(Object.values(differences).every(Boolean),'Report differences; never silently retune');
 }else if(cmd==='--check'){
- preservation();const r=load('evidence/V2J/a03/A.json');assert.deepEqual(summarize(protocol.measurement_seeds.map((s:number)=>load(`evidence/V2J/a03/quiet/seed-${s}.json`))),r.summary);assert(Object.values(r.gates).every(v=>v===true));assert(Object.values(r.differences_from_a02).every(v=>v===true));assert.equal(r.profile_sha256,hash('profiles/game-v2.json'));assert.equal(load('evidence/V2J/a03/parity/summary.json').bit_exact,true);
+ preservation();const r=load('evidence/V2J/a03/A.json');assert.equal(r.code_sha,receipt().code_sha,'Metrics must be rerun on the submitted SHA');assert.deepEqual(summarize(protocol.measurement_seeds.map((s:number)=>load(`evidence/V2J/a03/quiet/seed-${s}.json`))),r.summary);assert(Object.values(r.gates).every(v=>v===true));assert(Object.values(r.differences_from_a02).every(v=>v===true));assert.equal(r.profile_sha256,hash('profiles/game-v2.json'));assert.equal(load('evidence/V2J/a03/parity/summary.json').bit_exact,true);
  const p=load('docs/media/media-provenance.json');assert.equal(p.game.log.schema,'flybench.game-round.v3');assert.equal(p.game.selection.hold_ms,300);assert.equal(p.game.log.inputs[0].tick,3000);assert.equal(p.game.selection.tried,p.game.neural_seed);assert(p.game.observed_escape_stamp);assert.equal(p.game.walk_slowdown_factor,1);assert.equal(p.game.live_slowdown_factor,5);assert.equal(p.game.replay_speed,.25);
  save('safety-check.json',{...receipt(),status:'PASS',no_retuning:true,preservation:'PASS',gates:r.gates,differences_from_a02:r.differences_from_a02});console.log('PASS production A safety, parity, exact a02 outcomes, hero rule and prior/frozen preservation');
 }else throw Error('Expected --dry, --measure or --check');

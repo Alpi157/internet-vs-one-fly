@@ -1,14 +1,10 @@
-# V2J: walking design gate missed; layout and locale repair
+# V2J: from a standing fly to owner-selected walking
 
-No declared point passed all targets. No v2.8 point is selected or activated.
-The shipped game remains v2.7. The new game-only current adapter is opt-in and
-available for review. This is not an accepted stage or a claim about living flies.
+Game profile **v2.8** activates **A: calm**, exactly as the owner played it in the a02 development preview. This is an owner-selected game setting, not a calibrated biological drive or a walking-superiority finding. The original a01 design gate remains **FAIL**; its grid, raw records and review ZIP, and all a02 records remain unchanged.
 
-The owner-authorized drive can be added without editing frozen files. Both freeze
-manifests, the kernel, decoder, encoder, graphs, frozen parameters, registered
-results, existing raw records and V2G anatomy remain unchanged. The lab continues
-to use the original runner without walking current. Arena, takeoff and strike
-mechanics remain v2.7. No push, tag, deployment or third-party request is authorized.
+The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks.
+
+Movement comes from the neural decoder. The current enters only forward, backward and turning port neurons; backward current is zero. It never enters visual, escape or giant-fiber ports. The environment-seeded walk/stop and OU process cannot read the hand, cursor, aim, strike or body. BrainView activity still comes only from recorded spikes. Lab simulations have no walking drive.
 
 ## Diagnosis before implementation
 
@@ -56,8 +52,8 @@ This is pilot-informed game design. It is not confirmatory science.
 
 Forward amplitudes: 1.5, 1.75, 2.0. Turn sigma: 0.5, 1.0. Mean walk: 1.0, 1.5 s.
 Mean stop: 0.6, 1.0 s. All 24 combinations use seeds 101 through 104 for 30-second
-no-threat rounds and the declared bots/resting-swat workload. A separate 20-seed
-validation is conditional on selection; it was not run because no point passed.
+no-threat rounds and the declared bots/resting-swat workload. The a01 protocol made a separate 20-seed validation conditional on selection;
+it was not run in a01 because no point passed.
 
 The dedicated u32 stream 97 derives from the environment seed. Walk/stop dwell is
 exponential, rounded up to integer 10 ms intervals. Turning is a 0.75 s OU process,
@@ -125,9 +121,9 @@ result, target or hidden movement controller was changed to force a pass.
 Bots 1 and 2 use current position and current held velocity times the fall time,
 respectively, after 1.5 s warmup and one-second quiet gaps. They use no aim noise
 or reaction delay. The baseline below uses 20 seeds, six strikes per seed/type.
-The complete after-grid table by bot and strike type is in
+The complete a01 after-grid table by bot and strike type is in
 `evidence/V2J/drive/selection.json` (`bot_rates` on every row); no selected-point
-after rate exists. The original ten-strategy bot set is retained unchanged in
+after rate existed in a01. The original ten-strategy bot set is retained unchanged in
 `evidence/V2J/baseline/bots-v7.json`. A separately labeled point-0 review run of
 that same bot set is under `evidence/V2J/bots/review-point0/`; it is not validation.
 
@@ -140,51 +136,61 @@ that same bot set is under `evidence/V2J/bots/review-point0/`; it is not validat
 | 2 | slap | 100.000% | 120 |
 | 2 | swat | 10.833% | 120 |
 
-## Software, UI and media
+## Reviewer correction after a01
 
-Python/TypeScript checks compare 15,000 complete drive intervals across five seeds,
-including reset, and 400 T1b intervals of neural state, commands and recorded spike
-counts. They include sensory removal while walking current persists. Additional
-checks cover hand-independent drive sequences, unchanged lab frames, output-clamp
-causality, same-boundary impact before takeoff, and clear replay-schema rejection.
-The bit-exact claim covers these drive/neural fixtures, not arbitrary full-game
-floating-point body trajectories across runtimes.
+The reviewer confirmed that stopping at the failed gate was correct. The requested 1.5-3 fly-length/s band selected sparse forward firing, so the 10 ms decoded bout metric measured short pushes rather than the motion a player sees. The point-0 review recording visibly crossed the arena. **The reviewer changed the next attempt's design criteria after seeing a01, and did not relabel its failed result.** [D-V2J-DESIGN-02](../decisions/D-V2J-DESIGN-02.json) records the instruction and cites the failed grid and recording. Game feel would be chosen by the owner playing; bot targets became descriptive.
 
-Desktop tabs now occupy a normal layout row, so both lab panels begin below them.
-The generic overlap check compares visible text rectangles and control boxes,
-excluding owned contents, clipped screen-reader text and modal-occluded content.
-Canvas graphics are checked separately by arena bounds, not treated as text boxes.
-It runs on every captured state in all three browser harnesses, and a deliberate
-collision checks that the detector detects an actual overlap. Font line-box
-collisions in the game counter and phone summary were also repaired. The initial
-final check additionally caught a heading/Restore overlap; desktop subtitle
-clearance fixes it. That check and its WebKit lab FPS failure are retained under
-`evidence/V2J/initial-final-check/`. A WebKit-only recheck measured 53.2 to 62.3
-fps without changing its threshold. The final full acceptance reruns all checks.
+## a02: four safety-gated previews
 
-All browser-dependent number-format calls explicitly use en-US. Other numeric
-copy uses locale-independent String/toFixed or explicit Python formatting. The
-new matrix captures game, replay, summary, Shuffle, Silence and How it works at
-390x844, 1280x720, 1366x768, 1440x900, 1920x1080 and 2560x1440 in Chromium,
-Firefox and WebKit, plus ru-RU and de-DE Chromium runs. It checks DOM, alt/ARIA and
-canvas text, axe, external requests and live game FPS. Final results and SHA are
-in `evidence/V2J/acceptance/command-results.json` and the browser reports.
+[The declared a02 profile](../profiles/owner-walking-a02.json) fixed A and B to a01 points 3 and 8. D chose the lowest amplitude among 1.6, 1.65, 1.7 with median visible bout at least 0.3 s on seeds 101-104. C chose the lowest takeoff speed among 0.027, 0.036, 0.045, 0.054 units/ms with unrestricted bot-4 flick catches at most 65% on those seeds. Every candidate and its metrics remain on record. D selected 1.6; C selected 0.045. Only C changes the disclosed takeoff-speed game parameter.
 
-The exact requested walking disclosure is stored in profile metadata and is
-rendered in the game, generated README and model pages when a point is active.
-It is deliberately not displayed as an achieved production behavior while
-`selected` is null. The generated lab limits state: "Lab simulations have no
-walking drive." Share cards identify the actual game profile. v2.8 re-execution
-logs use schema v3; attempting to load a v2 log with v2.8 clearly rejects it.
+| Preset | Forward | Turn sigma | Mean input walk/stop (s) | Takeoff (units/ms) | Safety |
+|---|---:|---:|---|---:|---|
+| A: calm | 1.5 | 0.5 | 1.5/1.0 | 0.018 | PASS |
+| B: busy | 1.75 | 0.5 | 1.0/0.6 | 0.018 | PASS |
+| C: busy, quicker takeoff | 1.75 | 0.5 | 1.0/0.6 | 0.045 | PASS |
+| D: middle | 1.6 | 0.5 | 1.0/0.6 | 0.018 | PASS |
 
-`evidence/V2J/media/walking-10s.webm` is a review-only recording of the first grid
-point with seed 1, not a selected or passing point. It uses 200 real recorded
-frames at 20 fps, no threat, and ordinary recorded-spike BrainView rendering.
-The old README hero remains a declared historical v2.7 capture, with provenance
-validated against the exact accepted base commit. A v2.8 README hero is not
-re-recorded because the drive selection gate failed. No first-success hero seed
-is claimed. The requested v2.8 hero and selected-point validation remain pending.
+The visible metric is the derivative of a trailing 200 ms boxcar average of body position: displacement over 200 ms divided by 0.2 s, in fly lengths/s. A visible bout stays above 0.5 fly lengths/s. The first incomplete window and windows containing airborne motion are ineligible. Bout and stop medians exclude round-edge and air-gap censored segments. Walking fraction uses all round intervals. Both visible and decoded metrics are retained; neither replaces the other. Coverage counts grounded visits to the same 37 one-fly-length grid cells.
 
-Full software acceptance is run on the final local commit. The walking-design
-acceptance gate must remain FAIL for this submission. External acceptance is
-pending. Review archive: `reviews/V2J-a01.zip`.
+The safety gates are spontaneous takeoffs at most 0.05/s, whole-circuit rate below 50 Hz, conservative resting-swat escape at least the matched v2.7 176/200, exact replay and bit-exact Python/TypeScript drive parity. Unresolved swat opportunities count as non-escapes. The final swat comparison restores the exact original two five-strike rounds per seed, as recorded in [D-V2J-PROTOCOL-04](../decisions/D-V2J-PROTOCOL-04.json). Earlier independent-round outputs and the corrected quiet-clock pilot are retained and clearly labeled in a02. [The unchanged a02 report](walking-v2j-a02.md) contains all metrics, bot tables, corrections and media references. Four presets passed these safety checks; a02's full software acceptance separately failed the 50 fps WebKit lab gate (46.642 fps). Production stayed v2.7 throughout a02.
+
+## Owner choice on 2026-10-19
+
+The owner played all four development previews and chose **A: calm as the most realistic**. [D-V2J-SELECT-01](../decisions/D-V2J-SELECT-01.json) cites the exact a02 profile and safety records. This choice authorizes production activation without retuning; it is not a controlled human-player study. A uses forward current 1.5, turn sigma 0.5, mean input walk 1.5 s and stop 1.0 s. Takeoff speed stays 0.018 units/ms. Every strike, arena and other body rule is unchanged from preview A and v2.7.
+
+## a03 production verification
+
+[The a03 protocol](../profiles/walking-a03.json) was dry-run before commit `8fa7d5c` froze it. The final acceptance reruns neural seeds 1-20, environment seeds 1001-1020, for 30 s each, and the full a02 bot and original resting-swat workloads on the submitted SHA. `evidence/V2J/a03/A.json` contains the code/profile hashes, every aggregate, all bot/swat records, and explicit equality checks against a02. All reported physical and neural measurements below reproduce a02 A exactly; only production profile/log identity changes. Final-SHA receipts remain external evidence rather than changing this committed report after testing.
+
+| No-threat measure | Visible path | Decoded output |
+|---|---:|---:|
+| Median walking speed (fly lengths/s) | 2.257209 | 3.034966 |
+| Median completed bout (s) | 0.760 | 0.130 |
+| Median completed stop (s) | 0.240 | 0.060 |
+| Walking fraction | 60.310% | 42.463% |
+
+Mean path **44.938526 fly lengths/30 s**, net displacement **2.055683**, coverage **77.702703%**. Spontaneous takeoffs **6/600 s = 0.010/s**; whole-circuit mean **4.275010 Hz**. Resting-swat conservative escape **185/200 = 92.5%**, versus **176/200 = 88%** in v2.7; 199 resolved, one censored as a non-escape. These are repeated scripted strikes, not independent biological trials.
+
+Bots run the authoritative game loop, six opportunities per seed and type, 1.5 s warmup and 1 s gaps. Bot 1 aims at observed position. Bot 2 leads by held velocity times strike fall time. Bot 4 waits for 150 ms grounded body speed at or below 0.5 fly lengths/s before aiming; it never forces a stop. Human-like limits add 200 ms delay and independent uniform +/-0.3 arena units per aim axis using existing stream 71. Holds are 80/300/600 ms. Every row/type below has 120 resolved impacts and zero censored opportunities.
+
+| Bot | Limits | Flick catches | Slap catches | Swat catches |
+|---|---|---:|---:|---:|
+| 1 | none | 68/120 (56.67%) | 77/120 (64.17%) | 7/120 (5.83%) |
+| 1 | human-like | 32/120 (26.67%) | 42/120 (35.00%) | 10/120 (8.33%) |
+| 2 | none | 97/120 (80.83%) | 112/120 (93.33%) | 35/120 (29.17%) |
+| 2 | human-like | 42/120 (35.00%) | 61/120 (50.83%) | 20/120 (16.67%) |
+| 4 | none | 100/120 (83.33%) | 109/120 (90.83%) | 8/120 (6.67%) |
+| 4 | human-like | 41/120 (34.17%) | 78/120 (65.00%) | 11/120 (9.17%) |
+
+The lab rendering optimization scales only its two activity canvases from 720 to 480 pixels wide, keeps text overlays at 720, and removes the additional soma-glow draw pass. It changes no simulation, source anatomy or recorded spike. The pre-final WebKit check measured N-SIGN **56.1 fps at 1440x900**, versus a02 **46.6**; all four sizes exceeded the unchanged **50 fps** threshold. Final acceptance repeats the full matrix. Game FPS must remain at least 55. Browser results are headless desktop engine measurements, not physical-device benchmarks.
+
+The six-size matrix covers game, replay, round summary, lab Shuffle, lab Silence and How it works in Chromium, Firefox and WebKit, plus ru-RU and de-DE runs. Every captured state has generic visible text/control overlap, axe and external-network checks; a deliberate collision tests the detector. English number formatting covers DOM, canvas, alt and ARIA text. The corrected hint explains flick on quick click/tap, slap on a short hold (the fastest hand), and slow swat on a longer hold. The charge ring and mechanics are unchanged.
+
+v2.8 logs use replay schema v3 and the effective profile identity. Old v2 logs are clearly rejected with the wrong-schema error; they are not silently replayed with new dynamics. The A/B/C/D preview module remains behind `import.meta.env.DEV`; a production-bundle scan and query test prove it is excluded.
+
+## Hero and preserved lab media
+
+The hero rule was written into the committed protocol and provenance before capture: 1.5 s walking at real speed, then one 300 ms slap at the fly's current position at tick 3000; choose the first escaping neural seed in ascending order with environment seed fixed at 8128. **Seed 1 escaped, one seed tried.** The 960 px-wide hero shows the walk, strike and takeoff at a disclosed 5x slowdown, the Escaped stamp, and three seconds of ordinary quarter-speed recorded replay. The OG brain frame uses the same maximum-observed-spike-count hero replay rule as before. [Media provenance](media/media-provenance.json) records the log, trials, timing, source identities, sizes and frame hash. The lab GIF and still remain byte-identical to a02; the lab has no walking drive.
+
+Frozen science, kernel, graph, neural parameters, raw/registered results and V2G anatomy stay byte-identical. The a03 prior-preservation inventory also pins all a01/a02 evidence and ZIPs. Full suite and acceptance receipts are under `evidence/V2J/a03/acceptance`; the review bundle is `reviews/V2J-a03.zip`. The agent submits for external review and does not mark the stage accepted. No push, tag or deployment is performed.
