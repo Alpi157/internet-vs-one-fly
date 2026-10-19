@@ -101,6 +101,7 @@ stages:
   V2G: SUBMITTED
   V2H: SUBMITTED
   V2I: SUBMITTED
+  V2J: IN_PROGRESS
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -384,7 +385,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: External review of V2I a02 coupling, viewport and recorded-media repair. No push, tag or deployment.
+next_action: V2J diagnosis, declared game-only walking drive, viewport and locale repair. Local work only; no push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -489,3 +490,10 @@ v2i_current:
   acceptance: final-SHA receipt under evidence/V2I/a02/acceptance
   browser_evidence: evidence/V2I/a02/browser/matrix.json
   media_provenance: docs/media/media-provenance.json
+
+v2j_current:
+  status: IN_PROGRESS
+  base_sha: f7ee0eabd0b8efaf24e32f2f093164d526a35892
+  owner_report: v2i-accepted deployed to Pages
+  scope: game-only input current; frozen science and anatomy unchanged
+  external_acceptance: PENDING

@@ -1,0 +1,16 @@
+{
+  "decision_id": "D-V2J-DRIVE-01",
+  "status": "OWNER_AUTHORIZED_GAME_DESIGN_PENDING_REVIEW",
+  "authority": "Owner V2J instruction, 2026-10-19",
+  "scope": "New game-only internal walking current, outside frozen code; no scientific claim or registered result changes. This explicitly amends the game-only no-direct-output-drive assumption. Lab simulations retain the original frozen runner without walking current.",
+  "baseline": "Before code changes, baseline diagnosis ran on f7ee0eabd0b8efaf24e32f2f093164d526a35892. Initial harness run is a dry run; repeat from this protocol commit.",
+  "profile": "profiles/game-v2.8.json",
+  "protocol": "profiles/walking-grid-v1.json",
+  "protocol_sha256": "0cbbd3002cbd39197610c55e566f68e1203a33cba9d0f200b6e016d9dee11600",
+  "dry_run": "evidence/V2J/drive/dry-run.json; one-second no-threat, one strike per bot/type and one resting swat; validates pipeline only, excluded from selection.",
+  "baseline_rest_definition": "200 ms grounded below registered movement deadband. Two independent five-strike rounds per neural seed/type; no neural reset within a round. Neural seed reused, environment round stream recorded. Physical escape (miss) and neural onset probability are distinct.",
+  "hard_boundaries": "Kernel, frozen files, graphs, frozen parameters, registered outputs/raw records and V2G anatomy stay byte-identical. Strike types, takeoff and arena stay v2.7.",
+  "claims": "Engineering/game-design metrics only. Random walking current is declared; no connectome-origin walking or biological-superiority claim. Spontaneous network escape activity remains possible and is measured.",
+  "selection": "No selection unless all declared targets pass. No grid expansion or result-dependent target changes.",
+  "dry_run_revision": "Initial near-threshold draft [1.00005,1.0005,1.005] produced no forward spikes in the one-second pipeline dry run. Additional baseline (no drive) membrane diagnostic shows strongly negative forward voltage/current. Before protocol freeze, forward grid changed to [1.5,1.75,2.0]. Original draft and dry-run metrics retained; this is disclosed pilot-informed game-design tuning, not confirmatory science."
+}

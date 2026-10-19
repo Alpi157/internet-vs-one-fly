@@ -1,4 +1,5 @@
 import { RunnerV2 } from '../../../packages/kernel-ts/src/runner.ts';
+import { GameRunner } from './game-runner.ts';
 import { readGraph, u32, sha256 } from '../../../packages/kernel-ts/src/kernel.ts';
 import { advanceBody } from '../../../packages/kernel-ts/src/body.ts';
 import type { Body } from '../../../packages/kernel-ts/src/body.ts';
@@ -81,7 +82,11 @@ export class Game {
         const config = structuredClone(runtime.config);
         config.noise.seed = neuralSeed;
         config.body_enabled = false;
-        this.runner = new RunnerV2(readGraph(buffer), config);
+        const point=profile.walking_drive?.selected;
+        const labMode=runtime.profile_hashes?.lab_mode;
+        this.runner = point && (!labMode || labMode==='real')
+            ? new GameRunner(readGraph(buffer),config,environmentSeed,point)
+            : new RunnerV2(readGraph(buffer), config);
     }
     get tick() { return this.runner.state.tick; }
     apply(input: Input) {
@@ -173,12 +178,13 @@ export class Game {
     replayFrames() { const input = this.inputs.at(-1); return input ? this.frames.filter(f => f.tick >= input.tick - this.profile.replay_pre_ms * 2) : []; }
     async digest() {
         const neural = await this.runner.digest();
-        const payload = { neural, tick: this.tick, airUntil: this.airUntil, airDirection: this.airDirection, strike: this.strike, strikes: this.strikes, catches: this.catches, done: this.done, inputs: this.inputs, impacts: this.impacts, neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile: this.profile, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity };
+        const payload = { ...(this.runner instanceof GameRunner ? {walking:this.runner.walking.snapshot()} : {}), neural, tick: this.tick, airUntil: this.airUntil, airDirection: this.airDirection, strike: this.strike, strikes: this.strikes, catches: this.catches, done: this.done, inputs: this.inputs, impacts: this.impacts, neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile: this.profile, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity };
         return sha256(new TextEncoder().encode(JSON.stringify(payload)));
     }
-    async log(): Promise<RoundLog> { return { schema: 'flybench.game-round.v2', neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity, inputs: this.inputs.map(v => ({ ...v })), end_tick: this.tick, digest: await this.digest(), gaps: [] }; }
+    async log(): Promise<RoundLog> { return { schema: this.profile.version>=8?'flybench.game-round.v3':'flybench.game-round.v2', neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity, inputs: this.inputs.map(v => ({ ...v })), end_tick: this.tick, digest: await this.digest(), gaps: [] }; }
 }
 export async function replayLog(buffer: ArrayBuffer, runtime: any, profile: any, log: RoundLog) {
+    if(log.schema!==(profile.version>=8?'flybench.game-round.v3':'flybench.game-round.v2'))throw Error('Unsupported replay schema for game profile');
     if (JSON.stringify(runtime.profile_hashes) !== JSON.stringify(log.profile_hashes) || runtime.graph_identity !== log.graph_identity)
         throw new Error('Replay identity mismatch');
     const game = new Game(buffer, runtime, profile, log.neural_seed, log.environment_seed);

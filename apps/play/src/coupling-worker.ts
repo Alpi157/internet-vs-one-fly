@@ -6,7 +6,7 @@ let generation=0;
 function init(scale:number){
   clearTimeout(timer);const config=structuredClone(runtime);config.config.model.runtime_synaptic_scale=scale;
   const scrambled=original.slice(0);readGraph(scrambled).targets.set(targets);
-  const labProfile={...profile,round_ms:120000,max_strikes:1000,recording_max_intervals:12000};
+  const labProfile={...profile,walking_drive:undefined,round_ms:120000,max_strikes:1000,recording_max_intervals:12000};
   games=[new Game(original,config,labProfile,2027101401,8128),new Game(scrambled,{...config,graph_identity:runtime.lab_identity},labProfile,2027101401,8128)];
   queues=[[],[]];sums=games.map(g=>new Uint32Array(g.runner.state.graph.header.N));steps=0;started=performance.now();paused=false;
   self.postMessage({kind:'ready',s:scale,generation});tick();
