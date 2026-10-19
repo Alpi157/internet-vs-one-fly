@@ -4,13 +4,15 @@ import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
+import {Worker,isMainThread,parentPort,workerData} from 'node:worker_threads';
 import {Game,replayLog} from '../src/game.ts';
 import {WalkingDrive} from '../src/walking-drive.ts';
 import {root,load,runtime,buffer,quiet,summarize,bots,botRound,originalRestingSwat,old} from './owner-walking.ts';
 const out=root+'evidence/V2J/a03',profile=load('profiles/game-v2.json'),protocol=load('profiles/walking-a03.json'),prior=load('evidence/V2J/a02/presets/A.json');
 const hash=(p:string)=>createHash('sha256').update(readFileSync(root+p)).digest('hex');
 function save(p:string,v:any){mkdirSync(out+'/'+p.split('/').slice(0,-1).join('/'),{recursive:true});writeFileSync(out+'/'+p,JSON.stringify(v,null,2)+'\n');}
-const receipt=()=>({code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),protocol_sha256:hash('profiles/walking-a03.json'),profile_sha256:hash('profiles/game-v2.json')});
+const executionReceipt={code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),protocol_sha256:hash('profiles/walking-a03.json'),profile_sha256:hash('profiles/game-v2.json')};
+const receipt=()=>executionReceipt;
 function samePreview(){
  const reference=load('profiles/owner-walking-a02-selected.json').presets.A.profile;
  const normalize=(p:any)=>{p=structuredClone(p);for(const k of ['profile_id','owner_preset','change_reason'])delete p[k];for(const k of ['copy','selection_decision','history'])delete p.walking_drive[k];return p;};
@@ -29,15 +31,25 @@ async function parity(){
  for(const row of rows){const d=new WalkingDrive(row.seed,row.point);for(const expected of row.intervals)assert.equal(bits([...d.next(),...d.snapshot()]),expected);d.reset();assert.equal(bits([...d.next(),...d.snapshot()]),row.intervals[0]);}
  save('parity/summary.json',{...receipt(),status:'PASS',seeds:rows.map((r:any)=>r.seed),intervals_per_seed:3000,bit_exact:true,reset:true});
 }
+// Independent bot rounds can run on three workers; ordering of the retained rows is fixed.
+async function parallelBots(seeds:number[],one=false){
+ const parts=await Promise.all([1,2,4].map(bot=>new Promise<any>((resolve,reject)=>{
+  const worker=new Worker(new URL(import.meta.url),{workerData:{bot,seeds,one}});
+  worker.once('message',part=>{console.log('A bot',bot,'complete');resolve(part);});worker.once('error',reject);worker.once('exit',code=>{if(code)reject(Error(`Bot worker exit ${code}`));});
+ })));
+ return {records:parts.flatMap(p=>p.records),rates:parts.flatMap(p=>p.rates)};
+}
 samePreview();
 const cmd=process.argv[2];
-if(cmd==='--dry'){
+if(!isMainThread){parentPort!.postMessage(bots(profile,workerData.seeds,workerData.one,workerData.bot));
+}else if(cmd==='--dry'){
  const q=await quiet(profile,101,1),bot=bots(profile,[101],true),swat=originalRestingSwat(profile,[101],1);
+ assert.deepEqual(await parallelBots([101],true),bot,'Parallel bot workload must preserve exact results and row order');
  const g=new Game(buffer,runtime,profile,101,8128);for(let i=0;i<150;i++)g.step();const b=g.runner.body;g.apply({tick:g.tick,x:b.x,y:b.y,hold_ms:300});while(g.strike)g.step();
  save('dry-run.json',{...receipt(),classification:'PIPELINE_ONLY_EXCLUDED_FROM_VALIDATION_AND_HERO_SELECTION',quiet:q,bot,swat,hero_log:await g.log()});console.log('PASS a03 dry run: quiet, 18 bot combinations, original swat, hero timing');
 }else if(cmd==='--measure'){
  const rows=[];for(const seed of protocol.measurement_seeds){const q=await quiet(profile,seed);save(`quiet/seed-${seed}.json`,q);rows.push(q);console.log('A quiet',seed);}
- const summary=summarize(rows),bot=bots(profile,protocol.measurement_seeds);console.log('A bots complete');
+ const summary=summarize(rows),bot=await parallelBots(protocol.measurement_seeds);console.log('A bots complete');
  const swat=originalRestingSwat(profile,protocol.measurement_seeds),baseline=originalRestingSwat(old,protocol.measurement_seeds);assert.equal(baseline.escapes,176);assert.equal(baseline.censored,0);
  const g=botRound(profile,1,4,0,false,2).game,log=await g.log();await replayLog(buffer,runtime,profile,log);await parity();
  const differences={summary_equal:JSON.stringify(summary)===JSON.stringify(prior.summary),bot_rates_equal:JSON.stringify(bot.rates)===JSON.stringify(prior.bot.rates),bot_records_equal:JSON.stringify(bot.records)===JSON.stringify(prior.bot.records),swat_equal:JSON.stringify(swat)===JSON.stringify(prior.swat)};

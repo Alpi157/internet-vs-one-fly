@@ -1,7 +1,7 @@
 {
   "schema": "flybench.media.v2j.a03",
   "capture_code_sha256": "96c8db71e1dd1cdeeaff2aad60e34d73ff4af86aa021b451a30de09762e1c908",
-  "base_commit": "8fa7d5c47d3c58814a278ad8638e969bf5289b3b",
+  "base_commit": "cae30f3dc7a06f8425905a529b14a6d8113db1d4",
   "viewport": {
     "width": 1440,
     "height": 900
@@ -56,7 +56,7 @@
         "packages/kernel-ts/src/worker.ts": "99826612531e0fd02d5a8fc951a4981439e1f6899c30429b0a39244a8f777c3b",
         "profiles/decoder-v2-draft.json": "d0086367fccb4e3c6ea391c0feff208bf3f0d953630b01f9556e00ab20fddf24",
         "profiles/encoder-v2-draft.json": "f5527d058fb5104c781461911a35814b8c1aa6da2b5e5789da192da743993df8",
-        "profiles/game-v2.json": "db9b4f9f8c8a01681e1eb378b3e01cf5d7f20b32168a6bfb56d2d8d494a4abf1",
+        "profiles/game-v2.json": "331898d758e3da15de0aa2342d36319caa11706e6fc0ce73d940d698649e4af8",
         "profiles/model-v2d-provisional.json": "2d4c3ad34120af9479c168d8bed7d880797a0ad7f7445a23fd8faae11247ed57",
         "profiles/noise-table-v2.json": "b1dffce9b8e5408685e9d7ca839c8c3a961c3055732676fd70ac058a2f289bb4",
         "profiles/noise-v2.json": "74209850ec75e066235d921c077f5977c6a697e14bbddb4656538281a2bc840e",
@@ -75,7 +75,7 @@
         }
       ],
       "end_tick": 3720,
-      "digest": "eaecfa33d6d0ab603cc8b5cf7a83e596952241d15dffee9c7906df7c44b2581f",
+      "digest": "b3847554d9765c02ab9ba5e78a5a8531489c5dcbea40d2f8eb9263aede1e8b81",
       "gaps": []
     },
     "impact": {
@@ -10838,11 +10838,11 @@
   "assets": {
     "apps/play/public/data/runtime.json": {
       "bytes": 87559,
-      "sha256": "128c2d9090e033d41045bfc25f06e04665185b5bfee62154dbef72cc7dfb19c9"
+      "sha256": "8ebf796de545cd6160dd1bddc973334f5c1fe5c9f8824f5ae2bd0e63badafebf"
     },
     "apps/play/public/data/game.json": {
-      "bytes": 2880,
-      "sha256": "db9b4f9f8c8a01681e1eb378b3e01cf5d7f20b32168a6bfb56d2d8d494a4abf1"
+      "bytes": 2883,
+      "sha256": "331898d758e3da15de0aa2342d36319caa11706e6fc0ce73d940d698649e4af8"
     },
     "apps/play/public/data/coupling/runtime.json": {
       "bytes": 17450,
@@ -10885,8 +10885,8 @@
       "palette_colors": 96
     },
     "docs/media/game-hero.gif": {
-      "bytes": 6210966,
-      "sha256": "cf752b355b589fb78c2cb33989806b9cee9f42e20183c6627038a6f79c99f101",
+      "bytes": 6222922,
+      "sha256": "a79b3dde641475fb98e98d7a56ef987a11e84019fa857447d006af112eb8eacb",
       "frames": 126,
       "source_frames": 126,
       "size": [
@@ -10914,7 +10914,7 @@
     "apps/play/src/main.ts": "4cd155542cad74698e0caf788a63c9202112b95285464df9f21a824cb5f10931",
     "apps/play/src/coupling.ts": "2a492f7f3bdfe17f7c85d0ec008b2341340372b2fe441bc64b1969bb8fde5870",
     "apps/play/src/coupling-worker.ts": "93d744918e116f09c1e4861018754e0a53655d3a2780475bc3432fd9232058a3",
-    "apps/play/src/brain-view.ts": "91b68fb7031169ae5cb9c98d0f942e879ba9b9d4bf363f466793f8f07c4804c1",
+    "apps/play/src/brain-view.ts": "82a34ce3692806cc957574c118557982764e50cafdaf0c6247f9e1c230529a0b",
     "apps/play/src/field.ts": "4f6c240831d4db7dfbb7546a5db445f3a16fc9a8f8d7fe61ada1fce70238a09f",
     "apps/play/src/style.css": "3f7fb63b26eca422f1c5a3ad2c56f007da75ecc088f93807733781f4139603a4",
     "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
