@@ -8,7 +8,7 @@ The reviewer decision is recorded in `decisions/D-V2J-DESIGN-02.json`. Original 
 
 `profiles/owner-walking-a02.json` declared all presets, candidate values, metrics, seeds, bot rules and safety gates before execution. A is a01 point 3; B is point 8. D uses the first qualifying amplitude from the declared ascending list. C uses B’s current and the first qualifying takeoff speed. No bot catch target selects A/B/D or otherwise controls offering.
 
-| D forward amplitude | Median visible bout, seeds 101–104 (s) | Qualifies ≥0.3 s |
+| D forward amplitude | Median visible bout, seeds 101-104 (s) | Qualifies ≥0.3 s |
 |---|---:|---|
 | 1.60 | 0.800 | yes |
 | 1.65 | 0.805 | yes |
@@ -27,7 +27,7 @@ C selects **0.045 units/ms**. These are four selection seeds × six flick opport
 
 ## Measurement
 
-No-threat validation uses neural seeds 1–20, environment seeds 1001–1020, and 30 s each: 600 s per preset. Fly length is 2 arena units. Visible speed is the 10 ms derivative of a trailing 200 ms boxcar average of body position, equivalently the displacement over 200 ms divided by 0.2 s. A visible bout is a contiguous run above 0.5 fly lengths/s. The initial 200 ms and windows containing airborne motion are ineligible. Fractions use all 3,000 round intervals as denominator. Completed bout/stop medians exclude round edges and air-gap censoring; every observed segment remains in the raw records. Speed is the median of walking intervals pooled across rounds.
+No-threat validation uses neural seeds 1-20, environment seeds 1001-1020, and 30 s each: 600 s per preset. Fly length is 2 arena units. Visible speed is the 10 ms derivative of a trailing 200 ms boxcar average of body position, equivalently the displacement over 200 ms divided by 0.2 s. A visible bout is a contiguous run above 0.5 fly lengths/s. The initial 200 ms and windows containing airborne motion are ineligible. Fractions use all 3,000 round intervals as denominator. Completed bout/stop medians exclude round edges and air-gap censoring; every observed segment remains in the raw records. Speed is the median of walking intervals pooled across rounds.
 
 The a01 decoded definition is retained beside it: grounded absolute held forward speed ≥0.002 arena units/ms. Turning in place does not count as visible walking. Coverage uses the same 37 eligible one-fly-length cells as a01, counting grounded visits. Path length and net displacement are reported in fly lengths; path includes takeoff displacement, whereas walking metrics exclude it.
 

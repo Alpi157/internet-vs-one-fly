@@ -528,4 +528,4 @@ v2j_current:
     acceptance: final-SHA receipt under evidence/V2J/a02/acceptance
     original_swat_freeze_sha: f4f8989
     matched_swat_baseline: 176/200; identical to a01
-    matched_swat_escapes_A_B_C_D: [185, 180, 194, 184]; denominator 200, censoring counted as nonescape
+    matched_swat_escapes_A_B_C_D: [185, 180, 194, 184] # denominator 200, censoring counted as nonescape
