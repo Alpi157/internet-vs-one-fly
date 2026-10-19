@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { Game } from '../src/game.ts';
+import { Game, walkingLength } from '../src/game.ts';
+import {u32} from '../../../packages/kernel-ts/src/kernel.ts';
 import { encodeHand } from '../../../packages/kernel-ts/src/encoding.ts';
 import { spikeAlpha } from '../src/brain-view.ts';
 const root = new URL('../../../', import.meta.url), read = (p: string) => readFileSync(new URL(p, root)), json = (p: string) => JSON.parse(read(p).toString());
@@ -69,3 +70,11 @@ for (const font of json('apps/play/public/fonts/manifest.json')) {
 for (const name of ['Doto', 'Atkinson'])
     assert.match(read('apps/play/public/fonts/' + name + '-OFL.txt').toString(), /SIL OPEN FONT LICENSE Version 1.1/);
 console.log('PASS equal-area circle, repeated reflections, no-wall exact frames, actual read-only encoder features, neural identities, frozen files, display decay, local WOFF2 licenses');
+
+// Preserve preview V8 geometry exactly while avoiding browser-native hypot drift.
+for(let i=0;i<100000;i++){
+ const x=(u32(83,81,i,0)/2**32*2-1)*10**(u32(83,81,i,1)%601-300), y=(u32(83,81,i,2)/2**32*2-1)*10**(u32(83,81,i,3)%601-300);
+ assert(Object.is(walkingLength(x,y),Math.hypot(x,y)),`Preview body arithmetic vector ${i}`);
+}
+for(const [x,y] of [[0,-0],[Infinity,NaN],[NaN,0],[Number.MIN_VALUE,Number.MIN_VALUE],[1e308,1e308]])assert(Object.is(walkingLength(x,y),Math.hypot(x,y)));
+console.log('PASS walking body length matches preview V8 on 100,000 seeded vectors and boundary cases; frozen math unchanged');

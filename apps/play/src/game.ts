@@ -45,6 +45,17 @@ export function takeoff(heading_x: number, heading_y: number, seed: number, tick
     const norm = Math.sqrt(x * x + y * y);
     return [x / norm, y / norm];
 }
+/** Two-value normalized length with fixed binary64 evaluation order. Matches
+ * the V8 arithmetic used in the owner preview; native hypot differs by one bit
+ * across browser engines. Only walking-game geometry uses this helper. */
+export function walkingLength(x: number, y: number) {
+    x = Math.abs(x); y = Math.abs(y);
+    const maximum = Math.max(x, y);
+    if (!Number.isFinite(maximum)) return x === Infinity || y === Infinity ? Infinity : NaN;
+    if (maximum === 0) return 0;
+    const a = x / maximum, b = y / maximum;
+    return Math.sqrt(a * a + b * b) * maximum;
+}
 export class Game {
     runner: RunnerV2;
     profile: any;
@@ -88,11 +99,13 @@ export class Game {
             ? new GameRunner(readGraph(buffer),config,environmentSeed,point)
             : new RunnerV2(readGraph(buffer), config);
     }
+    // Keep legacy games and every lab on their original body arithmetic.
+    private distance(x: number, y: number) { return this.runner instanceof GameRunner ? walkingLength(x, y) : Math.hypot(x, y); }
     get tick() { return this.runner.state.tick; }
     apply(input: Input) {
         if (this.done || this.strike || this.strikes >= this.profile.max_strikes)
             return false;
-        if (input.tick !== this.tick || input.tick % 20 || ![input.x, input.y, input.hold_ms].every(Number.isFinite) || input.hold_ms < 0 || (this.profile.arena_shape === 'circle' ? Math.hypot(input.x, input.y) > this.profile.arena_radius : Math.abs(input.x) > this.profile.arena_half_size || Math.abs(input.y) > this.profile.arena_half_size))
+        if (input.tick !== this.tick || input.tick % 20 || ![input.x, input.y, input.hold_ms].every(Number.isFinite) || input.hold_ms < 0 || (this.profile.arena_shape === 'circle' ? this.distance(input.x, input.y) > this.profile.arena_radius : Math.abs(input.x) > this.profile.arena_half_size || Math.abs(input.y) > this.profile.arena_half_size))
             throw new Error('Invalid authoritative input');
         const type = input.hold_ms < this.profile.hold_thresholds_ms[0] ? 0 : input.hold_ms < this.profile.hold_thresholds_ms[1] ? 1 : 2;
         const spec = this.profile.strikes[type];
@@ -118,7 +131,7 @@ export class Game {
             body = advanceBody(body, value.applied[1], value.applied[2]);
         if (this.profile.arena_shape === 'circle') {
             const radius = this.profile.arena_radius;
-            let distance = Math.hypot(body.x, body.y);
+            let distance = this.distance(body.x, body.y);
             while (distance > radius) {
                 const nx = body.x / distance, ny = body.y / distance;
                 const factor = 2 * radius / distance - 1;
@@ -128,7 +141,7 @@ export class Game {
                 body.heading_y -= 2 * headingDot * ny;
                 const airDot = this.airDirection[0] * nx + this.airDirection[1] * ny;
                 this.airDirection = [this.airDirection[0] - 2 * airDot * nx, this.airDirection[1] - 2 * airDot * ny];
-                distance = Math.hypot(body.x, body.y);
+                distance = this.distance(body.x, body.y);
             }
         } else {
         const bound = this.profile.arena_half_size;

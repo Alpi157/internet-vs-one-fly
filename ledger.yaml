@@ -492,21 +492,26 @@ v2i_current:
   media_provenance: docs/media/media-provenance.json
 
 v2j_current:
-  status: TARGET_MISSED_FOR_REVIEW
-  base_sha: f7ee0eabd0b8efaf24e32f2f093164d526a35892
-  owner_report: v2i-accepted deployed to Pages
-  scope: game-only input current; frozen science and anatomy unchanged
+  status: SUBMITTED_FOR_EXTERNAL_REVIEW
+  current_attempt: a03
+  active_game_profile: flybench.game.v2.8
   external_acceptance: PENDING
-  protocol_freeze_sha: 88ab9480f6e5531fde8a9effcbf45c6ff461ca50
-  protocol: profiles/walking-grid-v1.json
-  grid_points: 24
-  passing_points: 0
-  selected_point: null
-  active_game_profile: flybench.game.v2.7
-  report: docs/walking-v2j.md
-  evidence: evidence/V2J
-  acceptance: final-SHA receipt under evidence/V2J/acceptance; design gate FAIL
-  media: review-only unselected point 0; production v2.8 hero not recorded
+  a01:
+    status: TARGET_MISSED_FOR_REVIEW
+    base_sha: f7ee0eabd0b8efaf24e32f2f093164d526a35892
+    owner_report: v2i-accepted deployed to Pages
+    scope: game-only input current; frozen science and anatomy unchanged
+    external_acceptance: PENDING
+    protocol_freeze_sha: 88ab9480f6e5531fde8a9effcbf45c6ff461ca50
+    protocol: profiles/walking-grid-v1.json
+    grid_points: 24
+    passing_points: 0
+    selected_point: null
+    active_game_profile: flybench.game.v2.7
+    report: docs/walking-v2j.md
+    evidence: evidence/V2J
+    acceptance: final-SHA receipt under evidence/V2J/acceptance; design gate FAIL
+    media: review-only unselected point 0; production v2.8 hero not recorded
   a02:
     status: PRESETS_FOR_OWNER_PLAYTEST_REVIEW
     base_sha: 7070bb17087fbb930e0d96b0d4d5e5fa95df0663

@@ -5960,7 +5960,7 @@
   },
   "profile_hashes": {
     "apps/play/src/game-runner.ts": "7b4e640bd8b9a43b708b8b28a1a595fd7887a2138022bcb856cdb91c11cf199b",
-    "apps/play/src/game.ts": "43030e2195e96f63de7a2926d2f18321f8da7c148fb4255fc4aa8bbe4e399575",
+    "apps/play/src/game.ts": "6d2ae78ea667af75998f62ee6396cf08b1426b28abff8e47419d1c6b7aa1df33",
     "apps/play/src/walking-drive.ts": "5d196192d16250a59d34abb8d7824806ba97333c3718726760eb868d4d7251dd",
     "packages/kernel-ts/src/body.ts": "640d0c68df49c0938befa81e74bc8e99f71c059b17b5aec94afb84838c0affe8",
     "packages/kernel-ts/src/decoder.ts": "8644c8caa15283929d9f1c63c7e54bc6d284f534c2a7abb51397fad3c9498b35",

@@ -150,9 +150,9 @@ try {
                 assert.equal(readFileSync(resolve(out, shareFile)).readUInt32BE(16), 1200);
                 const log = await page.evaluate(() => window.flyTest.log());
                 assert.equal(log.inputs.length, profile.max_strikes);
+                writeFileSync(resolve(out, `${prefix}-round.json`), JSON.stringify(log, null, 2));
                 const verified = await replayLog(buffer, runtime, profile, log);
                 assert(verified.matches);
-                writeFileSync(resolve(out, `${prefix}-round.json`), JSON.stringify(log, null, 2));
                 await page.click('#play-again');
                 await page.waitForFunction(() => window.flyTest?.ready());
                 await page.addScriptTag({ content: axe });
