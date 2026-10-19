@@ -1,7 +1,7 @@
 {
   "schema": "flybench.owner-walking-selection.v1",
-  "code_sha": "85ecd173e02f1b0a2e957c7223690bd5fe20037e",
-  "protocol_sha256": "510dd8610b274c9a49eee8cde16a856bd7ffa12b8def21e48e9204f167007fc0",
+  "code_sha": "f4f8989962cfd3cdfba7db06bbfb423cde71fea1",
+  "protocol_sha256": "5163808dc46a1656d04e533d171e0a1f61a4150a2cace441c66e7a5a3988095b",
   "production_profile": "flybench.game.v2.7",
   "presets": {
     "A": {

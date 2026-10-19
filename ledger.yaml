@@ -508,7 +508,7 @@ v2j_current:
   acceptance: final-SHA receipt under evidence/V2J/acceptance; design gate FAIL
   media: review-only unselected point 0; production v2.8 hero not recorded
   a02:
-    status: PROTOCOL_DRY_RUN_COMPLETE
+    status: PRESETS_FOR_OWNER_PLAYTEST_REVIEW
     base_sha: 7070bb17087fbb930e0d96b0d4d5e5fa95df0663
     decision: decisions/D-V2J-DESIGN-02.json
     protocol: profiles/owner-walking-a02.json
@@ -516,3 +516,16 @@ v2j_current:
     evidence: evidence/V2J/a02
     a01_gate: FAIL retained unchanged
     external_acceptance: PENDING
+    protocol_freeze_sha: 65c9862
+    quiet_clock_repair_sha: a026595
+    baseline_gate_correction_sha: 85ecd17
+    implementation_sha: d636fb8
+    selection: profiles/owner-walking-a02-selected.json
+    offered: [A, B, C, D]
+    C_takeoff_speed_units_per_ms: 0.045
+    D_forward_current: 1.6
+    report: docs/walking-v2j-a02.md
+    acceptance: final-SHA receipt under evidence/V2J/a02/acceptance
+    original_swat_freeze_sha: f4f8989
+    matched_swat_baseline: 176/200; identical to a01
+    matched_swat_escapes_A_B_C_D: [185, 180, 194, 184]; denominator 200, censoring counted as nonescape

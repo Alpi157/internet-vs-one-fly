@@ -13,10 +13,10 @@ export async function activateOwnerPreview(profile:any,runtime:any,resetSeeds:(n
     if(hash!==entry.profile_sha256)throw Error('Owner preview profile identity mismatch');
     const badge=document.createElement('p');badge.id='owner-preview-badge';badge.setAttribute('role','status');
     badge.textContent=`Preview ${id}: ${entry.name}`;
-    badge.style.cssText='font-size:13px;line-height:1.4;color:#7fefaa;margin:0 0 8px;padding:4px 10px;border:1px solid #687369;border-radius:8px';
-    document.querySelector('.game-column')!.prepend(badge);
-    const details=document.createElement('span');details.style.cssText='display:block;color:#c9d0c8;font-size:12px';
-    details.textContent=`Declared random walking current. Takeoff speed ${effective.takeoff_speed.toFixed(3)} units/ms${id==='C'?' (body-physics game parameter)':''}. Lab simulations have no walking drive.`;
-    badge.append(details);
+    badge.style.cssText='font-size:13px;line-height:1.4;color:#7fefaa;margin:0 8px;padding:4px 8px;border:1px solid #687369;border-radius:8px;max-width:160px;min-width:0;text-align:center';
+    const stats=document.querySelector('.stats')!;stats.insertBefore(badge,stats.lastElementChild);
+    const physics=document.createElement('p');physics.id='owner-preview-physics';
+    physics.textContent=`Owner playtest: takeoff speed ${effective.takeoff_speed.toFixed(3)} units/ms. ${effective.physics_disclosure} Lab simulations have no walking drive.`;
+    document.getElementById('walking-disclosure')!.after(physics);
     return {profile:effective,runtime:{...runtime,profile_hashes:{...runtime.profile_hashes,owner_playtest_profile:hash}}};
 }

@@ -48,4 +48,4 @@ try{
    }finally{await page.close();}
   }
  }
-}finally{writeFileSync(resolve(out,'manifest.json'),JSON.stringify({code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),purpose:'Owner/reviewer-only media, not README hero',receipts},null,2)+'\n');await browser.close();await server.close();}
+}finally{writeFileSync(resolve(out,'manifest.json'),JSON.stringify({source_hashes:Object.fromEntries((execFileSync('git',['ls-files','apps/play/src','packages/kernel-ts/src'],{cwd:root,encoding:'utf8'}).trim().split('\n').concat('apps/play/vite.config.ts')).map(p=>[p,createHash('sha256').update(readFileSync(resolve(root,p))).digest('hex')])),code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),purpose:'Owner/reviewer-only media, not README hero',receipts},null,2)+'\n');await browser.close();await server.close();}

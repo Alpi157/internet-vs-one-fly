@@ -26,7 +26,7 @@ try{
      await page.goto(origin+prefix+`?preview=${id}&test=1`);await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady,{},{timeout:60000});await page.evaluate(()=>document.fonts.ready);
      assert((await page.locator('#owner-preview-badge').innerText()).startsWith(`Preview ${id}: ${entry.name}`));
      assert((await page.locator('#subtitle').innerText()).includes('5,555'));
-     assert((await page.locator('#owner-preview-badge').innerText()).includes(entry.profile.takeoff_speed.toFixed(3)));
+     assert((await page.locator('#owner-preview-physics').textContent()).includes(entry.profile.takeoff_speed.toFixed(3)));
      await page.evaluate(()=>window.flyTest.resetSeed(1));await page.waitForFunction(()=>window.flyTest.ready());await page.click('#start');await page.evaluate(()=>window.flyTest.advance(150));
      async function capture(state){
       await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(100);const overlap=await overlaps(page);assert.equal(overlap.collisions.length,0,JSON.stringify(overlap.collisions));
