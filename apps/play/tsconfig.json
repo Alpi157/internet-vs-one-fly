@@ -1,1 +1,22 @@
-{"compilerOptions":{"target":"ES2022","module":"ESNext","moduleResolution":"bundler","allowImportingTsExtensions":true,"noEmit":true,"strict":true,"skipLibCheck":true,"lib":["ES2022","DOM","WebWorker"]},"include":["src","../../packages/kernel-ts/src"]}
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ES2022",
+      "DOM",
+      "WebWorker"
+    ],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src",
+    "../../packages/kernel-ts/src"
+  ]
+}

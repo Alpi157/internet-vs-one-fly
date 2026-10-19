@@ -1,0 +1,464 @@
+{
+  "schema": "flybench.owner-walking-selection.v1",
+  "code_sha": "85ecd173e02f1b0a2e957c7223690bd5fe20037e",
+  "protocol_sha256": "510dd8610b274c9a49eee8cde16a856bd7ffa12b8def21e48e9204f167007fc0",
+  "production_profile": "flybench.game.v2.7",
+  "presets": {
+    "A": {
+      "name": "calm",
+      "offered": true,
+      "reason": "All safety gates pass",
+      "profile": {
+        "profile_id": "flybench.game.v2.8.owner-a02.A",
+        "version": 8,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          180,
+          500
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "slap",
+            "speed": 0.05,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.018,
+        "takeoff_duration_ms": 120,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.5,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1.5,
+            "stop_seconds": 1
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive."
+          }
+        },
+        "owner_preset": {
+          "id": "A",
+          "name": "calm",
+          "production": false
+        },
+        "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
+      },
+      "profile_sha256": "6471c26c4caa6c2f394e2927783d4ec3a62bf670e6d056bba31b95aca519bf39",
+      "summary": {
+        "visible": {
+          "median_speed_fly_lengths_s": 2.2572087793451283,
+          "median_bout_s": 0.76,
+          "median_stop_s": 0.24,
+          "walking_fraction": 0.6031,
+          "median_seed_speed_fly_lengths_s": 2.2642215851403082
+        },
+        "decoded": {
+          "median_speed_fly_lengths_s": 3.0349659514893204,
+          "median_bout_s": 0.13,
+          "median_stop_s": 0.06,
+          "walking_fraction": 0.4246333333333333,
+          "median_seed_speed_fly_lengths_s": 3.0377102485403222
+        },
+        "mean_path_fly_lengths": 44.93852576179928,
+        "mean_net_fly_lengths": 2.0556833098031886,
+        "coverage": 0.777027027027027,
+        "false_takeoffs_s": 0.01,
+        "whole_rate_hz": 4.275009600960097
+      },
+      "gates": {
+        "false_takeoffs": true,
+        "whole_circuit": true,
+        "resting_swat": true,
+        "replay": true,
+        "drive_parity": true
+      }
+    },
+    "B": {
+      "name": "busy",
+      "offered": true,
+      "reason": "All safety gates pass",
+      "profile": {
+        "profile_id": "flybench.game.v2.8.owner-a02.B",
+        "version": 8,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          180,
+          500
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "slap",
+            "speed": 0.05,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.018,
+        "takeoff_duration_ms": 120,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.75,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1,
+            "stop_seconds": 0.6
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive."
+          }
+        },
+        "owner_preset": {
+          "id": "B",
+          "name": "busy",
+          "production": false
+        },
+        "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
+      },
+      "profile_sha256": "d147bfa0d1fbe25fa71d0ba366b354f83512b0655218baa242c292d4dcfc2014",
+      "summary": {
+        "visible": {
+          "median_speed_fly_lengths_s": 5.404182273351401,
+          "median_bout_s": 0.855,
+          "median_stop_s": 0.33,
+          "walking_fraction": 0.6932833333333333,
+          "median_seed_speed_fly_lengths_s": 5.398184573907175
+        },
+        "decoded": {
+          "median_speed_fly_lengths_s": 5.998022218685284,
+          "median_bout_s": 0.68,
+          "median_stop_s": 0.38,
+          "walking_fraction": 0.6284500000000001,
+          "median_seed_speed_fly_lengths_s": 6.046511877921464
+        },
+        "mean_path_fly_lengths": 114.69762818202142,
+        "mean_net_fly_lengths": 1.9586374212489095,
+        "coverage": 0.9418918918918919,
+        "false_takeoffs_s": 0.013333333333333334,
+        "whole_rate_hz": 4.280719471947194
+      },
+      "gates": {
+        "false_takeoffs": true,
+        "whole_circuit": true,
+        "resting_swat": true,
+        "replay": true,
+        "drive_parity": true
+      }
+    },
+    "C": {
+      "name": "busy, quicker takeoff",
+      "offered": true,
+      "reason": "All safety gates pass",
+      "profile": {
+        "profile_id": "flybench.game.v2.8.owner-a02.C",
+        "version": 8,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          180,
+          500
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "slap",
+            "speed": 0.05,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.045,
+        "takeoff_duration_ms": 120,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.75,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1,
+            "stop_seconds": 0.6
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive."
+          }
+        },
+        "owner_preset": {
+          "id": "C",
+          "name": "busy, quicker takeoff",
+          "production": false
+        },
+        "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Duration, heading, jitter, onset and reflection rules remain v2.7."
+      },
+      "profile_sha256": "2e41ccce640448a387ea9d4b9e6d764203f2b3c0efac6643781e86912501a65e",
+      "summary": {
+        "visible": {
+          "median_speed_fly_lengths_s": 5.389798745478418,
+          "median_bout_s": 0.89,
+          "median_stop_s": 0.315,
+          "walking_fraction": 0.6932166666666666,
+          "median_seed_speed_fly_lengths_s": 5.398184573907175
+        },
+        "decoded": {
+          "median_speed_fly_lengths_s": 5.998022218685284,
+          "median_bout_s": 0.68,
+          "median_stop_s": 0.38,
+          "walking_fraction": 0.6284500000000001,
+          "median_seed_speed_fly_lengths_s": 6.046511877921464
+        },
+        "mean_path_fly_lengths": 115.31949590230786,
+        "mean_net_fly_lengths": 1.9101467615202616,
+        "coverage": 0.9351351351351351,
+        "false_takeoffs_s": 0.013333333333333334,
+        "whole_rate_hz": 4.280719471947194
+      },
+      "gates": {
+        "false_takeoffs": true,
+        "whole_circuit": true,
+        "resting_swat": true,
+        "replay": true,
+        "drive_parity": true
+      }
+    },
+    "D": {
+      "name": "middle",
+      "offered": true,
+      "reason": "All safety gates pass",
+      "profile": {
+        "profile_id": "flybench.game.v2.8.owner-a02.D",
+        "version": 8,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          180,
+          500
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "slap",
+            "speed": 0.05,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.018,
+        "takeoff_duration_ms": 120,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "Equal-area circular chamber; reflection and aim validation only. Neural model and strike mechanics unchanged.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.6,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1,
+            "stop_seconds": 0.6
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive."
+          }
+        },
+        "owner_preset": {
+          "id": "D",
+          "name": "middle",
+          "production": false
+        },
+        "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
+      },
+      "profile_sha256": "963a0bd6796eaf68c6808ad7ab1644dc39baf3c41602a40e5f7dc14b8c0123a0",
+      "summary": {
+        "visible": {
+          "median_speed_fly_lengths_s": 3.3484319069101,
+          "median_bout_s": 0.805,
+          "median_stop_s": 0.38,
+          "walking_fraction": 0.6640166666666667,
+          "median_seed_speed_fly_lengths_s": 3.295488342605803
+        },
+        "decoded": {
+          "median_speed_fly_lengths_s": 3.7923899029012436,
+          "median_bout_s": 0.25,
+          "median_stop_s": 0.05,
+          "walking_fraction": 0.5591333333333333,
+          "median_seed_speed_fly_lengths_s": 3.7845636288054614
+        },
+        "mean_path_fly_lengths": 70.4619921547678,
+        "mean_net_fly_lengths": 2.1262658340665874,
+        "coverage": 0.8770270270270272,
+        "false_takeoffs_s": 0.015,
+        "whole_rate_hz": 4.27862196219622
+      },
+      "gates": {
+        "false_takeoffs": true,
+        "whole_circuit": true,
+        "resting_swat": true,
+        "replay": true,
+        "drive_parity": true
+      }
+    }
+  }
+}

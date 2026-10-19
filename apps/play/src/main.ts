@@ -378,6 +378,7 @@ $('video').onclick = async () => {
 (async () => {
     try {
         [runtime, profile, display, brain, buffer] = await Promise.all([fetch(base + 'data/runtime.json').then(r => r.json()), fetch(base + 'data/game.json').then(r => r.json()), fetch(base + 'data/display-v1.json').then(r => r.json()), fetch(base + 'data/brain.json').then(r => r.json()), fetchGraph(base + 'data/circuit.flygraph.gz')]);
+        if(import.meta.env.DEV){const {activateOwnerPreview}=await import('./owner-preview.ts');({profile,runtime}=await activateOwnerPreview(profile,runtime,(neuralSeed,environmentSeed)=>{reset();send('init',{buffer,runtime,profile,neuralSeed,environmentSeed,manual:true});}));}
         await document.fonts.ready;
         field = new MicroscopeField(table, profile, display, base, () => { drawnTick = -1; });
         $('subtitle').textContent = `${runtime.counts.N.toLocaleString('en-US')} neurons, wired as mapped in a real male fruit fly.`;
