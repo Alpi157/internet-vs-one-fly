@@ -38,3 +38,12 @@ def test_v2k_reflex_hero_rule_trials_and_history():
     assert media['lab']==load('docs/media/history/v2j-a03-provenance.json')['lab']
     declared=json.loads(subprocess.check_output(['git','show',f"{media['base_commit']}:profiles/media-v2k.json"],cwd=ROOT))
     assert declared==protocol
+
+def test_v2k_prior_evidence_and_archives_unchanged():
+    # Full acceptance has local historical evidence; fresh-clone smoke uses Git identities.
+    for name in ['prior-preservation.json','unchanged-identities.json']:
+        p=ROOT/'evidence/V2K'/name
+        if not p.exists():continue
+        for file,meta in json.loads(p.read_text())['files'].items():
+            assert digest(file)==meta['sha256'],file
+            assert (ROOT/file).stat().st_size==meta['bytes'],file
