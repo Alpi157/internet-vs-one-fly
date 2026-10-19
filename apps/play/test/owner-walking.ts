@@ -56,7 +56,8 @@ export function pathMetrics(trace:any[]){
 }
 export async function quiet(profile:any,seed:number,seconds=30){
  const g=newGame(profile,seed),trace:any[]=[];let spikes=0;
- while(g.tick<seconds*200){const f=g.step();spikes+=f.spikes.reduce((n,e)=>n+e.indices.length,0);trace.push({tick:f.tick,body:f.body,air:f.air,applied:f.applied});}
+ while(g.tick<seconds*2000){const f=g.step();spikes+=f.spikes.reduce((n,e)=>n+e.indices.length,0);trace.push({tick:f.tick,body:f.body,air:f.air,applied:f.applied});}
+ if(g.tick!==seconds*2000||trace.length!==seconds*100)throw Error('Quiet clock/interval mismatch');
  return {seed,environment_seed:1000+seed,seconds,whole_rate_hz:spikes/runtime.counts.N/seconds,...pathMetrics(trace),trace,log:await g.log()};
 }
 export function summarize(rows:any[]){
@@ -126,11 +127,17 @@ async function main(){
   const baseline=load('evidence/V2J/a02/baseline-swat.json').swat.conservative_escape_probability;
   const gates={false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50,resting_swat:swat.conservative_escape_probability>=Math.max(.88,baseline),replay:true,drive_parity:'PENDING'};
   save(`presets/${id}.json`,{...receipt,id,profile,profile_sha256:sha(profile),summary,bot,swat,replay:{log,status:'PASS'},gates,offered:false});console.log(id,summary,swat.conservative_escape_probability,gates);
+ }else if(cmd==='--quiet-repair'){
+  const prior=load(`evidence/V2J/a02/presets/${id}.json`),profile=prior.profile,rows=[];
+  if(id==='D'&&profile.walking_drive.selected.forward!==load('evidence/V2J/a02/selection/D.json').selected)throw Error('D changed: run full preset validation instead of quiet repair');
+  for(const seed of seeds){const q=await quiet(profile,seed);save(`presets/${id}/quiet-${seed}.json`,q);rows.push(q);console.log(id,'corrected quiet',seed);}
+  const summary=summarize(rows),result={...prior,quiet_repair:{...receipt,reason:'seconds-to-ticks conversion corrected from 200 to 2000. Bot, swat and replay code/output unchanged; invalid 3 s quiet outputs retained under invalid-clock.',prior_result_sha256:sha(prior)},summary,gates:{...prior.gates,false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50}};
+  save(`presets/${id}.json`,result);console.log(id,summary);
  }else if(cmd==='--finalize'){
   const parity=load('evidence/V2J/a02/parity/summary.json'),presets:any={};
   for(const id of ['A','B','C','D']){const r=load(`evidence/V2J/a02/presets/${id}.json`);if(r.gates){r.gates.drive_parity=parity.presets[id]===true;r.offered=Object.values(r.gates).every(v=>v===true);save(`presets/${id}.json`,r);}presets[id]={name:protocol.presets[id].name,offered:r.offered,reason:r.offered?'All safety gates pass':r.reason??Object.entries(r.gates).filter(([,v])=>v!==true).map(([k])=>k).join(', '),...(r.profile?{profile:r.profile,profile_sha256:r.profile_sha256}:{}),summary:r.summary,gates:r.gates};}
   const result={schema:'flybench.owner-walking-selection.v1',...receipt,production_profile:'flybench.game.v2.7',presets};
   writeFileSync(root+'profiles/owner-walking-a02-selected.json',JSON.stringify(result,null,2)+'\n');save('selection/offer.json',result);console.log(Object.entries(presets).map(([id,v]:any)=>({id,offered:v.offered,reason:v.reason})));
- }else throw Error('Expected --dry-run, --D, --C, --baseline, --preset ID or --finalize');
+ }else throw Error('Expected --dry-run, --D, --C, --baseline, --preset ID --quiet-repair ID or --finalize');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await main();
