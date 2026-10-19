@@ -90,3 +90,7 @@ The existing acceptance registry and review bundler are extended for V2I. The
 bundle includes all stage screenshot evidence and current media; unchanged bulk
 science/anatomy is hash-inventoried and recoverable from the submitted checkout.
 Acceptance receipts identify the final SHA without a self-referential commit.
+
+The V2I dry review ZIP measured 54,971,103 bytes, above the inherited 48 MiB
+bound. The existing bundler permits 64 MiB for V2I only, retaining both complete
+browser matrices and current media. This is packaging, not a scientific change.

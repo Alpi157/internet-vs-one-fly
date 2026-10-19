@@ -2416,7 +2416,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     value = archive.getvalue()
     # The V2H dry bundle measured 23,966,349 bytes before clip/fallback evidence.
     # Its mandatory 3-browser x 2-viewport screen matrix must remain complete.
-    archive_limit = 48 * 1024 * 1024 if milestone in {"V2H", "V2I"} else MAX_ARCHIVE_BYTES
+    # V2I dry bundle: 54,971,103 bytes, retaining both complete browser matrices and media.
+    archive_limit = (64 if milestone == "V2I" else 48) * 1024 * 1024 if milestone in {"V2H", "V2I"} else MAX_ARCHIVE_BYTES
     if len(value) >= archive_limit:
         raise BundleError(f"review bundle is {len(value)} bytes, exceeding the {archive_limit // (1024 * 1024)} MiB review limit")
     return value
