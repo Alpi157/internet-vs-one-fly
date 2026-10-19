@@ -1,0 +1,19 @@
+{
+  "decision_id": "D-V2J-PROTOCOL-03",
+  "status": "OWNER_INSTRUCTION_ALIGNMENT_DISCLOSED_AFTER_MEASUREMENT",
+  "authority": "Owner a02 safety instruction: resting swat escapes at least as often as the v2.7 baseline; original a01 baseline is 88%.",
+  "timing": "After first bot/resting-swat results, before corrected 30 s quiet validation and owner offering. This is disclosed post-measurement correction, not confirmatory scientific selection.",
+  "problem": "The implementing agent added an unrequested gate requiring >= the new independent-round v2.7 control (200/200). That control differs from the original repeated-strike baseline (176/200) and is not the owner baseline. It would reject all four presets despite 91%, 94%, 98.5%, 91.5% conservative escape rates exceeding the requested 88%.",
+  "correction": "Use the original 0.88 safety threshold exactly as requested. Keep the independent-round 1.0 control descriptive, and keep all interim failed flags and invalid quiet outputs. No neural, drive, body or bot parameter changes; C/D selection criteria unchanged.",
+  "previous_protocol_sha256": "d054322714a348049518ba3a17374edc79ad3458b49ca96b2861dd90d507cc40",
+  "corrected_protocol_sha256": "510dd8610b274c9a49eee8cde16a856bd7ffa12b8def21e48e9204f167007fc0",
+  "evidence": [
+    "evidence/V2J/baseline/summary.json",
+    "evidence/V2J/a02/baseline-swat.json",
+    "evidence/V2J/a02/invalid-clock/presets/A.json",
+    "evidence/V2J/a02/invalid-clock/presets/B.json",
+    "evidence/V2J/a02/invalid-clock/presets/C.json",
+    "evidence/V2J/a02/invalid-clock/presets/D.json"
+  ],
+  "a01": "All a01 results, gate FAIL, ZIP and hashes unchanged."
+}

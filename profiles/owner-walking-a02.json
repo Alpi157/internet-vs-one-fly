@@ -125,7 +125,7 @@
     "false_takeoffs_per_s_max": 0.05,
     "whole_circuit_hz_max_exclusive": 50,
     "resting_swat_escape_min": 0.88,
-    "resting_swat_comparison": "Conservative 200-opportunity rate >= original a01 v2.7 baseline 0.88 AND >= matched a02 v2.7 control",
+    "resting_swat_comparison": "Conservative 200-opportunity escape rate >= original a01 v2.7 baseline 0.88. The independent-round a02 v2.7 rerun is descriptive and not an additional gate.",
     "replay": "Exact reexecution digest with effective profile identity, no gaps",
     "parity": "Bit-exact Python/TypeScript drive currents and state for every preset over 3000 intervals; reset and neural parity retained"
   },
@@ -155,5 +155,6 @@
   "copy": {
     "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
     "lab": "Lab simulations have no walking drive."
-  }
+  },
+  "amendment": "decisions/D-V2J-PROTOCOL-03.json: remove an unrequested additional control gate, retain all measured rates and interim flags"
 }

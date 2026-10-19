@@ -125,13 +125,13 @@ async function main(){
   const summary=summarize(rows),bot=bots(profile,seeds);console.log(id,'bots complete');const swat=restingSwat(profile,seeds);console.log(id,'swat complete');
   const replay=botRound(profile,1,4,0,false,2).game,log=await replay.log();await replayLog(buffer,identityRuntime(profile),profile,log);
   const baseline=load('evidence/V2J/a02/baseline-swat.json').swat.conservative_escape_probability;
-  const gates={false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50,resting_swat:swat.conservative_escape_probability>=Math.max(.88,baseline),replay:true,drive_parity:'PENDING'};
+  const gates={false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50,resting_swat:swat.conservative_escape_probability>=protocol.safety.resting_swat_escape_min,replay:true,drive_parity:'PENDING'};
   save(`presets/${id}.json`,{...receipt,id,profile,profile_sha256:sha(profile),summary,bot,swat,replay:{log,status:'PASS'},gates,offered:false});console.log(id,summary,swat.conservative_escape_probability,gates);
  }else if(cmd==='--quiet-repair'){
   const prior=load(`evidence/V2J/a02/presets/${id}.json`),profile=prior.profile,rows=[];
   if(id==='D'&&profile.walking_drive.selected.forward!==load('evidence/V2J/a02/selection/D.json').selected)throw Error('D changed: run full preset validation instead of quiet repair');
   for(const seed of seeds){const q=await quiet(profile,seed);save(`presets/${id}/quiet-${seed}.json`,q);rows.push(q);console.log(id,'corrected quiet',seed);}
-  const summary=summarize(rows),result={...prior,quiet_repair:{...receipt,reason:'seconds-to-ticks conversion corrected from 200 to 2000. Bot, swat and replay code/output unchanged; invalid 3 s quiet outputs retained under invalid-clock.',prior_result_sha256:sha(prior)},summary,gates:{...prior.gates,false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50}};
+  const summary=summarize(rows),result={...prior,quiet_repair:{...receipt,reason:'seconds-to-ticks conversion corrected from 200 to 2000. Bot, swat and replay code/output unchanged; invalid 3 s quiet outputs retained under invalid-clock.',prior_result_sha256:sha(prior)},summary,gates:{...prior.gates,false_takeoffs:summary.false_takeoffs_s<=.05,whole_circuit:summary.whole_rate_hz!<50,resting_swat:prior.swat.conservative_escape_probability>=protocol.safety.resting_swat_escape_min}};
   save(`presets/${id}.json`,result);console.log(id,summary);
  }else if(cmd==='--finalize'){
   const parity=load('evidence/V2J/a02/parity/summary.json'),presets:any={};
