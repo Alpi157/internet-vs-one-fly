@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How it works, v5</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 3400px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 0 56px 0">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; min-height: 88px">
+    <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 34px; line-height: 1.1">Catch the fly</span>
+    <nav aria-label="Main" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+      <a href="V5-Desktop-Game.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Play</a>
+      <a href="V5-Desktop-Lab.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Wiring lab</a>
+      <a href="V5-How.dc.html" aria-current="page" style="padding: 11px 16px; border-radius: 999px; background: #1F2420; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">How it works</a>
+      <a href="https://github.com/Alpi157/internet-vs-one-fly" style="padding: 11px 16px; border-radius: 999px; color: #7FEFAA; font-size: 15px; font-weight: 700; text-decoration: none">Code ↗</a>
+    </nav>
+  </header>
+
+  <main style="max-width: 1120px; margin: 0 auto; padding: 72px 0 96px; display: flex; flex-direction: column; gap: 104px">
+
+    <section style="max-width: 740px; display: flex; flex-direction: column; gap: 24px">
+      <h1 style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 72px; line-height: 1.04">How it works</h1>
+      <p style="margin: 0; font-size: 24px; line-height: 1.5; color: #E9EDE6; text-wrap: pretty">A fly brain, simulated from the real wiring diagram of a fruit fly. Here is what is real, what is simplified, and what I found.</p>
+    </section>
+
+    <section aria-labelledby="h-path" style="display: flex; flex-direction: column; gap: 28px">
+      <h2 id="h-path" style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.1">From your hand to its jump</h2>
+      <div style="display: flex; align-items: stretch; gap: 0; flex-wrap: wrap">
+        <div style="flex: 1 1 170px; border: 1px solid #3A413B; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+          <span style="font-size: 13px; font-weight: 700; color: #9BA59C">1</span>
+          <span style="font-size: 19px; font-weight: 700; line-height: 1.25">Your hand</span>
+          <span style="font-size: 15px; line-height: 1.45; color: #C9D0C8">Falls toward the fly and grows in its view.</span>
+        </div>
+        <span aria-hidden="true" style="flex: none; width: 36px; display: flex; align-items: center; justify-content: center; color: #9BA59C; font-size: 22px">→</span>
+        <div style="flex: 1 1 170px; border: 1px solid #3A413B; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+          <span style="font-size: 13px; font-weight: 700; color: #9BA59C">2</span>
+          <span style="font-size: 19px; font-weight: 700; line-height: 1.25">Its eyes</span>
+          <span style="font-size: 15px; line-height: 1.45; color: #C9D0C8">Looming detectors (LC4, LPLC2) fire when something grows fast.</span>
+        </div>
+        <span aria-hidden="true" style="flex: none; width: 36px; display: flex; align-items: center; justify-content: center; color: #9BA59C; font-size: 22px">→</span>
+        <div style="flex: 1.3 1 210px; border: 1px solid #63F29A; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+          <span style="font-size: 13px; font-weight: 700; color: #9BA59C">3</span>
+          <span style="font-size: 19px; font-weight: 700; line-height: 1.25">5,555 simulated neurons</span>
+          <span style="font-size: 15px; line-height: 1.45; color: #C9D0C8">Connected as mapped in a real male fruit fly. Spikes travel through that wiring.</span>
+        </div>
+        <span aria-hidden="true" style="flex: none; width: 36px; display: flex; align-items: center; justify-content: center; color: #9BA59C; font-size: 22px">→</span>
+        <div style="flex: 1 1 170px; border: 1px solid #3A413B; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+          <span style="font-size: 13px; font-weight: 700; color: #9BA59C">4</span>
+          <span style="font-size: 19px; font-weight: 700; line-height: 1.25">Escape neuron</span>
+          <span style="font-size: 15px; line-height: 1.45; color: #C9D0C8">The giant fiber and its partners send the takeoff command.</span>
+        </div>
+        <span aria-hidden="true" style="flex: none; width: 36px; display: flex; align-items: center; justify-content: center; color: #9BA59C; font-size: 22px">→</span>
+        <div style="flex: 1 1 150px; border: 1px solid #3A413B; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+          <span style="font-size: 13px; font-weight: 700; color: #9BA59C">5</span>
+          <span style="font-size: 19px; font-weight: 700; line-height: 1.25">Jump</span>
+          <span style="font-size: 15px; line-height: 1.45; color: #C9D0C8">If it fires in time, the fly is gone.</span>
+        </div>
+      </div>
+      <p style="margin: 0; max-width: 740px; font-size: 19px; line-height: 1.7; color: #C9D0C8">Everything after your hand is simulated. The escape is not scripted: no line of code says “jump when the hand is close”. Walking also runs through neurons: a random push to the walking neurons stands in for the fly’s own urge to explore.</p>
+    </section>
+
+    <section aria-labelledby="h-real" style="display: flex; flex-direction: column; gap: 28px">
+      <h2 id="h-real" style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.1">What is real, what is simplified</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+        <div style="border: 1px solid #262B27; background: #0A0C0A; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+          <h3 style="margin: 0; font-size: 22px; line-height: 1.3">Real</h3>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 14px; font-size: 18px; line-height: 1.6; color: #C9D0C8">
+            <li>Who connects to whom, and how many contacts, from MaleCNS: a complete map of a male fruit fly’s nervous system.</li>
+            <li>The neuron shapes you see: real skeletons from the same map, simplified for display.</li>
+            <li>Every flash: a spike that actually happened in the simulation.</li>
+          </ul>
+        </div>
+        <div style="border: 1px solid #262B27; background: #0A0C0A; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+          <h3 style="margin: 0; font-size: 22px; line-height: 1.3">Simplified</h3>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 14px; font-size: 18px; line-height: 1.6; color: #C9D0C8">
+            <li>Each neuron is a simple spiking unit, not a detailed cell.</li>
+            <li>Vision is two numbers: how big the hand looks and how fast it grows.</li>
+            <li>Whether a connection excites or inhibits is assumed from the cell’s transmitter.</li>
+            <li>The urge to walk is a random push added by the game. The wiring model does not walk on its own.</li>
+            <li>Body, walking and takeoff physics are basic.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-exp" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <h2 id="h-exp" style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.1">The experiment in one minute</h2>
+        <p style="margin: 0; font-size: 19px; line-height: 1.7; color: #C9D0C8">I shuffled who connects to whom, keeping each neuron’s number of connections. The shuffled brains exploded into activity while the real one stayed calm.</p>
+        <p style="margin: 0; font-size: 19px; line-height: 1.7; color: #C9D0C8">Then a stricter test, registered in advance: shuffle again, but keep each neuron’s total input. Most of the gap disappeared. In this model, how unevenly input is spread matters more than the exact partners.</p>
+        <a href="V5-Desktop-Lab.dc.html" style="font-size: 18px; font-weight: 700">Walk through it in the wiring lab →</a>
+      </div>
+      <div style="border: 1px solid #262B27; background: #0A0C0A; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 52px; line-height: 1">2<span style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>7</span><span style="font-size: 15px; line-height: 1.35; color: #C9D0C8">Real wiring</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 52px; line-height: 1; color: #63F29A">120</span><span style="font-size: 15px; line-height: 1.35; color: #C9D0C8">Shuffled</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 52px; line-height: 1">4<span style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>4</span><span style="font-size: 15px; line-height: 1.35; color: #C9D0C8">Shuffled, same input</span></div>
+        <span style="grid-column: 1 / -1; font-size: 14px; line-height: 1.45; color: #9BA59C">Median spikes a second per neuron, one 2,641-neuron circuit, registered test strength, 499 shuffles each. Other circuits gave mixed results.</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-check" style="max-width: 740px; display: flex; flex-direction: column; gap: 20px">
+      <h2 id="h-check" style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.1">You can check all of it</h2>
+      <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 14px; font-size: 19px; line-height: 1.65; color: #C9D0C8">
+        <li>Both tests were written down and timestamped before they ran: <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.md">14 October 2026</a> and <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.1.md">15 October 2026</a>.</li>
+        <li>Every raw record is public: <a href="https://doi.org/10.5281/zenodo.23409752">doi.org/10.5281/zenodo.23409752</a>.</li>
+        <li>In our tests, the simulation gives bit-identical results in Python and in the Chromium, Firefox and WebKit browser engines.</li>
+        <li>One command reruns every acceptance check from a fresh copy of the code.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="h-words" style="max-width: 740px; display: flex; flex-direction: column; gap: 20px">
+      <h2 id="h-words" style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.1">Words used here</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: 220px minmax(0, 1fr); row-gap: 18px; column-gap: 24px; font-size: 18px; line-height: 1.6">
+        <dt style="font-weight: 700">Connectome</dt><dd style="margin: 0; color: #C9D0C8">A map of every neuron and every connection in a nervous system.</dd>
+        <dt style="font-weight: 700">Spike</dt><dd style="margin: 0; color: #C9D0C8">A short electrical pulse a neuron sends to its partners.</dd>
+        <dt style="font-weight: 700">Looming detectors</dt><dd style="margin: 0; color: #C9D0C8">LC4 and LPLC2, eye cells that respond to something approaching fast.</dd>
+        <dt style="font-weight: 700">Escape neuron</dt><dd style="margin: 0; color: #C9D0C8">The giant fiber, a large cell that can trigger a takeoff.</dd>
+        <dt style="font-weight: 700">Preregistration</dt><dd style="margin: 0; color: #C9D0C8">Writing down a test and how to judge it before running it, so the result cannot steer the method.</dd>
+      </dl>
+    </section>
+
+    <section style="max-width: 740px">
+      <details style="border: 1px solid #262B27; border-radius: 18px; padding: 6px 20px">
+        <summary style="min-height: 52px; display: flex; align-items: center; font-size: 19px; font-weight: 700; cursor: pointer">For scientists: methods, statistics and limits</summary>
+        <p style="margin: 8px 0 18px; font-size: 17px; line-height: 1.65; color: #C9D0C8">Full tables, Holm-corrected p values, null families and model limits, generated from the registered results.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #1F2420; min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #9BA59C">
+    <span>Made by Alpar Arman · <a href="https://github.com/Alpi157">GitHub</a></span>
+    <span>Wiring and neuron shapes: MaleCNS v1.0, Janelia FlyEM, CC BY 4.0 · Data: <a href="https://doi.org/10.5281/zenodo.23409752">10.5281/zenodo.23409752</a></span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3400}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

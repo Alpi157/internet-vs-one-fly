@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop game, full width</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 1080px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 0 56px; display: flex; flex-direction: column">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; min-height: 88px">
+    <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+      <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 34px; line-height: 1.1">Catch the fly</span>
+      <span style="font-size: 16px; line-height: 1.4; color: #C9D0C8">A fly brain simulated from its real wiring. Try to swat it.</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+      <a href="V5-Desktop-Game.dc.html" aria-current="page" style="padding: 11px 16px; border-radius: 999px; background: #1F2420; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Play</a>
+      <a href="V5-Desktop-Lab.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Wiring lab</a>
+      <a href="V5-How.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">How it works</a>
+      <a href="https://github.com/Alpi157/internet-vs-one-fly" style="padding: 11px 16px; border-radius: 999px; color: #7FEFAA; font-size: 15px; font-weight: 700; text-decoration: none">Code ↗</a>
+    </nav>
+  </header>
+
+  <main style="flex: 1; display: grid; grid-template-columns: 732px minmax(0, 1fr); gap: 56px; align-items: start; padding-top: 4px">
+    <section aria-label="Game" style="display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; width: 720px">
+        <div style="display: flex; align-items: baseline; gap: 10px">
+          <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.05">2</span>
+          <span style="font-size: 15px; color: #9BA59C">caught</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px">
+          <div style="display: flex; gap: 8px" aria-hidden="true">
+            <span style="width: 14px; height: 14px; border-radius: 50%; background: #E9EDE6"></span>
+            <span style="width: 14px; height: 14px; border-radius: 50%; background: #E9EDE6"></span>
+            <span style="width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; border: 2px solid #63F29A"></span>
+            <span style="width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #3A413B"></span>
+            <span style="width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #3A413B"></span>
+            <span style="width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #3A413B"></span>
+          </div>
+          <span style="font-size: 15px; color: #9BA59C">Hand 3 of 6</span>
+        </div>
+      </div>
+      <div style="padding: 6px">
+        <dc-import name="V5-Field" size="{{720}}" mode="flight" stamp="escaped" line="It saw your hand coming and jumped 60 ms before it landed." hint-size="720px,720px"></dc-import>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 720px">
+        <div style="border: 1px solid #5A635B; border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; gap: 12px">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" style="flex: none"><circle cx="14" cy="14" r="3.6" fill="currentColor"/><circle cx="14" cy="14" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span style="font-size: 17px; line-height: 1.3"><b>Click</b> for a fast hand</span>
+        </div>
+        <div style="border: 1px solid #5A635B; border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; gap: 12px">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" style="flex: none"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.8"/><path d="M14 3 A11 11 0 1 1 3.6 17.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="14" cy="14" r="3.6" fill="currentColor"/></svg>
+          <span style="font-size: 17px; line-height: 1.3"><b>Hold</b> for a big, slow hand</span>
+        </div>
+      </div>
+      <span style="font-size: 14px; color: #9BA59C">Keyboard: arrow keys aim, Space works like the mouse button.</span>
+    </section>
+
+    <section aria-label="Replay of the last hand" style="background: #0A0C0A; border: 1px solid #1F2420; border-radius: 22px; padding: 26px 32px 28px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+        <span style="font-size: 15px; color: #9BA59C">Hand 3 of 6 · replay at quarter speed</span>
+        <div role="radiogroup" aria-label="View" style="display: flex; padding: 3px; border-radius: 999px; box-shadow: inset 0 0 0 1px #3A413B">
+          <button role="radio" aria-checked="true" style="height: 40px; padding: 0 18px; border-radius: 999px; border: 0; background: #E9EDE6; color: #0A0C0A; font-size: 15px; font-weight: 700; cursor: pointer">Brain</button>
+          <button role="radio" aria-checked="false" style="height: 40px; padding: 0 18px; border-radius: 999px; border: 0; background: transparent; color: #E9EDE6; font-size: 15px; font-weight: 700; cursor: pointer">Whole nervous system</button>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+          <h2 style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 60px; line-height: 1.05; color: #63F29A">Escaped</h2>
+          <p style="margin: 0; font-size: 21px; line-height: 1.45; color: #E9EDE6">It saw your hand coming and jumped 60 ms before it landed.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <button style="height: 48px; padding: 0 26px; border-radius: 24px; border: 0; background: #E9EDE6; color: #0A0C0A; font-size: 16px; font-weight: 700; cursor: pointer">Next hand</button>
+          <button style="height: 48px; padding: 0 22px; border-radius: 24px; border: 1px solid #5A635B; background: transparent; color: #E9EDE6; font-size: 16px; font-weight: 700; cursor: pointer">Save clip</button>
+        </div>
+      </div>
+      <dc-import name="V5-Brain" kind="escape" labels="{{true}}" label-size="{{16}}" hint-size="100%,536px"></dc-import>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start">
+      <div style="display: grid; grid-template-columns: 150px minmax(0, 1fr); row-gap: 8px; column-gap: 14px; align-items: center; font-size: 15px; line-height: 1.2; color: #C9D0C8">
+        <span>Your hand</span>
+        <svg viewBox="0 0 600 18" width="100%" height="18" aria-hidden="true" preserveAspectRatio="none"><path d="M0 2 L520 16" stroke="#C9D0C8" stroke-width="2" fill="none"/><line x1="520" y1="0" x2="520" y2="18" stroke="#E9EDE6" stroke-width="2"/><line x1="400" y1="0" x2="400" y2="18" stroke="#7FEFAA" stroke-width="2"/></svg>
+        <span>Looming detectors</span>
+        <svg viewBox="0 0 600 18" width="100%" height="18" aria-hidden="true" preserveAspectRatio="none"><path d="M0 16 L320 16 L320 11 L392 11 L392 3 L600 3" stroke="#63F29A" stroke-width="2" fill="none"/><line x1="520" y1="0" x2="520" y2="18" stroke="#E9EDE6" stroke-width="2"/><line x1="400" y1="0" x2="400" y2="18" stroke="#7FEFAA" stroke-width="2"/></svg>
+        <span>Escape neuron</span>
+        <svg viewBox="0 0 600 18" width="100%" height="18" aria-hidden="true" preserveAspectRatio="none"><path d="M364 2 V16 M378 2 V16 M393 2 V16 M414 2 V16" stroke="#63F29A" stroke-width="2.4" fill="none"/><line x1="520" y1="0" x2="520" y2="18" stroke="#E9EDE6" stroke-width="2"/><line x1="400" y1="0" x2="400" y2="18" stroke="#7FEFAA" stroke-width="2"/></svg>
+        <span></span>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #9BA59C"><span>−200 ms</span><span style="margin-right: 13%">hand lands</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.45; color: #9BA59C">LC4 and LPLC2 are looming detectors: eye cells that fire when something grows fast. The escape neuron (giant fiber) triggers the jump. Real neuron shapes from MaleCNS, simplified for display.</p>
+        <a href="V5-Desktop-Lab.dc.html" style="font-size: 16px; font-weight: 700">Is it the wiring? Open the wiring lab →</a>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="margin-top: 28px; border-top: 1px solid #1F2420; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #9BA59C">
+    <span>Made by Alpar Arman · <a href="https://github.com/Alpi157">GitHub</a></span>
+    <span>Wiring and neuron shapes: MaleCNS v1.0, Janelia FlyEM, CC BY 4.0 · Data: <a href="https://doi.org/10.5281/zenodo.23409752">10.5281/zenodo.23409752</a></span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

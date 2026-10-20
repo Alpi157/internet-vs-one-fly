@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Takeoff, out of focus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+</style>
+</helmet>
+<div style="width: 1240px; height: 470px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 28px 32px; display: flex; flex-direction: column; gap: 22px">
+  <div style="display: flex; align-items: baseline; gap: 18px">
+    <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 28px; line-height: 1.1">Takeoff, under the microscope</span>
+    <span style="font-size: 15px; color: #9BA59C">A flying fly leaves the focal plane. Its shadow stays on the glass.</span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <dc-import name="V5-Field" size="{{250}}" mode="idle" stamp="none" scale="{{false}}" hint-size="250px,250px"></dc-import>
+      <span style="font-size: 16px; font-weight: 700">1. Walking</span>
+      <span style="font-size: 14px; line-height: 1.4; color: #C9D0C8; text-align: center">Sharp, in focus, shadow right under it.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <dc-import name="V5-Field" size="{{250}}" mode="lift" stamp="none" scale="{{false}}" hint-size="250px,250px"></dc-import>
+      <span style="font-size: 16px; font-weight: 700">2. Takeoff</span>
+      <span style="font-size: 14px; line-height: 1.4; color: #C9D0C8; text-align: center">Wings open, it grows a little and softens.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <dc-import name="V5-Field" size="{{250}}" mode="flight" stamp="none" scale="{{false}}" hint-size="250px,250px"></dc-import>
+      <span style="font-size: 16px; font-weight: 700">3. In the air</span>
+      <span style="font-size: 14px; line-height: 1.4; color: #C9D0C8; text-align: center">Big and blurred, about 3 fly lengths of flight.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <dc-import name="V5-Field" size="{{250}}" mode="land" stamp="none" scale="{{false}}" hint-size="250px,250px"></dc-import>
+      <span style="font-size: 16px; font-weight: 700">4. Landing</span>
+      <span style="font-size: 14px; line-height: 1.4; color: #C9D0C8; text-align: center">Back in focus, a faint ring where it lands.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1240,"height":470}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

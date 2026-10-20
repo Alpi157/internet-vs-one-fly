@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brain view with plain labels</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; aspect-ratio: 1.71 / 1; background: #000000; border-radius: 12px; overflow: hidden; font-family: 'Atkinson Hyperlegible Next', sans-serif">
+  <img src="{{src}}" alt="{{alt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+  <sc-if value="{{labels}}" hint-placeholder-val="{{true}}">
+    <span style="position: absolute; left: 2.5%; top: 1.2%; font-size: {{labelSize}}px; font-weight: 700; line-height: 1.2; color: #E9EDE6; text-shadow: 0 0 4px #000, 0 0 2px #000; white-space: nowrap">Escape neuron</span>
+    <span style="position: absolute; left: 35.5%; top: 1.2%; font-size: {{labelSize}}px; font-weight: 700; line-height: 1.2; color: #E9EDE6; text-shadow: 0 0 4px #000, 0 0 2px #000; white-space: nowrap">LC4</span>
+    <span style="position: absolute; left: 68.5%; top: 1.2%; font-size: {{labelSize}}px; font-weight: 700; line-height: 1.2; color: #E9EDE6; text-shadow: 0 0 4px #000, 0 0 2px #000; white-space: nowrap">LPLC2</span>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["calm","storm","kept","escape"],"default":"escape"},"labels":{"editor":"boolean","default":true},"labelSize":{"editor":"int","default":12},"$preview":{"width":420,"height":246}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var k = this.props.kind ?? 'escape';
+    var src = {
+      calm: '/_blob/9d5764e6fbbe1b4320d1f391d9ba912d',
+      storm: '/_blob/2a69b774d06cd4fd8d8ad1626fa9b3cf',
+      kept: '/_blob/23b3b0a26b2cdbb33e8f10e756a08e7f',
+      escape: '/_blob/79bf77bc83cf6a40167e08ccb971e43e'
+    }[k];
+    var alt = {
+      calm: 'Real fly brain from the front, magenta tissue with a few green flashes: the real wiring stays calm',
+      storm: 'The same brain with shuffled wiring: both optic lobes are solid green, a storm of activity',
+      kept: 'Shuffled wiring that keeps each neuron’s total input: almost as calm as the real brain',
+      escape: 'Recorded replay frame: the eye regions light up green as the fly sees the hand'
+    }[k];
+    return { src: src, alt: alt, labels: this.props.labels ?? true, labelSize: this.props.labelSize ?? 12 };
+  }
+}
+</script>
+</body>
+</html>

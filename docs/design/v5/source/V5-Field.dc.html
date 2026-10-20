@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Microscope field, v5 states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: {{rootW}}; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden; background: #DADDD6; box-shadow: 0 0 0 6px #101210, 0 0 0 7px #2C312D; font-family: 'Atkinson Hyperlegible Next', sans-serif">
+<svg viewBox="0 0 358 358" width="100%" height="100%" style="display: block" role="img" aria-label="{{aria}}">
+  <defs>
+    <radialGradient id="v5fieldBg" cx="46%" cy="44%" r="62%">
+      <stop offset="0" stop-color="#F2F2EC"/>
+      <stop offset="0.5" stop-color="#E6E7E0"/>
+      <stop offset="0.82" stop-color="#CFD2CA"/>
+      <stop offset="1" stop-color="#9DA39B"/>
+    </radialGradient>
+    <radialGradient id="v5rim" cx="50%" cy="50%" r="50%">
+      <stop offset="0.8" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0.94" stop-color="#000000" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="v5dust" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="v5defocus" filterUnits="userSpaceOnUse" x="-200" y="-200" width="800" height="800"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="v5pressed" filterUnits="userSpaceOnUse" x="-200" y="-200" width="800" height="800"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="v5core" filterUnits="userSpaceOnUse" x="-200" y="-200" width="800" height="800"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <filter id="v5flyShadow" filterUnits="userSpaceOnUse" x="-80" y="-80" width="300" height="320"><feGaussianBlur stdDeviation="4.5"/></filter>
+    <filter id="v5liftBlur" filterUnits="userSpaceOnUse" x="0" y="0" width="358" height="358"><feGaussianBlur stdDeviation="0.9"/></filter>
+    <filter id="v5airBlur" filterUnits="userSpaceOnUse" x="0" y="0" width="358" height="358"><feGaussianBlur stdDeviation="2.4"/></filter>
+
+    <radialGradient id="v5thx" cx="40%" cy="34%" r="72%">
+      <stop offset="0" stop-color="#A38D78"/>
+      <stop offset="0.42" stop-color="#806954"/>
+      <stop offset="0.8" stop-color="#5E4B3A"/>
+      <stop offset="1" stop-color="#3E3127"/>
+    </radialGradient>
+    <radialGradient id="v5abd" cx="44%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#D6C2A2"/>
+      <stop offset="0.5" stop-color="#BBA07C"/>
+      <stop offset="1" stop-color="#7F6A52"/>
+    </radialGradient>
+    <radialGradient id="v5hd" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#B48B66"/>
+      <stop offset="1" stop-color="#7A5E46"/>
+    </radialGradient>
+    <radialGradient id="v5eye" cx="40%" cy="34%" r="74%">
+      <stop offset="0" stop-color="#9E2E33"/>
+      <stop offset="0.55" stop-color="#84212A"/>
+      <stop offset="1" stop-color="#4E0B10"/>
+    </radialGradient>
+    <pattern id="v5facet" width="0.9" height="0.78" patternUnits="userSpaceOnUse"><circle cx="0.45" cy="0.39" r="0.3" fill="#2A0508" fill-opacity="0.22"/></pattern>
+    <linearGradient id="v5wingFill" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#E9ECEE" stop-opacity="0.42"/>
+      <stop offset="0.5" stop-color="#D9E1E4" stop-opacity="0.3"/>
+      <stop offset="0.8" stop-color="#E6DCE6" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#EFEFEA" stop-opacity="0.2"/>
+    </linearGradient>
+    <clipPath id="v5abdClip"><path d="M60 64 C69 64 74.5 72 74.5 82 C74.5 94 69.5 104 60 105.5 C50.5 104 45.5 94 45.5 82 C45.5 72 51 64 60 64 Z"/></clipPath>
+
+    <g id="v5legL" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M54 41 L45 35.5" stroke="#6B5543" stroke-width="2.2"/>
+      <path d="M45 35.5 L38.5 24" stroke="#6B5543" stroke-width="1.5"/>
+      <path d="M38.5 24 L35.6 16 L34.4 12.6 L33.6 10.4" stroke="#4A3B2E" stroke-width="0.9"/>
+      <path d="M53 51 L38 52" stroke="#6B5543" stroke-width="2.3"/>
+      <path d="M38 52 L24.5 57" stroke="#6B5543" stroke-width="1.5"/>
+      <path d="M24.5 57 L16 61.5 L12.6 63.4 L10.2 64.6" stroke="#4A3B2E" stroke-width="0.9"/>
+      <path d="M54 60 L44.5 71" stroke="#6B5543" stroke-width="2.4"/>
+      <path d="M44.5 71 L36.5 88" stroke="#6B5543" stroke-width="1.6"/>
+      <path d="M36.5 88 L32.4 99 L31 103 L30.2 106" stroke="#4A3B2E" stroke-width="0.9"/>
+    </g>
+
+    <g id="v5wingL">
+      <path d="M52.5 49 C45 55 37.6 68 36 84 C34.6 100 37.6 114 44.6 121 C51.6 127 61 125 64.6 115.4 C67.4 106.6 66.4 92 63.4 78 C61 66.4 57.6 54.6 52.5 49 Z" fill="url(#v5wingFill)" stroke="#7A6B5C" stroke-opacity="0.6" stroke-width="0.4"/>
+      <g fill="none" stroke="#5E4E40" stroke-linecap="round" stroke-opacity="0.75">
+        <path d="M52.5 49 C45 55 37.6 68 36 84 C34.6 100 37.6 114 44.6 121" stroke-width="0.75"/>
+        <path d="M49.4 56 C44.6 66 40.6 80 39.2 94 C38.6 100 38.6 105 39.4 109" stroke-width="0.42"/>
+        <path d="M51 57 C47.6 70 45.4 86 45 102 C44.8 110 45.4 116 46.6 122" stroke-width="0.42"/>
+        <path d="M53.6 58 C52 74 51.6 92 53 106 C53.6 113 54.6 119 56 124" stroke-width="0.42"/>
+        <path d="M56 58 C57.6 70 59.4 82 61 94 C61.8 100 63 106 64.4 110" stroke-width="0.42"/>
+      </g>
+    </g>
+
+    <g id="v5antL">
+      <ellipse cx="56.6" cy="20.6" rx="1.6" ry="2.1" fill="#9C7A5C"/>
+      <path d="M56.2 19 C55 16.6 53.2 15 50.4 14" stroke="#3A2E24" stroke-width="0.45" fill="none"/>
+    </g>
+
+    <ellipse id="v5shadowShape" cx="66" cy="76" rx="25" ry="44" fill="#1F241F" fill-opacity="0.22" filter="url(#v5flyShadow)"/>
+
+    <g id="v5abdomen">
+      <path d="M60 64 C69 64 74.5 72 74.5 82 C74.5 94 69.5 104 60 105.5 C50.5 104 45.5 94 45.5 82 C45.5 72 51 64 60 64 Z" fill="url(#v5abd)"/>
+      <g clip-path="url(#v5abdClip)">
+        <path d="M44 74.6 Q60 78.6 76 74.6 L76 76.8 Q60 81 44 76.8 Z" fill="#2C231C" fill-opacity="0.8"/>
+        <path d="M44 81.4 Q60 85.6 76 81.4 L76 84 Q60 88.4 44 84 Z" fill="#2C231C" fill-opacity="0.84"/>
+        <path d="M44 87.4 Q60 91.8 76 87.4 L76 91.6 Q60 96 44 91.6 Z" fill="#2A211B" fill-opacity="0.9"/>
+        <path d="M44 92.6 Q60 97 76 92.6 L76 108 L44 108 Z" fill="#1A1512"/>
+      </g>
+    </g>
+
+    <g id="v5headThorax">
+      <path d="M60 32.4 C70.4 32.4 77.2 40.6 77.2 50.6 C77.2 60.4 70.4 68.4 60 68.4 C49.6 68.4 42.8 60.4 42.8 50.6 C42.8 40.6 49.6 32.4 60 32.4 Z" fill="url(#v5thx)"/>
+      <path d="M57.4 36 L56.6 64 M62.6 36 L63.4 64 M51 40 L49.6 62 M69 40 L70.4 62" stroke="#4A3B2E" stroke-opacity="0.16" stroke-width="1.8" fill="none"/>
+      <path d="M51.6 66 Q60 75.6 68.4 66 Q60 69 51.6 66 Z" fill="#6A5442"/>
+      <path d="M60 19.8 C70.6 19.8 76.6 24.6 76.6 29.2 C76.6 33.4 70 35.6 60 35.6 C50 35.6 43.4 33.4 43.4 29.2 C43.4 24.6 49.4 19.8 60 19.8 Z" fill="url(#v5hd)"/>
+      <path d="M44.2 21.4 C48.8 19.9 53.2 21.8 54.3 25.8 C55.3 30.2 53.4 34.8 48.8 35.8 C44.4 36.6 41.6 33 41.4 28.6 C41.2 25.2 42.2 22.4 44.2 21.4 Z" fill="url(#v5eye)"/>
+      <path d="M44.2 21.4 C48.8 19.9 53.2 21.8 54.3 25.8 C55.3 30.2 53.4 34.8 48.8 35.8 C44.4 36.6 41.6 33 41.4 28.6 C41.2 25.2 42.2 22.4 44.2 21.4 Z" fill="url(#v5facet)"/>
+      <path d="M75.8 21.4 C71.2 19.9 66.8 21.8 65.7 25.8 C64.7 30.2 66.6 34.8 71.2 35.8 C75.6 36.6 78.4 33 78.6 28.6 C78.8 25.2 77.8 22.4 75.8 21.4 Z" fill="url(#v5eye)"/>
+      <path d="M75.8 21.4 C71.2 19.9 66.8 21.8 65.7 25.8 C64.7 30.2 66.6 34.8 71.2 35.8 C75.6 36.6 78.4 33 78.6 28.6 C78.8 25.2 77.8 22.4 75.8 21.4 Z" fill="url(#v5facet)"/>
+      <use href="#v5antL"/>
+      <use href="#v5antL" transform="translate(120 0) scale(-1 1)"/>
+    </g>
+
+    <g id="v5flyBody">
+      <use href="#v5legL"/>
+      <use href="#v5legL" transform="translate(120 0) scale(-1 1)"/>
+      <use href="#v5abdomen"/>
+      <use href="#v5wingL"/>
+      <use href="#v5wingL" transform="translate(120 0) scale(-1 1)"/>
+      <use href="#v5headThorax"/>
+    </g>
+
+    <g id="v5flyAir">
+      <use href="#v5legL" transform="translate(54 50) scale(0.72) translate(-54 -50)"/>
+      <g transform="translate(120 0) scale(-1 1)"><use href="#v5legL" transform="translate(54 50) scale(0.72) translate(-54 -50)"/></g>
+      <use href="#v5abdomen"/>
+      <use href="#v5wingL" transform="rotate(42 52.5 49)"/>
+      <g transform="translate(120 0) scale(-1 1)"><use href="#v5wingL" transform="rotate(42 52.5 49)"/></g>
+      <use href="#v5headThorax"/>
+    </g>
+
+    <g id="v5hand">
+      <rect x="-60" y="-120" width="120" height="160" rx="46"/>
+      <rect x="-52" y="12" width="25" height="100" rx="12.5" transform="rotate(7 -40 12)"/>
+      <rect x="-21" y="16" width="26" height="116" rx="13" transform="rotate(2 -8 16)"/>
+      <rect x="10" y="12" width="25" height="106" rx="12.5" transform="rotate(-4 22 12)"/>
+      <rect x="39" y="4" width="21" height="86" rx="10.5" transform="rotate(-10 49 4)"/>
+      <rect x="-64" y="-44" width="27" height="94" rx="13.5" transform="rotate(44 -50 -44)"/>
+    </g>
+  </defs>
+
+  <rect width="358" height="358" fill="url(#v5fieldBg)"/>
+  <path d="{{dustA}}" fill="#6E766E" fill-opacity="0.32" filter="url(#v5dust)"/>
+  <path d="{{dustB}}" fill="#8E968C" fill-opacity="0.3"/>
+  <path d="M38 236 C52 228 60 240 74 232 C84 226 92 230 98 224" fill="none" stroke="#8C948A" stroke-opacity="0.35" stroke-width="0.7"/>
+  <path d="M268 286 C276 294 290 292 296 302" fill="none" stroke="#8C948A" stroke-opacity="0.3" stroke-width="0.6"/>
+
+  <g opacity="{{blotOp}}" filter="url(#v5defocus)" fill="#211C19">
+    <circle cx="150" cy="196" r="34"/>
+  </g>
+
+  <path d="M150 196 C170 218 204 238 248 234" fill="none" stroke="#1E231F" stroke-opacity="{{trailOp}}" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1.5 6"/>
+
+  <g opacity="{{landOp}}" fill="none" stroke="#1E231F">
+    <circle cx="248" cy="234" r="30" stroke-opacity="0.22" stroke-width="1"/>
+    <circle cx="248" cy="234" r="40" stroke-opacity="0.12" stroke-width="0.8"/>
+  </g>
+
+  <use href="#v5shadowShape" transform="{{shadowTransform}}" opacity="{{shadowOp}}"/>
+
+  <g filter="{{flyFilter}}" opacity="{{flyOp}}">
+    <use href="{{flyRef}}" transform="{{flyTransform}}"/>
+  </g>
+
+  <g opacity="{{chargeOp}}">
+    <g filter="url(#v5defocus)" fill="#211C19" opacity="0.38">
+      <use href="#v5hand" transform="translate(318 18) rotate(46) scale(1.15)"/>
+    </g>
+    <circle cx="150" cy="196" r="48" fill="#1E231F" fill-opacity="0.06" stroke="#1E231F" stroke-opacity="0.7" stroke-width="1.4" stroke-dasharray="4 4"/>
+    <circle cx="150" cy="196" r="58" fill="none" stroke="#1E231F" stroke-opacity="0.85" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="330 34" transform="rotate(-80 150 196)"/>
+  </g>
+
+  <g opacity="{{caughtOp}}">
+    <g filter="url(#v5pressed)" fill="#1A1613" opacity="0.62">
+      <use href="#v5hand" transform="translate(166 178) rotate(160) scale(0.74)"/>
+    </g>
+    <circle cx="150" cy="196" r="30" fill="#120F0D" opacity="0.88" filter="url(#v5core)"/>
+  </g>
+
+  <g opacity="{{approachOp}}" filter="url(#v5defocus)" fill="#211C19">
+    <use href="#v5hand" transform="translate(330 4) rotate(46) scale(1.22)"/>
+  </g>
+
+  <rect width="358" height="358" fill="url(#v5rim)"/>
+
+  <g opacity="{{scaleOp}}" font-family="Atkinson Hyperlegible Next, sans-serif">
+    <line x1="144.5" y1="318" x2="213.5" y2="318" stroke="#1E231F" stroke-width="2.4"/>
+    <line x1="144.5" y1="313" x2="144.5" y2="323" stroke="#1E231F" stroke-width="1.2"/>
+    <line x1="213.5" y1="313" x2="213.5" y2="323" stroke="#1E231F" stroke-width="1.2"/>
+    <text x="179" y="338" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E231F">1 fly length</text>
+  </g>
+</svg>
+
+<sc-if value="{{showPill}}" hint-placeholder-val="{{false}}">
+  <p style="position: absolute; left: 50%; top: 5.6%; transform: translateX(-50%); margin: 0; display: flex; align-items: center; gap: 0.55em; padding: 0.42em 0.95em 0.42em 0.8em; border-radius: 999px; background: rgba(11,13,11,0.82); color: #F2F4F0; font-size: {{pillFont}}px; font-weight: 700; line-height: 1.2; white-space: nowrap"><span style="width: 0.58em; height: 0.58em; border-radius: 50%; background: #63F29A; flex: none"></span>{{pillText}}</p>
+</sc-if>
+
+<sc-if value="{{isCharge}}" hint-placeholder-val="{{false}}">
+  <p style="position: absolute; left: 41.9%; top: 27%; transform: translateX(-50%); margin: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0.5em 1em 0.55em; border-radius: 14px; background: rgba(11,13,11,0.86); color: #F2F4F0; font-size: {{chargeFont}}px; line-height: 1.25; white-space: nowrap; text-align: center"><span style="font-weight: 700">Big, slow hand</span><span style="font-size: 0.82em; color: #C9D0C8">Release to swat</span></p>
+</sc-if>
+
+<sc-if value="{{hasStamp}}" hint-placeholder-val="{{false}}">
+  <div style="position: absolute; left: 50%; top: 7%; transform: translateX(-50%); width: 78%; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 0.35em; padding: 0.7em 1em 0.8em; border-radius: 22px; background: rgba(8,10,8,0.88); text-align: center">
+    <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: {{stampFont}}px; line-height: 1.05; color: {{stampColor}}; letter-spacing: 0.02em">{{stampWord}}</span>
+    <span style="font-size: {{lineFont}}px; line-height: 1.35; color: #E9EDE6; text-wrap: balance">{{line}}</span>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"size":{"editor":"int","default":358},"fluid":{"editor":"boolean","default":false},"mode":{"editor":"enum","options":["idle","strike","charge","caught","lift","flight","land"],"default":"idle"},"stamp":{"editor":"enum","options":["none","caught","escaped"],"default":"none"},"line":{"editor":null,"default":""},"lands":{"editor":"int","default":88},"scale":{"editor":"boolean","default":true},"$preview":{"width":358,"height":358}}'>
+class Component extends DCLogic {
+  rng(seed) {
+    var s = seed;
+    return function () { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+  }
+  dots(n, seed, rMin, rMax, fn) {
+    var rnd = this.rng(seed), d = '';
+    for (var i = 0; i < n; i++) {
+      var p = fn(rnd);
+      var r = rMin + rnd() * (rMax - rMin);
+      d += 'M' + (p[0] - r).toFixed(2) + ' ' + p[1].toFixed(2) + 'a' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 1 0 ' + (2 * r).toFixed(2) + ' 0a' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 1 0 ' + (-2 * r).toFixed(2) + ' 0';
+    }
+    return d;
+  }
+  geo() {
+    if (this._g) return this._g;
+    var disc = function (rnd) { var a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 172; return [179 + Math.cos(a) * r, 179 + Math.sin(a) * r]; };
+    this._g = { dustA: this.dots(46, 41, 0.6, 1.9, disc), dustB: this.dots(26, 77, 0.4, 1.1, disc) };
+    return this._g;
+  }
+  renderVals() {
+    var p = this.props, g = this.geo();
+    var mode = p.mode ?? 'idle';
+    var stamp = p.stamp ?? 'none';
+    var size = p.size ?? 358;
+    var fluid = p.fluid ?? false;
+    var px = fluid ? 700 : size;
+    var home = 'translate(150 196) rotate(-28) scale(0.62) translate(-60 -72)';
+    var fly = {
+      idle: { t: home, s: home, sOp: 1, ref: '#v5flyBody', f: 'none' },
+      strike: { t: home, s: home, sOp: 1, ref: '#v5flyBody', f: 'none' },
+      charge: { t: home, s: home, sOp: 1, ref: '#v5flyBody', f: 'none' },
+      caught: { t: home, s: home, sOp: 1, ref: '#v5flyBody', f: 'none' },
+      lift: { t: 'translate(160 204) rotate(-34) scale(0.76) translate(-60 -72)', s: 'translate(152 200) rotate(-30) scale(0.6) translate(-60 -72)', sOp: 0.8, ref: '#v5flyAir', f: 'url(#v5liftBlur)' },
+      flight: { t: 'translate(250 226) rotate(-58) scale(0.98) translate(-60 -72)', s: 'translate(226 262) rotate(-58) scale(0.56) translate(-60 -72)', sOp: 0.55, ref: '#v5flyAir', f: 'url(#v5airBlur)' },
+      land: { t: 'translate(248 234) rotate(-58) scale(0.62) translate(-60 -72)', s: 'translate(248 234) rotate(-58) scale(0.62) translate(-60 -72)', sOp: 1, ref: '#v5flyBody', f: 'none' }
+    }[mode] || null;
+    if (!fly) fly = { t: home, s: home, sOp: 1, ref: '#v5flyBody', f: 'none' };
+    var aria = {
+      idle: 'A fruit fly under a microscope, seen from above',
+      strike: 'The blurred shadow of a hand coming down toward the fly',
+      charge: 'A charging ring around the fly shows a big, slow hand',
+      caught: 'A hand pressed down on the fly',
+      lift: 'The fly lifting off, slightly out of focus',
+      flight: 'The fly in the air, large and out of focus, its shadow left on the glass',
+      land: 'The fly landed again, back in focus'
+    }[mode];
+    return {
+      rootW: fluid ? '100%' : size + 'px',
+      aria: aria,
+      dustA: g.dustA,
+      dustB: g.dustB,
+      flyTransform: fly.t,
+      shadowTransform: fly.s,
+      shadowOp: fly.sOp,
+      flyRef: fly.ref,
+      flyFilter: fly.f,
+      flyOp: mode === 'caught' ? 0.55 : 1,
+      blotOp: mode === 'flight' ? 0.42 : (mode === 'lift' ? 0.6 : 0),
+      trailOp: (mode === 'flight' || mode === 'land') ? 0.55 : 0,
+      landOp: mode === 'land' ? 1 : 0,
+      chargeOp: mode === 'charge' ? 1 : 0,
+      caughtOp: mode === 'caught' ? 1 : 0,
+      approachOp: mode === 'strike' ? 0.85 : 0,
+      scaleOp: (p.scale ?? true) ? 1 : 0,
+      showPill: mode === 'strike',
+      pillText: 'Hand lands in ' + (p.lands ?? 88) + ' ms',
+      pillFont: Math.min(17, px * 13.5 / 358).toFixed(1),
+      isCharge: mode === 'charge',
+      chargeFont: Math.min(18, px * 14 / 358).toFixed(1),
+      hasStamp: stamp !== 'none',
+      stampWord: stamp === 'caught' ? 'Caught' : 'Escaped',
+      stampColor: stamp === 'caught' ? '#F2F4F0' : '#63F29A',
+      stampFont: Math.min(64, px * 0.115).toFixed(0),
+      lineFont: Math.min(19, Math.max(14, px * 0.036)).toFixed(1),
+      line: p.line ?? ''
+    };
+  }
+}
+</script>
+</body>
+</html>

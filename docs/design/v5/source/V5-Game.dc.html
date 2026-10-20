@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone game, v5</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 18px 16px 24px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden">
+
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px">
+    <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+      <h1 style="margin: 0; font-family: 'Doto', sans-serif; font-size: 34px; line-height: 1.1; font-weight: 900">Catch the fly</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 1.4; color: #C9D0C8; text-wrap: pretty">A fly brain simulated from its real wiring. Try to swat it.</p>
+    </div>
+    <a href="V5-Intro-1.dc.html" aria-label="What is this?" style="flex: none; width: 44px; height: 44px; box-sizing: border-box; border-radius: 22px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 18px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">?</a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-family: 'Doto', sans-serif; font-size: 34px; line-height: 1.05; font-weight: 900">{{caught}}</span>
+        <span style="font-size: 13px; line-height: 1.3; color: #9BA59C">caught</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 9px">
+        <div style="display: flex; gap: 8px" aria-hidden="true">
+          <sc-for list="{{pips}}" as="p" hint-placeholder-count="6">
+            <span style="width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; background: {{p.bg}}; border: {{p.border}}; display: flex; align-items: center; justify-content: center"><span style="width: 4px; height: 4px; border-radius: 50%; background: {{p.dot}}"></span></span>
+          </sc-for>
+        </div>
+        <span style="font-size: 13px; line-height: 1.3; color: #9BA59C">Hand 3 of 6</span>
+      </div>
+    </div>
+
+    <div style="margin: 0 -16px; padding: 8px 0; display: flex; justify-content: center; overflow: hidden">
+      <dc-import name="V5-Field" size="{{430}}" mode="{{mode}}" stamp="{{stamp}}" line="{{line}}" hint-size="430px,430px"></dc-import>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div style="border: 1px solid #5A635B; border-radius: 16px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-height: 60px; box-sizing: border-box; background: {{tapBg}}; color: {{tapInk}}">
+      <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" style="flex: none"><circle cx="14" cy="14" r="3.6" fill="currentColor"/><circle cx="14" cy="14" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 17px; line-height: 1.2; font-weight: 700">Tap</span><span style="font-size: 14px; line-height: 1.25; opacity: 0.85">Fast hand</span></div>
+    </div>
+    <div style="border: 1px solid #5A635B; border-radius: 16px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-height: 60px; box-sizing: border-box; background: {{holdBg}}; color: {{holdInk}}">
+      <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" style="flex: none"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.8"/><path d="M14 3 A11 11 0 1 1 3.6 17.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="14" cy="14" r="3.6" fill="currentColor"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 17px; line-height: 1.2; font-weight: 700">Hold</span><span style="font-size: 14px; line-height: 1.25; opacity: 0.85">Big, slow hand</span></div>
+    </div>
+  </div>
+
+  <sc-if value="{{outcome}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; gap: 12px">
+      <a href="V5-Replay.dc.html" style="flex: 1.2; height: 52px; border-radius: 26px; background: #E9EDE6; color: #0A0C0A; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">See inside its head</a>
+      <a href="V5-Game.dc.html" style="flex: 1; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">Next hand</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{notOutcome}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; gap: 12px">
+      <a href="V5-Replay.dc.html" style="flex: 1; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.2 8 A4.8 4.8 0 1 0 5 4.3 M3 1.8 V5 H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Replay
+      </a>
+      <a href="V5-Lab-1.dc.html" style="flex: 1; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 4 H6 L10 12 H14 M2 12 H6 L7.4 9.2 M10 4 H14 M12 2 L14 4 L12 6 M12 10 L14 12 L12 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Wiring lab
+      </a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["idle","strike","charge","caught","flight"],"default":"idle"},"stamp":{"editor":"enum","options":["none","caught","escaped"],"default":"none"},"line":{"editor":null,"default":""},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var mode = this.props.mode ?? 'idle';
+    var stamp = this.props.stamp ?? 'none';
+    var hold = mode === 'charge';
+    var C = { bg: '#E9EDE6', border: '0', dot: 'transparent' };
+    var E = { bg: 'transparent', border: '2px solid #63F29A', dot: 'transparent' };
+    var CUR = { bg: 'transparent', border: '2px solid #E9EDE6', dot: '#E9EDE6' };
+    var N = { bg: 'transparent', border: '1.5px solid #3A413B', dot: 'transparent' };
+    var third = stamp === 'caught' ? C : (stamp === 'escaped' ? E : CUR);
+    return {
+      mode: mode,
+      stamp: stamp,
+      line: this.props.line ?? '',
+      caught: stamp === 'caught' ? 3 : 2,
+      pips: [C, C, third, N, N, N],
+      outcome: stamp !== 'none',
+      notOutcome: stamp === 'none',
+      tapBg: 'transparent',
+      tapInk: '#E9EDE6',
+      holdBg: hold ? '#E9EDE6' : 'transparent',
+      holdInk: hold ? '#0A0C0A' : '#E9EDE6'
+    };
+  }
+}
+</script>
+</body>
+</html>

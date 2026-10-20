@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop wiring lab, guided story</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#7FEFAA}a:hover{color:#B8F7CF}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #7FEFAA;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 1080px; box-sizing: border-box; background: #000000; color: #E9EDE6; font-family: 'Atkinson Hyperlegible Next', sans-serif; padding: 0 56px; display: flex; flex-direction: column">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; min-height: 88px">
+    <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+      <span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 34px; line-height: 1.1">Catch the fly</span>
+      <span style="font-size: 16px; line-height: 1.4; color: #C9D0C8">A fly brain simulated from its real wiring. Try to swat it.</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+      <a href="V5-Desktop-Game.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Play</a>
+      <a href="V5-Desktop-Lab.dc.html" aria-current="page" style="padding: 11px 16px; border-radius: 999px; background: #1F2420; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">Wiring lab</a>
+      <a href="V5-How.dc.html" style="padding: 11px 16px; border-radius: 999px; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none">How it works</a>
+      <a href="https://github.com/Alpi157/internet-vs-one-fly" style="padding: 11px 16px; border-radius: 999px; color: #7FEFAA; font-size: 15px; font-weight: 700; text-decoration: none">Code ↗</a>
+    </nav>
+  </header>
+
+  <main style="flex: 1; display: grid; grid-template-columns: 540px minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 12px">
+    <section aria-label="The story" style="display: flex; flex-direction: column; gap: 18px">
+      <span style="font-size: 15px; font-weight: 700; color: #9BA59C">Wiring lab</span>
+      <h1 style="margin: 0; font-family: 'Doto', sans-serif; font-weight: 900; font-size: 60px; line-height: 1.05">Is it the wiring?</h1>
+      <p style="margin: 0; font-size: 19px; line-height: 1.55; color: #C9D0C8">Does this fly’s exact wiring matter, or would any similar brain behave the same? Three steps, about a minute.</p>
+
+      <ol style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+          <li style="border: 1px solid {{s.border}}; border-radius: 18px; background: {{s.bg}}; padding: 6px 8px">
+            <button onClick="{{s.pick}}" aria-expanded="{{s.expanded}}" style="width: 100%; min-height: 52px; display: flex; align-items: center; gap: 14px; padding: 6px 10px; border: 0; background: transparent; color: #E9EDE6; text-align: left; cursor: pointer">
+              <span style="flex: none; width: 30px; height: 30px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid {{s.ring}}; background: {{s.dotBg}}; color: {{s.dotInk}}; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">{{s.n}}</span>
+              <span style="font-size: 19px; line-height: 1.3; font-weight: 700">{{s.title}}</span>
+            </button>
+            <sc-if value="{{s.isCurrent}}" hint-placeholder-val="{{false}}">
+              <div style="padding: 0 12px 14px 54px; display: flex; flex-direction: column; gap: 14px">
+                <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #C9D0C8">{{s.body}}</p>
+                <sc-if value="{{s.hasNext}}" hint-placeholder-val="{{true}}">
+                  <button onClick="{{s.next}}" style="align-self: flex-start; height: 48px; padding: 0 24px; border-radius: 24px; border: 0; background: #E9EDE6; color: #0A0C0A; font-size: 16px; font-weight: 700; cursor: pointer">{{s.nextLabel}}</button>
+                </sc-if>
+              </div>
+            </sc-if>
+          </li>
+        </sc-for>
+      </ol>
+
+      <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.1.md" style="font-size: 16px; font-weight: 700; margin-top: 4px">Both tests were registered before they ran. Read the preregistration →</a>
+    </section>
+
+    <section aria-label="Result" style="display: flex; flex-direction: column; gap: 22px; min-width: 0">
+      <sc-if value="{{showBrains}}" hint-placeholder-val="{{true}}">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px">
+          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+            <span style="font-size: 18px; font-weight: 700">Real wiring</span>
+            <dc-import name="V5-Brain" kind="calm" labels="{{false}}" hint-size="100%,330px"></dc-import>
+            <div style="display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 72px; line-height: 1">2<span style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>7</span><span style="font-size: 16px; color: #9BA59C">spikes a second, calm</span></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+            <span style="font-size: 18px; font-weight: 700">{{rightTitle}}</span>
+            <dc-import name="V5-Brain" kind="{{rightKind}}" labels="{{false}}" hint-size="100%,330px"></dc-import>
+            <div style="display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Doto', sans-serif; font-weight: 900; font-size: 72px; line-height: 1">{{rightWhole}}<sc-if value="{{rightHasDot}}" hint-placeholder-val="{{false}}"><span style="display: inline-block; width: 0.16em; height: 0.16em; border-radius: 35%; background: currentColor; margin: 0 0.1em 0 0.08em"></span>{{rightFrac}}</sc-if></span><span style="font-size: 16px; color: #9BA59C">{{rightCaption}}</span></div>
+          </div>
+        </div>
+        <div style="border: 1px solid #262B27; background: #0A0C0A; border-radius: 18px; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+          <p style="margin: 0; font-size: 22px; line-height: 1.4; font-weight: 700">{{verdict}}</p>
+          <span style="font-size: 14px; line-height: 1.4; color: #9BA59C; max-width: 360px">Big numbers: medians from the registered test, 499 shuffled copies. The brains are live and vary a little.</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showSummary}}" hint-placeholder-val="{{false}}">
+        <div style="border: 1px solid #262B27; background: #0A0C0A; border-radius: 18px; padding: 26px 28px; display: flex; flex-direction: column; gap: 18px">
+          <span style="font-size: 18px; font-weight: 700">Spikes a second per neuron, registered medians</span>
+          <div style="display: grid; grid-template-columns: 240px minmax(0, 1fr) 80px; row-gap: 16px; column-gap: 18px; align-items: center; font-size: 18px">
+            <span>Real wiring</span><div style="height: 16px; border-radius: 8px; background: #1F2420"><div style="width: 2.3%; min-width: 8px; height: 16px; border-radius: 8px; background: #E9EDE6"></div></div><span style="font-weight: 700; text-align: right">2.7</span>
+            <span>Shuffled wiring</span><div style="height: 16px; border-radius: 8px; background: #1F2420"><div style="width: 100%; height: 16px; border-radius: 8px; background: #63F29A"></div></div><span style="font-weight: 700; text-align: right">120</span>
+            <span>Shuffled, same input</span><div style="height: 16px; border-radius: 8px; background: #1F2420"><div style="width: 3.7%; min-width: 12px; height: 16px; border-radius: 8px; background: #63F29A"></div></div><span style="font-weight: 700; text-align: right">4.4</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #9BA59C">A simplified model of one 2,641-neuron circuit, at the registered test strength. In other circuits the results were mixed. Nothing here is a claim about living flies. <a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md">All registered results</a></p>
+        </div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+        <div style="border: 1px solid #3A413B; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px"><span style="font-size: 18px; font-weight: 700">Try it: connection strength</span><span style="font-size: 16px; color: #C9D0C8">0.039</span></div>
+          <div style="position: relative; height: 44px; display: flex; align-items: center">
+            <div style="position: absolute; left: 0; right: 0; height: 6px; border-radius: 3px; background: #3A413B"></div>
+            <div style="position: absolute; left: 0; width: 60%; height: 6px; border-radius: 3px; background: #E9EDE6"></div>
+            <div style="position: absolute; left: calc(60% - 12px); width: 24px; height: 24px; border-radius: 50%; background: #E9EDE6"></div>
+          </div>
+          <div style="position: relative; height: 34px; font-size: 13px; color: #9BA59C">
+            <span style="position: absolute; left: 20%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center"><span style="width: 1px; height: 6px; background: #9BA59C"></span>Game setting</span>
+            <span style="position: absolute; left: 60%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center"><span style="width: 1px; height: 6px; background: #9BA59C"></span>Registered test</span>
+          </div>
+          <span style="font-size: 15px; line-height: 1.4; color: #C9D0C8">Slide right to make connections stronger and see where the shuffled brain starts its storm.</span>
+        </div>
+        <div style="border: 1px solid #3A413B; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 18px; font-weight: 700">Try it: switch off a cell type, then play</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <a href="V5-Desktop-Game.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center">LC4 off</a>
+            <a href="V5-Desktop-Game.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center">LPLC2 off</a>
+            <a href="V5-Desktop-Game.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Escape neuron off</a>
+            <a href="V5-Desktop-Game.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #5A635B; color: #E9EDE6; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Steering off</a>
+          </div>
+          <span style="font-size: 15px; line-height: 1.4; color: #C9D0C8">LC4 and LPLC2 detect looming. The escape neuron triggers the jump. Steering neurons turn the fly. Each starts a fresh round.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="margin-top: 28px; border-top: 1px solid #1F2420; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #9BA59C">
+    <span>Made by Alpar Arman · <a href="https://github.com/Alpi157">GitHub</a></span>
+    <span>Wiring and neuron shapes: MaleCNS v1.0, Janelia FlyEM, CC BY 4.0 · Data: <a href="https://doi.org/10.5281/zenodo.23409752">10.5281/zenodo.23409752</a></span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 1 };
+  }
+  renderVals() {
+    var step = this.state.step;
+    var self = this;
+    var defs = [
+      { n: 1, title: 'Shuffle the wiring', body: 'Make a fake copy of the brain. Every neuron keeps the same number of connections, but who connects to whom is shuffled at random. Then run both side by side.', nextLabel: 'Next: not so fast' },
+      { n: 2, title: 'Not so fast', body: 'Shuffling changed something else too: some neurons ended up with far more input than before, others with less. So, before running it, I registered a stricter test: shuffle again, but every neuron keeps its total input.', nextLabel: 'Next: what it means' },
+      { n: 3, title: 'What I learned', body: 'In this model, the brain stays calm mostly because of how unevenly input is spread across neurons, not because of exactly who connects to whom. My stricter test overturned part of my first result.', nextLabel: '' }
+    ];
+    var steps = defs.map(function (d) {
+      var cur = d.n === step, done = d.n < step;
+      return {
+        n: d.n, title: d.title, body: d.body, nextLabel: d.nextLabel,
+        isCurrent: cur, expanded: cur ? 'true' : 'false', hasNext: d.n < 3,
+        border: cur ? '#3A413B' : '#1F2420',
+        bg: cur ? '#0A0C0A' : 'transparent',
+        ring: (cur || done) ? '#E9EDE6' : '#5A635B',
+        dotBg: (cur || done) ? '#E9EDE6' : 'transparent',
+        dotInk: (cur || done) ? '#0A0C0A' : '#E9EDE6',
+        pick: function () { self.setState({ step: d.n }); },
+        next: function () { self.setState({ step: Math.min(3, d.n + 1) }); }
+      };
+    });
+    var two = step === 2;
+    return {
+      steps: steps,
+      showBrains: step < 3,
+      showSummary: step === 3,
+      rightTitle: two ? 'Shuffled, same input' : 'Shuffled wiring',
+      rightKind: two ? 'kept' : 'storm',
+      rightWhole: two ? '4' : '120',
+      rightHasDot: two,
+      rightFrac: two ? '4' : '',
+      rightCaption: two ? 'spikes a second, almost calm' : 'spikes a second, a storm',
+      verdict: two ? 'Most of the storm is gone.' : 'The shuffled brain explodes into activity. The real one stays calm.'
+    };
+  }
+}
+</script>
+</body>
+</html>
