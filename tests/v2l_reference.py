@@ -6,7 +6,7 @@ from flybench.game_runner_v28 import GameRunnerV28,WalkingGame
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from experiments.v2d_dry_run import make_runner
 root=Path(__file__).resolve().parents[1]
-p=json.loads((root/'profiles/game-v2.9.json').read_text());rt=json.loads((root/'apps/play/public/data/runtime.json').read_text())
+p=json.loads((Path(sys.argv[3]) if len(sys.argv)>3 else root/'profiles/game-v2.9.json').read_text());rt=json.loads((root/'apps/play/public/data/runtime.json').read_text())
 raw=Path(sys.argv[1]).read_bytes();size=struct.unpack('<I',raw[8:12])[0];header=json.loads(raw[12:12+size]);offset=12+size;offset+=(-offset)%8
 graph={name:np.frombuffer(raw,dtype=header['sections'][name]['dtype'],count=header['sections'][name]['length'],offset=offset+header['sections'][name]['byte_offset']).copy() for name in ['ids','offsets','targets','weights']}
 bits=lambda xs:struct.pack('<'+'d'*len(xs),*xs).hex()

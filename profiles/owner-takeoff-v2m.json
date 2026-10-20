@@ -1,0 +1,176 @@
+{
+  "schema": "flybench.owner-takeoff.v1",
+  "attempt": "V2M-a01",
+  "base_sha": "2cb59c0d6dca6c341c03e83ee5352d8955223f29",
+  "production_profile": "flybench.game.v2.9",
+  "classification": "Owner playtest game physics; no scientific or neural parameter change",
+  "presets": {
+    "T0": {
+      "takeoff_speed": 0.018,
+      "takeoff_duration_ms": 330,
+      "nominal_path_units": 5.9399999999999995
+    },
+    "T1": {
+      "takeoff_speed": 0.036,
+      "takeoff_duration_ms": 170,
+      "nominal_path_units": 6.119999999999999
+    },
+    "T2": {
+      "takeoff_speed": 0.04,
+      "takeoff_duration_ms": 150,
+      "nominal_path_units": 6.0
+    },
+    "T3": {
+      "takeoff_speed": 0.045,
+      "takeoff_duration_ms": 130,
+      "nominal_path_units": 5.85
+    }
+  },
+  "duration_rule": "Round 6 / speed to the nearest existing 10 ms control interval. T0 is exactly production v2.9 (330 ms, 5.94 units). Constant speed throughout each flight. Reflected path length is nominal integration length; net displacement can be shorter near walls.",
+  "unchanged": [
+    "direction",
+    "jitter",
+    "reflection",
+    "onset",
+    "hands",
+    "walking drive A",
+    "neural model",
+    "lab simulation"
+  ],
+  "measurement": {
+    "validation_seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "environment_seed_rule": "1000+neural_seed",
+    "quiet_seconds": 30,
+    "fly_length_arena_units": 2,
+    "visible_path": "Trailing 200 ms boxcar average of body position; derivative at 10 ms = displacement from t-200 ms to t / 200 ms. No future samples. Initial 200 ms and any window containing airborne movement are excluded.",
+    "visible_walking": "Smoothed grounded speed > 0.5 fly lengths/s; maximal contiguous bouts/stops; exclude left/right/air-gap censored segments from medians, retain them. Speed median over visible walking intervals.",
+    "decoded_walking": "Same a01: grounded absolute applied forward >= 0.002 arena units/ms; completed bouts/stops, speed and fraction retained.",
+    "coverage": "Same a01 2-unit cells, 37 centers within arena, grounded positions only",
+    "bot_ids": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "strike_holds_ms": [
+      80,
+      600
+    ],
+    "bot_opportunities_per_seed_type": 6,
+    "bot_warmup_ms": 1500,
+    "bot_quiet_gap_ms": 1000,
+    "bot_1": "Observe current body position; aim there after any reaction delay",
+    "bot_2": "Observe body position and current held translational velocity; lead by velocity times strike fall time; add same delay/noise rules as bot 1",
+    "bot_4": "After warmup/gap, observe consecutive 150 ms grounded body intervals with speed <= 0.5 fly lengths/s (rotation in place allowed); then aim at observed position after any reaction delay. No forced stop.",
+    "human_like": {
+      "reaction_delay_ms": 200,
+      "aim_noise_units": 0.3,
+      "noise_rule": "Existing bot stream 71: independent uniform +/-0.3 on x/y, u32(neural_seed,71,opportunity,axis); identical across presets",
+      "unrestricted": "zero delay, zero noise"
+    },
+    "bot_boundary": "Project aim just inside circular boundary, identical deterministic rounding guard as a01",
+    "bot_censoring": "Six opportunities per 30 s round; censor if no still interval/impact by round end. Catch rate uses resolved impacts; report censored separately and no attempt count substituted for resolved count.",
+    "resting_swat": "Exact a01 schedule: 20 neural seeds x two independent five-strike rounds. Environment seed 1000+seed+100*round. Before each swat wait for 200 ms grounded below original moving deadbands (absolute forward < .002, absolute turn < .0005). Neural state persists across the five strikes; no force-stop. Each round retains the original 30 s limit.",
+    "resting_swat_censoring": "Any unresolved opportunity counts as a nonescape for the conservative safety probability, while resolved-only escape and censoring are also reported.",
+    "speed_summary": "Median pooled interval speeds during each walking definition; per-seed medians also reported",
+    "bot_5": "Same 150 ms observed grounded rest as bot 4. Skilled limits: 120 ms reaction and independent uniform +/-0.15 arena unit per axis, u32(seed,71,opportunity,axis). Unrestricted: zero reaction and noise. No forced stop.",
+    "resting_fast_onset": "Report every bot 4 unrestricted fast-hand impact in the paired diagnosis: 20 seeds x six opportunities, after 150 ms observed rest. Record onset lead in ms, including null (no onset) and nonpositive leads; report min, nearest-rank p10/p25/median/p75/p90/max and the complete distribution. Bot 5 limited leads also reported."
+  },
+  "safety": {
+    "false_takeoffs_per_s_max": 0.05,
+    "whole_circuit_hz_max_exclusive": 50,
+    "resting_swat_escape_min": 0.88,
+    "resting_swat_comparison": "Conservative escape probability over all 200 scheduled opportunities >= original matched a01 v2.7 176/200 = 0.88. A rerun must reproduce the original v2.7 control. Prior independent-round results are descriptive only.",
+    "replay": "Exact reexecution digest with effective profile identity, no gaps",
+    "parity": "Bit-exact Python/TypeScript drive currents and state for every preset over 3000 intervals; reset and neural parity retained"
+  },
+  "diagnosis": "Before UI implementation, paired v2.8/v2.9 fast-hand rounds for bots 1,2,4,5, both limit modes, seeds 1..20. Preserve raw records and baseline comparisons. No parameter selection or tuning.",
+  "dry_run": "Excluded seed 101, one opportunity per bot/hand/limit/preset, one second quiet, one original five-strike swat round per preset; exact replay.",
+  "offering_rule": "Report all fixed presets and all safety gates; offer only presets passing every V2J safety gate. No catch-rate target or tuning.",
+  "preview": {
+    "dev_only": true,
+    "parameter": "preview",
+    "values": [
+      "T0",
+      "T1",
+      "T2",
+      "T3"
+    ],
+    "production": "v2.9 unchanged; preview code and data excluded from production"
+  },
+  "screens": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "sizes": [
+      [
+        390,
+        844
+      ],
+      [
+        1440,
+        900
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        2560,
+        1440
+      ]
+    ],
+    "locales": [
+      "en-US",
+      "ru-RU"
+    ],
+    "states": [
+      "outcome-next",
+      "phone-replay",
+      "scrub-first",
+      "scrub-impact",
+      "scrub-last",
+      "whole-landscape",
+      "whole-portrait",
+      "brain-fullscreen",
+      "try-yourself",
+      "preview-T0",
+      "preview-T1",
+      "preview-T2",
+      "preview-T3"
+    ],
+    "checks": [
+      "overlap",
+      "axe",
+      "bounds",
+      "same-origin network"
+    ],
+    "fps_min": {
+      "game": 55,
+      "lab": 50
+    }
+  }
+}

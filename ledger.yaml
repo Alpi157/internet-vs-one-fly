@@ -103,7 +103,8 @@ stages:
   V2I: SUBMITTED
   V2J: SUBMITTED
   V2K: SUBMITTED
-  V2L: SUBMITTED
+  V2L: ACCEPTED # owner reports tag v2l-accepted, deployed
+  V2M: IN_PROGRESS
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -387,7 +388,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: Submit the V2L a01 bundle with final-SHA acceptance receipts for the single external review. No push, tag or deployment.
+next_action: V2M a01 diagnosis, fixed takeoff playtest and UI polish; production v2.9. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -593,3 +594,13 @@ v2l_current:
   evidence: evidence/V2L
   review_zip: reviews/V2L-a01.zip
   acceptance: Final-SHA receipts required under evidence/V2L/acceptance; external review pending.
+
+v2m_current:
+  attempt: a01
+  status: IN_PROGRESS
+  base_sha: 2cb59c0d6dca6c341c03e83ee5352d8955223f29
+  protocol: profiles/owner-takeoff-v2m.json
+  decision: decisions/D-V2M-PLAYTEST-01.json
+  production_profile: flybench.game.v2.9
+  evidence: evidence/V2M
+  owner_choice: PENDING

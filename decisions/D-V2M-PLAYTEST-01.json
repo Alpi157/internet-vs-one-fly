@@ -1,0 +1,12 @@
+{
+  "decision": "Owner-authorized fixed takeoff speed playtest, production unchanged",
+  "stage": "V2M",
+  "attempt": "a01",
+  "authority": "Owner request after v2l-accepted live playtest",
+  "scope": "Four dev-only body-physics profiles; no scientific model change. Add skilled bot and preserve original workload comparability.",
+  "protocol": "profiles/owner-takeoff-v2m.json",
+  "rounding": "Round 6 / speed to the nearest existing 10 ms control interval. T0 is exactly production v2.9 (330 ms, 5.94 units). Constant speed throughout each flight. Reflected path length is nominal integration length; net displacement can be shorter near walls.",
+  "status": "DECLARED_BEFORE_MEASUREMENT",
+  "tuning": "NONE",
+  "owner_choice": "PENDING"
+}
