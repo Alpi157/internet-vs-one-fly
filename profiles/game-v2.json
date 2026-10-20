@@ -1,24 +1,18 @@
 {
-  "profile_id": "flybench.game.v2.8",
-  "version": 8,
+  "profile_id": "flybench.game.v2.9",
+  "version": 9,
   "classification": "Game parameters only; selected frozen neural profile separate",
   "arena_half_size": 6,
   "render_size": 700,
   "round_ms": 30000,
   "max_strikes": 6,
   "hold_thresholds_ms": [
-    180,
-    500
+    300
   ],
   "strikes": [
     {
       "name": "flick",
       "speed": 0.04,
-      "radius": 0.8
-    },
-    {
-      "name": "slap",
-      "speed": 0.05,
       "radius": 0.8
     },
     {
@@ -28,7 +22,7 @@
     }
   ],
   "takeoff_speed": 0.018,
-  "takeoff_duration_ms": 120,
+  "takeoff_duration_ms": 330,
   "takeoff_jitter_tangent": 1,
   "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
   "environment_stream": 43,
@@ -37,7 +31,7 @@
   "replay_speed": 0.25,
   "recording_max_intervals": 3000,
   "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
-  "change_reason": "Owner-selected preview A calm; declared exploration current. Neural model, strikes, arena and takeoff unchanged.",
+  "change_reason": "V2L owner-approved design v5: two input hands and longer flight only.",
   "arena_shape": "circle",
   "arena_radius": 6.770275002573076,
   "walking_drive": {
@@ -67,12 +61,13 @@
     },
     "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
     "copy": {
-      "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network.",
+      "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network.",
       "lab": "Lab simulations have no walking drive.",
       "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
     },
     "selection_decision": "decisions/D-V2J-SELECT-01.json",
     "history": "docs/walking-v2j.md"
   },
-  "physics_disclosure": "Takeoff speed and all body rules as in v2.7."
+  "physics_disclosure": "First 120 ms of takeoff identical to v2.8. Same 0.018 arena units/ms for 330 ms: 5.94 arena units of flight path (2.97 displayed fly lengths), including reflected path; reflection and tangent jitter unchanged.",
+  "takeoff_path_arena_units": 5.94
 }

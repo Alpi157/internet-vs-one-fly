@@ -1,0 +1,14 @@
+{
+  "id": "D-V2L-GAME-01",
+  "stage": "V2L",
+  "authority": "Owner instruction, 2026-10-20; approved design v5 on 2026-10-19",
+  "decision": "Game v2.9 maps <300 ms to existing flick and >=300 ms to existing swat; removes slap input tier. Flight extends from 120 to 330 ms at unchanged 0.018 units/ms, about 6 units.",
+  "scope": "Game-only input mapping and flight duration; selected A drive, first 120 ms, seeded direction, wall reflection, frozen science and lab simulations unchanged.",
+  "evidence": [
+    "docs/design/v5/DESIGN.md",
+    "profiles/game-v2.8.json",
+    "docs/walking-v2j.md"
+  ],
+  "validation": "profiles/ui-v2l.json; dry run then commit freeze; final-SHA 20-seed paired descriptive checks; report all outcomes, tune nothing.",
+  "claims": "No new biological or human usability claim."
+}

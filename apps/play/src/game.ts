@@ -13,6 +13,7 @@ export type Frame = {
     tick: number;
     body: Body;
     air: boolean;
+    air_start_tick?: number;
     applied: [boolean,number,number];
     gait: number;
     activity_hz: number;
@@ -107,7 +108,7 @@ export class Game {
             return false;
         if (input.tick !== this.tick || input.tick % 20 || ![input.x, input.y, input.hold_ms].every(Number.isFinite) || input.hold_ms < 0 || (this.profile.arena_shape === 'circle' ? this.distance(input.x, input.y) > this.profile.arena_radius : Math.abs(input.x) > this.profile.arena_half_size || Math.abs(input.y) > this.profile.arena_half_size))
             throw new Error('Invalid authoritative input');
-        const type = input.hold_ms < this.profile.hold_thresholds_ms[0] ? 0 : input.hold_ms < this.profile.hold_thresholds_ms[1] ? 1 : 2;
+        const type = this.profile.hold_thresholds_ms.filter((threshold: number) => input.hold_ms >= threshold).length;
         const spec = this.profile.strikes[type];
         this.inputs.push({ ...input });
         this.strikes++;
@@ -175,7 +176,7 @@ export class Game {
             this.airUntil = this.tick + this.profile.takeoff_duration_ms * 2;
         }
         this.gait += Math.abs(value.applied[1])*10 + Math.abs(value.applied[2])*10;
-        const frame = { applied: value.applied, gait: this.gait, activity_hz: value.recordedSpikes.reduce((n,e)=>n+e.indices.length,0)/this.runner.state.graph.header.N/.01, tick: this.tick, body: { ...body }, air: this.tick < this.airUntil, strike: s ? { ...s } : null, impact, onset: value.onset, spikes: value.recordedSpikes };
+        const frame = { ...(this.profile.version >= 9 ? {air_start_tick: this.airUntil - this.profile.takeoff_duration_ms * 2} : {}), applied: value.applied, gait: this.gait, activity_hz: value.recordedSpikes.reduce((n,e)=>n+e.indices.length,0)/this.runner.state.graph.header.N/.01, tick: this.tick, body: { ...body }, air: this.tick < this.airUntil, strike: s ? { ...s } : null, impact, onset: value.onset, spikes: value.recordedSpikes };
         this.frames.push(frame);
         if (this.frames.length > this.profile.recording_max_intervals)
             throw new Error('Declared recording bound exceeded');
@@ -194,10 +195,11 @@ export class Game {
         const payload = { ...(this.runner instanceof GameRunner ? {walking:this.runner.walking.snapshot()} : {}), neural, tick: this.tick, airUntil: this.airUntil, airDirection: this.airDirection, strike: this.strike, strikes: this.strikes, catches: this.catches, done: this.done, inputs: this.inputs, impacts: this.impacts, neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile: this.profile, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity };
         return sha256(new TextEncoder().encode(JSON.stringify(payload)));
     }
-    async log(): Promise<RoundLog> { return { schema: this.profile.version>=8?'flybench.game-round.v3':'flybench.game-round.v2', neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity, inputs: this.inputs.map(v => ({ ...v })), end_tick: this.tick, digest: await this.digest(), gaps: [] }; }
+    async log(): Promise<RoundLog> { return { schema: replaySchema(this.profile), neural_seed: this.neuralSeed, environment_seed: this.environmentSeed, profile_hashes: this.runtime.profile_hashes, graph_identity: this.runtime.graph_identity, inputs: this.inputs.map(v => ({ ...v })), end_tick: this.tick, digest: await this.digest(), gaps: [] }; }
 }
+export const replaySchema = (profile: any) => profile.version >= 9 ? 'flybench.game-round.v4' : profile.version >= 8 ? 'flybench.game-round.v3' : 'flybench.game-round.v2';
 export async function replayLog(buffer: ArrayBuffer, runtime: any, profile: any, log: RoundLog) {
-    if(log.schema!==(profile.version>=8?'flybench.game-round.v3':'flybench.game-round.v2'))throw Error('Unsupported replay schema for game profile');
+    if(log.schema!==replaySchema(profile))throw Error(`Unsupported replay schema for game profile ${profile.profile_id}; load with its original profile and source identities`);
     if (JSON.stringify(runtime.profile_hashes) !== JSON.stringify(log.profile_hashes) || runtime.graph_identity !== log.graph_identity)
         throw new Error('Replay identity mismatch');
     const game = new Game(buffer, runtime, profile, log.neural_seed, log.environment_seed);

@@ -1,0 +1,148 @@
+{
+  "schema": "flybench.ui-v2l.a01",
+  "base_sha": "f30ae501a21c71e714084bd378ae59d6e2144a9e",
+  "game_profile": "profiles/game-v2.9.json",
+  "no_retuning": true,
+  "measurement_seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "quiet_seconds": 30,
+  "bots": {
+    "ids": [
+      1,
+      2,
+      4
+    ],
+    "hands": [
+      "flick",
+      "swat"
+    ],
+    "hold_ms": [
+      80,
+      600
+    ],
+    "limits": [
+      false,
+      true
+    ],
+    "schedule": "Exact V2J: 1.5 s warmup, 1 s quiet gaps, six opportunities; bot 4 waits 150 ms grounded <=0.5 fly lengths/s; human limits 200 ms reaction and uniform +/-0.3 per aim axis, u32 stream 71.",
+    "comparison": "Paired v2.8 and v2.9 rounds per bot/limit/hand/seed/trial; record all impacts, onset leads, initial observed body and censored opportunities. Reexecute each v2.8 applied input in v2.9 until first divergence to distinguish direct flight-window effects from later-round path/timing effects."
+  },
+  "swat": "Original V2J repeated-rest schedule: two five-strike rounds per seed, 200 ms grounded below decoded movement deadband, environment 1000+seed+100*round. Unresolved opportunities count as non-escapes.",
+  "safety": {
+    "spontaneous_takeoffs_max_s": 0.05,
+    "whole_circuit_max_hz": 50
+  },
+  "dry_run": "Excluded seed 101, 1 s quiet, one opportunity per bot/limit/hand and one original resting-swat round; hero procedure seed 101 before declaration freeze.",
+  "hero": {
+    "rule": "First neural seed in ascending integer order whose single swat escapes with a recorded neural takeoff onset strictly before impact. Walk 1500 ms, observe the current body position at tick 3000, aim there, fixed 600 ms hold. Environment seed 8128. Every tried seed is retained; no aesthetic selection.",
+    "first_seed": 1,
+    "environment_seed": 8128,
+    "warmup_intervals": 150,
+    "hold_ms": 600,
+    "aim": "Current body position at 1500 ms; no lead",
+    "walk_slowdown_factor": 1,
+    "strike_slowdown_factor": 5,
+    "frame_duration_ms": 50,
+    "replay_seconds": 3,
+    "replay_speed": 0.25,
+    "output_width": 960,
+    "max_bytes": 8000000,
+    "og_rule": "Recorded hero replay frame with maximum observed spike count",
+    "lab_media": "Re-record new story at registered strength, step 1 then step 2."
+  },
+  "screens": {
+    "sizes": [
+      [
+        390,
+        844
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1366,
+        768
+      ],
+      [
+        1440,
+        900
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        2560,
+        1440
+      ]
+    ],
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "locales": [
+      "en-US",
+      "ru-RU",
+      "de-DE"
+    ],
+    "states": [
+      "intro-1",
+      "intro-2",
+      "intro-3",
+      "idle",
+      "hold",
+      "caught",
+      "escaped-flight",
+      "walk-out",
+      "replay",
+      "round",
+      "lab-1",
+      "lab-2",
+      "lab-3",
+      "try-yourself",
+      "silenced",
+      "how-top",
+      "how-middle",
+      "how-details"
+    ],
+    "reduced_motion": [
+      "caught",
+      "escaped-flight"
+    ],
+    "checks": [
+      "overlap",
+      "axe",
+      "same-origin network",
+      "arena bounds",
+      "visible control bounds"
+    ],
+    "fps_min": {
+      "game": 55,
+      "lab": 50
+    }
+  },
+  "review_clip": "10 s: one recorded caught hand and one recorded escaping hand; new stamp and airborne pose.",
+  "design_reference_sha256": "7946ce58de65596873d10fcbfa3681f3b085fa76a15b01889976e97ec099bc9b"
+}

@@ -87,13 +87,24 @@ class WalkingGame:
     def tick(self):
         return self.runner.state.tick
 
+    def distance(self, x, y):
+        if self.profile.get('version', 0) < 9:
+            return math.hypot(x, y)
+        # Same fixed binary64 order as the V2J TypeScript hypot repair.
+        x, y = abs(x), abs(y)
+        maximum = max(x, y)
+        if maximum == 0.:
+            return 0.
+        a, b = x / maximum, y / maximum
+        return math.sqrt(a*a+b*b)*maximum
+
     def apply(self, tick, x, y, hold_ms):
         if self.done or self.strike or self.strikes >= self.profile['max_strikes']:
             return False
-        if tick != self.tick or tick % 20 or not all(math.isfinite(v) for v in (x,y,hold_ms)) or hold_ms < 0 or math.hypot(x,y) > self.profile['arena_radius']:
+        if tick != self.tick or tick % 20 or not all(math.isfinite(v) for v in (x,y,hold_ms)) or hold_ms < 0 or self.distance(x,y) > self.profile['arena_radius']:
             raise ValueError('Invalid authoritative input')
         thresholds = self.profile['hold_thresholds_ms']
-        kind = 0 if hold_ms < thresholds[0] else 1 if hold_ms < thresholds[1] else 2
+        kind = sum(hold_ms >= threshold for threshold in thresholds)
         spec = self.profile['strikes'][kind]
         self.strikes += 1
         self.inputs.append(dict(tick=tick,x=x,y=y,hold_ms=hold_ms))
@@ -112,7 +123,7 @@ class WalkingGame:
         else:
             b = advance_body_v2(b,forward_speed_per_ms=value['applied'][1],turn_rate_rad_per_ms=value['applied'][2],dt_ms=10.)
         radius = self.profile['arena_radius']
-        distance = math.hypot(b.x,b.y)
+        distance = self.distance(b.x,b.y)
         while distance > radius:
             nx, ny = b.x/distance, b.y/distance
             factor = 2*radius/distance-1
@@ -120,7 +131,7 @@ class WalkingGame:
             b = replace(b,x=b.x*factor,y=b.y*factor,heading_x=b.heading_x-2*heading_dot*nx,heading_y=b.heading_y-2*heading_dot*ny)
             air_dot = self.air_direction[0]*nx+self.air_direction[1]*ny
             self.air_direction = (self.air_direction[0]-2*air_dot*nx,self.air_direction[1]-2*air_dot*ny)
-            distance = math.hypot(b.x,b.y)
+            distance = self.distance(b.x,b.y)
         self.runner.body = b
         impact = None
         if strike and self.tick == strike['impact_tick']:

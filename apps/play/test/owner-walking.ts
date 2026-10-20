@@ -80,7 +80,7 @@ export function botRound(profile:any,seed:number,bot:number,type:number,human:bo
   const still_ms=still*10;
   if(human){advance(20);x+=(u32(seed,71,trial,0)/2**32*2-1)*.3;y+=(u32(seed,71,trial,1)/2**32*2-1)*.3;}
   if(g.done||g.tick+Math.round(fall*2)>Math.min(endMs*2,profile.round_ms*2)){records.push({bot,human,type:profile.strikes[type].name,seed,trial,censored:true,reason:'Reaction or impact exceeds round'});continue;}
-  const aim=project(x,y,profile.arena_radius);g.apply({tick:g.tick,...aim,hold_ms:[80,300,600][type]});
+  const aim=project(x,y,profile.arena_radius);g.apply({tick:g.tick,...aim,hold_ms:({flick:80,slap:300,swat:600} as Record<string,number>)[profile.strikes[type].name]});
   while(g.strike&&!g.done&&g.tick<endMs*2)step();
   records.push({bot,human,seed,trial,observed_tick,observed_body:b,observed_forward:held,still_ms,censored:!g.lastImpact,...g.lastImpact});
  }
@@ -88,7 +88,7 @@ export function botRound(profile:any,seed:number,bot:number,type:number,human:bo
 }
 export function bots(profile:any,seeds:number[],one=false,onlyBot?:number,onlyType?:number,onlyHuman?:boolean){
  const records:any[]=[];
- for(const bot of onlyBot?[onlyBot]:[1,2,4])for(const human of onlyHuman===undefined?[false,true]:[onlyHuman])for(const type of onlyType===undefined?[0,1,2]:[onlyType])for(const seed of seeds)records.push(...botRound(profile,seed,bot,type,human,one?1:6).records);
+ for(const bot of onlyBot?[onlyBot]:[1,2,4])for(const human of onlyHuman===undefined?[false,true]:[onlyHuman])for(const type of onlyType===undefined?profile.strikes.map((_:any,i:number)=>i):[onlyType])for(const seed of seeds)records.push(...botRound(profile,seed,bot,type,human,one?1:6).records);
  const rates=[1,2,4].flatMap(bot=>[false,true].flatMap(human=>profile.strikes.map((s:any)=>{const all=records.filter(r=>r.bot===bot&&r.human===human&&r.type===s.name),r=all.filter(v=>!v.censored);return {bot,human,type:s.name,n:r.length,censored:all.length-r.length,catches:r.filter(v=>v.caught).length,catch_rate:mean(r.map(v=>+v.caught))};}))).filter(r=>r.n||r.censored);
  return {records,rates};
 }

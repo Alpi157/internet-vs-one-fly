@@ -103,6 +103,7 @@ stages:
   V2I: SUBMITTED
   V2J: SUBMITTED
   V2K: SUBMITTED
+  V2L: IN_PROGRESS
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -386,7 +387,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: Review V2K a01 outcome wording, reflex hero, and final-SHA software evidence. No push, tag or deployment.
+next_action: Implement owner-approved V2L design v5 and game v2.9; validate on the final SHA and submit a01 locally. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
