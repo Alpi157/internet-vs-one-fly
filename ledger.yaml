@@ -104,7 +104,7 @@ stages:
   V2J: SUBMITTED
   V2K: SUBMITTED
   V2L: SUBMITTED # prior ledger status retained; owner reports v2l-accepted and deployed
-  V2M: SUBMITTED_PENDING_EXTERNAL_REVIEW
+  V2M: SUBMITTED
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
