@@ -43,6 +43,7 @@ export class BrainView {
     private presentedMirrorFrames=0;
     private mirrorCallback=0;
     private mirrorStarted=0;
+    private mirrorLastCall=0;
     private mirrorUnavailable=false;
     private panelBounds: number[][] = [];
     private panelOffsets: number[][] = [[0,0],[0,0]];
@@ -316,6 +317,9 @@ export class BrainView {
         // Chromium and Firefox use a synchronous copy, which avoids stream encoding overhead.
         const streaming=navigator.vendor==='Apple Computer, Inc.'&&'captureStream' in source.canvas;
         if(streaming&&this.mirrorUnavailable){this.draw(frame,frames);return;}
+        const now=performance.now();
+        if(!this.mirroring||now-this.mirrorLastCall>250)this.mirrorStarted=now;
+        this.mirrorLastCall=now;
         if(streaming&&this.mirrorRaster&&performance.now()-this.mirrorStarted>5000){this.mirrorUnavailable=true;this.draw(frame,frames);return;}
         if(!this.mirrorRaster){
             this.mirrorStarted=performance.now();
