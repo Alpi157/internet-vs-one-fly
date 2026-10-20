@@ -83,7 +83,10 @@ in the selected seed's quiet lead-in is retained rather than edited or used to
 change the selection. The lab GIF runs story step 1 then step 2 at the registered
 test strength. The OG image and intro use the hero replay frame with the greatest
 observed spike count. A ten-second review video contains an actual caught hand
-and the selected escaped hand. Media hashes, dimensions, timing, inputs and source
+and the selected escaped hand. An initial complete recording exposed stale replay
+detail text after reset; its provenance is retained separately as
+`evidence/V2L/media-first-capture.json`. The final capture repeats the identical
+seed rule and inputs after clearing that text. No seed was excluded by the fix. Media hashes, dimensions, timing, inputs and source
 identities are in [media provenance](media/media-provenance.json).
 
 Interpretations and deviations from the renders:
