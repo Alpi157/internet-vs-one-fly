@@ -574,3 +574,22 @@ v2k_current:
   neural_takeoff_lead_ms: 60
   hero_bytes: 7294784
   acceptance: Final-SHA receipt under evidence/V2K/acceptance; external review pending.
+
+v2l_current:
+  attempt: a01
+  status: IN_PROGRESS
+  base_sha: f30ae501a21c71e714084bd378ae59d6e2144a9e
+  reference_commit: b34c30ec396152e7cb4e75e6ae1c1b19d61f4fbb
+  reference_zip_sha256_supplied: 7946ce58de65596873d10fcbfa3681f3b085fa76a15b01889976e97ec099bc9b
+  protocol_freeze_commit: 78b554e
+  protocol: profiles/ui-v2l.json
+  protocol_sha256: e002b6beceec75e2fddbd5f71f83983080e6a0241f40d0355fd59455f30027a8
+  game_profile: flybench.game.v2.9
+  game_profile_sha256: 45a54acd4613e7273333cc2feee3d681118b29fcb91bdd1f5baf082c3e41c240
+  mechanics: Two hands at 300 ms; flight 330 ms at unchanged speed. No tuning.
+  walking: Exact owner-selected A current and RNG; no lab drive.
+  labs: Unchanged worker and explicit original v2.8 profile.
+  decision: decisions/D-V2L-GAME-01.json
+  evidence: evidence/V2L
+  review_zip: reviews/V2L-a01.zip
+  acceptance: Final-SHA receipts required under evidence/V2L/acceptance; external review pending.

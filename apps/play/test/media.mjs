@@ -120,4 +120,94 @@ async function captureA03(){
   writeFileSync(resolve(evidence,'media-game-round.json'),JSON.stringify({log,impact,observations},null,2)+'\n');writeFileSync(provenancePath,JSON.stringify(provenance,null,2)+'\n');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 }
-if(process.argv.includes('--a03')||process.argv.includes('--v2k'))await captureA03();else await legacyCapture();
+async function captureV2L(){
+ const dry=process.argv.includes('--dry-run'),media=resolve(root,'docs/media'),evidence=resolve(root,'evidence/V2L'),frames='/tmp/flybench-v2l-media-frames';
+ mkdirSync(frames,{recursive:true});mkdirSync(evidence,{recursive:true});
+ const protocol=JSON.parse(readFileSync(resolve(root,'profiles/ui-v2l.json'))),selection={...protocol.hero},declaration=JSON.stringify(selection,null,2)+'\n';
+ const declaredProtocol=JSON.parse(execFileSync('git',['show','78b554e:profiles/ui-v2l.json'],{cwd:root,encoding:'utf8'}));assert.deepEqual(protocol,declaredProtocol,'Protocol fixed before capture');
+ writeFileSync(resolve(evidence,'hero-selection-declaration.json'),declaration);
+ const profile=JSON.parse(readFileSync(resolve(dist,'data/game.json'))),results=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
+ const provenance={schema:'flybench.media.v2l.a01',capture_code_sha256:hash(readFileSync(import.meta.filename)),base_commit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),protocol_commit:'78b554e',viewport:{width:1440,height:900},display_only:true,history:'docs/media/history/v2k-provenance.json',game:{selection},lab:{},assets:{},engineering_fixture_probes:JSON.parse(readFileSync(resolve(evidence,'fixture-probes.json')))};
+ const browser=await chromium.launch({headless:true}),{server,origin}=await serve(),external=[];
+ try{
+  const page=await browser.newPage({viewport:provenance.viewport});await page.route('**/*',r=>{const u=r.request().url();if(!u.startsWith(origin)&&!u.startsWith('data:')&&!u.startsWith('blob:')){external.push(u);return r.abort();}return r.continue();});
+  await page.addInitScript(()=>{localStorage.setItem('flybench.intro.v5','seen');});
+  await page.goto(origin+prefix+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady);await page.evaluate(()=>{document.getElementById('sound').checked=false;return document.fonts.ready;});
+  const reset=async seed=>{await page.evaluate(seed=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();window.flyTest.resetSeed(seed);},seed);await page.waitForFunction(()=>window.flyTest.ready());await page.click('#start');};
+  const strike=async()=>page.evaluate(hold=>{const b=window.flyTest.state().frame.body;window.flyTest.strike(b.x,b.y,hold);return {x:b.x,y:b.y};},selection.hold_ms);
+  if(dry){await reset(101);await page.evaluate(()=>window.flyTest.advance(150));const aim=await strike();await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.recordedFrames().length>0);await page.evaluate(()=>{window.flyTest.showReplay();window.flyTest.showRecorded('flash');});await page.waitForTimeout(100);const observed=await page.evaluate(()=>({state:window.flyTest.state(),frames:window.flyTest.recordedFrames(),brain:window.flyTest.brainSnapshot()}));writeFileSync(resolve(root,'apps/play/public/intro-brain.png'),Buffer.from(observed.brain.split(',')[1],'base64'));await page.locator('#timeline').screenshot({path:resolve(root,'apps/play/public/intro-timeline.png')});delete observed.brain;writeFileSync(resolve(evidence,'hero-dry-run.json'),JSON.stringify({excluded_seed:101,aim,...observed,status:'PASS'},null,2)+'\n');return;}
+  const trials=[];let seed=selection.first_seed;
+  for(;;seed++){
+   await reset(seed);await page.evaluate(()=>window.flyTest.advance(150));const aim=await strike();await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.recordedFrames().length>0);
+   const impact=await page.evaluate(()=>window.flyTest.state().lastImpact),qualifies=!impact.caught&&impact.escape_onset_lead_ms>0;
+   trials.push({seed,aim,caught:impact.caught,lead_ms:impact.lead_ms,escape_onset_lead_ms:impact.escape_onset_lead_ms,qualifies});console.log('Hero selection',seed,impact);if(qualifies)break;assert(trials.length<10000);
+  }
+  selection.tried=trials.length;selection.trials=trials;selection.declaration_sha256=hash(declaration);
+  writeFileSync(resolve(evidence,'hero-selection.json'),JSON.stringify({selection,code_sha:provenance.base_commit},null,2)+'\n');
+  const clock=new Date();await page.clock.install({time:clock});await page.clock.pauseAt(new Date(clock.getTime()+1000));
+  await reset(seed);let index=0;const observations=[];
+  const capture=async()=>{await page.clock.runFor(50);await page.screenshot({path:resolve(frames,`game-${String(index++).padStart(3,'0')}.png`)});observations.push(await page.evaluate(()=>({state:window.flyTest.state(),pill:document.getElementById('landing').textContent,stamp:document.getElementById('impact-label').hidden?'':document.getElementById('stamp-word').textContent})));};
+  for(let i=0;i<30;i++){await capture();await page.evaluate(()=>window.flyTest.advance(5));}
+  const aim=await strike();
+  while(!(await page.evaluate(()=>window.flyTest.recordedFrames().length))){await page.evaluate(()=>window.flyTest.advance(1));await capture();}
+  // Finish the declared 1.6 s impact stamp using the presentation clock. The
+  // authoritative simulation is paused at the same post-impact boundary as play.
+  while(await page.evaluate(()=>window.flyTest.state().stamp))await capture();
+  const log=await page.evaluate(()=>window.flyTest.log()),liveFrames=index;
+  assert.equal(log.schema,'flybench.game-round.v4');assert.deepEqual(log.inputs,[{tick:3000,...aim,hold_ms:600}]);
+  const impact=observations.map(o=>o.state.frame.impact).find(Boolean);assert(impact&&!impact.caught&&impact.escape_onset_lead_ms>0);
+  await page.evaluate(()=>{window.flyTest.showReplay();window.flyTest.measureReplay(true);});const replayTicks=[];
+  for(let i=0;i<60;i++){await capture();replayTicks.push(await page.evaluate(()=>window.flyTest.state().replayTick));}
+  const recorded=await page.evaluate(()=>window.flyTest.recordedFrames()),gfIndices=new Set(JSON.parse(readFileSync(resolve(dist,'data/brain.json'))).nodes.filter(n=>n.group==='giant fiber').map(n=>n.index)),gfSpikes=recorded.flatMap(f=>f.spikes).filter(e=>e.indices.some(i=>gfIndices.has(i))),gfLitFrames=replayTicks.map((tick,index)=>({index,tick,spikes:gfSpikes.filter(e=>e.tick<=tick&&tick-e.tick<=120)})).filter(f=>f.spikes.length);
+  assert(gfLitFrames.length>0);assert(new Set(replayTicks).size>20);assert(replayTicks.every((t,i)=>!i||t<replayTicks[i-1]||t-replayTicks[i-1]<=40));
+  await page.evaluate(()=>{window.flyTest.measureReplay(false);window.flyTest.showRecorded('flash');});await page.clock.runFor(100);await page.screenshot({path:resolve(media,'game-still.png')});
+  const recordedTick=await page.evaluate(()=>window.flyTest.state().replayTick),brain=await page.evaluate(()=>window.flyTest.brainSnapshot()),brainBytes=Buffer.from(brain.split(',')[1],'base64');
+  writeFileSync(resolve(evidence,'hero-recorded-brain.png'),brainBytes);writeFileSync(resolve(root,'apps/play/public/intro-brain.png'),brainBytes);
+  await page.locator('#timeline').screenshot({path:resolve(root,'apps/play/public/intro-timeline.png')});
+  const card=await page.evaluate(async({brain,count})=>{const c=document.createElement('canvas');c.width=1200;c.height=630;const g=c.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,1200,630);await document.fonts.load('900 72px Doto');const im=new Image();im.src=brain;await im.decode();g.drawImage(im,625,135,550,324);g.fillStyle='#e9ede6';g.font='900 72px Doto';g.fillText('Catch the fly',48,125);g.font='400 29px Atkinson';[`${count.toLocaleString('en-US')} simulated neurons`,'A fly brain from its real wiring.','Try to swat it.'].forEach((s,i)=>g.fillText(s,48,245+i*44));g.fillStyle='#7fefaa';g.font='400 24px Atkinson';g.fillText('alpi157.github.io/internet-vs-one-fly/',48,563);return c.toDataURL();},{brain,count:results.circuit_counts.game});writeFileSync(resolve(root,'apps/play/public/og-image.png'),Buffer.from(card.split(',')[1],'base64'));
+  provenance.game={selection,neural_seed:seed,environment_seed:selection.environment_seed,log,impact,frames:index,live_frames:liveFrames,walk_frames:30,frame_duration_ms:50,walk_slowdown_factor:1,live_slowdown_factor:5,replay_seconds:3,replay_speed:.25,replay_loop:true,replay_ticks:replayTicks,source:'Authoritative current-position swat after 1500 ms at real speed. Strike intervals shown 5x slower. Stamp lasts 1.6 presentation seconds. Replay uses ordinary quarter speed; every neural frame is recorded.',gf_lit_frames:gfLitFrames,quiet_walk_takeoffs:observations.filter((o,i)=>i<30&&o.state.frame.onset).map(o=>o.state.frame.tick),observed_takeoff:observations.some(o=>o.state.frame.air),observed_countdown:observations.some(o=>o.pill.includes('ms')),observed_escape_stamp:observations.some(o=>o.stamp==='Escaped'),og:{source:selection.og_rule,brain_frame_sha256:hash(brainBytes),recorded_tick:recordedTick,kind:'Site card, no personal score'},intro:{brain:'Same recorded maximum-spike hero frame as OG',timeline:'Canvas snapshot of its three recorded tracks',recorded_tick:recordedTick}};
+  // Five seconds of an actual caught hand for the first half of the review clip.
+  await reset(2);await page.evaluate(()=>window.flyTest.strike(2,0,0));
+  for(let i=0;i<100;i++){if(i<40)await page.evaluate(()=>window.flyTest.advance(1));await page.clock.runFor(50);await page.screenshot({path:resolve(frames,`review-${String(i).padStart(3,'0')}.png`)});}
+  const caughtLog=await page.evaluate(()=>window.flyTest.log()),caughtImpact=await page.evaluate(()=>window.flyTest.state().lastImpact);assert(caughtImpact.caught);
+  provenance.review={seconds:10,frames:200,frame_duration_ms:50,caught:{seed:2,log:caughtLog,impact:caughtImpact,source_frames:[0,99]},escaped:{seed,source:'First 100 hero source frames',source_frames:[0,99]}};
+  for(let i=0;i<100;i++)writeFileSync(resolve(frames,`review-${String(i+100).padStart(3,'0')}.png`),readFileSync(resolve(frames,`game-${String(i).padStart(3,'0')}.png`)));
+  await page.clock.resume();await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready());
+  provenance.lab={coupling:results.registered_coupling,neural_seed:results.lab_seeds.neural,environment_seed:results.lab_seeds.environment,sign:JSON.parse(readFileSync(resolve(dist,'data/coupling/runtime.json'))).null_selection,strength:JSON.parse(readFileSync(resolve(dist,'data/coupling/strength-demo.json'))),observations:[],frames:80,frame_duration_ms:100,story_steps:[1,2],registered_medians:results.registered_story};
+  let labIndex=0;
+  for(const step of [1,2]){await page.evaluate(step=>window.couplingTest.step(step),step);await page.waitForFunction(()=>window.couplingTest.ready());await page.waitForFunction(()=>window.couplingTest.state().panels[0].tick*.0005>=2,null,{timeout:60000});
+   for(let i=0;i<40;i++){const start=Date.now();await page.screenshot({path:resolve(frames,`lab-${String(labIndex++).padStart(3,'0')}.png`)});await page.waitForTimeout(Math.max(0,100-(Date.now()-start)));}
+   provenance.lab.observations.push(await page.evaluate(()=>window.couplingTest.state()));if(step===1)await page.screenshot({path:resolve(media,'coupling-still.png')});
+  }
+  provenance.external_requests=external;assert.equal(external.length,0);
+  for(const file of ['apps/play/public/data/runtime.json','apps/play/public/data/game.json','apps/play/public/data/coupling/runtime.json','apps/play/public/data/coupling/game-v2.8.json','apps/play/public/data/coupling/strength-demo.json','apps/play/public/data/anatomy/manifest.json','apps/play/public/og-image.png','apps/play/public/intro-brain.png','apps/play/public/intro-timeline.png','docs/media/game-still.png','docs/media/coupling-still.png']){const b=readFileSync(resolve(root,file));provenance.assets[file]={bytes:b.length,sha256:hash(b)};}
+  provenance.capture_source_sha256=Object.fromEntries(['main.ts','coupling.ts','coupling-worker.ts','brain-view.ts','field.ts','style.css','game.ts','worker.ts','intro.ts','chrome.ts','outcome.ts'].map(f=>['apps/play/src/'+f,hash(readFileSync(resolve(root,'apps/play/src/'+f)))]));
+  writeFileSync(resolve(evidence,'media-game-round.json'),JSON.stringify({log,impact,observations},null,2)+'\n');writeFileSync(resolve(media,'media-provenance.json'),JSON.stringify(provenance,null,2)+'\n');
+ }finally{await browser.close();await new Promise(r=>server.close(r));}
+}
+
+async function encodeV2LReview(){
+ const frames='/tmp/flybench-v2l-media-frames',provenancePath=resolve(root,'docs/media/media-provenance.json'),provenance=JSON.parse(readFileSync(provenancePath));
+ const source=Array.from({length:200},(_,i)=>'data:image/png;base64,'+readFileSync(resolve(frames,`video-${String(i).padStart(3,'0')}.png`)).toString('base64'));
+ const browser=await chromium.launch({headless:true}),{server,origin}=await serve();
+ try{
+  const page=await browser.newPage();await page.goto(origin+prefix+'404.html');
+  const movie=await page.evaluate(async frames=>{
+   const canvas=document.createElement('canvas');canvas.width=960;canvas.height=600;document.body.replaceChildren(canvas);const g=canvas.getContext('2d');
+   const images=await Promise.all(frames.map(src=>new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im);im.src=src;})));
+   const mime=['video/webm;codecs=vp9','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));if(!mime)throw Error('Chromium review encoder unavailable');
+   const stream=canvas.captureStream(20),recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:2000000}),chunks=[];
+   recorder.ondataavailable=e=>chunks.push(e.data);const stopped=new Promise(resolve=>recorder.onstop=resolve);
+   g.drawImage(images[0],0,0);recorder.start();const start=performance.now(),at=[];
+   for(let i=0;i<images.length;i++){await new Promise(r=>setTimeout(r,Math.max(0,start+i*50-performance.now())));g.drawImage(images[i],0,0);at.push(performance.now()-start);}
+   await new Promise(r=>setTimeout(r,Math.max(0,start+10000-performance.now())));const elapsed=performance.now()-start;recorder.stop();await stopped;stream.getTracks().forEach(t=>t.stop());
+   const bytes=new Uint8Array(await new Blob(chunks,{type:mime}).arrayBuffer());let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+   return {base64:btoa(binary),mime,elapsed_ms:elapsed,presentation_timestamps_ms:at};
+  },source);
+  const bytes=Buffer.from(movie.base64,'base64');delete movie.base64;writeFileSync(resolve(root,'evidence/V2L/review.webm'),bytes);
+  provenance.review={...provenance.review,...movie,bytes:bytes.length,sha256:hash(bytes),width:960,height:600,source:'Two sequences of 100 captured UI frames, caught then escaped, encoded at 20 frames per second for 10 seconds. No neural re-execution or invented observations.'};
+  assert(movie.elapsed_ms>=9990&&movie.elapsed_ms<10200);writeFileSync(resolve(root,'evidence/V2L/review-clip.json'),JSON.stringify(provenance.review,null,2)+'\n');writeFileSync(provenancePath,JSON.stringify(provenance,null,2)+'\n');console.log('Review clip',bytes.length,'bytes;',movie.elapsed_ms,'ms');
+ }finally{await browser.close();await new Promise(r=>server.close(r));}
+}
+
+if(process.argv.includes('--v2l-review'))await encodeV2LReview();else if(process.argv.includes('--v2l'))await captureV2L();else if(process.argv.includes('--a03')||process.argv.includes('--v2k'))await captureA03();else await legacyCapture();

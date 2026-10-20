@@ -5,6 +5,7 @@ export class MicroscopeField {
     private layer = document.createElement('canvas');
     private sprite = document.createElement('canvas');
     private dpr = 0;
+    private poseCount = 11;
     private cachedArenaPixels = 0;
     private image = new Image();
     private profile: any;
@@ -14,20 +15,28 @@ export class MicroscopeField {
         const source = await fetch(base + 'art/fly.svg').then(r => r.text());
         const doc = new DOMParser().parseFromString(source, 'image/svg+xml');
         const svg = doc.documentElement, defs = svg.querySelector('defs')!, original = defs.querySelector('#fly')!;
-        svg.setAttribute('viewBox', '0 8 960 124');
+        svg.setAttribute('viewBox', `0 8 ${this.poseCount*120} 124`);
         svg.querySelector(':scope > use')!.remove();
         // One SVG atlas and one rasterization per DPR: the approved art's actual
         // legs and wings change pose; the body heading is never animated away.
-        for (let pose = 0; pose < 8; pose++) {
+        for (let pose = 0; pose < this.poseCount; pose++) {
             const fly = original.cloneNode(true) as Element; fly.id = 'pose-' + pose;
             const swing = pose > 0 && pose < 7 ? Math.sin((pose - 1) / 6 * Math.PI * 2) * 4 : 0;
             const legs = fly.querySelectorAll('[href="#legL"]');
             legs[0].setAttribute('transform', `rotate(${swing} 54 51)`);
             legs[1].setAttribute('transform', `translate(120 0) scale(-1 1) rotate(${-swing} 54 51)`);
-            if (pose === 7) {
+            if (pose >= 7) {
+                fly.querySelector('[filter="url(#flyShadow)"]')?.remove();
+                legs[0].setAttribute('transform','rotate(-25 54 51)');legs[1].setAttribute('transform','translate(120 0) scale(-1 1) rotate(-25 54 51)');
                 const wings = fly.querySelectorAll('[href="#wingL"]');
                 wings[0].setAttribute('transform', 'rotate(35 52.5 49)');
                 wings[1].setAttribute('transform', 'translate(120 0) scale(-1 1) rotate(35 52.5 49)');
+            }
+            if(pose>=8){
+                // SVG blur is rasterized once and works in WebKit as well as
+                // engines supporting canvas filters. Three display-only levels.
+                const filter=doc.createElementNS('http://www.w3.org/2000/svg','filter'),blur=doc.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
+                filter.id='air-defocus-'+pose;filter.setAttribute('x','-40%');filter.setAttribute('y','-40%');filter.setAttribute('width','180%');filter.setAttribute('height','180%');blur.setAttribute('stdDeviation',String((pose-7)*1.4));filter.append(blur);defs.append(filter);fly.setAttribute('filter',`url(#${filter.id})`);
             }
             fly.querySelectorAll('[id]').forEach(e => e.removeAttribute('id')); defs.append(fly);
             const use = doc.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#pose-' + pose); use.setAttribute('transform', `translate(${pose * 120} 0)`); svg.append(use);
@@ -106,7 +115,7 @@ export class MicroscopeField {
         c.fillStyle = '#1e231f';
         c.textAlign = 'center';
         c.fillText(this.display.scale_bar_label, 350, 652);
-        this.sprite.width = 160 * 8 * dpr;
+        this.sprite.width = 160 * this.poseCount * dpr;
         this.sprite.height = 166 * dpr;
         if (this.image.complete && this.image.naturalWidth)
             this.sprite.getContext('2d')!.drawImage(this.image, 0, 0, this.sprite.width, this.sprite.height);
@@ -121,6 +130,7 @@ export class MicroscopeField {
         reticle: boolean;
         holdMs: number | null;
         lastImpact: any;
+        impactAgeMs?: number;
     }, output: HTMLCanvasElement = this.canvas) {
         if (this.dpr !== Math.min(devicePixelRatio || 1, 3) || this.cachedArenaPixels !== this.arenaPixels)
             this.cache();
@@ -134,12 +144,18 @@ export class MicroscopeField {
         c.arc(350, 350, 347, 0, Math.PI * 2);
         c.clip();
         const s = f.strike;
-        if (s && f.tick <= s.impact_tick) {
-            const [x, y] = this.point(s.aim_x, s.aim_y), progress = Math.max(0, Math.min(1, (f.tick - s.start_tick) / (s.impact_tick - s.start_tick))), radius = s.radius * this.arenaPixels / this.profile.arena_radius;
+        const impact=options.lastImpact;
+        const impactAge=options.impactAgeMs??(impact?(f.tick-impact.tick)*.5:Infinity);
+        const pressed=!!(impact?.caught&&f.tick>=impact.tick&&impactAge>=0&&impactAge<500);
+        // Caught feedback holds the actual recorded impact pose beneath the hand.
+        // The runner and its continuing neural/body trace are untouched.
+        if(pressed){const atImpact=options.frames.find(v=>v.tick===impact.tick);if(atImpact)f={...atImpact,air:false};}
+        const drawHand=(s:any,progress:number,pressed=false)=>{
+            const [x, y] = this.point(s.aim_x, s.aim_y), radius = s.radius * this.arenaPixels / this.profile.arena_radius;
             c.save();
             c.translate(x, y);
             c.fillStyle = `rgba(20,24,20,${.08 + .2 * progress})`;
-            c.filter = `blur(${3 + 12 * (1 - progress)}px)`;
+            c.filter = `blur(${pressed ? 2 : 3 + 12 * (1 - progress)}px)`;
             for (let i = 0; i < 4; i++) {
                 c.beginPath();
                 c.ellipse(radius * (-.75 + i * .5), -radius * (1.3 + (.4 - Math.abs(1.5 - i) * .2)), radius * .19, radius * .9, -.35, 0, Math.PI * 2);
@@ -160,37 +176,39 @@ export class MicroscopeField {
             c.arc(0, 0, radius, 0, Math.PI * 2);
             c.stroke();
             c.restore();
-        }
+        };
+        if(s&&f.tick<s.impact_tick)drawHand(s,Math.max(0,Math.min(1,(f.tick-s.start_tick)/(s.impact_tick-s.start_tick))));
         if (f.air && !options.reduced) {
-            c.strokeStyle = '#1e231f30';
+            c.strokeStyle = '#1e231f55';
+            c.setLineDash([2,8]);c.lineCap='round';
             c.lineWidth = 3;
             c.beginPath();
             let first = true;
             for (const v of options.frames)
-                if (v.tick <= f.tick && v.tick > f.tick - 160 && v.air) {
+                if (v.tick <= f.tick && v.tick >= (f.air_start_tick??f.tick-660) && v.air) {
                     const [x, y] = this.point(v.body.x, v.body.y);
                     first ? c.moveTo(x, y) : c.lineTo(x, y);
                     first = false;
                 }
-            c.stroke();
+            c.stroke();c.setLineDash([]);
         }
         const [x, y] = this.point(f.body.x, f.body.y);
         const length = this.display.fly_length_arena_units * this.arenaPixels / this.profile.arena_radius;
-        const air = f.air && !options.reduced;
-        c.save();
-        c.translate(x, y);
-        c.rotate(-Math.atan2(f.body.heading_y, f.body.heading_x) + Math.PI / 2);
-        if (air) {
-            c.fillStyle = '#1e231f20';
-            c.beginPath();
-            c.ellipse(8, 10, length * .3, length * .45, 0, 0, Math.PI * 2);
-            c.fill();
-            c.scale(1.06, 1.06);
+        const age=f.air_start_tick===undefined?120:(f.tick-f.air_start_tick)*.5;
+        const height=f.air?(options.reduced?1:Math.min(1,age/120,(this.profile.takeoff_duration_ms-age)/60)):0;
+        if(f.air){
+            c.save();c.fillStyle='#1e231f25';c.filter='blur(4px)';c.beginPath();
+            c.ellipse(x+height*length*.25,y+height*length*.3,length*.21,length*.29,0,0,Math.PI*2);c.fill();c.restore();
         }
-        const pose = options.reduced ? 0 : f.air ? 7 : f.gait > 0 ? 1 + Math.floor(f.gait * 12) % 6 : 0;
-        c.drawImage(this.sprite, pose * 160 * this.dpr, 0, 160 * this.dpr, 166 * this.dpr,
-            -length * 120 / 124 / 2, -length / 2, length * 120 / 124, length);
+        c.save();c.translate(x,y);c.rotate(-Math.atan2(f.body.heading_y,f.body.heading_x)+Math.PI/2);
+        if(f.air){const scale=1+.55*Math.max(0,height);c.scale(scale,scale);}
+        if(pressed)c.globalAlpha=.22;
+        const pose=f.air?(options.reduced?7:7+Math.round(3*Math.max(0,height))):options.reduced?0:f.gait>0?1+Math.floor(f.gait*12)%6:0;
+        c.drawImage(this.sprite,pose*160*this.dpr,0,160*this.dpr,166*this.dpr,-length*120/124/2,-length/2,length*120/124,length);
         c.restore();
+        if(pressed)drawHand({aim_x:impact.aim.x,aim_y:impact.aim.y,radius:impact.radius},1,true);
+        const landedMs=f.air_start_tick!==undefined&&f.air_start_tick>0?(f.tick-f.air_start_tick)*.5-this.profile.takeoff_duration_ms:Infinity;
+        if(!f.air&&!options.reduced&&landedMs>=0&&landedMs<400){c.strokeStyle=`rgba(30,35,31,${.16*(1-landedMs/400)})`;c.lineWidth=1.5;c.beginPath();c.arc(x,y,length*(.6+landedMs/1000),0,Math.PI*2);c.stroke();}
         if (options.reticle || options.holdMs !== null) {
             const [ax, ay] = this.point(options.aim.x, options.aim.y);
             c.strokeStyle = '#1e231f';
@@ -203,16 +221,16 @@ export class MicroscopeField {
             c.lineTo(ax, ay + 22);
             c.stroke();
             if (options.holdMs !== null) {
-                const ms = options.holdMs, t = this.profile.hold_thresholds_ms;
-                c.lineWidth = 4;
-                c.beginPath();
-                c.arc(ax, ay, 30, -Math.PI / 2, -Math.PI / 2 + Math.min(1, ms / (t[1] * 1.6)) * Math.PI * 2);
-                c.stroke();
-                c.fillStyle = '#1e231f';
-                c.font = '700 20px Atkinson';
-                c.textAlign = 'center';
-                const name = this.profile.strikes[ms < t[0] ? 0 : ms < t[1] ? 1 : 2].name;
-                c.fillText(name[0].toUpperCase() + name.slice(1), ax, ay + 57);
+                const ms=options.holdMs,threshold=this.profile.hold_thresholds_ms[0],ready=ms>=threshold;
+                const radius=this.profile.strikes[ready?this.profile.strikes.length-1:0].radius*this.arenaPixels/this.profile.arena_radius;
+                c.lineWidth=4;c.beginPath();c.arc(ax,ay,radius+8,-Math.PI/2,-Math.PI/2+Math.min(1,ms/threshold)*Math.PI*2);c.stroke();
+                c.lineWidth=1.5;c.setLineDash([5,5]);c.beginPath();c.arc(ax,ay,radius,0,Math.PI*2);c.stroke();c.setLineDash([]);
+                const width=ready?230:155,height=ready?68:40;
+                const px=Math.max(140,Math.min(560,ax)),py=Math.max(135,Math.min(560,ay-radius-20));
+                c.fillStyle='rgba(8,10,8,.88)';c.beginPath();c.roundRect(px-width/2,py-height,width,height,18);c.fill();
+                c.fillStyle='#f2f4f0';c.font='700 23px Atkinson';c.textAlign='center';c.fillText(ready?'Big, slow hand':'Fast hand',px,py-height+28);
+                if(ready){c.fillStyle='#c9d0c8';c.font='20px Atkinson';c.fillText('Release to swat',px,py-13);}
+
             }
         }
         c.restore();

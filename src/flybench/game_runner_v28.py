@@ -73,7 +73,7 @@ class GameRunnerV28(RunnerV2):
 
 
 class WalkingGame:
-    """Python counterpart of the v2.7 body/collision loop with the v2.8 adapter."""
+    """Python game body/collision loop for legacy and v2.9 profiles."""
     def __init__(self, runner, profile, environment_seed):
         self.runner, self.profile, self.environment_seed = runner, profile, environment_seed
         self.strike = None

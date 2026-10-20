@@ -8,24 +8,32 @@ import {Game,replayLog} from '../src/game.ts';
 import {root,load,runtime,buffer,quiet,summarize,botRound,originalRestingSwat} from './owner-walking.ts';
 const profile=load('profiles/game-v2.9.json'),old=load('profiles/game-v2.8.json'),protocol=load('profiles/ui-v2l.json'),out=root+'evidence/V2L';
 const hash=(p:string)=>createHash('sha256').update(readFileSync(root+p)).digest('hex');
-const receipt=()=>({code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),profile_sha256:hash('profiles/game-v2.9.json'),protocol_sha256:hash('profiles/ui-v2l.json')});
+const receipt=()=>({code_sha:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),validation_source_sha256:hash('apps/play/test/v2l.ts'),profile_sha256:hash('profiles/game-v2.9.json'),protocol_sha256:hash('profiles/ui-v2l.json')});
 function save(p:string,v:any){mkdirSync(out+'/'+p.split('/').slice(0,-1).join('/'),{recursive:true});writeFileSync(out+'/'+p,JSON.stringify(v,null,2)+'\n');}
 function pairs(bot:number,seeds:number[],one=false){
- const before:any[]=[],after:any[]=[],changed:any[]=[];
+ const before:any[]=[],after:any[]=[],changed:any[]=[],prefix_audits:any[]=[];
  for(const human of [false,true])for(const name of ['flick','swat'])for(const seed of seeds){
   const a=botRound(old,seed,bot,old.strikes.findIndex((s:any)=>s.name===name),human,one?1:6);
   const b=botRound(profile,seed,bot,profile.strikes.findIndex((s:any)=>s.name===name),human,one?1:6);
   before.push(...a.records);after.push(...b.records);
   const first=b.game.frames.find((f,i)=>{const prior=a.game.frames[i];return prior&&JSON.stringify(f.body)!==JSON.stringify(prior.body);})?.tick??null;
+  const fixed=new Game(buffer,runtime,profile,seed,1000+seed);let inputIndex=0,prefix:any=null;
+  while(fixed.tick<a.game.tick&&!fixed.done){
+   const input=a.game.inputs[inputIndex];if(input?.tick===fixed.tick){assert(fixed.apply(input));inputIndex++;}
+   const f=fixed.step(),prior=a.game.frames[f.tick/20-1];
+   if(JSON.stringify(f.body)!==JSON.stringify(prior.body)){prefix={tick:f.tick,takeoff_onset_tick:f.air_start_tick,flight_age_ms:(f.tick-f.air_start_tick!)*.5,old_body:prior.body,new_body:f.body,old_air:prior.air,new_air:f.air,applied_old_inputs:inputIndex,previous_input_tick:a.game.inputs[inputIndex-1]?.tick??null};break;}
+  }
+  assert.equal(prefix?.tick??null,first,'Adaptive bots must match fixed-input reexecution until first physical divergence');
+  prefix_audits.push({bot,human,hand:name,seed,first_divergence:prefix});
   for(let i=0;i<a.records.length;i++){
    const x=a.records[i],y=b.records[i];
-   if(x.censored!==y.censored||(!x.censored&&!y.censored&&x.caught!==y.caught))changed.push({bot,human,hand:name,seed,trial:i,before:x,after:y,first_body_divergence_tick:first,reason:i===0?'Flight extends past 120 ms before this impact (or a pre-strike spontaneous flight changes the approach).':'Earlier extended flight changes landing pose and later neural sensory input; bot 4 can also observe at a different eligibility time.',observation_clock_changed:x.observed_tick!==y.observed_tick});
+   if(x.censored!==y.censored||(!x.censored&&!y.censored&&x.caught!==y.caught))changed.push({bot,human,hand:name,seed,trial:i,before:x,after:y,first_body_divergence_tick:first,fixed_input_prefix:prefix,reason:x.censored!==y.censored?'Longer flight changes later resting eligibility, so an opportunity becomes available or exceeds the round.':first!==null&&first<=Math.min(x.observed_tick,y.observed_tick)?'A previous extended flight changes the observed body pose; later sensory input and neural trajectory can then differ.':'This impact follows the end of the original 120 ms flight window; the still-flying body follows the extended flight instead of landed walking.',observation_clock_changed:x.observed_tick!==y.observed_tick});
   }
  }
  const rates=(records:any[])=>[false,true].flatMap(human=>['flick','swat'].map(type=>{const all=records.filter(r=>r.human===human&&r.type===type),r=all.filter(v=>!v.censored);return {bot,human,type,n:r.length,censored:all.length-r.length,catches:r.filter(v=>v.caught).length,catch_rate:r.filter(v=>v.caught).length/r.length};}));
- return {before:{records:before,rates:rates(before)},after:{records:after,rates:rates(after)},changed};
+ return {before:{records:before,rates:rates(before)},after:{records:after,rates:rates(after)},changed,prefix_audits};
 }
-async function measuredBots(seeds:number[],one=false){const parts=await Promise.all([1,2,4].map(bot=>new Promise<any>((resolve,reject)=>{const w=new Worker(new URL(import.meta.url),{workerData:{bot,seeds,one}});w.once('message',r=>{console.log('paired bot',bot,'complete');resolve(r);});w.once('error',reject);w.once('exit',code=>{if(code)reject(Error('Worker exit '+code));});})));return {before:{records:parts.flatMap(p=>p.before.records),rates:parts.flatMap(p=>p.before.rates)},after:{records:parts.flatMap(p=>p.after.records),rates:parts.flatMap(p=>p.after.rates)},changed:parts.flatMap(p=>p.changed)};}
+async function measuredBots(seeds:number[],one=false){const parts=await Promise.all([1,2,4].map(bot=>new Promise<any>((resolve,reject)=>{const w=new Worker(new URL(import.meta.url),{workerData:{bot,seeds,one}});w.once('message',r=>{console.log('paired bot',bot,'complete');resolve(r);});w.once('error',reject);w.once('exit',code=>{if(code)reject(Error('Worker exit '+code));});})));return {before:{records:parts.flatMap(p=>p.before.records),rates:parts.flatMap(p=>p.before.rates)},after:{records:parts.flatMap(p=>p.after.records),rates:parts.flatMap(p=>p.after.rates)},changed:parts.flatMap(p=>p.changed),prefix_audits:parts.flatMap(p=>p.prefix_audits)};}
 function invariants(){
  assert.deepEqual(profile,load('profiles/game-v2.json'));assert.deepEqual(profile,load('apps/play/public/data/game.json'));
  assert.deepEqual(profile.walking_drive.selected,old.walking_drive.selected);
@@ -36,9 +44,17 @@ function invariants(){
  assert.deepEqual(load('apps/play/public/data/coupling/game-v2.8.json'),old);
  for(const [p,h] of Object.entries(load('evidence/V2L/protected.json').files))assert.equal(hash(p),h,p);
  for(const [p,v] of Object.entries(load('evidence/V2L/prior-preservation.json').files) as any[])assert.equal(hash(p),v.sha256,p);
+ for(const row of load('archive/raw-records-manifest.json').files){const p=row.path;assert.equal(readFileSync(root+p).length,row.bytes,p);assert.equal(hash(p),row.sha256,p);}
 }
 if(!isMainThread){parentPort!.postMessage(pairs(workerData.bot,workerData.seeds,workerData.one));}
-else if(process.argv.includes('--dry')){
+else if(process.argv.includes('--prefix-dry')){const bot=await measuredBots([101],true);save('prefix-dry-run.json',{...receipt(),classification:'PIPELINE_ONLY_SEED_101_EXCLUDED',bot});console.log('PASS fixed-input prefix replay dry run');}
+else if(process.argv.includes('--fixture-probes')){
+ const records:any[]=[];
+ const exercise=async(seed:number,warmup:number,hold:number,aim?:{x:number,y:number})=>{const g=new Game(buffer,runtime,profile,seed,8128);for(let i=0;i<warmup;i++)g.step();const b=g.runner.body;g.apply({tick:g.tick,x:aim?.x??b.x,y:aim?.y??b.y,hold_ms:hold});while(g.strike)g.step();records.push({seed,warmup_intervals:warmup,hold_ms:hold,log:await g.log(),impact:g.lastImpact,quiet_onsets:g.frames.filter(f=>f.onset&&f.tick<3000).map(f=>f.tick)});};
+ for(const seed of [1,2,3,4,5,6]){await exercise(seed,0,0,{x:0,y:0});await exercise(seed,150,600);}
+ for(const seed of [2,3,4])for(const x of [1.5,2,2.5])await exercise(seed,0,0,{x,y:0});
+ save('fixture-probes.json',{...receipt(),classification:'ENGINEERING_FIXTURES_NOT_HERO_SELECTION',reason:'Retain all seed 1-6 diagnostic workload probes used to choose an actual caught presentation fixture and inspect pre-strike spontaneous flights. Rule was already frozen; these do not change ascending hero selection. Recomputed with identical game parameters for a complete machine-readable trace.',seeds:[1,2,3,4,5,6],records});console.log('Recorded all 21 diagnostic fixture probes; no selection or tuning');
+}else if(process.argv.includes('--dry')){
  const q=await quiet(profile,101,1),bot=await measuredBots([101],true),swat=originalRestingSwat(profile,[101],1);
  const g=new Game(buffer,runtime,profile,101,8128);for(let i=0;i<150;i++)g.step();const b=g.runner.body;g.apply({tick:g.tick,x:b.x,y:b.y,hold_ms:600});while(g.strike)g.step();const log=await g.log();assert((await replayLog(buffer,runtime,profile,log)).matches);
  save('dry-run.json',{...receipt(),classification:'PIPELINE_ONLY_SEED_101_EXCLUDED',quiet:q,bot,swat,hero_log:log,hero_impact:g.lastImpact});console.log('PASS dry: both hands, all bot limits, swat schedule, hero procedure and replay');

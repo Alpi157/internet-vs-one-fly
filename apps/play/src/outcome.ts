@@ -8,11 +8,11 @@ const ms = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 10 
 export const isTakeoffEscape = (impact: ImpactOutcome) => !impact.caught && impact.escape_onset_lead_ms !== null && impact.escape_onset_lead_ms > 0;
 export function impactSentence(impact: ImpactOutcome | null): string {
     if (!impact) return 'Every flash is a recorded spike.';
-    const gf = impact.lead_ms === null ? 'Its giant fiber did not fire before your hand landed.' : `Its giant fiber fired ${ms(impact.lead_ms)} ms before your hand landed.`;
-    if (impact.caught) return gf + (impact.escape_onset_lead_ms === null ? '' : ` Takeoff began ${ms(impact.escape_onset_lead_ms)} ms before impact.`);
-    if (isTakeoffEscape(impact)) return (impact.lead_ms === null ? '' : gf + ' ') + `Takeoff began ${ms(impact.escape_onset_lead_ms!)} ms before impact.`;
-    return 'It walked out from under your hand. ' + (impact.lead_ms === null ? 'Its giant fiber did not fire.' : `Its giant fiber fired ${ms(impact.lead_ms)} ms before impact, too late to take off.`);
+    if (impact.caught) return impact.lead_ms === null ? 'It never saw it coming.' : `Too quick for it. It saw your hand only ${ms(impact.lead_ms)} ms before it landed.`;
+    if (isTakeoffEscape(impact)) return `It saw your hand coming and jumped ${ms(impact.escape_onset_lead_ms!)} ms before it landed.`;
+    return impact.lead_ms === null ? 'It walked out from under your hand.' : 'It walked out from under your hand. Its escape neuron fired too late to jump.';
 }
+export const impactDetail = (impact: ImpactOutcome | null) => impact?.lead_ms == null ? '' : `Escape neuron (giant fiber) fired ${ms(impact.lead_ms)} ms before impact.`;
 /** Preserve the highest GF lead rule, within pre-impact takeoff escapes first. */
 export function bestTakeoffEscape<T extends ImpactOutcome>(impacts: T[]): T | undefined {
     return impacts.filter(isTakeoffEscape).sort((a, b) => (b.lead_ms ?? -Infinity) - (a.lead_ms ?? -Infinity))[0];

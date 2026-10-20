@@ -1,16 +1,16 @@
 # Catch the Fly
 
-Try to swat a simulated fly driven by measured fruit-fly wiring, then replay the spikes behind its escape.
+A fly brain simulated from its real wiring. Try to swat it, then look inside its head.
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)**
 
-![A walking fly takes off before one swat lands; the Escaped stamp and quarter-speed replay show recorded giant fiber spikes](docs/media/game-hero.gif)
+![Game v2.9: a walking fly escapes a swat, lifts out of focus, and gets an Escaped stamp; recorded replay shows the escape neuron firing](docs/media/game-hero.gif)
 
 Walking runs at real speed. The swat and takeoff are slowed 5x, followed by 3 s of quarter-speed recorded replay with the giant fiber lit. Takeoff began before impact. [Capture rule, seeds tried and identities](docs/media/media-provenance.json).
 
 - **Science:** [preregistered comparisons](docs/preregistration-v2.1.md), a stricter input-strength control that overturned part of the headline, and [raw records with a DOI](https://doi.org/10.5281/zenodo.23409752).
 - **Engineering:** [bit-exact parity across Python, Numba, TypeScript and three browsers](packages/kernel-ts/test/browser-parity.mjs), WebGL rendering of [real neuron skeletons](docs/ui-v2h.md), and [reproducible acceptance](tools/acceptance.json).
-- **Game:** aim, hold and drop your hand; replay recorded spikes, shuffle partners or silence a circuit in the wiring lab. No account or tracking.
+- **Game:** click or tap for a fast hand; hold at least 300 ms for a big, slow hand. Replay recorded spikes, then explore the Wiring lab. No account or tracking.
 
 ## The finding
 
@@ -32,11 +32,11 @@ N-STRENGTH preserves incoming partner counts within sign and contact-count bins;
 
 The [original pre-registration](docs/preregistration-v2.md) was publicly timestamped on **2026-10-14** and the [robustness protocol](docs/preregistration-v2.1.md) on **2026-10-15**, before their runs. [Full family results and limits](docs/findings-v2f.md).
 
-![Measured rate versus the earlier N-SIGN shuffles; the stricter control removes most of this gap](docs/media/T1a-N-SIGN-H0-curve.png)
+![Registered T1a rate curve with the earlier N-SIGN shuffles; the stricter input-strength comparison is reported in the adjacent table](docs/media/T1a-N-SIGN-H0-curve.png)
 
-![Live BrainViews at the registered test strength, switching from Shuffle partners to Keep input strength](docs/media/coupling-hero.gif)
+![Wiring lab story: step 1 shows real and shuffled wiring, then step 2 keeps total input; large numbers are registered medians and smaller lines are live rates](docs/media/coupling-hero.gif)
 
-The lab recording switches between the existing fixed-rule N-SIGN and median-rate N-STRENGTH demos. Live numbers are separate from registered results. [Media provenance](docs/media/media-provenance.json) records seeds, identities and capture details.
+The Wiring lab recording walks through step 1 (N-SIGN) then step 2 (N-STRENGTH) at the registered test strength. Live numbers are separate from registered results. [Media provenance](docs/media/media-provenance.json) records seeds, identities and capture details.
 
 ## How it works
 
@@ -47,7 +47,7 @@ flowchart LR
     C --> D[LIF model: Python and Numba]
     C --> E[Equivalent TypeScript model]
     D --> F[Resumable experiment runner]
-    E --> G[Browser game and coupling lab]
+    E --> G[Browser game and Wiring lab]
 ```
 
 Visual features enter neural input ports. Spikes reach a motor decoder that receives no hand position, distance or future collision information. The previous command drives the current interval, so a new escape cannot alter an earlier hit.
@@ -73,13 +73,15 @@ Open the localhost URL printed by Vite with the `/internet-vs-one-fly/` base pat
 
 ## For scientists
 
-The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks.
+The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks.
 
 [Walking design and evidence](docs/walking-v2j.md)
 
+Game v2.9 has two hands: a press shorter than 300 ms uses the existing flick (speed 0.04, radius 0.8); a press of 300 ms or longer uses the existing swat (speed 0.025, radius 1.4). Flight lasts 330 ms at 0.018 arena units/ms, a 5.94-unit path. The first 120 ms, direction jitter and wall reflection stay as in v2.8. [Active game profile](profiles/game-v2.json) · [V2L design and validation](docs/ui-v2l.md).
+
 Lab simulations have no walking drive.
 
-The game executes a calibrated **5,555-neuron** circuit. The coupling lab executes **2,641 neurons** in each simulation. The full accepted graph contains **166,700 neurons**. Original body IDs and contact counts remain separate from executable weights. Unknown signs remain disabled. BrainView uses pinned MaleCNS skeletons in a composite of the brain frontal view and nerve cord underside view, simplified for display.
+The game executes a calibrated **5,555-neuron** circuit. The Wiring lab executes **2,641 neurons** in each simulation. The full accepted graph contains **166,700 neurons**. Original body IDs and contact counts remain separate from executable weights. Unknown signs remain disabled. BrainView uses pinned MaleCNS skeletons in a composite of the brain frontal view and nerve cord underside view, simplified for display.
 
 The model uses uniform current-based LIF neurons, assumed source signs, feature-level vision, declared turn-direction assumptions and abstract takeoff physics. Noise excludes visual and decoder ports. Moving the coupling slider explicitly resets both simulations with the same seed; normal game rounds retain neural state. Dropping the hand adds visual input to both neural simulations.
 

@@ -485,7 +485,8 @@
     "H0-T2 (T2), N-SIGN: the stability difference holds under this model. H0a: measured >0.1 (censored) versus null median 0.05, Holm p 0.02, supports the registered stability direction; H0b: measured 10.0006 versus null median 29.658, Holm p 0.02, supports the registered stability direction.",
     "H0-T2 (T2), N-STRENGTH: the registered stability result did not replicate. H0a: measured >0.1 (censored) versus null median >0.1 (censored), Holm p 1, not significant; does not establish the stability difference; H0b: measured 10.0006 versus null median 4.98657, Holm p 0.02, opposite direction: measured rate is higher."
   ],
-  "game_profile_id": "flybench.game.v2.8",
+  "game_disclosure": "Game v2.9 has two hands: a press shorter than 300 ms uses the existing flick (speed 0.04, radius 0.8); a press of 300 ms or longer uses the existing swat (speed 0.025, radius 1.4). Flight lasts 330 ms at 0.018 arena units/ms, a 5.94-unit path. The first 120 ms, direction jitter and wall reflection stay as in v2.8.",
+  "game_profile_id": "flybench.game.v2.9",
   "lab_caveat": "This shuffle keeps each neuron's excitatory and inhibitory partner counts and signs, but not its total input strength. Shuffles that also approximately keep input strength stay almost as calm as measured wiring: in the registered T1a comparison at coupling 0.039, measured wiring averaged 2.65 Hz, N-SIGN 119.78 Hz and N-STRENGTH 4.40 Hz (N-STRENGTH Holm p 0.088).",
   "lab_drive_disclosure": "Lab simulations have no walking drive.",
   "lab_heading": "Measured vs shuffled wiring",
@@ -497,6 +498,20 @@
   "mechanism": "EXPLORATORY: the earlier shuffles flattened the input-strength distribution in T1a (Gini about 0.47, versus 0.65 measured), while N-STRENGTH kept it close (about 0.64). This suggests that, in this model, stability mainly reflects how unevenly input strength is spread across neurons rather than which partners connect. This explanation was not a preregistered mechanism test; the E1 descriptors were preregistered as exploratory.",
   "original": "In this model, measured wiring stays calm at couplings where shuffles that keep each neuron's partner counts and signs saturate.",
   "registered_coupling": 0.039,
+  "registered_story": [
+    {
+      "label": "Real wiring",
+      "rate_hz": 2.650681560015146
+    },
+    {
+      "label": "Shuffled wiring",
+      "rate_hz": 119.77872018174934
+    },
+    {
+      "label": "Shuffled, same input",
+      "rate_hz": 4.400416508898145
+    }
+  ],
   "schema": "flybench.public-results.v2f",
   "source_sha256": {
     "docs/results-v2e.json": "6d13f787280dc94e91c90289563ecc00327ce32217ee029c03011e3e76b1b44a",
@@ -734,5 +749,5 @@
       "test": "H0-T2"
     }
   ],
-  "walking_disclosure": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.8). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+  "walking_disclosure": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network. The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
 }

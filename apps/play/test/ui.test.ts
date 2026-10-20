@@ -12,11 +12,11 @@ assert(Math.abs(Math.PI * profile.arena_radius ** 2 - (old.arena_half_size * 2) 
 for (const k of Object.keys(old))
     if (!['version', 'profile_id', 'change_reason'].includes(k))
         assert.deepEqual(profile[k], old[k], k);
-const active=json('profiles/game-v2.8.json');
+const active=json('profiles/game-v2.9.json');
 assert.deepEqual(active,json('profiles/game-v2.json'));
 assert.deepEqual(active,json('apps/play/public/data/game.json'));
 const preview=json('profiles/owner-walking-a02-selected.json').presets.A.profile;
-for(const key of Object.keys(profile))if(!['profile_id','version','change_reason'].includes(key))assert.deepEqual(active[key],preview[key],`Preview A ${key}`);
+for(const key of Object.keys(profile))if(!['profile_id','version','change_reason','hold_thresholds_ms','strikes','takeoff_duration_ms'].includes(key))assert.deepEqual(active[key],preview[key],`Preview A ${key}`);
 assert.deepEqual(active.walking_drive.selected,preview.walking_drive.selected);
 const square = new Game(buffer, runtime, old, 1, 2), circle = new Game(buffer, runtime, profile, 1, 2);
 square.apply({ tick: 0, x: 0, y: 0, hold_ms: 300 });

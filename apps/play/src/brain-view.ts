@@ -46,7 +46,7 @@ export class BrainView {
         this.nodes = nodes;
         this.display = display;
         this.lod = matchMedia('(pointer: coarse)').matches || innerWidth < 900 ? 'phone' : 'desktop';
-        host.innerHTML = `<div class="segments" role="radiogroup" aria-label="Anatomy view"><label><input type="radio" name="brain-mode" value="brain" checked>Brain</label><label><input type="radio" name="brain-mode" value="whole">Whole CNS</label></div><div class="brain-image"><canvas aria-label="Recorded neural activity on MaleCNS anatomy"></canvas><canvas class="brain-labels" aria-hidden="true"></canvas><span class="brain-loading" role="status">Loading real neuron skeletons…</span></div><p class="anatomy-caption">${ANATOMY_CAPTION}</p>`;
+        host.innerHTML = `<div class="segments" role="radiogroup" aria-label="Anatomy view"><label><input type="radio" name="brain-mode" value="brain" checked>Brain</label><label><input type="radio" name="brain-mode" value="whole"><span class="phone-hint">Whole CNS</span><span class="desktop-hint">Whole nervous system</span></label></div><div class="brain-image"><canvas aria-label="Recorded neural activity on MaleCNS anatomy"></canvas><canvas class="brain-labels" aria-hidden="true"></canvas><span class="brain-loading" role="status">Loading real neuron skeletons…</span></div><p class="anatomy-caption">${ANATOMY_CAPTION}</p>`;
         this.canvas = host.querySelector('canvas')!;
         host.querySelectorAll<HTMLInputElement>('input').forEach(input => input.name = `${host.id}-brain-mode`);
         this.overlay = host.querySelector('.brain-labels')!;
@@ -241,7 +241,7 @@ export class BrainView {
                             points.push(this.anatomy.point(j));
                 anchor = [points.reduce((s, p) => s + p[0], 0) / points.length, points.reduce((s, p) => s + p[1], 0) / points.length];
             }
-            const x = 24 + slot * 245, y = 25, label = group === 'giant fiber' ? 'Giant fiber' : group;
+            const x = 24 + slot * 245, y = 25, label = group === 'giant fiber' ? 'Escape neuron' : group;
             const q = this.point(anchor);
             c.strokeText(label, x, y);
             c.fillText(label, x, y);

@@ -1,4 +1,4 @@
-"""V2K changes presentation and recorded media only."""
+"""Historical V2K contract, pinned to its submitted tree before V2L changes."""
 import hashlib
 import json
 import subprocess
@@ -6,22 +6,24 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE='88945ca780d5fc12e59a51e2f5aec1d9d2556377'
+SUBMITTED='f30ae501a21c71e714084bd378ae59d6e2144a9e'
 
-def load(p):return json.loads((ROOT/p).read_text())
+def historical(p):return subprocess.check_output(['git','show',f'{SUBMITTED}:{p}'],cwd=ROOT)
+def load(p):return json.loads(historical(p))
 def digest(p):return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
 
 def test_v2k_mechanics_science_and_lab_unchanged():
     paths=subprocess.check_output(['git','ls-tree','-r','--name-only',BASE],cwd=ROOT,text=True).splitlines()
     exact={'apps/play/src/game.ts','apps/play/src/game-runner.ts','apps/play/src/walking-drive.ts','apps/play/src/worker.ts','apps/play/src/owner-preview.ts','apps/play/src/lab.ts','apps/play/src/coupling.ts','apps/play/src/coupling-worker.ts','apps/play/src/brain-view.ts','apps/play/src/field.ts','apps/play/src/style.css','docs/media/coupling-hero.gif','docs/media/coupling-still.png','docs/results-v2e.json','docs/results-v2f.json'}
     protected=[p for p in paths if p.startswith(('src/','packages/kernel-ts/src/','apps/play/public/data/','profiles/','decisions/','docs/media/anatomy/')) or p in exact]
-    result=subprocess.run(['git','diff','--exit-code',BASE,'--',*protected],cwd=ROOT,capture_output=True,text=True)
+    result=subprocess.run(['git','diff','--exit-code',BASE,SUBMITTED,'--',*protected],cwd=ROOT,capture_output=True,text=True)
     assert result.returncode==0,result.stdout
     for manifest in ['profiles/freeze-v2.json','profiles/freeze-v2.1.json']:
         for p,h in load(manifest)['files'].items():assert digest(p)==h,p
 
 def test_v2k_reflex_hero_rule_trials_and_history():
     prior=ROOT/'docs/media/history/v2j-a03-provenance.json'
-    assert prior.read_bytes()==subprocess.check_output(['git','show',f'{BASE}:docs/media/media-provenance.json'],cwd=ROOT)
+    assert historical('docs/media/history/v2j-a03-provenance.json')==subprocess.check_output(['git','show',f'{BASE}:docs/media/media-provenance.json'],cwd=ROOT)
     protocol=load('profiles/media-v2k.json');media=load('docs/media/media-provenance.json');g=media['game'];selection=g['selection'];trials=selection['trials']
     assert media['schema']=='flybench.media.v2k.a01'
     assert g['log']['inputs']==[{'tick':3000,**trials[-1]['aim'],'hold_ms':600}]
@@ -40,10 +42,9 @@ def test_v2k_reflex_hero_rule_trials_and_history():
     assert declared==protocol
 
 def test_v2k_prior_evidence_and_archives_unchanged():
-    # Full acceptance has local historical evidence; fresh-clone smoke uses Git identities.
-    for name in ['prior-preservation.json','unchanged-identities.json']:
-        p=ROOT/'evidence/V2K'/name
-        if not p.exists():continue
-        for file,meta in json.loads(p.read_text())['files'].items():
-            assert digest(file)==meta['sha256'],file
-            assert (ROOT/file).stat().st_size==meta['bytes'],file
+    # V2L pins the old ignored evidence/ZIPs; tracked V2K identities use Git.
+    p=ROOT/'evidence/V2L/prior-preservation.json'
+    if not p.exists():return
+    for file,meta in json.loads(p.read_text())['files'].items():
+        assert digest(file)==meta['sha256'],file
+        assert (ROOT/file).stat().st_size==meta['bytes'],file

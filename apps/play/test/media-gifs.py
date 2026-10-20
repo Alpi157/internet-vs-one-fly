@@ -1,7 +1,7 @@
 from pathlib import Path
 from PIL import Image
 import hashlib,json,sys
-root=Path(__file__).resolve().parents[3];frames=Path('/tmp/flybench-v2k-media-frames' if '--v2k' in sys.argv else '/tmp/flybench-v2j-a03-media-frames' if '--a03' in sys.argv else '/tmp/flybench-v2i-a02-media-frames')
+root=Path(__file__).resolve().parents[3];frames=Path('/tmp/flybench-v2l-media-frames' if '--v2l' in sys.argv else '/tmp/flybench-v2k-media-frames' if '--v2k' in sys.argv else '/tmp/flybench-v2j-a03-media-frames' if '--a03' in sys.argv else '/tmp/flybench-v2i-a02-media-frames')
 p=root/'docs/media/media-provenance.json';provenance=json.loads(p.read_text())
 # Retained lab media keep their original encoding metadata, even when the
 # pre-capture declaration contains only the new game's selection rule.
@@ -28,3 +28,7 @@ for size in [180,192,512]:
  out=root/f'apps/play/public/icon-{size}.png';data=out.read_bytes();provenance['assets'][str(out.relative_to(root))]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
 provenance['conversion_source_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 p.write_text(json.dumps(provenance,indent=2)+'\n')
+
+if '--v2l' in sys.argv:
+ for i in range(200):
+  im=Image.open(frames/f'review-{i:03d}.png').convert('RGB');im.thumbnail((960,600),Image.Resampling.LANCZOS);im.save(frames/f'video-{i:03d}.png')
