@@ -82,7 +82,9 @@ def test_recorded_media_provenance():
     assert hashlib.sha256((ROOT/'apps/play/test/media.mjs').read_bytes()).hexdigest()==manifest['capture_code_sha256']
     assert hashlib.sha256((ROOT/'apps/play/test/media-gifs.py').read_bytes()).hexdigest()==manifest['conversion_source_sha256']
     for name,digest in manifest['capture_source_sha256'].items():
-        assert hashlib.sha256(captured(name)).hexdigest()==digest,name
+        source_commit=manifest.get('capture_source_commit')
+        source=subprocess.check_output(['git','show',f'{source_commit}:{name}'],cwd=ROOT) if source_commit else captured(name)
+        assert hashlib.sha256(source).hexdigest()==digest,name
     assert Image.open(ROOT/'apps/play/public/og-image.png').size==(1200,630)
     runtime=json.loads((ROOT/'apps/play/public/data/runtime.json').read_text())
     public=json.loads((ROOT/'apps/play/public/results-v2f.json').read_text())

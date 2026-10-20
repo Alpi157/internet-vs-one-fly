@@ -11,7 +11,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!, base = import.meta.
 const icon = (path: string) => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
 const closeIcon = icon('M6 6L18 18M18 6L6 18'), pauseIcon = icon('M8 5V19M16 5V19'), playIcon = icon('M8 5L19 12L8 19Z');
 app.innerHTML = `<main><header><div><h1>Catch the fly</h1><div class="subtitle-slot"><p id="subtitle">Loading the mapped circuit…</p><div id="circuit-badge" hidden><span id="circuit-label"></span><button id="restore-wiring">Restore</button></div></div></div><nav aria-label="Main"><a href="./" aria-current="page">Play</a><button data-wiring>Wiring lab</button><a href="./how-it-works.html">How it works</a><a href="https://github.com/Alpi157/internet-vs-one-fly">Code ↗</a></nav><button class="icon" id="intro-help" aria-label="Show introduction">?</button></header>
-<div class="play-layout"><section class="game-column" aria-label="Game"><div class="stats"><div><strong id="score">0</strong><span>caught</span></div><div class="hand-count"><div id="pips" aria-hidden="true"></div><span id="strikes"></span></div></div><div class="field-wrap"><canvas id="table" tabindex="0" role="img" aria-label="Fly arena. Arrow keys aim. Hold Space and release to strike. Enter strikes at the reticle."></canvas><div id="intro"><button id="start" class="primary" disabled>Loading the fly…</button><small>No account. No tracking.</small></div><div id="landing" class="status-pill" hidden></div><div id="impact-label" class="outcome-stamp" hidden><span id="stamp-word"></span><span id="stamp-line"></span></div></div><p id="time" class="sr-only"></p><div class="hand-legend" aria-label="Two hands"><div id="fast-tile"><i class="tap-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Tap</b><span>Fast hand</span></span><span class="desktop-hint"><b>Click</b> for a fast hand</span></div><div id="hold-tile"><i class="hold-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Hold</b><span>Big, slow hand</span></span><span class="desktop-hint"><b>Hold</b> for a big, slow hand</span></div></div><p class="keyboard-hint">Keyboard: arrow keys aim, Space works like the mouse button.</p><div class="game-actions"><button id="replay-last" disabled>Replay</button><button id="next-hand" hidden>Next hand</button><button id="game-wiring" data-wiring>Wiring lab</button></div></section><div id="desktop-brain"><aside id="brain-panel" aria-label="Brain replay"><p id="replay-badge">Live brain</p><h2 id="brain-title">Under the microscope</h2><p id="caption">Every flash is a recorded spike.</p><p id="impact-detail" class="impact-detail"></p><div id="brain-host"><p role="status">Loading real neuron skeletons…</p></div><div class="brain-bottom"><canvas id="timeline" width="720" height="190" role="img" aria-label="Recorded Your hand, Looming detectors and Escape neuron tracks from 200 milliseconds before impact to hand lands"></canvas><div class="brain-explanation"><p>${brainExplanation}</p><button class="desktop-wiring" data-wiring>Is it the wiring? Open the wiring lab →</button></div></div><div class="playback"><button id="pause-replay" class="icon" aria-label="Pause replay">${pauseIcon}</button><span>Quarter speed. Every flash is a recorded spike.</span></div><div class="replay-actions"><button id="continue" class="primary">Next hand</button><button id="video" disabled>Save clip</button></div><button class="settings-link" data-how>Settings and model details</button></aside></div></div><p id="notice" role="status"></p><div id="announcer" class="sr-only" aria-live="polite"></div>${footer}</main>
+<div class="play-layout"><section class="game-column" aria-label="Game"><div class="stats"><div><strong id="score">0</strong><span>caught</span></div><div class="hand-count"><div id="pips" aria-hidden="true"></div><span id="strikes"></span></div></div><div class="field-wrap"><canvas id="table" tabindex="0" role="img" aria-label="Fly arena. Arrow keys aim. Hold Space and release to strike. Enter strikes at the reticle."></canvas><div id="intro"><button id="start" class="primary" disabled>Loading the fly…</button><small>No account. No tracking.</small></div><div id="landing" class="status-pill" hidden></div><div id="impact-label" class="outcome-stamp" hidden><span id="stamp-word"></span><span id="stamp-line"></span></div><div id="field-next" hidden><button id="field-continue" class="primary">Next hand →</button><span>or press Space</span><small>Paused while you watch the replay</small></div></div><p id="time" class="sr-only"></p><div class="hand-legend" aria-label="Two hands"><div id="fast-tile"><i class="tap-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Tap</b><span>Fast hand</span></span><span class="desktop-hint"><b>Click</b> for a fast hand</span></div><div id="hold-tile"><i class="hold-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Hold</b><span>Big, slow hand</span></span><span class="desktop-hint"><b>Hold</b> for a big, slow hand</span></div></div><p class="keyboard-hint">Keyboard: arrow keys aim, Space works like the mouse button.</p><div class="game-actions"><button id="replay-last" disabled>Replay</button><button id="next-hand" hidden>Next hand</button><button id="game-wiring" data-wiring>Wiring lab</button></div></section><div id="desktop-brain"><aside id="brain-panel" aria-label="Brain replay"><p id="replay-badge">Live brain</p><h2 id="brain-title">Under the microscope</h2><p id="caption">Every flash is a recorded spike.</p><p id="impact-detail" class="impact-detail"></p><div id="brain-host"><p role="status">Loading real neuron skeletons…</p></div><div class="brain-bottom"><div class="timeline-wrap"><canvas id="timeline" width="720" height="190" role="img" aria-label="Recorded Your hand, Looming detectors and Escape neuron tracks from 200 milliseconds before impact to the end of the recorded replay"></canvas><input id="replay-playhead" type="range" min="0" max="0" step="1" value="0" aria-label="Replay frame"><output id="replay-time" for="replay-playhead">impact</output></div><div class="brain-explanation"><p>${brainExplanation}</p><button class="desktop-wiring" data-wiring>Is it the wiring? Open the wiring lab →</button></div></div><div class="playback"><button id="pause-replay" class="icon" aria-label="Pause replay">${pauseIcon}</button><button id="frame-back" class="icon" aria-label="Previous recorded frame">‹</button><button id="frame-forward" class="icon" aria-label="Next recorded frame">›</button><label for="replay-speed">Speed</label><select id="replay-speed"><option value="0.25">1/4</option><option value="0.1">1/10</option><option value="0.025">1/40</option></select></div><div class="replay-actions"><button id="continue" class="primary">Next hand</button><button id="video" disabled>Save clip</button></div><button class="settings-link" data-how>Settings and model details</button></aside></div></div><p id="notice" role="status"></p><div id="announcer" class="sr-only" aria-live="polite"></div>${footer}</main>
 <dialog id="replay-sheet" aria-label="Last hand replay"><div class="grabber"></div><button class="icon close" data-close aria-label="Close replay">${closeIcon}</button><div id="replay-slot"></div></dialog>
 <dialog id="how-sheet" aria-labelledby="how-title"><div class="grabber"></div><button class="icon close" data-close aria-label="Close How it works">${closeIcon}</button><h2 id="how-title">What is real here?</h2><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p id="science-status"></p><p id="walking-disclosure" hidden></p><p>No wiring-superiority or human usability result is claimed.</p><div class="links"><a href="./how-it-works.html">How it works: model, findings and data</a><a href="./preregistration.html">Original preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.1.md">Robustness preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md">Findings</a><a id="dataset-link">Zenodo dataset</a></div><div class="settings"><label><input type="checkbox" id="reduce">Reduced motion</label><label><input type="checkbox" id="sound" checked>Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button></div><details><summary>Registered results</summary><div id="finding-copy"></div></details></dialog>
 
@@ -22,6 +22,7 @@ let runtime: any, profile: any, display: any, brain: any, buffer: ArrayBuffer, f
 let ready = false, started = false, paused = true, finished = false, replaying = false, replayPaused = false, catches = 0, used = 0, simSpeed = 0;
 let frame: Frame = { tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, air: false, applied: [false, 0, 0], gait: 0, activity_hz: 0, strike: null, impact: null, onset: false, spikes: [] };
 const history: Frame[] = [], impacts: any[] = [];
+let replaySpeed = .25;
 let replay: Frame[] = [], lastImpact: any = null, replayIndex = 0, replayStart = 0, replayPinned: number | null = null;
 let aim = { x: 0, y: 0 }, reticle = false, holdStart: number | null = null, reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, audio: AudioContext | null = null;
 let couplingOpen = false, requestId = 0;
@@ -89,7 +90,10 @@ function beginReplay() {
     $('caption').textContent = impactSentence(lastImpact);
     $('impact-detail').textContent = impactDetail(lastImpact);
     $('brain-panel').classList.add('active');
-    $('continue').textContent = finished ? 'Round summary' : 'Next hand';
+    ($('replay-playhead') as HTMLInputElement).max=String(replay.length-1);
+    $('field-continue').textContent=finished?'See your round':'Next hand →';
+    $('next-hand').textContent=finished?'See your round':'Next hand';
+    $('continue').textContent = finished ? 'See your round' : 'Next hand';
     ($('video') as HTMLButtonElement).disabled = !('MediaRecorder' in window) || !('captureStream' in table);
     ($('replay-last') as HTMLButtonElement).disabled = false;
     $('pause-replay').innerHTML = pauseIcon;
@@ -101,25 +105,54 @@ function beginReplay() {
     }
     updateStats();
 }
-function continueGame() { clearTimeout(replayTimer);stampUntil=0;$('impact-label').hidden=true;$('replay-last').textContent='Replay';$('replay-last').classList.remove('primary');$('next-hand').hidden=true;$('game-wiring').hidden=false;$('impact-detail').textContent=''; if (($('replay-sheet') as HTMLDialogElement).open)
+function continueGame() { $('field-next').hidden=true; clearTimeout(replayTimer);stampUntil=0;$('impact-label').hidden=true;$('replay-last').textContent='Replay';$('replay-last').classList.remove('primary');$('next-hand').hidden=true;$('game-wiring').hidden=false;$('impact-detail').textContent=''; if (($('replay-sheet') as HTMLDialogElement).open)
     ($('replay-sheet') as HTMLDialogElement).close(); $('desktop-brain').append($('brain-panel')); replaying = false; replayPinned = null; drawnTick = -1; $('brain-panel').classList.remove('active'); if (finished) {
     showRound();
     return;
 } paused = false; $('brain-title').textContent = 'Under the microscope'; $('brain-title').classList.remove('escaped'); $('replay-badge').textContent = 'Live brain'; $('caption').textContent = 'Every flash is a recorded spike.'; send('resume'); updateStats(); table.focus(); }
 $('continue').onclick = continueGame;
 $('next-hand').onclick=continueGame;
+$('field-continue').onclick=continueGame;
 $('replay-last').onclick = beginReplay;
-$('pause-replay').onclick = () => { replayPaused = !replayPaused; if (!replayPaused) {
-    replayPinned = null;
-    replayStart = performance.now() - replayIndex * 40;
-} $('pause-replay').innerHTML = replayPaused ? playIcon : pauseIcon; $('pause-replay').setAttribute('aria-label', replayPaused ? 'Play replay' : 'Pause replay'); };
+function replayControls(){
+    $('pause-replay').innerHTML=replayPaused?playIcon:pauseIcon;
+    $('pause-replay').setAttribute('aria-label',replayPaused?'Play replay':'Pause replay');
+    const input=$('replay-playhead') as HTMLInputElement;input.value=String(replayIndex);
+    const ms=(replay[replayIndex]?.tick-lastImpact?.tick)*.5;
+    const label=ms===0?'impact':`${ms<0?'−':'+'}${Math.abs(ms)} ms`;
+    $('replay-time').textContent=label;input.setAttribute('aria-valuetext',label);
+    ($('frame-back') as HTMLButtonElement).disabled=replayIndex===0;
+    ($('frame-forward') as HTMLButtonElement).disabled=replayIndex===replay.length-1;
+}
+function seekReplay(index:number){
+    if(!replay.length)return;
+    replayIndex=Math.max(0,Math.min(replay.length-1,Math.round(index)));replayPaused=true;replayPinned=replayIndex;stampUntil=0;drawnTick=-1;replayControls();
+}
+$('replay-playhead').oninput=()=>seekReplay(Number(($('replay-playhead') as HTMLInputElement).value));
+$('replay-playhead').onkeydown=e=>{
+    const moves:Record<string,number>={ArrowLeft:-1,ArrowDown:-1,ArrowRight:1,ArrowUp:1,PageDown:-10,PageUp:10};
+    if(e.key in moves||['Home','End'].includes(e.key)){e.preventDefault();e.stopPropagation();seekReplay(e.key==='Home'?0:e.key==='End'?replay.length-1:replayIndex+moves[e.key]);}
+};
+$('frame-back').onclick=()=>seekReplay(replayIndex-1);$('frame-forward').onclick=()=>seekReplay(replayIndex+1);
+$('replay-speed').onchange=()=>{replaySpeed=Number(($('replay-speed') as HTMLSelectElement).value);replayStart=performance.now()-replayIndex*10/replaySpeed;};
+$('pause-replay').onclick=()=>{
+    replayPaused=!replayPaused;if(!replayPaused){if(replayIndex===replay.length-1)replayIndex=0;replayPinned=null;replayStart=performance.now()-replayIndex*10/replaySpeed;}replayControls();
+};
+document.addEventListener('keydown',e=>{
+    if(e.repeat||!['Space','Enter'].includes(e.code)||!replaying)return;
+    const target=e.target as HTMLElement;
+    if(target.matches('input,textarea,select,[contenteditable="true"]')||target.closest('.playback,.brain-fullscreen')||document.querySelector('dialog[open]:not(#replay-sheet)'))return;
+    // Preserve explicit button actions. Space/Enter elsewhere advances the hand.
+    if(target.closest('button,a,summary')&&!target.closest('#continue,#next-hand,#field-continue'))return;
+    e.preventDefault();e.stopPropagation();continueGame();
+},true);
 function drawTimeline(f: Frame, frames = replay, impact = lastImpact, output = timeline) {
     const c = output.getContext('2d')!;
     c.fillStyle = '#0a0c0a';
     c.fillRect(0, 0, 720, 190);
     if (!impact || !brain)
         return;
-    const first = impact.tick - profile.replay_pre_ms * 2, last = impact.tick, data = frames.filter(f => f.tick >= first && f.tick <= last), x = (t: number) => 255 + (t - first) / (last - first) * 440;
+    const first = frames[0]?.tick??impact.tick-profile.replay_pre_ms*2, last = frames.at(-1)?.tick??impact.tick, data = frames.filter(f => f.tick >= first && f.tick <= last), x = (t: number) => 255 + (t - first) / (last - first) * 440;
     const groups = new Map<number, string>(brain.nodes.map((n: any) => [n.index, n.group]));
     const population = brain.nodes.filter((n: any) => ['LC4', 'LPLC2'].includes(n.group)).length;
     const rates = data.map(v => v.spikes.reduce((n, e) => n + e.indices.filter(i => ['LC4', 'LPLC2'].includes(groups.get(i)!)).length, 0) / population / .01), maxRate = Math.max(1, ...rates);
@@ -158,8 +191,8 @@ function drawTimeline(f: Frame, frames = replay, impact = lastImpact, output = t
     c.strokeStyle = '#e9ede6';
     c.setLineDash([4, 4]);
     c.beginPath();
-    c.moveTo(x(last), 5);
-    c.lineTo(x(last), 148);
+    c.moveTo(x(impact.tick), 5);
+    c.lineTo(x(impact.tick), 148);
     c.stroke();
     c.setLineDash([]);
     c.strokeStyle = '#7fefaa';
@@ -168,9 +201,9 @@ function drawTimeline(f: Frame, frames = replay, impact = lastImpact, output = t
     c.lineTo(x(Math.max(first, Math.min(last, f.tick))), 148);
     c.stroke();
     c.fillStyle = '#c9d0c8';
-    c.fillText(`−${profile.replay_pre_ms} ms`, 255, 179);
+    c.fillText(`${(first-impact.tick)*.5} ms`, 255, 179);
     c.textAlign = 'right';
-    c.fillText('hand lands', 695, 179);
+    c.fillText(`+${(last-impact.tick)*.5} ms`, 695, 179);
     c.textAlign = 'left';
 }
 let loopReplay = false;
@@ -180,8 +213,9 @@ function animate(now: number) {
         let shown = frame;
         if (replaying && replay.length) {
             if (!replayPaused)
-                replayIndex = replayPinned ?? Math.max(0, loopReplay ? Math.floor((now - replayStart) / 40) % replay.length : Math.min(replay.length - 1, Math.floor((now - replayStart) / 40)));
+                replayIndex = replayPinned ?? Math.max(0, loopReplay ? Math.floor((now - replayStart) * replaySpeed / 10) % replay.length : Math.min(replay.length - 1, Math.floor((now - replayStart) * replaySpeed / 10)));
             shown = replay[replayIndex];
+            if(!loopReplay&&replayIndex===replay.length-1)replayPaused=true;replayControls();
         }
         const holding=holdStart!==null&&now-holdStart>=profile.hold_thresholds_ms[0];
         $('hold-tile').classList.toggle('ready',holding);
@@ -189,6 +223,7 @@ function animate(now: number) {
         if(holdStart===null)holdAnnounced=false;
         const stamp=lastImpact&&now<stampUntil;
         $('impact-label').hidden=!stamp;
+        $('field-next').hidden=!(replaying&&!stamp&&innerWidth>=900);
         if(stamp){$('impact-label').style.opacity=String(reduced?1:Math.min(1,(stampUntil-now)/200));}
         if (shown.tick !== drawnTick || replaying !== drawnReplay || holdStart !== null || stamp) {
             field.draw(stamp?frame:shown, { impactAgeMs:stamp?now-impactWall:undefined, reduced, frames: replaying ? replay : history, aim, reticle, holdMs: holdStart === null ? null : now - holdStart, lastImpact });
@@ -304,7 +339,7 @@ async function showLab(){
     await openCoupling(couplingHost,base,()=>{couplingOpen=false;app.hidden=false;drawnTick=-1;window.scrollTo(0,0);if(finished)showRound();else if(started&&!paused)send('resume');},selectCircuit);
 }
 document.querySelectorAll<HTMLElement>('[data-wiring]').forEach(b=>b.onclick=showLab);
-function reset() { $('impact-detail').textContent='';reticle=false;holdStart=null;holdAnnounced=false;aim={x:0,y:0};clearTimeout(replayTimer);stampUntil=0;$('impact-label').hidden=true;$('replay-last').textContent='Replay';$('replay-last').classList.remove('primary');$('next-hand').hidden=true;$('game-wiring').hidden=false; $('desktop-brain').append($('brain-panel'));$('brain-panel').classList.remove('active');$('brain-title').textContent='Under the microscope';$('brain-title').classList.remove('escaped');$('replay-badge').textContent='Live brain';$('caption').textContent='Every flash is a recorded spike.'; started = false; paused = true; replaying = false; finished = false; ready = false; history.length = 0; impacts.length = 0; replay = []; lastImpact = null; used = 0; catches = 0; frame = { ...frame, tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, strike: null, impact: null, spikes: [], air: false, gait: 0 }; $('intro').hidden = false; drawnTick = -1; ($('replay-last') as HTMLButtonElement).disabled = true; updateStats(); }
+function reset() { $('field-next').hidden=true; $('impact-detail').textContent='';reticle=false;holdStart=null;holdAnnounced=false;aim={x:0,y:0};clearTimeout(replayTimer);stampUntil=0;$('impact-label').hidden=true;$('replay-last').textContent='Replay';$('replay-last').classList.remove('primary');$('next-hand').hidden=true;$('game-wiring').hidden=false; $('desktop-brain').append($('brain-panel'));$('brain-panel').classList.remove('active');$('brain-title').textContent='Under the microscope';$('brain-title').classList.remove('escaped');$('replay-badge').textContent='Live brain';$('caption').textContent='Every flash is a recorded spike.'; started = false; paused = true; replaying = false; finished = false; ready = false; history.length = 0; impacts.length = 0; replay = []; lastImpact = null; used = 0; catches = 0; frame = { ...frame, tick: 0, body: { x: 0, y: 0, heading_x: 1, heading_y: 0 }, strike: null, impact: null, spikes: [], air: false, gait: 0 }; $('intro').hidden = false; drawnTick = -1; ($('replay-last') as HTMLButtonElement).disabled = true; updateStats(); }
 function save(blob: Blob, name: string) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); }
 function wrap(c: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, lineHeight: number) { let line = ''; for (const word of text.split(' ')) {
     if (c.measureText(line + word).width > width) {
@@ -409,7 +444,7 @@ $('video').onclick = async () => {
 })();
 requestAnimationFrame(animate);
 if (manual)
-    (window as any).flyTest = { ready: () => ready, start, intro:(card:number)=>introCards.show(card), closeIntro:()=>introCards.close(), resetSeed: (neuralSeed:number) => { reset(); send('init', {buffer,runtime,profile,neuralSeed,environmentSeed:8128,manual:true}); }, brainSnapshot: () => brainView?.snapshot().toDataURL(), arenaBounds: () => { const r=table.getBoundingClientRect(), radius=r.width*field.arenaPixels/700;return {x:r.x+r.width/2-radius,y:r.y+r.height/2-radius,right:r.x+r.width/2+radius,bottom:r.y+r.height/2+radius}; }, startLive: () => { reset(); send('init', { buffer, runtime, profile, neuralSeed: 2026092802, environmentSeed: 8128, manual: false }); }, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: continueGame, log: () => request('log'), state: () => ({ frame, lastImpact, replayFrame: replay[replayIndex], replayTick: replay[replayIndex]?.tick, catches, used, finished, replaying, stamp:performance.now()<stampUntil, simSpeed, paintCount, reduced, anatomyReady: brainView?.ready, anatomyLoadMs: brainView?.loadMs, lod: brainView?.lod, renderer: brainView?.renderer }), measureReplay: (enabled: boolean) => { loopReplay = enabled; replayPaused = false; replayPinned = null; replayStart = performance.now(); }, recordedFrames: () => structuredClone(replay), showStamp:(kind:string)=>{clearTimeout(replayTimer);for(const d of Array.from(document.querySelectorAll<HTMLDialogElement>('dialog[open]')))d.close();$('desktop-brain').append($('brain-panel'));replaying=false;if(!replay.length)throw Error('Record a hand first');const f=kind==='escaped-flight'?replay.find(f=>f.air&&f.tick>=lastImpact.tick+120)??replay.find(f=>f.air&&f.tick>=lastImpact.tick):replay.find(f=>f.impact)??replay.at(-1)!;frame=f!;impactWall=performance.now();stampUntil=impactWall+1600;$('stamp-word').textContent=lastImpact.caught?'Caught':'Escaped';$('stamp-word').classList.toggle('escaped',!lastImpact.caught);$('stamp-line').textContent=impactSentence(lastImpact);drawnTick=-1;}, showReplay:()=>{clearTimeout(replayTimer);stampUntil=0;beginReplay();}, showRound, presentOutcomes: (records: ImpactOutcome[], summary = false) => {
+    (window as any).flyTest = { ready: () => ready, start, intro:(card:number)=>introCards.show(card), closeIntro:()=>introCards.close(), resetSeed: (neuralSeed:number) => { reset(); send('init', {buffer,runtime,profile,neuralSeed,environmentSeed:8128,manual:true}); }, seekReplay, replayActivity:()=>brainView?.activityAt(replay[replayIndex],replay), replayIndex:()=>replayIndex, brainSnapshot: () => brainView?.snapshot().toDataURL(), arenaBounds: () => { const r=table.getBoundingClientRect(), radius=r.width*field.arenaPixels/700;return {x:r.x+r.width/2-radius,y:r.y+r.height/2-radius,right:r.x+r.width/2+radius,bottom:r.y+r.height/2+radius}; }, startLive: () => { reset(); send('init', { buffer, runtime, profile, neuralSeed: 2026092802, environmentSeed: 8128, manual: false }); }, advance: (intervals: number) => request('advance', { intervals }), strike: (x: number, y: number, hold_ms: number) => send('strike', { x, y, hold_ms }), resume: continueGame, log: () => request('log'), state: () => ({ frame, lastImpact, replayFrame: replay[replayIndex], replayTick: replay[replayIndex]?.tick, catches, used, finished, replaying, stamp:performance.now()<stampUntil, simSpeed, paintCount, reduced, anatomyReady: brainView?.ready, anatomyLoadMs: brainView?.loadMs, lod: brainView?.lod, renderer: brainView?.renderer }), measureReplay: (enabled: boolean) => { loopReplay = enabled; replayPaused = false; replayPinned = null; replayStart = performance.now(); }, recordedFrames: () => structuredClone(replay), showStamp:(kind:string)=>{clearTimeout(replayTimer);for(const d of Array.from(document.querySelectorAll<HTMLDialogElement>('dialog[open]')))d.close();$('desktop-brain').append($('brain-panel'));replaying=false;if(!replay.length)throw Error('Record a hand first');const f=kind==='escaped-flight'?replay.find(f=>f.air&&f.tick>=lastImpact.tick+120)??replay.find(f=>f.air&&f.tick>=lastImpact.tick):replay.find(f=>f.impact)??replay.at(-1)!;frame=f!;impactWall=performance.now();stampUntil=impactWall+1600;$('stamp-word').textContent=lastImpact.caught?'Caught':'Escaped';$('stamp-word').classList.toggle('escaped',!lastImpact.caught);$('stamp-line').textContent=impactSentence(lastImpact);drawnTick=-1;}, showReplay:()=>{clearTimeout(replayTimer);stampUntil=0;beginReplay();}, showRound, presentOutcomes: (records: ImpactOutcome[], summary = false) => {
         // Presentation fixtures only, under ?test=1. Recorded spike frames are
         // retained verbatim; no worker/simulation state or observations change.
         if (!replay.length) throw new Error('A recorded hand is required');

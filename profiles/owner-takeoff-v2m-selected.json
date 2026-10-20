@@ -1,0 +1,371 @@
+{
+  "schema": "flybench.owner-takeoff-offer.v1",
+  "protocol_sha256": "1e197a43cb3f9cc7b17017e7de7f15ff67a65d75c7958e1e5233cf199e65c3d0",
+  "production_profile": "flybench.game.v2.9",
+  "presets": {
+    "T0": {
+      "name": "T0 · 0.018 units/ms",
+      "profile": {
+        "profile_id": "flybench.game.v2.9.owner-v2m.T0",
+        "version": 9,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          300
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.018,
+        "takeoff_duration_ms": 330,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "V2L owner-approved design v5: two input hands and longer flight only.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.5,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1.5,
+            "stop_seconds": 1
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive.",
+            "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+          },
+          "selection_decision": "decisions/D-V2J-SELECT-01.json",
+          "history": "docs/walking-v2j.md"
+        },
+        "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Flight duration scales to keep the path about six arena units. Walking, neural onset, direction, jitter and reflection are unchanged.",
+        "takeoff_path_arena_units": 5.9399999999999995,
+        "owner_preset": {
+          "id": "T0",
+          "name": "T0",
+          "production": false
+        }
+      },
+      "profile_sha256": "5dfed5225c48ae538c7113c846de3f550e2075d90e3b6e35db8c1e4963a2a98d",
+      "gates": {
+        "false_takeoffs": true,
+        "circuit_rate": true,
+        "resting_swat": true,
+        "replay": true,
+        "parity": true
+      },
+      "offered": true,
+      "reason": "All V2J safety gates pass"
+    },
+    "T1": {
+      "name": "T1 · 0.036 units/ms",
+      "profile": {
+        "profile_id": "flybench.game.v2.9.owner-v2m.T1",
+        "version": 9,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          300
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.036,
+        "takeoff_duration_ms": 170,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "V2L owner-approved design v5: two input hands and longer flight only.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.5,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1.5,
+            "stop_seconds": 1
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive.",
+            "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+          },
+          "selection_decision": "decisions/D-V2J-SELECT-01.json",
+          "history": "docs/walking-v2j.md"
+        },
+        "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Flight duration scales to keep the path about six arena units. Walking, neural onset, direction, jitter and reflection are unchanged.",
+        "takeoff_path_arena_units": 6.119999999999999,
+        "owner_preset": {
+          "id": "T1",
+          "name": "T1",
+          "production": false
+        }
+      },
+      "profile_sha256": "54ac21c7ab25a983996e022387f3cfa40dee63ce0b445bdebb92108d56252857",
+      "gates": {
+        "false_takeoffs": true,
+        "circuit_rate": true,
+        "resting_swat": true,
+        "replay": true,
+        "parity": true
+      },
+      "offered": true,
+      "reason": "All V2J safety gates pass"
+    },
+    "T2": {
+      "name": "T2 · 0.040 units/ms",
+      "profile": {
+        "profile_id": "flybench.game.v2.9.owner-v2m.T2",
+        "version": 9,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          300
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.04,
+        "takeoff_duration_ms": 150,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "V2L owner-approved design v5: two input hands and longer flight only.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.5,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1.5,
+            "stop_seconds": 1
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive.",
+            "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+          },
+          "selection_decision": "decisions/D-V2J-SELECT-01.json",
+          "history": "docs/walking-v2j.md"
+        },
+        "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Flight duration scales to keep the path about six arena units. Walking, neural onset, direction, jitter and reflection are unchanged.",
+        "takeoff_path_arena_units": 6,
+        "owner_preset": {
+          "id": "T2",
+          "name": "T2",
+          "production": false
+        }
+      },
+      "profile_sha256": "c37596d9b2a6422ed128cddc5a00504ffaf9733833a42f783820a9e6855e0fc3",
+      "gates": {
+        "false_takeoffs": true,
+        "circuit_rate": true,
+        "resting_swat": true,
+        "replay": true,
+        "parity": true
+      },
+      "offered": true,
+      "reason": "All V2J safety gates pass"
+    },
+    "T3": {
+      "name": "T3 · 0.045 units/ms",
+      "profile": {
+        "profile_id": "flybench.game.v2.9.owner-v2m.T3",
+        "version": 9,
+        "classification": "Game parameters only; selected frozen neural profile separate",
+        "arena_half_size": 6,
+        "render_size": 700,
+        "round_ms": 30000,
+        "max_strikes": 6,
+        "hold_thresholds_ms": [
+          300
+        ],
+        "strikes": [
+          {
+            "name": "flick",
+            "speed": 0.04,
+            "radius": 0.8
+          },
+          {
+            "name": "swat",
+            "speed": 0.025,
+            "radius": 1.4
+          }
+        ],
+        "takeoff_speed": 0.045,
+        "takeoff_duration_ms": 130,
+        "takeoff_jitter_tangent": 1,
+        "takeoff_rule": "heading at neural onset plus seeded tangent jitter; stream 43; no hand input; reflect at arena boundary; land at current position",
+        "environment_stream": 43,
+        "replay_post_ms": 200,
+        "replay_pre_ms": 200,
+        "replay_speed": 0.25,
+        "recording_max_intervals": 3000,
+        "round_clock": "integer neural ticks; pauses during recorded replay; previous-held command drives interval; impact precedes newly decoded onset at same boundary",
+        "change_reason": "V2L owner-approved design v5: two input hands and longer flight only.",
+        "arena_shape": "circle",
+        "arena_radius": 6.770275002573076,
+        "walking_drive": {
+          "schema": "flybench.walking-input.v1",
+          "selected": {
+            "forward": 1.5,
+            "turn_sigma": 0.5,
+            "walk_seconds": 1.5,
+            "stop_seconds": 1
+          },
+          "current_units": "kernel held input current",
+          "stream": 97,
+          "seed_rule": "u32(environment_seed,97,0,0); counter draws u32(derived_seed,97,counter,0)",
+          "ports": [
+            "forward",
+            "backward",
+            "turn_left",
+            "turn_right"
+          ],
+          "backward_current": 0,
+          "walk_stop": "Stationary Bernoulli initial state; exponential dwell rounded up to 10 ms; seeded inverse CDF with logUnit",
+          "ou": {
+            "tau_seconds": 0.75,
+            "decay": 0.9867551618071957,
+            "innovation_scale": 0.16221667807859647,
+            "rule": "Exact 10 ms OU transition; unit Gaussian via Marsaglia polar and fixed 18-term range-reduced logUnit; turning current max(0, +/-OU) during walk; zero during stop"
+          },
+          "independence": "Seed and integer interval only; no geometry, hand, cursor, aim, strike, body, callback or shared environment",
+          "copy": {
+            "game": "The wiring model does not walk on its own. The game adds a declared random drive to the walking neurons (game profile v2.9). Escape comes only from vision through the network.",
+            "lab": "Lab simulations have no walking drive.",
+            "owner_choice": "The walking setting was chosen by the author after playtesting four candidates that passed the same safety checks."
+          },
+          "selection_decision": "decisions/D-V2J-SELECT-01.json",
+          "history": "docs/walking-v2j.md"
+        },
+        "physics_disclosure": "Takeoff speed is an abstract body-physics game parameter, not a neural parameter. Flight duration scales to keep the path about six arena units. Walking, neural onset, direction, jitter and reflection are unchanged.",
+        "takeoff_path_arena_units": 5.85,
+        "owner_preset": {
+          "id": "T3",
+          "name": "T3",
+          "production": false
+        }
+      },
+      "profile_sha256": "f0b37440447123323c394649170c4d040935e0f5f9b15d9297223aaca6e3eea3",
+      "gates": {
+        "false_takeoffs": true,
+        "circuit_rate": true,
+        "resting_swat": true,
+        "replay": true,
+        "parity": true
+      },
+      "offered": true,
+      "reason": "All V2J safety gates pass"
+    }
+  }
+}

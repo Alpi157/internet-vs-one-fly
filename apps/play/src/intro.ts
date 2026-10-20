@@ -15,7 +15,7 @@ export function createIntro(base:string,pause:()=>void,resume:()=>void){
   $('intro-next').textContent=step===3?'Play':'Next';$('intro-note').textContent=step===3?'Reopen this anytime with the ? button.':'';
  };
  const close=()=>{seenThisLoad=true;try{localStorage.setItem('flybench.intro.v5','seen');}catch{}dialog.close();resume();prior?.focus();};
- const show=(card=1)=>{step=card;prior=document.activeElement as HTMLElement;pause();render();if(!dialog.open)dialog.showModal();$('intro-skip').focus();};
+ const show=(card=1)=>{step=card;prior=document.activeElement as HTMLElement;pause();render();if(!dialog.open)dialog.showModal();$('intro-title').focus();};
  $('intro-skip').onclick=close;$('intro-next').onclick=()=>{if(step===3)close();else{step++;render();$('intro-title').focus();}};
  dialog.oncancel=e=>{e.preventDefault();close();};
  dialog.onkeydown=e=>{if(e.key!=='Tab')return;const nodes=Array.from(dialog.querySelectorAll<HTMLElement>('button,a[href]')).filter(e=>e.checkVisibility());const first=nodes[0],last=nodes.at(-1)!;if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}};

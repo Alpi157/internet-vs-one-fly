@@ -58,6 +58,10 @@ async function main(){
   const b4=botRound(base,101,4,0,false,1).records,b5=skilledRound(base,101,0,false,1).records;
   assert.deepEqual(b5.map(r=>({...r,bot:4})),b4,'Unrestricted bot 5 exactly matches bot 4');
   save('dry-run.json',{...receipt(),classification:'PIPELINE_ONLY_SEED_101_EXCLUDED',rows});console.log('PASS four preset dry runs, skilled bot, exact replay and unchanged unrestricted stop rule');
+ }else if(cmd==='--baseline'){
+  const swat=originalRestingSwat(load('profiles/game-v2.7.json'),seeds);
+  assert.equal(swat.escapes,176);assert.equal(swat.opportunities,200);assert.equal(swat.censored,0);
+  save('baseline-swat.json',{...receipt(),profile:'flybench.game.v2.7',swat});console.log('PASS original V2J control: 176/200 resting-swat escapes, zero censored');
  }else if(cmd==='--diagnose'){
   invariants();const before=await bots(load('profiles/game-v2.8.json'),seeds,['flick']),after=await bots(base,seeds,['flick']);
   const prior=load('evidence/V2L/validation.json');
@@ -68,9 +72,24 @@ async function main(){
   const id=process.argv[3],p=preset(id),rows=[];
   for(const seed of seeds){const q=await quiet(p,seed);rows.push(q);save(`presets/${id}/quiet-${seed}.json`,q);}
   const summary=summarize(rows),bot=await bots(p,seeds),swat=originalRestingSwat(p,seeds),g=skilledRound(p,1,0,true,2).game,log=await g.log(),replayed=await replayLog(buffer,identityRuntime(p),p,log);
-  const gates={false_takeoffs:summary.false_takeoffs_s<=.05,circuit_rate:rows.every(r=>r.whole_rate_hz<50),resting_swat:swat.conservative_escape_probability>=.88,replay:replayed.matches};
-  save(`presets/${id}.json`,{...receipt(),id,profile:p,profile_sha256:sha(p),summary,bot,swat,replay:{log,status:replayed.matches?'PASS':'FAIL'},gates,parity:'PENDING',offered:false});console.log(id,JSON.stringify({summary,rates:bot.rates,swat:swat.escapes,censored:swat.censored,gates}));
- }else if(cmd==='--check'){invariants();save('preservation-check.json',{...receipt(),status:'PASS'});console.log('PASS frozen, raw, prior records, production physics, walking and lab identities');}
+  const parity=load('evidence/V2M/parity/summary.json').presets[id];assert.equal(parity.profile_sha256,sha(p));
+  const gates={false_takeoffs:summary.false_takeoffs_s<=.05,circuit_rate:rows.every(r=>r.whole_rate_hz<50),resting_swat:swat.conservative_escape_probability>=.88,replay:replayed.matches,parity:parity.bit_exact===true};
+  save(`presets/${id}.json`,{...receipt(),id,profile:p,profile_sha256:sha(p),summary,bot,swat,replay:{log,status:replayed.matches?'PASS':'FAIL'},gates,offered:Object.values(gates).every(Boolean)});console.log(id,JSON.stringify({summary,rates:bot.rates,swat:swat.escapes,censored:swat.censored,gates}));
+ }else if(cmd==='--offer'){
+  const parity=load('evidence/V2M/parity/summary.json'),presets:any={};
+  for(const id of Object.keys(protocol.presets)){
+   const r=load(`evidence/V2M/presets/${id}.json`);assert.equal(r.profile_sha256,sha(preset(id)));assert.equal(parity.presets[id].profile_sha256,r.profile_sha256);
+   const gates={...r.gates,parity:parity.presets[id].bit_exact===true};
+   presets[id]={name:`${id} · ${r.profile.takeoff_speed.toFixed(3)} units/ms`,profile:r.profile,profile_sha256:r.profile_sha256,gates,offered:Object.values(gates).every(Boolean),reason:Object.values(gates).every(Boolean)?'All V2J safety gates pass':'Safety gate failed'};
+  }
+  const result={schema:'flybench.owner-takeoff-offer.v1',protocol_sha256:receipt().protocol_sha256,production_profile:base.profile_id,presets};
+  writeFileSync(root+'profiles/owner-takeoff-v2m-selected.json',JSON.stringify(result,null,2)+'\n');save('offer.json',{...receipt(),...result});console.log('Fixed presets:',Object.entries(presets).map(([id,p]:any)=>[id,p.offered,p.gates]));
+ }else if(cmd==='--check'){
+  invariants();const selection=load('profiles/owner-takeoff-v2m-selected.json'),parity=load('evidence/V2M/parity/summary.json');
+  assert.equal(parity.code_sha,receipt().code_sha);assert.equal(load('evidence/V2M/diagnosis.json').code_sha,receipt().code_sha);assert.equal(load('evidence/V2M/baseline-swat.json').code_sha,receipt().code_sha);
+  for(const id of Object.keys(protocol.presets)){const r=load(`evidence/V2M/presets/${id}.json`);assert.equal(r.code_sha,receipt().code_sha);assert.equal(r.protocol_sha256,receipt().protocol_sha256);assert.equal(r.measurement_source_sha256,receipt().measurement_source_sha256);assert.deepEqual(r.bot.rates,rates(r.bot.records));assert.deepEqual(selection.presets[id].gates,{...r.gates,parity:parity.presets[id].bit_exact});assert.equal(selection.presets[id].profile_sha256,sha(preset(id)));}
+  save('preservation-check.json',{...receipt(),status:'PASS'});console.log('PASS final-SHA measurements, frozen, raw, prior records, production physics, walking and lab identities');
+ }
  else throw Error('Expected --dry, --diagnose, --preset ID or --check');
 }
 if(!isMainThread)parentPort!.postMessage(botRecords(workerData.profile,workerData.bot,workerData.seeds,workerData.hands,workerData.one));

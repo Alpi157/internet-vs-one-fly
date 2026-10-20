@@ -25,7 +25,7 @@ for(const [id,p] of Object.entries(profiles)){
   const g=newGame(p,row.seed);
   for(let i=0;i<row.intervals.length;i++){
    if([150,500,800].includes(i)){const b=g.runner.body;g.apply({tick:g.tick,x:b.x,y:b.y,hold_ms:[600,299.999,300][[150,500,800].indexOf(i)]});}
-   const before=g.airDirection.slice(),f=g.step(),r=row.intervals[i],b=f.body,counts=new Uint32Array(g.runner.state.v.length);
+   const before=g.airDirection.slice(),f=g.step(),r=row.intervals[i],b=f.body,counts=new Uint32Array(g.runner.state.graph.header.N);
    assert.equal(bits([b.x,b.y,b.heading_x,b.heading_y,...f.applied.map(Number),...g.runner.held.map(Number),...(g.runner as any).walking.snapshot(),...g.airDirection,g.airUntil]),r.bits,`${id} seed ${row.seed} interval ${i}`);
    f.spikes.forEach(e=>e.indices.forEach(j=>counts[j]++));assert.equal(createHash('sha256').update(new Uint8Array(counts.buffer)).digest('hex'),r.counts_sha256);
    assert.equal(f.air,r.air);assert.equal(f.onset,r.onset);if(f.impact)assert.deepEqual({tick:f.impact.tick,caught:f.impact.caught,type:f.impact.type,position:f.impact.position},r.impact);
