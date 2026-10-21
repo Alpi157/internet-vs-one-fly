@@ -102,6 +102,7 @@ export class BrainView {
         host.querySelectorAll<HTMLInputElement>('input').forEach(input => input.name = `${host.id}-brain-mode`);
         this.overlay = host.querySelector('.brain-labels')!;
         this.annotations=document.createElement('div');this.annotations.className='brain-annotations';this.annotations.setAttribute('aria-hidden','true');this.overlay.after(this.annotations);
+        if(quality.pixelBudget&&this.lod==='phone'&&navigator.vendor==='Apple Computer, Inc.')this.canvas.parentElement!.classList.add('raster-labels');
         this.resizeObserver=new ResizeObserver(this.resized);this.resizeObserver.observe(this.canvas.parentElement!);window.addEventListener('resize',this.resized);
         if(this.quality.pixelBudget){this.background=document.createElement('canvas');this.background.className='brain-anatomy';this.background.setAttribute('aria-hidden','true');this.canvas.before(this.background);}
         this.gl = this.canvas.getContext('webgl2', { alpha: !!this.background, antialias: false, preserveDrawingBuffer: true });
