@@ -88,3 +88,14 @@ def test_a02_compact_bundle_selection():
     assert not selected(PurePosixPath('browser/webkit-1920x1080-ru-RU-scrub-last.png'))
     assert not selected(PurePosixPath('browser/chromium-1920x1080-en-US-dpr2-sharpness-lab.png'))
     assert not selected(PurePosixPath('dry-owner/chromium-1890x900-en-US-outcome-next.png'))
+
+
+def test_a03_compact_bundle_adds_all_chromium_dpr_sizes():
+    from pathlib import PurePosixPath
+    from tools.review_bundle import v2m_a02_evidence_selected
+    for width, height in [(1890, 900), (1920, 1080), (2560, 1440)]:
+        for dpr in [1, 2]:
+            path = PurePosixPath(f"browser/chromium-{width}x{height}-en-US-dpr{dpr}-sharpness-lab.png")
+            assert v2m_a02_evidence_selected(path, attempt=3)
+    assert not v2m_a02_evidence_selected(PurePosixPath("browser/firefox-1920x1080-en-US-dpr2-sharpness-lab.png"), attempt=3)
+    assert not v2m_a02_evidence_selected(PurePosixPath("browser/chromium-1920x1080-ru-RU-dpr2-sharpness-lab.png"), attempt=3)

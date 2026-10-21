@@ -901,7 +901,7 @@ def render_v2b_review(
     return "\n".join(lines).encode("utf-8")
 
 
-def v2m_a02_evidence_selected(relative: PurePosixPath) -> bool:
+def v2m_a02_evidence_selected(relative: PurePosixPath, *, attempt: int = 2) -> bool:
     """Owner-requested compact screenshots; all full evidence stays on disk."""
     if relative.suffix == ".png":
         import re
@@ -912,7 +912,7 @@ def v2m_a02_evidence_selected(relative: PurePosixPath) -> bool:
         if locale != "en-US":
             return False
         if dpr:
-            return browser == "chromium"
+            return browser == "chromium" and (attempt >= 3 or width in {"1890", "2560"})
         return browser == "chromium" or width in {"1440", "1920"} or state == "phone-replay"
     return relative.parts[0] in {"acceptance", "browser", "production", "kernel-parity", "neural-parity"} or len(relative.parts) == 1 and relative.suffix in {".md", ".json"}
 
@@ -2215,7 +2215,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         evidence_root,
         omitted,
         preview_limit=16 * 1024 * 1024 if compact_v2m else 2 * 1024 * 1024 if milestone in {"V2A", "V2B"} else MAX_INCLUDED_FILE_BYTES,
-        selector=v2m_a02_evidence_selected if compact_v2m else None,
+        selector=(lambda relative: v2m_a02_evidence_selected(relative, attempt=attempt)) if compact_v2m else None,
     )
     if compact_v2m:
         add_v2m_a01_results(entries, root, omitted, attempt)
