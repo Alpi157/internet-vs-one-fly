@@ -204,6 +204,7 @@ export class BrainView {
         this.landscape=this.mode==='whole'&&box.width>box.height;
         this.canvas.width=d.width;this.canvas.height=d.height;
         this.canvas.dataset.pixelBudget=String(this.quality.pixelBudget??BRAIN_PIXEL_BUDGET);this.canvas.dataset.capped=String(d.capped);
+        if(this.background)for(const key of ['copyWidth','copyHeight','drawnWidth','drawnHeight'])delete this.background.dataset[key];
         this.overlay.width=width;this.overlay.height=height;
         const points=(panel:number)=>this.rois.rois.filter((r:any)=>r.panel===panel).flatMap((r:any)=>r.contours_um).flat();
         const bounds=(points:number[][])=>[Math.min(...points.map(p=>p[0])),Math.min(...points.map(p=>p[1])),Math.max(...points.map(p=>p[0])),Math.max(...points.map(p=>p[1]))];
@@ -363,6 +364,10 @@ export class BrainView {
         // Chromium and Firefox use a synchronous copy, which avoids stream encoding overhead.
         const target=this.dimensions(),sourceDensity=Math.min(source.canvas.width/other.width,source.canvas.height/other.height),targetDensity=Math.min(target.width/box.width,target.height/box.height);
         if(sourceDensity*other.height<targetDensity*box.height-1){this.draw(frame,frames);return;}
+        // Static anatomy has its own native backing: an adequate activity
+        // raster does not guarantee enough anatomical samples for this box.
+        const fit=Math.min(target.requestedWidth/source.overlay.width,target.requestedHeight/source.overlay.height);
+        if(this.background&&source.background){const native=brainBackingSize(box.width,box.height,target.dpr);if(source.background.width+1<source.overlay.width*fit*native.width/target.requestedWidth||source.background.height+1<source.overlay.height*fit*native.height/target.requestedHeight){this.draw(frame,frames);return;}}
         const streaming=navigator.vendor==='Apple Computer, Inc.'&&'captureStream' in source.canvas;
         if(streaming&&this.mirrorUnavailable){this.draw(frame,frames);return;}
         const now=performance.now();
@@ -387,7 +392,7 @@ export class BrainView {
             this.canvas.width=target.width;this.canvas.height=target.height;this.canvas.dataset.pixelBudget=String(this.quality.pixelBudget??BRAIN_PIXEL_BUDGET);this.canvas.dataset.capped=String(target.capped);
             this.overlay.width=width;this.overlay.height=height;this.mirrorDest=[x,y,source.overlay.width*k,source.overlay.height*k];
             this.scale=source.scale*k;this.offset=[source.offset[0]*k+x,source.offset[1]*k+y];this.panelOffsets=source.panelOffsets.map(v=>v.slice());this.landscape=source.landscape;
-            if(this.background&&source.background){const native=brainBackingSize(box.width,box.height,target.dpr);this.background.width=native.width;this.background.height=native.height;this.background.dataset.pixelBudget=String(BRAIN_PIXEL_BUDGET);const c=this.background.getContext('2d')!;c.fillStyle='#000';c.fillRect(0,0,native.width,native.height);c.drawImage(source.background,x*native.width/width,y*native.height/height,source.overlay.width*k*native.width/width,source.overlay.height*k*native.height/height);}
+            if(this.background&&source.background){const native=brainBackingSize(box.width,box.height,target.dpr);this.background.width=native.width;this.background.height=native.height;this.background.dataset.pixelBudget=String(BRAIN_PIXEL_BUDGET);const drawnWidth=source.overlay.width*k*native.width/width,drawnHeight=source.overlay.height*k*native.height/height;Object.assign(this.background.dataset,{copyWidth:String(source.background.width),copyHeight:String(source.background.height),drawnWidth:String(drawnWidth),drawnHeight:String(drawnHeight)});const c=this.background.getContext('2d')!;c.fillStyle='#000';c.fillRect(0,0,native.width,native.height);c.drawImage(source.background,x*native.width/width,y*native.height/height,drawnWidth,drawnHeight);}
 
             this.drawLabels(width,height,14*width/box.width,false,this.panelBounds[1]);this.mirrorKey=key;
             const caption=this.canvas.parentElement!.parentElement!.querySelector('.anatomy-caption');if(caption)caption.textContent=this.landscape?'Brain: front view. Nerve cord: underside view. Placed side by side for display.':ANATOMY_CAPTION;
