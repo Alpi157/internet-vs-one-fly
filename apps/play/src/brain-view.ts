@@ -389,6 +389,8 @@ export class BrainView {
         const width=target.requestedWidth,height=target.requestedHeight,key=`${source.layoutKey}:${width}:${height}:${box.width}`;
         const k=Math.min(width/source.overlay.width,height/source.overlay.height),x=(width-source.overlay.width*k)/2,y=(height-source.overlay.height*k)/2;
         if(key!==this.mirrorKey){
+            // A copied background replaces this canvas's cached own transform.
+            this.staticLayers.clear();
             this.canvas.width=target.width;this.canvas.height=target.height;this.canvas.dataset.pixelBudget=String(this.quality.pixelBudget??BRAIN_PIXEL_BUDGET);this.canvas.dataset.capped=String(target.capped);
             this.overlay.width=width;this.overlay.height=height;this.mirrorDest=[x,y,source.overlay.width*k,source.overlay.height*k];
             this.scale=source.scale*k;this.offset=[source.offset[0]*k+x,source.offset[1]*k+y];this.panelOffsets=source.panelOffsets.map(v=>v.slice());this.landscape=source.landscape;
