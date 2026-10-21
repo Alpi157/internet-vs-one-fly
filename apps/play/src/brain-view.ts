@@ -62,18 +62,12 @@ export class BrainView {
     private bounds: number[] = [];
     private scale = 1;
     private offset = [0, 0];
-    private mirrorRaster?: HTMLVideoElement | HTMLCanvasElement;
-    private capture?: MediaStream;
+    private mirrorRaster?: HTMLCanvasElement;
     private background?: HTMLCanvasElement;
-    private mirrorDest=[0,0,0,0];
     private mirroring=false;
     private mirrorKey='';
     private mirrorTick=-1;
     private presentedMirrorFrames=0;
-    private mirrorCallback=0;
-    private mirrorStarted=0;
-    private mirrorLastCall=0;
-    private mirrorUnavailable=false;
     private panelBounds: number[][] = [];
     private panelOffsets: number[][] = [[0,0],[0,0]];
     private layoutKey = '';
@@ -102,7 +96,8 @@ export class BrainView {
         host.querySelectorAll<HTMLInputElement>('input').forEach(input => input.name = `${host.id}-brain-mode`);
         this.overlay = host.querySelector('.brain-labels')!;
         this.annotations=document.createElement('div');this.annotations.className='brain-annotations';this.annotations.setAttribute('aria-hidden','true');this.overlay.after(this.annotations);
-        if(quality.pixelBudget&&this.lod==='phone'&&navigator.vendor==='Apple Computer, Inc.')this.canvas.parentElement!.classList.add('raster-labels');
+        if(navigator.vendor==='Apple Computer, Inc.')this.canvas.parentElement!.classList.add('webkit-brain-image');
+        if(quality.pixelBudget&&navigator.vendor==='Apple Computer, Inc.'){this.canvas.parentElement!.classList.add('webkit-lab-image');if(this.lod==='phone')this.canvas.parentElement!.classList.add('raster-labels');}
         this.resizeObserver=new ResizeObserver(this.resized);this.resizeObserver.observe(this.canvas.parentElement!);window.addEventListener('resize',this.resized);
         if(this.quality.pixelBudget){this.background=document.createElement('canvas');this.background.className='brain-anatomy';this.background.setAttribute('aria-hidden','true');this.canvas.before(this.background);}
         this.gl = this.canvas.getContext('webgl2', { alpha: !!this.background, antialias: false, preserveDrawingBuffer: true });
@@ -361,30 +356,15 @@ export class BrainView {
     mirrorFrom(source:BrainView,frame:Frame,frames:Frame[]){
         const box=this.canvas.parentElement!.getBoundingClientRect(),other=source.canvas.parentElement!.getBoundingClientRect();
         if(!this.ready||!source.ready||this.mode!==source.mode||box.width<330||other.width<330||(this.mode==='whole'&&(box.width>box.height)!==(other.width>other.height))){this.draw(frame,frames);return;}
-        // WebKit's GPU canvas readback stalls the compositor; its local stream is faster.
-        // Chromium and Firefox use a synchronous copy, which avoids stream encoding overhead.
+        // Small cached activity rasters can be copied without a video relay.
         const target=this.dimensions(),sourceDensity=Math.min(source.canvas.width/other.width,source.canvas.height/other.height),targetDensity=Math.min(target.width/box.width,target.height/box.height);
         if(sourceDensity*other.height<targetDensity*box.height-1){this.draw(frame,frames);return;}
         // Static anatomy has its own native backing: an adequate activity
         // raster does not guarantee enough anatomical samples for this box.
         const fit=Math.min(target.requestedWidth/source.overlay.width,target.requestedHeight/source.overlay.height);
         if(this.background&&source.background){const native=brainBackingSize(box.width,box.height,target.dpr);if(source.background.width+1<source.overlay.width*fit*native.width/target.requestedWidth||source.background.height+1<source.overlay.height*fit*native.height/target.requestedHeight){this.draw(frame,frames);return;}}
-        const streaming=navigator.vendor==='Apple Computer, Inc.'&&'captureStream' in source.canvas;
-        if(streaming&&this.mirrorUnavailable){this.draw(frame,frames);return;}
-        const now=performance.now();
-        if(!this.mirroring||now-this.mirrorLastCall>250)this.mirrorStarted=now;
-        this.mirrorLastCall=now;
-        if(streaming&&this.mirrorRaster&&performance.now()-this.mirrorStarted>5000){this.mirrorUnavailable=true;this.draw(frame,frames);return;}
         if(!this.mirrorRaster){
-            this.mirrorStarted=performance.now();
-            this.mirrorRaster=document.createElement(streaming?'video':'canvas');this.mirrorRaster.className='brain-mirror';this.mirrorRaster.setAttribute('aria-hidden','true');
-            this.mirrorRaster.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none'+(streaming&&this.background?';mix-blend-mode:screen':'');this.overlay.before(this.mirrorRaster);
-            if(this.mirrorRaster instanceof HTMLVideoElement){
-                const video=this.mirrorRaster;video.muted=true;video.autoplay=true;video.playsInline=true;
-                source.capture??=source.canvas.captureStream(0);video.srcObject=source.capture;void video.play();
-                const presented=()=>{this.presentedMirrorFrames++;this.mirrorStarted=performance.now();this.mirrorCallback=video.requestVideoFrameCallback(presented);};
-                this.mirrorCallback=video.requestVideoFrameCallback(presented);
-            }
+            this.mirrorRaster=document.createElement('canvas');this.mirrorRaster.className='brain-mirror';this.mirrorRaster.setAttribute('aria-hidden','true');this.mirrorRaster.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none';this.overlay.before(this.mirrorRaster);
         }
         this.canvas.style.opacity='0';this.mirrorRaster.hidden=false;this.mirroring=true;
         const width=target.requestedWidth,height=target.requestedHeight,key=`${source.layoutKey}:${width}:${height}:${box.width}`;
@@ -393,7 +373,7 @@ export class BrainView {
             // A copied background replaces this canvas's cached own transform.
             this.staticLayers.clear();
             this.canvas.width=target.width;this.canvas.height=target.height;this.canvas.dataset.pixelBudget=String(this.quality.pixelBudget??BRAIN_PIXEL_BUDGET);this.canvas.dataset.capped=String(target.capped);
-            this.overlay.width=width;this.overlay.height=height;this.mirrorDest=[x,y,source.overlay.width*k,source.overlay.height*k];
+            this.overlay.width=width;this.overlay.height=height;
             this.scale=source.scale*k;this.offset=[source.offset[0]*k+x,source.offset[1]*k+y];this.panelOffsets=source.panelOffsets.map(v=>v.slice());this.landscape=source.landscape;
             if(this.background&&source.background){const native=brainBackingSize(box.width,box.height,target.dpr);this.background.width=native.width;this.background.height=native.height;this.background.dataset.pixelBudget=String(BRAIN_PIXEL_BUDGET);const drawnWidth=source.overlay.width*k*native.width/width,drawnHeight=source.overlay.height*k*native.height/height;Object.assign(this.background.dataset,{copyWidth:String(source.background.width),copyHeight:String(source.background.height),drawnWidth:String(drawnWidth),drawnHeight:String(drawnHeight)});const c=this.background.getContext('2d')!;c.fillStyle='#000';c.fillRect(0,0,native.width,native.height);c.drawImage(source.background,x*native.width/width,y*native.height/height,drawnWidth,drawnHeight);}
 
@@ -402,10 +382,8 @@ export class BrainView {
             this.mirrorTick=-1;
         }
         if(this.mirrorTick!==frame.tick||this.shownFrame!==frame){
-            if(this.mirrorRaster instanceof HTMLCanvasElement){
                 if(this.mirrorRaster.width!==target.width||this.mirrorRaster.height!==target.height){this.mirrorRaster.width=target.width;this.mirrorRaster.height=target.height;}
                 const c=this.mirrorRaster.getContext('2d')!;c.clearRect(0,0,target.width,target.height);c.drawImage(source.canvas,x*target.width/width,y*target.height/height,source.overlay.width*k*target.width/width,source.overlay.height*k*target.height/height);this.presentedMirrorFrames++;
-            }else (source.capture!.getVideoTracks()[0] as CanvasCaptureMediaStreamTrack).requestFrame();
             this.mirrorTick=frame.tick;
         }
         this.shownFrame=frame;this.shownFrames=frames;this.shownDim=false;
@@ -532,13 +510,12 @@ export class BrainView {
     snapshot() {
         const c=document.createElement('canvas');c.width=this.overlay.width;c.height=this.overlay.height;const g=c.getContext('2d')!;
         if(this.background)g.drawImage(this.background,0,0,c.width,c.height);
-        const source=this.mirroring?this.mirrorRaster!:this.canvas;g.globalCompositeOperation=this.background&&source instanceof HTMLVideoElement?'screen':'source-over';
-        if(this.mirroring&&source instanceof HTMLVideoElement){g.globalCompositeOperation=this.background?'screen':'source-over';g.drawImage(source,...this.mirrorDest as [number,number,number,number]);}else g.drawImage(source,0,0,c.width,c.height);
+        const source=this.mirroring?this.mirrorRaster!:this.canvas;g.drawImage(source,0,0,c.width,c.height);
         g.globalCompositeOperation='source-over';g.drawImage(this.overlay,0,0);return c;
     }
 
     get displayStatus(){const image=this.canvas.parentElement!,b=image.getBoundingClientRect(),modal=document.querySelector('dialog[open]');return {visible:b.bottom>0&&b.top<innerHeight&&image.checkVisibility()&&(!modal||modal.contains(image)),ready:this.ready&&!this.resizePending&&!!(this.mirroring?this.mirrorKey:this.layoutKey)};}
-    get mirrorStatus(){const box=this.canvas.parentElement!.getBoundingClientRect();return {active:this.mirroring,visible:box.bottom>0&&box.top<innerHeight&&this.canvas.parentElement!.checkVisibility(),ready:this.mirrorRaster instanceof HTMLVideoElement?this.mirrorRaster.readyState:this.mirrorRaster?4:0,frames:this.presentedMirrorFrames};}
-    dispose(){this.resizeObserver.disconnect();clearTimeout(this.resizeTimer);window.removeEventListener('resize',this.resized);this.capture?.getTracks().forEach(t=>t.stop());if(this.mirrorRaster instanceof HTMLVideoElement){this.mirrorRaster.cancelVideoFrameCallback(this.mirrorCallback);this.mirrorRaster.pause();this.mirrorRaster.srcObject=null;}}
+    get mirrorStatus(){const box=this.canvas.parentElement!.getBoundingClientRect();return {active:this.mirroring,visible:box.bottom>0&&box.top<innerHeight&&this.canvas.parentElement!.checkVisibility(),ready:this.mirrorRaster?4:0,frames:this.presentedMirrorFrames};}
+    dispose(){this.resizeObserver.disconnect();clearTimeout(this.resizeTimer);window.removeEventListener('resize',this.resized);}
     get renderer() { return this.gl ? 'WebGL2' : 'Canvas soma fallback'; }
 }

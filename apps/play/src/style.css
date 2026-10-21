@@ -63,3 +63,5 @@ header:has(#circuit-badge:not([hidden])) #circuit-badge{transform:none}
 
 /* WebKit phone compositing: native-DPR text avoids repainting SVG over live layers. */
 .raster-labels .brain-annotations{display:none}.raster-labels .brain-labels{visibility:visible}
+
+@media(min-width:900px){.lab-brains .webkit-lab-image{width:min(100%,384px);height:280px!important;flex:none;margin-inline:auto}.brain-fullscreen .webkit-brain-image{width:min(100%,1024px);height:min(720px,calc(100svh - 220px))!important;flex:none!important;margin:auto}}
