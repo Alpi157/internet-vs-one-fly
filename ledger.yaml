@@ -388,7 +388,7 @@ launch_blockers:
 - V2F is complete for external review; N-STRENGTH did not replicate on any tested graph; H1/H2 remain insufficient.
 - No enabled public hosting or human usability evidence.
 - Public hosting remains an operator deployment action.
-next_action: V2M a02 external review; owner selected T0; production remains v2.9. No push, tag or deployment.
+next_action: V2M a03 external review; owner selected T0; production remains v2.9. No push, tag or deployment.
 scientific_profiles_v2c:
   profiles/body-v2-draft.json: e495076a2195ccc7d06d1878a3dfabf9d85aabac3c65001545cb47c9d0f79173
   profiles/calibration-v2-draft.json: 7557a24fa01a6cbf75f8f4910070ddc7165e77a50d0d6ff5ec5be757daf0cc56
@@ -596,10 +596,10 @@ v2l_current:
   acceptance: Final-SHA receipts required under evidence/V2L/acceptance; external review pending.
 
 v2m_current:
-  attempt: a02
+  attempt: a03
   status: SUBMITTED_PENDING_EXTERNAL_REVIEW
-  base_sha: 5584e6388f3d395de4c778d3c9033830a2c35139
-  prior_attempt: a01; full evidence and reviews/V2M-a01.zip retained unchanged
+  base_sha: f8a27e05363e6ed981ed2c43a70dc3d55179d174
+  prior_attempt: a01/a02; full evidence and review ZIPs retained unchanged
   protocol: profiles/owner-takeoff-v2m.json
   protocol_freeze_sha: e71d37d
   decision: decisions/D-V2M-SELECT-01.json
@@ -607,7 +607,7 @@ v2m_current:
   mechanics_change: NONE
   owner_choice: T0
   preview: T0 through T3 remain dev-only
-  evidence: evidence/V2M/a02
-  report: docs/ui-v2m-a02.md
+  evidence: evidence/V2M/a03
+  report: docs/ui-v2m-a03.md
   acceptance: Final-SHA full suite and matrix required; external review pending
-  review_zip: reviews/V2M-a02.zip; under 150 MB
+  review_zip: reviews/V2M-a03.zip; under 150 MB

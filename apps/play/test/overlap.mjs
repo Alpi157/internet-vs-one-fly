@@ -5,7 +5,10 @@ export async function overlaps(page){return page.evaluate(()=>{
  const modal=document.querySelector('dialog[open]');
  const unclipped=e=>{for(let p=e;p;p=p.parentElement){const s=getComputedStyle(p),r=p.getBoundingClientRect();if((s.clip!=='auto'||s.clipPath!=='none'||s.overflow==='hidden')&&(r.width<=1||r.height<=1))return false;}return true;};
  const visible=e=>unclipped(e)&&(!modal||modal.contains(e))&&e.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})&&!e.closest('[hidden]')&&!e.closest('dialog:not([open])');
- const add=(node,r,kind,label)=>{const b=clip(r);if(b.right-b.x>1&&b.bottom-b.y>1)boxes.push({node,kind,label:label.slice(0,110),...b});};
+ const add=(node,r,kind,label)=>{const b=clip(r);
+  // Scroll containers clip their descendants, including a replay sheet's content.
+  for(let p=node.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),r=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflowX)){b.x=Math.max(b.x,r.left+p.clientLeft);b.right=Math.min(b.right,r.left+p.clientLeft+p.clientWidth);}if(/auto|scroll|hidden|clip/.test(s.overflowY)){b.y=Math.max(b.y,r.top+p.clientTop);b.bottom=Math.min(b.bottom,r.top+p.clientTop+p.clientHeight);}}
+ if(b.right-b.x>1&&b.bottom-b.y>1)boxes.push({node,kind,label:label.slice(0,110),...b});};
  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
  for(let n=walker.nextNode();n;n=walker.nextNode()){
   if(!n.textContent.trim()||!visible(n.parentElement)||n.parentElement.closest('script,style'))continue;

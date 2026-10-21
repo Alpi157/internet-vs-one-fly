@@ -912,26 +912,30 @@ def v2m_a02_evidence_selected(relative: PurePosixPath) -> bool:
         if locale != "en-US":
             return False
         if dpr:
-            return browser == "chromium" and width in {"1890", "2560"}
+            return browser == "chromium"
         return browser == "chromium" or width in {"1440", "1920"} or state == "phone-replay"
     return relative.parts[0] in {"acceptance", "browser", "production", "kernel-parity", "neural-parity"} or len(relative.parts) == 1 and relative.suffix in {".md", ".json"}
 
 
-def add_v2m_a01_results(entries, root, omitted):
+def add_v2m_a01_results(entries, root, omitted, attempt):
     """Keep measured preset records and hash every other retained a01 file."""
     selected = {"diagnosis.json", "baseline-swat.json", "acceptance/command-results.json", "parity/summary.json", *[f"presets/T{i}.json" for i in range(4)]}
     for path in sorted((root / "evidence/V2M").rglob("*")):
         if not path.is_file() or path.is_symlink():
             continue
         relative = path.relative_to(root / "evidence/V2M")
-        if relative.parts[0] == "a02":
+        if relative.parts[0] in {"a02", "a03"}:
+            if relative.parts[0] != f"a{attempt:02d}":
+                size, digest = sha256_file(path)
+                omitted.append({"path": f"local/evidence/V2M/{relative.as_posix()}", "bytes": size, "sha256": digest,
+                                "reason": "Prior-attempt evidence retained locally; current acceptance and screenshots are included"})
             continue
         if relative.as_posix() in selected:
             entries[f"evidence/a01/{relative.as_posix()}"] = path.read_bytes()
         else:
             size, digest = sha256_file(path)
             omitted.append({"path": f"local/evidence/V2M/{relative.as_posix()}", "bytes": size, "sha256": digest,
-                            "reason": "Prior a01 full evidence retained locally; compact a02 review includes all preset result tables and the final a01 receipt"})
+                            "reason": "Prior a01 full evidence retained locally; compact V2M review includes all preset result tables and the final a01 receipt"})
 
 
 def add_evidence(
@@ -953,7 +957,7 @@ def add_evidence(
         if selector is not None and not selector(relative):
             size, digest = sha256_file(path)
             omitted.append({"path": f"evidence/{relative.as_posix()}", "bytes": size, "sha256": digest,
-                            "reason": "Owner-requested compact a02 selection; complete evidence retained locally"})
+                            "reason": "Owner-requested compact V2M selection; complete evidence retained locally"})
             continue
         if evidence_root.name in {"V2E", "V2F"} and (relative.suffix in {".npy", ".npz", ".webbin"} or
             (len(relative.parts)>2 and relative.parts[0]=="results" and relative.parts[1] in {"H0","calibration","H1","H2","fixed","controls","H0-STR","H0-FULL","H0-T2","E1","E2a","E3-low","E3-high"} and relative.name.endswith(".json.gz") and not (relative.parts[1]=="calibration" and "-REAL-" in relative.name))):
@@ -2137,7 +2141,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             f"architecture mismatch: computed {architecture_sha}, expected {ARCHITECTURE_SHA256}"
         )
 
-    compact_v2m = milestone == "V2M" and attempt == 2
+    compact_v2m = milestone == "V2M" and attempt in {2, 3}
     entries: dict[str, bytes] = {}
     omitted: list[dict[str, Any]] = []
     repo_paths: list[str] = []
@@ -2147,7 +2151,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         data = commit_blob(root, submitted, path)
         if compact_v2m and path.startswith(("docs/design/v5/screens/", "docs/design/v5/assets/", "docs/design/v5/source/")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
-                            "reason": "Unchanged design reference binary/source; compact a02 contains the current implementation screenshots"})
+                            "reason": "Unchanged design reference binary/source; compact V2M contains the current implementation screenshots"})
             continue
         if milestone in {"V2I", "V2J", "V2K", "V2L", "V2M"} and path.startswith(("docs/design/v4/screens/", "docs/design/v4/source/")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
@@ -2214,7 +2218,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         selector=v2m_a02_evidence_selected if compact_v2m else None,
     )
     if compact_v2m:
-        add_v2m_a01_results(entries, root, omitted)
+        add_v2m_a01_results(entries, root, omitted, attempt)
     if milestone == "M02":
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
     if milestone == "M03":
@@ -2396,7 +2400,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             if isinstance(value, dict):
                 m09_evidence[name] = value
     if milestone in {"V2C", "V2D", "V2E", "V2F", "V2G", "V2H", "V2I", "V2J", "V2K", "V2L", "V2M"}:
-        if attempt not in ({1, 2, 3} if milestone == "V2J" else {1, 2} if milestone in {"V2F", "V2G", "V2I", "V2M"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
+        if attempt not in ({1, 2, 3} if milestone in {"V2J", "V2M"} else {1, 2} if milestone in {"V2F", "V2G", "V2I"} else {1}) or sha256((root / "docs/plan-v2.md").read_bytes()) != PLAN_V2_SHA256:
             raise BundleError(f"{milestone} requires a registered attempt and the pinned plan")
         # Stage registration: the stage narrative is captured evidence, not a new review tool.
         narrative = (evidence_root / "REVIEW.md").read_text(encoding="utf-8")

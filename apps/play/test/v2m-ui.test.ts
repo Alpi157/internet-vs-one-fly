@@ -23,7 +23,8 @@ for(const [width,height] of [[1,1],[0,0],[210,340],[680,500],[1187,280],[2400,12
  const b=brainBackingSize(width,height,dpr);assert(b.width*b.height<=BRAIN_PIXEL_BUDGET);if(!b.capped){assert.equal(b.width,Math.max(1,Math.ceil(width*dpr)));assert.equal(b.height,Math.max(1,Math.ceil(height*dpr)));}else assert(Math.abs(b.width/b.height-width/height)<.03);
 }
 const decision=load('decisions/D-V2M-SELECT-01.json');assert.equal(decision.selected_preset,'T0');assert.equal(decision.mechanics_change,'NONE; exact current production profile retained');assert.equal(decision.takeoff_speed_units_per_ms,load('profiles/game-v2.9.json').takeoff_speed);
-if(process.argv.includes('--a02-preservation')){
+if(process.argv.includes('--a02-preservation')||process.argv.includes('--a03-preservation')){
+ const a03=process.argv.includes('--a03-preservation');
  const {readFileSync,writeFileSync}=await import('node:fs'),{createHash}=await import('node:crypto'),{execFileSync}=await import('node:child_process');
  const hash=(p:string)=>createHash('sha256').update(readFileSync(p)).digest('hex');
  const {invariants}=await import('./v2m.ts');invariants();
@@ -32,7 +33,8 @@ if(process.argv.includes('--a02-preservation')){
  assert.equal(hash('docs/media/game-hero.gif'),decision.hero_sha256);
  assert.equal(load('evidence/V2M/acceptance/command-results.json').status,'PASS');
  const code_sha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
- writeFileSync('evidence/V2M/a02/preservation-check.json',JSON.stringify({status:'PASS',code_sha,decision,prior_a01_files:Object.keys(load('evidence/V2M/a02/prior-a01-preservation.json').files).length},null,2)+'\n');
+ if(a03)for(const [p,r] of Object.entries(load('evidence/V2M/a03/prior-a02-preservation.json').files) as any[])assert.equal(hash(p),r.sha256,p);
+ writeFileSync('evidence/V2M/'+(a03?'a03':'a02')+'/preservation-check.json',JSON.stringify({status:'PASS',code_sha,decision,prior_a01_files:Object.keys(load('evidence/V2M/a02/prior-a01-preservation.json').files).length},null,2)+'\n');
  console.log('PASS owner T0, production v2.9, a01 evidence/media and frozen science identities');
 }
 console.log('PASS device-pixel backing size boundaries, aspect and declared pixel cap');

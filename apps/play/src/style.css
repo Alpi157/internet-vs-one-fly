@@ -65,3 +65,35 @@ header:has(#circuit-badge:not([hidden])) #circuit-badge{transform:none}
 .raster-labels .brain-annotations{display:none}.raster-labels .brain-labels{visibility:visible}
 
 @media(min-width:900px){.lab-brains .webkit-lab-image{width:min(100%,384px);height:280px!important;flex:none;margin-inline:auto}.brain-fullscreen .webkit-brain-image{width:min(100%,1024px);height:min(720px,calc(100svh - 220px))!important;flex:none!important;margin:auto}}
+
+/* V2M a03: prominent outcomes and a scrolling phone replay with a persistent action. */
+#brain-panel.active .replay-heading{grid-template-columns:minmax(0,1fr) auto}
+#brain-panel.active .replay-heading #replay-badge{grid-column:2;grid-row:1;align-self:center}
+#brain-panel.active .replay-heading #brain-title{grid-column:1;grid-row:1;font:900 56px/1.1 Doto,monospace;color:#f2f4f0;text-align:left;margin:4px 0}
+#replay-next:empty{display:none}
+@media(min-width:900px){
+ @container replay-panel (max-width:999px){
+  .replay-study .timeline-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px}
+  .replay-study #timeline{grid-column:1 / -1;height:88px}
+  .replay-study #replay-playhead{grid-column:1}
+  .replay-study #replay-time{grid-column:2;align-self:center;margin:0}
+ }
+}
+@media(max-width:899px){
+ #replay-sheet[open]{display:flex;flex-direction:column;height:calc(100svh - 12px);max-height:calc(100svh - 12px);overflow:hidden;border-inline:0;padding:14px 0 0}
+ #replay-sheet>.grabber{flex:none}
+ #replay-slot{overflow-y:auto;overscroll-behavior:contain;min-height:0;flex:1;padding:0 16px 8px;scroll-padding-block:12px}
+ #replay-sheet #brain-panel{height:auto;min-height:0;gap:8px}
+ #replay-sheet #brain-panel.active #brain-title{font-size:40px;line-height:1.1;padding:0;margin:4px 0}
+ #replay-sheet #caption{margin:0}
+ #replay-sheet #brain-host{flex:none;width:100%}
+ #replay-sheet #brain-host:not(.whole) .brain-image,#replay-sheet #brain-host .brain-image,#replay-sheet #brain-host.whole .brain-image{width:100%;height:auto;min-height:0;max-height:none;aspect-ratio:720 / 424;flex:none}
+ #replay-sheet .replay-study .brain-explanation{display:block;order:1}
+ #replay-sheet .brain-explanation p{font-size:14px;line-height:20px}
+ #replay-sheet .timeline-wrap{order:2;margin:0}
+ #replay-sheet .playback{order:3;flex:none}
+ #replay-sheet .replay-actions{order:4;margin:0}
+ #replay-sheet .settings-link{order:5}
+ #replay-next{position:sticky;bottom:0;flex:none;padding:12px 16px max(14px,env(safe-area-inset-bottom));background:#0a0c0a;border-top:1px solid #262b27}
+ #replay-next #continue{width:100%;min-height:52px;font-size:16px}
+}
