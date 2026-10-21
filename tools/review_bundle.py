@@ -901,12 +901,46 @@ def render_v2b_review(
     return "\n".join(lines).encode("utf-8")
 
 
+def v2m_a02_evidence_selected(relative: PurePosixPath) -> bool:
+    """Owner-requested compact screenshots; all full evidence stays on disk."""
+    if relative.suffix == ".png":
+        import re
+        match = re.fullmatch(r"(chromium|firefox|webkit)-(\d+)x(\d+)-(en-US|ru-RU)(?:-dpr([12]))?-(.+)\.png", relative.name)
+        if not match or relative.parts[0] != "browser":
+            return False
+        browser, width, _, locale, dpr, state = match.groups()
+        if locale != "en-US":
+            return False
+        if dpr:
+            return browser == "chromium" and width in {"1890", "2560"}
+        return browser == "chromium" or width in {"1440", "1920"} or state == "phone-replay"
+    return relative.parts[0] in {"acceptance", "browser", "production", "kernel-parity", "neural-parity"} or len(relative.parts) == 1 and relative.suffix in {".md", ".json"}
+
+
+def add_v2m_a01_results(entries, root, omitted):
+    """Keep measured preset records and hash every other retained a01 file."""
+    selected = {"diagnosis.json", "baseline-swat.json", "acceptance/command-results.json", "parity/summary.json", *[f"presets/T{i}.json" for i in range(4)]}
+    for path in sorted((root / "evidence/V2M").rglob("*")):
+        if not path.is_file() or path.is_symlink():
+            continue
+        relative = path.relative_to(root / "evidence/V2M")
+        if relative.parts[0] == "a02":
+            continue
+        if relative.as_posix() in selected:
+            entries[f"evidence/a01/{relative.as_posix()}"] = path.read_bytes()
+        else:
+            size, digest = sha256_file(path)
+            omitted.append({"path": f"local/evidence/V2M/{relative.as_posix()}", "bytes": size, "sha256": digest,
+                            "reason": "Prior a01 full evidence retained locally; compact a02 review includes all preset result tables and the final a01 receipt"})
+
+
 def add_evidence(
     entries: dict[str, bytes],
     evidence_root: Path,
     omitted: list[dict[str, Any]],
     *,
     preview_limit: int = MAX_INCLUDED_FILE_BYTES,
+    selector=None,
 ) -> None:
     if not evidence_root.is_dir():
         entries["evidence/README.txt"] = b"No generated evidence directory was present at bundle time.\n"
@@ -916,6 +950,11 @@ def add_evidence(
         if not path.is_file() or path.is_symlink():
             continue
         relative = PurePosixPath(path.relative_to(evidence_root).as_posix())
+        if selector is not None and not selector(relative):
+            size, digest = sha256_file(path)
+            omitted.append({"path": f"evidence/{relative.as_posix()}", "bytes": size, "sha256": digest,
+                            "reason": "Owner-requested compact a02 selection; complete evidence retained locally"})
+            continue
         if evidence_root.name in {"V2E", "V2F"} and (relative.suffix in {".npy", ".npz", ".webbin"} or
             (len(relative.parts)>2 and relative.parts[0]=="results" and relative.parts[1] in {"H0","calibration","H1","H2","fixed","controls","H0-STR","H0-FULL","H0-T2","E1","E2a","E3-low","E3-high"} and relative.name.endswith(".json.gz") and not (relative.parts[1]=="calibration" and "-REAL-" in relative.name))):
             size, digest = sha256_file(path)
@@ -2098,6 +2137,7 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
             f"architecture mismatch: computed {architecture_sha}, expected {ARCHITECTURE_SHA256}"
         )
 
+    compact_v2m = milestone == "V2M" and attempt == 2
     entries: dict[str, bytes] = {}
     omitted: list[dict[str, Any]] = []
     repo_paths: list[str] = []
@@ -2105,11 +2145,15 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         pure = PurePosixPath(path)
         reason = exclusion_reason(pure)
         data = commit_blob(root, submitted, path)
+        if compact_v2m and path.startswith(("docs/design/v5/screens/", "docs/design/v5/assets/", "docs/design/v5/source/")):
+            omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
+                            "reason": "Unchanged design reference binary/source; compact a02 contains the current implementation screenshots"})
+            continue
         if milestone in {"V2I", "V2J", "V2K", "V2L", "V2M"} and path.startswith(("docs/design/v4/screens/", "docs/design/v4/source/")):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
                             "reason": "Unchanged design reference images/source; DESIGN.md and all new implementation screenshots are included"})
             continue
-        if milestone in {"V2H", "V2I", "V2J", "V2K", "V2L", "V2M"} and ((path.startswith("docs/media/") and not (milestone in {"V2I", "V2J", "V2K", "V2L", "V2M"} and path in {"docs/media/game-hero.gif", "docs/media/game-still.png", "docs/media/coupling-hero.gif", "docs/media/coupling-still.png", "docs/media/media-provenance.json", "docs/media/history/v2j-a03-provenance.json", "docs/media/history/v2l-provenance.json"})) or path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}):
+        if not (compact_v2m and path.startswith("docs/media/")) and milestone in {"V2H", "V2I", "V2J", "V2K", "V2L", "V2M"} and ((path.startswith("docs/media/") and not (milestone in {"V2I", "V2J", "V2K", "V2L", "V2M"} and path in {"docs/media/game-hero.gif", "docs/media/game-still.png", "docs/media/coupling-hero.gif", "docs/media/coupling-still.png", "docs/media/media-provenance.json", "docs/media/history/v2j-a03-provenance.json", "docs/media/history/v2l-provenance.json"})) or path in {"archive/raw-records-manifest.json", "docs/results-v2f.json"}):
             omitted.append({"path": f"repo/{path}", "bytes": len(data), "sha256": sha256(data),
                             "reason": "Unchanged prior-stage media/scientific inventory; available in submitted checkout. The current stage includes all new screen evidence."})
             continue
@@ -2166,8 +2210,11 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
         entries,
         evidence_root,
         omitted,
-        preview_limit=2 * 1024 * 1024 if milestone in {"V2A", "V2B"} else MAX_INCLUDED_FILE_BYTES,
+        preview_limit=16 * 1024 * 1024 if compact_v2m else 2 * 1024 * 1024 if milestone in {"V2A", "V2B"} else MAX_INCLUDED_FILE_BYTES,
+        selector=v2m_a02_evidence_selected if compact_v2m else None,
     )
+    if compact_v2m:
+        add_v2m_a01_results(entries, root, omitted)
     if milestone == "M02":
         omitted.extend(m02_large_source_inventory(root, submitted, evidence_root))
     if milestone == "M03":
@@ -2426,6 +2473,8 @@ def build_bundle(root: Path, milestone: str, attempt: int, base_arg: str) -> byt
     if milestone in {"V2J", "V2K", "V2L", "V2M"}:
         # Retain six-size/three-engine/locale matrices, regression captures and failed dry runs.
         archive_limit = (512 if milestone in {"V2L", "V2M"} else 256) * 1024 * 1024
+    if compact_v2m:
+        archive_limit = 150_000_000
     if len(value) >= archive_limit:
         raise BundleError(f"review bundle is {len(value)} bytes, exceeding the {archive_limit // (1024 * 1024)} MiB review limit")
     return value

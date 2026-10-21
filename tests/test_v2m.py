@@ -60,3 +60,31 @@ def test_same_hero_recording_with_semantic_colors():
     im.seek(20)
     r,g,b = im.convert("RGB").getpixel((343,286))
     assert r-g >= 20 and g-b >= 20, (r,g,b)
+
+
+def test_a02_owner_keeps_production_and_a01_media():
+    decision = load('decisions/D-V2M-SELECT-01.json')
+    assert decision['selected_preset'] == 'T0'
+    assert decision['production_profile'] == 'flybench.game.v2.9'
+    game = load('profiles/game-v2.9.json')
+    assert decision['takeoff_speed_units_per_ms'] == game['takeoff_speed'] == .018
+    assert decision['takeoff_duration_ms'] == game['takeoff_duration_ms'] == 330
+    for path, digest in decision['references_sha256'].items():
+        if not path.startswith('evidence/'):
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
+    result = subprocess.run(['git', 'diff', '--exit-code', decision['a01_sha'], '--', 'profiles', 'docs/media', 'apps/play/public/data', 'src', 'packages/kernel-ts/src', 'apps/play/src/game.ts', 'apps/play/src/game-runner.ts', 'apps/play/src/walking-drive.ts', 'apps/play/src/coupling-worker.ts'], cwd=ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout
+
+
+def test_a02_compact_bundle_selection():
+    from pathlib import PurePosixPath
+    from tools.review_bundle import v2m_a02_evidence_selected
+    selected = v2m_a02_evidence_selected
+    assert selected(PurePosixPath('browser/chromium-390x844-en-US-phone-replay.png'))
+    assert selected(PurePosixPath('browser/firefox-1440x900-en-US-whole-landscape.png'))
+    assert selected(PurePosixPath('browser/webkit-1920x1080-en-US-scrub-last.png'))
+    assert selected(PurePosixPath('browser/chromium-2560x1440-en-US-dpr2-sharpness-fullscreen.png'))
+    assert not selected(PurePosixPath('browser/webkit-2560x1440-en-US-dpr2-sharpness-fullscreen.png'))
+    assert not selected(PurePosixPath('browser/webkit-1920x1080-ru-RU-scrub-last.png'))
+    assert not selected(PurePosixPath('browser/chromium-1920x1080-en-US-dpr2-sharpness-lab.png'))
+    assert not selected(PurePosixPath('dry-owner/chromium-1890x900-en-US-outcome-next.png'))

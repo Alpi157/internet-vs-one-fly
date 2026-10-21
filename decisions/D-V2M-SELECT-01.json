@@ -1,0 +1,29 @@
+{
+  "decision": "Retain owner-selected T0 and production game v2.9",
+  "stage": "V2M",
+  "attempt": "a02",
+  "authority": "Owner played T0 through T3 and selected T0 in this session",
+  "a01_sha": "5584e6388f3d395de4c778d3c9033830a2c35139",
+  "protocol": "profiles/owner-takeoff-v2m.json",
+  "results": "evidence/V2M/presets",
+  "references_sha256": {
+    "profiles/owner-takeoff-v2m.json": "1e197a43cb3f9cc7b17017e7de7f15ff67a65d75c7958e1e5233cf199e65c3d0",
+    "profiles/owner-takeoff-v2m-selected.json": "0a5675fb699ca83d265b92f7a310adcbfae443755bdc9608287c424f0024c226",
+    "profiles/game-v2.9.json": "45a54acd4613e7273333cc2feee3d681118b29fcb91bdd1f5baf082c3e41c240",
+    "evidence/V2M/acceptance/command-results.json": "17e140dd2c633a8c26d708b3a59d9930815de28db7d25aff74067682023a30cd",
+    "evidence/V2M/presets/T0.json": "2fc42d20b901c2e9f4311cebda061222d6189e0e9a25356b3ce7dda6fb19ea66",
+    "evidence/V2M/presets/T1.json": "cb50381ed52ec358e537fa39657f56debe4405b831e9bc35c615daaa0ecc418a",
+    "evidence/V2M/presets/T2.json": "ded7edc1a853baa5c7d8669fa1999e1be1fb8d5a39770783690679284c7c4fb1",
+    "evidence/V2M/presets/T3.json": "ce5e8041b582e2208414f8987f29e8cde6b2d184a9fba622a1f565f77575197d"
+  },
+  "selected_preset": "T0",
+  "takeoff_speed_units_per_ms": 0.018,
+  "takeoff_duration_ms": 330,
+  "production_profile": "flybench.game.v2.9",
+  "mechanics_change": "NONE; exact current production profile retained",
+  "scientific_change": "NONE",
+  "preview_policy": "T0 through T3 remain development-only; production-exclusion test retained",
+  "media_policy": "Retain the color-corrected v2.9 a01 hero GIF byte-identically; no recapture",
+  "hero_sha256": "ecf757b4e8d37af5ebbd7621684eba0a7199a1fd1369c88c0db398f48740ba7c",
+  "status": "OWNER_CHOICE_RECORDED; external review pending"
+}

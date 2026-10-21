@@ -1,6 +1,6 @@
 import {loadResults} from './results.ts';
 import {fetchGraph} from '../../../packages/kernel-ts/src/transport.ts';
-import {BrainView} from './brain-view.ts';
+import {BrainView,LAB_PIXEL_BUDGET} from './brain-view.ts';
 import {footer,subtitle} from './chrome.ts';
 import {openLab} from './lab.ts';
 import type {Frame} from './game.ts';
@@ -66,8 +66,8 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
   const unpack=async(file:string)=>new Response((await fetch(base+'data/coupling/'+file)).body!.pipeThrough(new DecompressionStream('gzip'))).json();
   const [rt,brain,buf,sign,str,meta,pr,display,published]=await Promise.all([fetch(base+'data/coupling/runtime.json').then(r=>r.json()),fetch(base+'data/coupling/brain.json').then(r=>r.json()),fetchGraph(base+'data/coupling/circuit.flygraph.gz'),unpack('targets.json.gz'),unpack('strength-targets.json.gz'),fetch(base+'data/coupling/strength-demo.json').then(r=>r.json()),fetch(base+'data/coupling/game-v2.8.json').then(r=>r.json()),fetch(base+'data/display-v1.json').then(r=>r.json()),loadResults(base)]);
   if(closed)return;runtime=rt;original=buf;targets={'N-SIGN':sign,'N-STRENGTH':str};strength=meta;profile=pr;results=published;scale=results.registered_coupling;rates=registeredRates(results);
-  views=[0,1].map(i=>{const target=$(`lab-brain-${i}`);const view=new BrainView(target,base,brain.nodes,display,'T1a',{resolutionScale:1/2,glow:false});const caption=target.querySelector('.anatomy-caption')!,details=document.createElement('details');details.className='anatomy-info';details.innerHTML='<summary>About this anatomy</summary>';details.append(caption);target.append(details);return view;});
-  tryViews=[0,1].map(i=>new BrainView($(`try-brain-${i}`),base,brain.nodes,display,'T1a',{resolutionScale:1/2,glow:false}));
+  views=[0,1].map(i=>{const target=$(`lab-brain-${i}`);const view=new BrainView(target,base,brain.nodes,display,'T1a',{pixelBudget:LAB_PIXEL_BUDGET,glow:false});const caption=target.querySelector('.anatomy-caption')!,details=document.createElement('details');details.className='anatomy-info';details.innerHTML='<summary>About this anatomy</summary>';details.append(caption);target.append(details);return view;});
+  tryViews=[0,1].map(i=>new BrainView($(`try-brain-${i}`),base,brain.nodes,display,'T1a',{pixelBudget:LAB_PIXEL_BUDGET,glow:false}));
   const shuffle=host.querySelector('.shuffle-family')!;$('try-strength').querySelector('h2')!.after(shuffle);
   slider.max=String(rt.grid.length-1);slider.disabled=false;($('coupling-drop') as HTMLButtonElement).disabled=false;
   for(const [id,value] of [['game-tick',results.calibrated_coupling],['registered-tick',results.registered_coupling]])$(String(id)).style.left=`${rt.grid.indexOf(value)/(rt.grid.length-1)*100}%`;
@@ -81,6 +81,6 @@ export async function openCoupling(host:HTMLElement,base:string,onClose:()=>void
   $('coupling-caveat').textContent=results.lab_drive_disclosure+' '+results.lab_caveat+' '+results.bin_note+' '+results.limitations;
   $('coupling-identity').textContent=`${brain.nodes.length.toLocaleString('en-US')} neurons per simulation. Live rates use observed spikes over up to 250 simulated ms. Chart: no-threat registered rates, per neuron. Display fade is smoothing only.`;
   ($('registered-curves') as HTMLDetailsElement).open=innerWidth>=900;setStep(1);requestAnimationFrame(animate);
-  (window as any).couplingTest={ready:()=>panels.length===2&&[...views,...tryViews].every(v=>v.ready),step:setStep,setScale:(s:number)=>{if(!runtime.grid.includes(s))throw Error('Off-grid coupling');scale=s;reset();},setFamily:(f:string)=>{const input=host.querySelector<HTMLInputElement>(`input[value="${f}"]`)!;input.checked=true;family=f;scale=results.registered_coupling;reset();},state:()=>({step,scale,family,generation,panels:panels.map(p=>({rate:p.rate,tick:p.tick,counts:Array.from(p.counts),seconds:p.seconds})),speed,paintCount,mirrors:tryViews.map(v=>v.mirrorStatus),renderers:views.map(v=>v.renderer)}),draw:drawChart};
+  (window as any).couplingTest={ready:()=>panels.length===2&&[...views,...tryViews].every(v=>v.ready),step:setStep,setScale:(s:number)=>{if(!runtime.grid.includes(s))throw Error('Off-grid coupling');scale=s;reset();},setFamily:(f:string)=>{const input=host.querySelector<HTMLInputElement>(`input[value="${f}"]`)!;input.checked=true;family=f;scale=results.registered_coupling;reset();},state:()=>({step,scale,family,generation,panels:panels.map(p=>({rate:p.rate,tick:p.tick,counts:Array.from(p.counts),seconds:p.seconds})),speed,paintCount,rendering:[...views,...tryViews].map(v=>v.displayStatus),mirrors:tryViews.map(v=>v.mirrorStatus),renderers:views.map(v=>v.renderer)}),draw:drawChart};
  }catch(e){worker.terminate();status.textContent='Lab data could not load: '+String(e);throw e;}
 }

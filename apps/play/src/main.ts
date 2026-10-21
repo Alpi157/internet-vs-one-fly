@@ -11,7 +11,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!, base = import.meta.
 const icon = (path: string) => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
 const closeIcon = icon('M6 6L18 18M18 6L6 18'), pauseIcon = icon('M8 5V19M16 5V19'), playIcon = icon('M8 5L19 12L8 19Z');
 app.innerHTML = `<main><header><div><h1>Catch the fly</h1><div class="subtitle-slot"><p id="subtitle">Loading the mapped circuit…</p><div id="circuit-badge" hidden><span id="circuit-label"></span><button id="restore-wiring">Restore</button></div></div></div><nav aria-label="Main"><a href="./" aria-current="page">Play</a><button data-wiring>Wiring lab</button><a href="./how-it-works.html">How it works</a><a href="https://github.com/Alpi157/internet-vs-one-fly">Code ↗</a></nav><button class="icon" id="intro-help" aria-label="Show introduction">?</button></header>
-<div class="play-layout"><section class="game-column" aria-label="Game"><div class="stats"><div><strong id="score">0</strong><span>caught</span></div><div class="hand-count"><div id="pips" aria-hidden="true"></div><span id="strikes"></span></div></div><div class="field-wrap"><canvas id="table" tabindex="0" role="img" aria-label="Fly arena. Arrow keys aim. Hold Space and release to strike. Enter strikes at the reticle."></canvas><div id="intro"><button id="start" class="primary" disabled>Loading the fly…</button><small>No account. No tracking.</small></div><div id="landing" class="status-pill" hidden></div><div id="impact-label" class="outcome-stamp" hidden><span id="stamp-word"></span><span id="stamp-line"></span></div><div id="field-next" hidden><button id="field-continue" class="primary">Next hand →</button><span>or press Space</span><small>Paused while you watch the replay</small></div></div><p id="time" class="sr-only"></p><div class="hand-legend" aria-label="Two hands"><div id="fast-tile"><i class="tap-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Tap</b><span>Fast hand</span></span><span class="desktop-hint"><b>Click</b> for a fast hand</span></div><div id="hold-tile"><i class="hold-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Hold</b><span>Big, slow hand</span></span><span class="desktop-hint"><b>Hold</b> for a big, slow hand</span></div></div><p class="keyboard-hint">Keyboard: arrow keys aim, Space works like the mouse button.</p><div class="game-actions"><button id="replay-last" disabled>Replay</button><button id="next-hand" hidden>Next hand</button><button id="game-wiring" data-wiring>Wiring lab</button></div></section><div id="desktop-brain"><aside id="brain-panel" aria-label="Brain replay"><p id="replay-badge">Live brain</p><h2 id="brain-title">Under the microscope</h2><p id="caption">Every flash is a recorded spike.</p><p id="impact-detail" class="impact-detail"></p><div id="brain-host"><p role="status">Loading real neuron skeletons…</p></div><div class="brain-bottom"><div class="timeline-wrap"><canvas id="timeline" width="720" height="190" role="img" aria-label="Recorded Your hand, Looming detectors and Escape neuron tracks across the recorded replay"></canvas><input id="replay-playhead" type="range" min="0" max="0" step="1" value="0" aria-label="Replay frame"><output id="replay-time" for="replay-playhead">impact</output></div><div class="brain-explanation"><p>${brainExplanation}</p><button class="desktop-wiring" data-wiring>Is it the wiring? Open the wiring lab →</button></div></div><div class="playback"><button id="pause-replay" class="icon" aria-label="Pause replay">${pauseIcon}</button><button id="frame-back" class="icon" aria-label="Previous recorded frame">‹</button><button id="frame-forward" class="icon" aria-label="Next recorded frame">›</button><label for="replay-speed">Speed</label><select id="replay-speed"><option value="0.25">1/4</option><option value="0.1">1/10</option><option value="0.025">1/40</option></select></div><div class="replay-actions"><button id="continue" class="primary">Next hand</button><button id="video" disabled>Save clip</button></div><button class="settings-link" data-how>Settings and model details</button></aside></div></div><p id="notice" role="status"></p><div id="announcer" class="sr-only" aria-live="polite"></div>${footer}</main>
+<div class="play-layout"><section class="game-column" aria-label="Game"><div class="stats"><div><strong id="score">0</strong><span>caught</span></div><div class="hand-count"><div id="pips" aria-hidden="true"></div><span id="strikes"></span></div></div><div class="field-wrap"><canvas id="table" tabindex="0" role="img" aria-label="Fly arena. Arrow keys aim. Hold Space and release to strike. Enter strikes at the reticle."></canvas><div id="intro"><button id="start" class="primary" disabled>Loading the fly…</button><small>No account. No tracking.</small></div><div id="landing" class="status-pill" hidden></div><div id="impact-label" class="outcome-stamp" hidden><span id="stamp-word"></span><span id="stamp-line"></span></div><div id="field-next" hidden><button id="field-continue" class="primary">Next hand →</button><span>or press Space</span><small>Paused while you watch the replay</small></div></div><p id="time" class="sr-only"></p><div class="hand-legend" aria-label="Two hands"><div id="fast-tile"><i class="tap-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Tap</b><span>Fast hand</span></span><span class="desktop-hint"><b>Click</b> for a fast hand</span></div><div id="hold-tile"><i class="hold-symbol" aria-hidden="true"></i><span class="phone-hint"><b>Hold</b><span>Big, slow hand</span></span><span class="desktop-hint"><b>Hold</b> for a big, slow hand</span></div></div><p class="keyboard-hint">Keyboard: arrow keys aim, Space works like the mouse button.</p><div class="game-actions"><button id="replay-last" disabled>Replay</button><button id="next-hand" hidden>Next hand</button><button id="game-wiring" data-wiring>Wiring lab</button></div></section><div id="desktop-brain"><aside id="brain-panel" aria-label="Brain replay"><div class="replay-heading"><p id="replay-badge">Live brain</p><h2 id="brain-title">Under the microscope</h2><p id="caption">Every flash is a recorded spike.</p><p id="impact-detail" class="impact-detail"></p></div><div class="brain-content"><div id="brain-host"><p role="status">Loading real neuron skeletons…</p></div><div class="replay-study"><div class="brain-bottom"><div class="timeline-wrap"><canvas id="timeline" width="720" height="190" role="img" aria-label="Recorded Your hand, Looming detectors and Escape neuron tracks across the recorded replay"></canvas><input id="replay-playhead" type="range" min="0" max="0" step="1" value="0" aria-label="Replay frame"><output id="replay-time" for="replay-playhead">impact</output></div><div class="brain-explanation"><p>${brainExplanation}</p><button class="desktop-wiring" data-wiring>Is it the wiring? Open the wiring lab →</button></div></div><div class="playback"><button id="pause-replay" class="icon" aria-label="Pause replay">${pauseIcon}</button><button id="frame-back" class="icon" aria-label="Previous recorded frame">‹</button><button id="frame-forward" class="icon" aria-label="Next recorded frame">›</button><label for="replay-speed">Speed</label><select id="replay-speed"><option value="0.25">1/4</option><option value="0.1">1/10</option><option value="0.025">1/40</option></select></div><div class="replay-actions"><button id="continue" class="primary">Next hand</button><button id="video" disabled>Save clip</button></div><button class="settings-link" data-how>Settings and model details</button></div></div></aside></div></div><p id="notice" role="status"></p><div id="announcer" class="sr-only" aria-live="polite"></div>${footer}</main>
 <dialog id="replay-sheet" aria-label="Last hand replay"><div class="grabber"></div><button class="icon close" data-close aria-label="Close replay">${closeIcon}</button><div id="replay-slot"></div></dialog>
 <dialog id="how-sheet" aria-labelledby="how-title"><div class="grabber"></div><button class="icon close" data-close aria-label="Close How it works">${closeIcon}</button><h2 id="how-title">What is real here?</h2><p id="model-counts"></p><p>Measured MaleCNS wiring drives a simplified neural model. Vision uses size and expansion features. Neurons share a uniform LIF model. Takeoff is abstract and follows heading with seeded jitter. Missing signs and turn directions remain explicit.</p><p id="science-status"></p><p id="walking-disclosure" hidden></p><p>No wiring-superiority or human usability result is claimed.</p><div class="links"><a href="./how-it-works.html">How it works: model, findings and data</a><a href="./preregistration.html">Original preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/preregistration-v2.1.md">Robustness preregistration</a><a href="https://github.com/Alpi157/internet-vs-one-fly/blob/main/docs/findings-v2f.md">Findings</a><a id="dataset-link">Zenodo dataset</a></div><div class="settings"><label><input type="checkbox" id="reduce">Reduced motion</label><label><input type="checkbox" id="sound" checked>Sound</label><button id="save-log">Save round log</button><button id="card">Save result card</button></div><details><summary>Registered results</summary><div id="finding-copy"></div></details></dialog>
 
@@ -147,65 +147,31 @@ document.addEventListener('keydown',e=>{
     e.preventDefault();e.stopPropagation();continueGame();
 },true);
 function drawTimeline(f: Frame, frames = replay, impact = lastImpact, output = timeline) {
-    const c = output.getContext('2d')!;
-    c.fillStyle = '#0a0c0a';
-    c.fillRect(0, 0, 720, 190);
-    if (!impact || !brain)
-        return;
-    const first = frames[0]?.tick??impact.tick-profile.replay_pre_ms*2, last = frames.at(-1)?.tick??impact.tick, data = frames.filter(f => f.tick >= first && f.tick <= last), x = (t: number) => 255 + (t - first) / (last - first) * 440;
-    const groups = new Map<number, string>(brain.nodes.map((n: any) => [n.index, n.group]));
-    const population = brain.nodes.filter((n: any) => ['LC4', 'LPLC2'].includes(n.group)).length;
-    const rates = data.map(v => v.spikes.reduce((n, e) => n + e.indices.filter(i => ['LC4', 'LPLC2'].includes(groups.get(i)!)).length, 0) / population / .01), maxRate = Math.max(1, ...rates);
-    c.font = '24px Atkinson';
-    for (let row = 0; row < 3; row++) {
-        const y = 33 + row * 49;
-        c.fillStyle = '#9ba59c';
-        c.fillText(['Your hand', 'Looming detectors', 'Escape neuron'][row], 0, y);
-        c.strokeStyle = '#262b27';
-        c.beginPath();
-        c.moveTo(255, y + 8);
-        c.lineTo(695, y + 8);
-        c.stroke();
-        c.strokeStyle = row === 0 ? '#c9d0c8' : '#63f29a';
-        c.lineWidth = 2;
-        c.beginPath();
-        data.forEach((v, i) => { let value = 0; if (row === 0)
-            value = v.strike ? Math.max(0, (v.strike.impact_tick - v.tick) / (v.strike.impact_tick - v.strike.start_tick)) : 0; if (row === 1)
-            value = rates[i] / maxRate; if (row < 2) {
-            const yy = y + 8 - value * 30;
-            if (i === 0)
-                c.moveTo(x(v.tick), yy);
-            else {
-                c.lineTo(x(v.tick), y + 8 - (row === 1 ? rates[i - 1] / maxRate : data[i - 1].strike ? Math.max(0, (data[i - 1].strike.impact_tick - data[i - 1].tick) / (data[i - 1].strike.impact_tick - data[i - 1].strike.start_tick)) : 0) * 30);
-                c.lineTo(x(v.tick), yy);
-            }
-        }
-        else
-            for (const e of v.spikes)
-                if (e.indices.some(i => groups.get(i) === 'giant fiber')) {
-                    c.moveTo(x(e.tick), y + 8);
-                    c.lineTo(x(e.tick), y - 22);
-                } });
-        c.stroke();
+    const box=output.getBoundingClientRect(),width=output===timeline?Math.max(1,box.width):720,height=output===timeline?Math.max(1,box.height):190,dpr=output===timeline?(devicePixelRatio||1):1;
+    const backingWidth=Math.ceil(width*dpr),backingHeight=Math.ceil(height*dpr);
+    if(output.width!==backingWidth||output.height!==backingHeight){output.width=backingWidth;output.height=backingHeight;}
+    const c=output.getContext('2d')!;c.setTransform(backingWidth/width,0,0,backingHeight/height,0,0);
+    c.fillStyle='#0a0c0a';c.fillRect(0,0,width,height);
+    if(!impact||!brain)return;
+    const first=frames[0]?.tick??impact.tick-profile.replay_pre_ms*2,last=frames.at(-1)?.tick??impact.tick,data=frames.filter(v=>v.tick>=first&&v.tick<=last);
+    const exported=output!==timeline,font=exported?24:12,left=exported?255:width<350?116:132,right=width-(exported?25:8),top=exported?33:18,bottom=height-(exported?59:28),rowHeight=(bottom-top)/2,x=(t:number)=>left+(t-first)/Math.max(1,last-first)*(right-left);
+    const groups=new Map<number,string>(brain.nodes.map((n:any)=>[n.index,n.group])),population=brain.nodes.filter((n:any)=>['LC4','LPLC2'].includes(n.group)).length;
+    const rates=data.map(v=>v.spikes.reduce((n,e)=>n+e.indices.filter(i=>['LC4','LPLC2'].includes(groups.get(i)!)).length,0)/population/.01),maxRate=Math.max(1,...rates);
+    c.font=`${font}px Atkinson`;
+    for(let row=0;row<3;row++){
+        const y=top+row*rowHeight;c.fillStyle='#9ba59c';c.fillText(['Your hand','Looming detectors','Escape neuron'][row],0,y);
+        c.strokeStyle='#262b27';c.lineWidth=1;c.beginPath();c.moveTo(left,y+4);c.lineTo(right,y+4);c.stroke();
+        c.strokeStyle=row===0?'#c9d0c8':'#63f29a';c.lineWidth=1.5;c.beginPath();
+        const value=(v:Frame,i:number)=>row===1?rates[i]/maxRate:v.strike?Math.max(0,(v.strike.impact_tick-v.tick)/(v.strike.impact_tick-v.strike.start_tick)):0;
+        data.forEach((v,i)=>{
+            if(row<2){const yy=y+4-value(v,i)*Math.min(18,rowHeight-6);if(!i)c.moveTo(x(v.tick),yy);else{c.lineTo(x(v.tick),y+4-value(data[i-1],i-1)*Math.min(18,rowHeight-6));c.lineTo(x(v.tick),yy);}}
+            else for(const e of v.spikes)if(e.indices.some(i=>groups.get(i)==='giant fiber')){c.moveTo(x(e.tick),y+4);c.lineTo(x(e.tick),y-Math.min(18,rowHeight-6));}
+        });c.stroke();
     }
-    c.strokeStyle = '#e9ede6';
-    c.setLineDash([4, 4]);
-    c.beginPath();
-    c.moveTo(x(impact.tick), 5);
-    c.lineTo(x(impact.tick), 148);
-    c.stroke();
-    c.setLineDash([]);
-    c.strokeStyle = '#7fefaa';
-    c.beginPath();
-    c.moveTo(x(Math.max(first, Math.min(last, f.tick))), 5);
-    c.lineTo(x(Math.max(first, Math.min(last, f.tick))), 148);
-    c.stroke();
-    c.fillStyle = '#c9d0c8';
-    c.fillText(`${(first-impact.tick)*.5} ms`, 255, 179);
-    c.textAlign = 'right';
-    c.fillText(`+${(last-impact.tick)*.5} ms`, 695, 179);
-    c.textAlign = 'left';
+    for(const [tick,color,dash] of [[impact.tick,'#e9ede6',[3,3]],[Math.max(first,Math.min(last,f.tick)),'#7fefaa',[]]] as const){c.strokeStyle=color;c.setLineDash([...dash]);c.beginPath();c.moveTo(x(tick),2);c.lineTo(x(tick),bottom+8);c.stroke();}c.setLineDash([]);
+    c.fillStyle='#c9d0c8';c.fillText(`${(first-impact.tick)*.5} ms`,left,height-5);c.textAlign='right';c.fillText(`${last>=impact.tick?'+':''}${(last-impact.tick)*.5} ms`,right,height-5);c.textAlign='left';
 }
+
 let loopReplay = false;
 let paintCount = 0;
 function animate(now: number) {
