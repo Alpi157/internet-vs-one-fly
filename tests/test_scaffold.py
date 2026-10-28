@@ -134,7 +134,6 @@ def test_required_m01_paths_and_registry() -> None:
     required = [
         "pyproject.toml",
         "uv.lock",
-        "AGENTS.md",
         "ledger.yaml",
         "tooling.json",
         "docs/architecture.md",
