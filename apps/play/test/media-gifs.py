@@ -1,6 +1,47 @@
 from pathlib import Path
 from PIL import Image
 import hashlib,json,sys
+# V2N re-captures accepted V2M UI; historical encoding modes below stay fixed.
+if '--v2n' in sys.argv:
+ from PIL import ImageDraw
+ root=Path(__file__).resolve().parents[3];evidence=root/'evidence/V2N';frames=evidence/'source-frames'
+ p=root/'docs/media/media-provenance.json';provenance=json.loads(p.read_text())
+ assert provenance['schema']=='flybench.media.v2n'
+ provenance['palette_record']={}
+ for prefix,name,key in [('game','game-hero.gif','game'),('lab','coupling-hero.gif','lab')]:
+  paths=sorted(frames.glob(prefix+'-*.png'));assert len(paths)==provenance[key]['frames']
+  images=[]
+  for path in paths:
+   im=Image.open(path).convert('RGB');im.thumbnail((960,600),Image.Resampling.LANCZOS);images.append(im)
+  samples=images[::10];sheet=Image.new('RGB',(960,600*(len(samples)+1)))
+  for i,im in enumerate(samples):sheet.paste(im,(0,i*600))
+  y=len(samples)*600;ink=ImageDraw.Draw(sheet);ink.rectangle((0,y,479,y+599),fill='#63f29a')
+  for j,color in enumerate(['#503c28','#6e553c','#876e50','#a58c69','#bea682']):ink.rectangle((480,y+j*120,959,y+j*120+119),fill=color)
+  palette=sheet.quantize(colors=112,method=Image.Quantize.MEDIANCUT)
+  sequence=[im.quantize(palette=palette,dither=Image.Dither.NONE) for im in images]
+  duration=provenance[key]['frame_duration_ms'];out=root/'docs/media'/name
+  sequence[0].save(out,save_all=True,append_images=sequence[1:],duration=duration,loop=0,optimize=True,disposal=1,palette=palette.getpalette())
+  data=out.read_bytes();assert len(data)<8_000_000
+  with Image.open(out) as gif:
+   assert gif.n_frames==len(paths) and gif.size==(960,600)
+   decoded=[]
+   for i in range(gif.n_frames):
+    gif.seek(i);assert gif.info['duration']==duration
+    rgb=gif.convert('RGB').tobytes();assert rgb==sequence[i].convert('RGB').tobytes(),f'Lossless delta mismatch at {name} frame {i}'
+    decoded.append(hashlib.sha256(rgb).hexdigest())
+  provenance['assets']['docs/media/'+name]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'frames':len(paths),'source_frames':len(paths),'size':[960,600],'frame_duration_ms':duration,'palette_colors':112,'decoded_rgb_sha256':decoded}
+  provenance['palette_record'][name]={'rule':'112-color global median-cut palette from every tenth downscaled full frame; reserve one 960x600 sample area for semantic green #63F29A and five tan body shades, as in V2M; no dithering.','sample_frame_indices':list(range(0,len(paths),10)),'sample_sheet_sha256':hashlib.sha256(sheet.tobytes()).hexdigest(),'palette_sha256':hashlib.sha256(bytes(palette.getpalette())).hexdigest(),'rgb':palette.getpalette(),'dither':'NONE','resampling':'LANCZOS','optimize':True,'disposal':1,'lossless_delta_check':'Every decoded RGB frame equals its palette-quantized source frame byte for byte. Transparent delta pixels retain unchanged previous-frame pixels.'}
+  # Both GIFs are decoded independently, without aligning or synthesizing frames.
+  with Image.open(evidence/'previous'/name) as old,Image.open(out) as new:
+   indices=list(range(0,max(old.n_frames,new.n_frames),10));contact=Image.new('RGB',(1920,630*len(indices)), '#181818');draw=ImageDraw.Draw(contact)
+   for row,i in enumerate(indices):
+    for column,(gif,label) in enumerate([(old,'V2M README (V2L capture)'),(new,'V2N README (accepted V2M capture)')]):
+     draw.text((column*960+12,row*630+8),f'{label}: frame {i}',fill='white')
+     if i<gif.n_frames:gif.seek(i);contact.paste(gif.convert('RGB'),(column*960,row*630+30))
+   contact.save(evidence/(prefix+'-old-vs-new-contact.png'))
+  print(name,len(paths),'frames,',len(data),'bytes')
+ provenance['conversion_source_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+ p.write_text(json.dumps(provenance,indent=2)+'\n');raise SystemExit
 # V2M changes palette encoding only, using the exact retained V2L source frames.
 if '--v2m' in sys.argv:
  from PIL import ImageDraw

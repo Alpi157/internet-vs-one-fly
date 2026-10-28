@@ -5760,6 +5760,99 @@
           "timeout_seconds": 30
         }
       ]
+    },
+    "V2N": {
+      "commands": [
+        {
+          "name": "full-python-regression",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 180
+        },
+        {
+          "name": "offline-kernel-fixture",
+          "argv": [
+            "npm",
+            "--prefix",
+            "packages/kernel-ts",
+            "run",
+            "test:fixture"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 120
+        },
+        {
+          "name": "accepted-product-build",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "run",
+            "build"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 120
+        },
+        {
+          "name": "game-and-v2m-unit-tests",
+          "argv": [
+            "npm",
+            "--prefix",
+            "apps/play",
+            "test"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 120
+        },
+        {
+          "name": "v2m-and-v2n-media-tests",
+          "argv": [
+            "uv",
+            "run",
+            "--offline",
+            "python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_v2m.py",
+            "tests/test_v2n.py"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 120
+        },
+        {
+          "name": "v2m-a03-preservation",
+          "argv": [
+            "env",
+            "FLYBENCH_V2M_PRESERVATION_OUT=evidence/V2N/v2m-preservation-check.json",
+            "node",
+            "apps/play/test/v2m-ui.test.ts",
+            "--a03-preservation"
+          ],
+          "cwd": ".",
+          "required": true,
+          "required_paths": [],
+          "timeout_seconds": 180
+        }
+      ]
     }
   }
 }

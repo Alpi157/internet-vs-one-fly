@@ -2,11 +2,13 @@
 import hashlib
 import json
 import subprocess
+from io import BytesIO
 from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "2cb59c0d6dca6c341c03e83ee5352d8955223f29"
+ACCEPTED = "1b670a9d371ce406a1865aa5c4b91085b4f87fea"
 
 def load(path):
     return json.loads((ROOT / path).read_text())
@@ -41,17 +43,19 @@ def test_fixed_presets_and_owner_selected_walking():
         assert abs(p["takeoff_speed"] * p["takeoff_duration_ms"] - 6) <= .15 + 1e-12
 
 def test_same_hero_recording_with_semantic_colors():
-    current = load("docs/media/media-provenance.json")
+    current = load("docs/media/history/v2m-provenance.json")
+    assert (ROOT / "docs/media/history/v2m-provenance.json").read_bytes() == subprocess.check_output(
+        ["git", "show", ACCEPTED + ":docs/media/media-provenance.json"], cwd=ROOT)
     historical = load("docs/media/history/v2l-provenance.json")
     assert current["game"] == historical["game"]
     assert current["lab"] == historical["lab"]
     assert (ROOT / "docs/media/history/v2l-provenance.json").read_bytes() == subprocess.check_output(
         ["git", "show", BASE + ":docs/media/media-provenance.json"], cwd=ROOT)
     assert len(current["palette_revision"]["source_frames_sha256"]) == 153
-    path = ROOT / "docs/media/game-hero.gif"
-    assert path.stat().st_size < 8_000_000
-    assert hashlib.sha256(path.read_bytes()).hexdigest() == current["assets"]["docs/media/game-hero.gif"]["sha256"]
-    im = Image.open(path)
+    data = subprocess.check_output(["git", "show", ACCEPTED + ":docs/media/game-hero.gif"], cwd=ROOT)
+    assert len(data) < 8_000_000
+    assert hashlib.sha256(data).hexdigest() == current["assets"]["docs/media/game-hero.gif"]["sha256"]
+    im = Image.open(BytesIO(data))
     assert im.n_frames == 153 and im.size == (960, 600)
     for frame, xy in [(65, (171, 156)), (110, (475, 104))]:
         im.seek(frame)
@@ -72,7 +76,9 @@ def test_a02_owner_keeps_production_and_a01_media():
     for path, digest in decision['references_sha256'].items():
         if not path.startswith('evidence/'):
             assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
-    result = subprocess.run(['git', 'diff', '--exit-code', decision['a01_sha'], '--', 'profiles', 'docs/media', 'apps/play/public/data', 'src', 'packages/kernel-ts/src', 'apps/play/src/game.ts', 'apps/play/src/game-runner.ts', 'apps/play/src/walking-drive.ts', 'apps/play/src/coupling-worker.ts'], cwd=ROOT, capture_output=True, text=True)
+    result = subprocess.run(['git', 'diff', '--exit-code', decision['a01_sha'], ACCEPTED, '--', 'docs/media'], cwd=ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout
+    result = subprocess.run(['git', 'diff', '--exit-code', decision['a01_sha'], '--', 'profiles', 'apps/play/public/data', 'src', 'packages/kernel-ts/src', 'apps/play/src/game.ts', 'apps/play/src/game-runner.ts', 'apps/play/src/walking-drive.ts', 'apps/play/src/coupling-worker.ts'], cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout
 
 

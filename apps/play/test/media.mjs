@@ -210,4 +210,99 @@ async function encodeV2LReview(){
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 }
 
-if(process.argv.includes('--v2l-review'))await encodeV2LReview();else if(process.argv.includes('--v2l'))await captureV2L();else if(process.argv.includes('--a03')||process.argv.includes('--v2k'))await captureA03();else await legacyCapture();
+async function captureV2N(){
+ const sourceCommit='1b670a9d371ce406a1865aa5c4b91085b4f87fea',dry=process.argv.includes('--dry-run');
+ const git=(...args)=>execFileSync('git',args,{cwd:root});
+ assert.equal(git('rev-parse','v2m-accepted^{commit}').toString().trim(),sourceCommit);
+ assert.equal(git('diff',sourceCommit,'--','apps/play/src','apps/play/public').length,0,'Capture only accepted, unmodified sources and public assets');
+ const media=resolve(root,'docs/media'),evidence=resolve(root,'evidence/V2N'),frames=resolve(evidence,'source-frames');
+ mkdirSync(evidence,{recursive:true});
+ const previous=JSON.parse(readFileSync(resolve(media,'history/v2m-provenance.json')));
+ const selection={...previous.game.selection};for(const k of ['tried','trials','declaration_sha256'])delete selection[k];
+ assert.deepEqual(selection,JSON.parse(readFileSync(resolve(root,'profiles/ui-v2l.json'))).hero);
+ const declaration=JSON.stringify(selection,null,2)+'\n';
+ writeFileSync(resolve(evidence,'hero-selection-declaration.json'),declaration);
+ const sourcePaths=git('ls-tree','-r','--name-only',sourceCommit,'--','apps/play/src').toString().trim().split('\n');
+ const sourceHashes=Object.fromEntries(sourcePaths.map(p=>{const data=readFileSync(resolve(root,p));assert.equal(hash(data),hash(git('show',sourceCommit+':'+p)),p);return [p,hash(data)];}));
+ const profile=JSON.parse(readFileSync(resolve(dist,'data/game.json'))),results=JSON.parse(readFileSync(resolve(dist,'results-v2f.json')));
+ assert.deepEqual(profile,JSON.parse(git('show',sourceCommit+':apps/play/public/data/game.json')));
+ assert.equal(profile.profile_id,'flybench.game.v2.9');assert.equal(profile.takeoff_speed,.018);assert.equal(profile.takeoff_duration_ms,330);
+ const browser=await chromium.launch({headless:true}),{server,origin}=await serve(),external=[];
+ const setup=async dpr=>{
+  const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:dpr});
+  await page.route('**/*',r=>{const u=r.request().url();if(!u.startsWith(origin)&&!u.startsWith('data:')&&!u.startsWith('blob:')){external.push(u);return r.abort();}return r.continue();});
+  await page.addInitScript(()=>localStorage.setItem('flybench.intro.v5','seen'));
+  await page.goto(origin+prefix+'?test=1');await page.waitForFunction(()=>window.flyTest?.ready()&&window.flyTest.state().anatomyReady);
+  await page.evaluate(()=>{document.getElementById('sound').checked=false;return document.fonts.ready;});
+  return page;
+ };
+ const reset=async page=>{await page.evaluate(()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();window.flyTest.resetSeed(1);});await page.waitForFunction(()=>window.flyTest.ready());await page.click('#start');};
+ const strike=async page=>page.evaluate(()=>{const b=window.flyTest.state().frame.body;window.flyTest.strike(b.x,b.y,600);return {x:b.x,y:b.y};});
+ const geometry=async(page,selectors)=>page.evaluate(selectors=>selectors.map(s=>{const e=document.querySelector(s),b=e.getBoundingClientRect();return {selector:s,x:b.x,y:b.y,width:b.width,height:b.height,visible:e.checkVisibility()};}),selectors);
+ try{
+  if(dry){
+   const probes=[];
+   for(const dpr of [1,2]){
+    const page=await setup(dpr);await reset(page);await page.evaluate(()=>window.flyTest.advance(150));await strike(page);await page.evaluate(()=>window.flyTest.advance(100));await page.waitForFunction(()=>window.flyTest.recordedFrames().length>0);
+    const log=await page.evaluate(()=>window.flyTest.log()),recorded=await page.evaluate(()=>window.flyTest.recordedFrames()),impact=await page.evaluate(()=>window.flyTest.state().lastImpact);
+    assert(!impact.caught&&impact.escape_onset_lead_ms>0,'STOP: frozen seed 1 no longer qualifies; never try another seed');
+    assert.deepEqual(impact,previous.game.impact);assert.deepEqual(log,previous.game.log);
+    const clock=new Date();await page.clock.install({time:clock});await page.clock.pauseAt(new Date(clock.getTime()+1000));
+    await page.evaluate(()=>{window.flyTest.showReplay();window.flyTest.measureReplay(true);});
+    const ticks=[],playheads=[];for(let i=0;i<60;i++){await page.clock.runFor(50);ticks.push(await page.evaluate(()=>window.flyTest.state().replayTick));playheads.push(await page.locator('#replay-playhead').inputValue());}
+    const layout=await geometry(page,['#table','#brain-panel','#brain-host','#timeline','#replay-playhead','.playback']);
+    const brain=await page.locator('#brain-host .brain-image canvas').first().evaluate(c=>({width:c.width,height:c.height,cssWidth:c.getBoundingClientRect().width,cssHeight:c.getBoundingClientRect().height}));
+    assert(brain.width*brain.height<=1048576);
+    await page.screenshot({path:resolve(evidence,`preflight-dpr${dpr}.png`)});
+    await page.clock.resume();await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready()&&window.couplingTest.state().rendering.slice(0,2).every(r=>r.ready));
+    const labLayout=await geometry(page,['.story-layout','#story-live','.lab-brains','#lab-brain-0','#lab-brain-1']);
+    const labState=await page.evaluate(()=>window.couplingTest.state());assert.equal(labState.scale,.039);assert.equal(labState.family,'N-SIGN');
+    const labCanvases=await page.locator('#story-live canvas[aria-label="Recorded neural activity on MaleCNS anatomy"]').evaluateAll(cs=>cs.map(c=>({width:c.width,height:c.height,cssWidth:c.getBoundingClientRect().width,cssHeight:c.getBoundingClientRect().height})));
+    assert(labCanvases.every(c=>c.width*c.height<=32768));
+    await page.screenshot({path:resolve(evidence,`preflight-lab-dpr${dpr}.png`)});
+    probes.push({device_scale_factor:dpr,log,impact,recorded_sha256:hash(JSON.stringify(recorded)),replay_ticks:ticks,playheads,layout,brain,lab_layout:labLayout,lab_canvases:labCanvases});await page.close();
+   }
+   const differences=['log','impact','recorded_sha256','replay_ticks','playheads','layout','lab_layout'].filter(key=>JSON.stringify(probes[0][key])!==JSON.stringify(probes[1][key]));
+   const report={status:'PASS',capture_source_commit:sourceCommit,device_scale_factor:differences.length?1:2,differences,reason:differences.length?'Use 1x because DPR changed '+differences.join(', '):'1x and 2x have identical game/lab CSS layouts, authoritative log, impact, recorded frames, replay ticks and advancing scrubber values. Game BrainView uses 1,008,000 pixels at 2x, within its unchanged 1,048,576-pixel budget. Lab activity respects its existing 32,768-pixel cap at both DPRs. Only raster resolution changes.',probes};
+   writeFileSync(resolve(evidence,'scale-factor-preflight.json'),JSON.stringify(report,null,2)+'\n');console.log('PASS seed 1 qualifies at both DPRs; selected DPR',report.device_scale_factor);return;
+  }
+  const preflight=JSON.parse(readFileSync(resolve(evidence,'scale-factor-preflight.json')));assert.equal(preflight.status,'PASS');
+  assert(!(await import('node:fs')).existsSync(frames),'Use a fresh V2N capture directory');mkdirSync(frames);
+  const page=await setup(preflight.device_scale_factor),clock=new Date();await page.clock.install({time:clock});await page.clock.pauseAt(new Date(clock.getTime()+1000));await reset(page);
+  let index=0;const observations=[];
+  const capture=async()=>{await page.clock.runFor(50);await page.screenshot({path:resolve(frames,`game-${String(index++).padStart(3,'0')}.png`)});observations.push(await page.evaluate(()=>({state:window.flyTest.state(),pill:document.getElementById('landing').textContent,stamp:document.getElementById('impact-label').hidden?'':document.getElementById('stamp-word').textContent})));};
+  for(let i=0;i<30;i++){await capture();await page.evaluate(()=>window.flyTest.advance(5));}
+  const aim=await strike(page);
+  while(!(await page.evaluate(()=>window.flyTest.recordedFrames().length))){await page.evaluate(()=>window.flyTest.advance(1));await capture();}
+  while(await page.evaluate(()=>window.flyTest.state().stamp))await capture();
+  const log=await page.evaluate(()=>window.flyTest.log()),impact=await page.evaluate(()=>window.flyTest.state().lastImpact),liveFrames=index;
+  assert(!impact.caught&&impact.escape_onset_lead_ms>0,'STOP: frozen seed 1 no longer qualifies');assert.deepEqual(impact,previous.game.impact);assert.deepEqual(log,previous.game.log);
+  assert.deepEqual(log.inputs,[{tick:3000,...aim,hold_ms:600}]);
+  await page.evaluate(()=>{window.flyTest.showReplay();window.flyTest.measureReplay(true);});const replayTicks=[],playheads=[];
+  for(let i=0;i<60;i++){await capture();replayTicks.push(await page.evaluate(()=>window.flyTest.state().replayTick));playheads.push(Number(await page.locator('#replay-playhead').inputValue()));}
+  assert(new Set(replayTicks).size>20&&new Set(playheads).size>20);assert(replayTicks.every((t,i)=>!i||t<replayTicks[i-1]||t-replayTicks[i-1]<=40));assert(await page.locator('#replay-playhead').isVisible());assert.equal(await page.locator('#replay-speed').inputValue(),'0.25');
+  const recorded=await page.evaluate(()=>window.flyTest.recordedFrames()),gfIndices=new Set(JSON.parse(readFileSync(resolve(dist,'data/brain.json'))).nodes.filter(n=>n.group==='giant fiber').map(n=>n.index)),gfSpikes=recorded.flatMap(f=>f.spikes).filter(e=>e.indices.some(i=>gfIndices.has(i))),gfLitFrames=replayTicks.map((tick,index)=>({index,tick,spikes:gfSpikes.filter(e=>e.tick<=tick&&tick-e.tick<=120)})).filter(f=>f.spikes.length);
+  assert(gfLitFrames.length>0);
+  // The still is one of these exact captured replay frames, at maximum recorded activity.
+  const stillIndex=liveFrames+replayTicks.reduce((best,t,i)=>{const count=t=>recorded.find(f=>f.tick===t)?.spikes.reduce((n,e)=>n+e.indices.length,0)??0;return count(t)>count(replayTicks[best])?i:best;},0);
+  writeFileSync(resolve(media,'game-still.png'),readFileSync(resolve(frames,`game-${String(stillIndex).padStart(3,'0')}.png`)));
+  const provenance={schema:'flybench.media.v2n',capture_source_commit:sourceCommit,capture_source_sha256:sourceHashes,capture_code_sha256:hash(readFileSync(import.meta.filename)),viewport:{width:1440,height:900},device_scale_factor:preflight.device_scale_factor,scale_factor_reason:preflight.reason,scale_factor_evidence:'evidence/V2N/scale-factor-preflight.json',display_only:true,history:'docs/media/history/v2m-provenance.json',game:{selection:{...selection,tried:1,trials:[{seed:1,aim,caught:impact.caught,lead_ms:impact.lead_ms,escape_onset_lead_ms:impact.escape_onset_lead_ms,qualifies:true}],declaration_sha256:hash(declaration)},neural_seed:1,environment_seed:8128,profile_id:profile.profile_id,takeoff:'T0',log,impact,frames:index,live_frames:liveFrames,walk_frames:30,frame_duration_ms:50,walk_slowdown_factor:1,live_slowdown_factor:5,replay_seconds:3,replay_speed:.25,replay_loop:true,replay_ticks:replayTicks,replay_playheads:playheads,replay_controls_visible:true,gf_lit_frames:gfLitFrames,observed_takeoff:observations.some(o=>o.state.frame.air),observed_countdown:observations.some(o=>o.pill.includes('ms')),observed_escape_stamp:observations.some(o=>o.stamp==='Escaped'),still_source_frame:stillIndex},lab:{coupling:results.registered_coupling,neural_seed:results.lab_seeds.neural,environment_seed:results.lab_seeds.environment,sign:JSON.parse(readFileSync(resolve(dist,'data/coupling/runtime.json'))).null_selection,strength:JSON.parse(readFileSync(resolve(dist,'data/coupling/strength-demo.json'))),observations:[],frames:80,frame_duration_ms:100,story_steps:[1,2],registered_medians:results.registered_story,still_source_frame:39},assets:{}};
+  assert.equal(provenance.lab.coupling,.039);assert.equal(provenance.lab.neural_seed,2027101401);assert.equal(provenance.lab.environment_seed,8128);
+  writeFileSync(resolve(evidence,'media-game-round.json'),JSON.stringify({log,impact,observations,recorded},null,2)+'\n');
+  await page.clock.resume();await page.locator('[data-wiring]:visible').first().click();await page.waitForFunction(()=>window.couplingTest?.ready());let labIndex=0;
+  for(const step of [1,2]){
+   await page.evaluate(step=>window.couplingTest.step(step),step);await page.waitForFunction(()=>window.couplingTest.ready());await page.waitForFunction(()=>window.couplingTest.state().panels[0].tick*.0005>=2,null,{timeout:60000});
+   for(let i=0;i<40;i++){const start=Date.now();await page.screenshot({path:resolve(frames,`lab-${String(labIndex++).padStart(3,'0')}.png`)});await page.waitForTimeout(Math.max(0,100-(Date.now()-start)));}
+   const state=await page.evaluate(()=>window.couplingTest.state());assert.equal(state.scale,.039);assert.equal(state.step,step);provenance.lab.observations.push(state);
+  }
+  writeFileSync(resolve(media,'coupling-still.png'),readFileSync(resolve(frames,'lab-039.png')));
+  provenance.external_requests=external;assert.equal(external.length,0);
+  const rawInventory=readFileSync(resolve(evidence,'raw-records-before.json'));
+  provenance.preservation={raw_inventory:{path:'evidence/V2N/raw-records-before.json',bytes:rawInventory.length,sha256:hash(rawInventory),files:Object.keys(JSON.parse(rawInventory).files).length}};
+  for(const file of ['game-still.png','coupling-still.png']){const p='docs/media/'+file,b=readFileSync(resolve(root,p));provenance.assets[p]={bytes:b.length,sha256:hash(b),size:[1440*preflight.device_scale_factor,900*preflight.device_scale_factor]};}
+  provenance.source_frames_sha256=Object.fromEntries((await import('node:fs')).readdirSync(frames).sort().map(p=>[p,hash(readFileSync(resolve(frames,p)))]));
+  writeFileSync(resolve(media,'media-provenance.json'),JSON.stringify(provenance,null,2)+'\n');console.log('V2N capture complete:',index,'game frames,',labIndex,'lab frames');
+ }finally{await browser.close();await new Promise(r=>server.close(r));}
+}
+
+if(process.argv.includes('--v2n'))await captureV2N();else if(process.argv.includes('--v2l-review'))await encodeV2LReview();else if(process.argv.includes('--v2l'))await captureV2L();else if(process.argv.includes('--a03')||process.argv.includes('--v2k'))await captureA03();else await legacyCapture();

@@ -30,11 +30,16 @@ if(process.argv.includes('--a02-preservation')||process.argv.includes('--a03-pre
  const {invariants}=await import('./v2m.ts');invariants();
  for(const [p,r] of Object.entries(load('evidence/V2M/a02/prior-a01-preservation.json').files) as any[])assert.equal(hash(p),r.sha256,p);
  for(const [p,h] of Object.entries(decision.references_sha256))assert.equal(hash(p),h,p);
- assert.equal(hash('docs/media/game-hero.gif'),decision.hero_sha256);
+ // V2N replaces README media. Keep the V2M assertion against its accepted bytes.
+ const accepted='1b670a9d371ce406a1865aa5c4b91085b4f87fea';
+ const historical=load('docs/media/history/v2m-provenance.json');
+ assert.equal(hash('docs/media/history/v2m-provenance.json'),createHash('sha256').update(execFileSync('git',['show',accepted+':docs/media/media-provenance.json'])).digest('hex'));
+ assert.equal(historical.assets['docs/media/game-hero.gif'].sha256,decision.hero_sha256);
+ assert.equal(createHash('sha256').update(execFileSync('git',['show',accepted+':docs/media/game-hero.gif'],{maxBuffer:16_000_000})).digest('hex'),decision.hero_sha256);
  assert.equal(load('evidence/V2M/acceptance/command-results.json').status,'PASS');
  const code_sha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
  if(a03)for(const [p,r] of Object.entries(load('evidence/V2M/a03/prior-a02-preservation.json').files) as any[])assert.equal(hash(p),r.sha256,p);
- writeFileSync('evidence/V2M/'+(a03?'a03':'a02')+'/preservation-check.json',JSON.stringify({status:'PASS',code_sha,decision,prior_a01_files:Object.keys(load('evidence/V2M/a02/prior-a01-preservation.json').files).length},null,2)+'\n');
+ writeFileSync(process.env.FLYBENCH_V2M_PRESERVATION_OUT??'evidence/V2M/'+(a03?'a03':'a02')+'/preservation-check.json',JSON.stringify({status:'PASS',code_sha,decision,prior_a01_files:Object.keys(load('evidence/V2M/a02/prior-a01-preservation.json').files).length},null,2)+'\n');
  console.log('PASS owner T0, production v2.9, a01 evidence/media and frozen science identities');
 }
 console.log('PASS device-pixel backing size boundaries, aspect and declared pixel cap');

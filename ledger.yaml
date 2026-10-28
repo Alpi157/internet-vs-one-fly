@@ -105,6 +105,7 @@ stages:
   V2K: SUBMITTED
   V2L: SUBMITTED # prior ledger status retained; owner reports v2l-accepted and deployed
   V2M: SUBMITTED
+  V2N: SUBMITTED
 stage_review_records:
   V2F:
     decision: decisions/D-V2F-REVIEW-01.json
@@ -611,3 +612,18 @@ v2m_current:
   report: docs/ui-v2m-a03.md
   acceptance: Final-SHA full suite and matrix required; external review pending
   review_zip: reviews/V2M-a03.zip; under 150 MB
+
+v2n_current:
+  attempt: a01
+  status: SUBMITTED_PENDING_EXTERNAL_REVIEW
+  capture_source_commit: 1b670a9d371ce406a1865aa5c4b91085b4f87fea
+  scope: README media recapture only; accepted V2M sources and public assets unchanged
+  scientific_change: NONE
+  provenance: docs/media/media-provenance.json
+  history: docs/media/history/v2m-provenance.json
+  evidence: evidence/V2N
+  device_scale_factor: 2; matched 1x layout, log, recorded frames, replay ticks and playheads
+  frames: game 153 at 50 ms; lab 80 at 100 ms
+  acceptance: Fast offline suite plus V2M and V2N tests; receipts under evidence/V2N/acceptance
+  review_zip: reviews/v2n-a01.zip; under 150 MB
+  external_review: PENDING
