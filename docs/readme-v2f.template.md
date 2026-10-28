@@ -4,9 +4,9 @@ A fly brain simulated from its real wiring. Try to swat it, then look inside its
 
 **[Play Catch the Fly](https://alpi157.github.io/internet-vs-one-fly/)**
 
-![Game v2.9: a walking fly escapes a swat, lifts out of focus, and gets an Escaped stamp; recorded replay shows the escape neuron firing](docs/media/game-hero.gif)
+![Game v2.9: a walking fly escapes a swat, lifts out of focus, and gets an Escaped stamp; scrubbable recorded replay shows the escape neuron firing, frame controls and speed control](docs/media/game-hero.gif)
 
-Walking runs at real speed. The swat and takeoff are slowed 5x, followed by 3 s of quarter-speed recorded replay with the giant fiber lit. Takeoff began before impact. [Capture rule, seeds tried and identities](docs/media/media-provenance.json).
+Walking runs at real speed. The swat and takeoff are slowed 5x, followed by 3 s of quarter-speed recorded replay with the giant fiber lit and the scrubber visibly advancing. Takeoff began before impact. [Capture rule, seeds tried and identities](docs/media/media-provenance.json).
 
 - **Science:** [preregistered comparisons](docs/preregistration-v2.1.md), a stricter input-strength control that overturned part of the headline, and [raw records with a DOI](https://doi.org/{{dataset_doi}}).
 - **Engineering:** [bit-exact parity across Python, Numba, TypeScript and three browsers](packages/kernel-ts/test/browser-parity.mjs), WebGL rendering of [real neuron skeletons](docs/ui-v2h.md), and [reproducible acceptance](tools/acceptance.json).

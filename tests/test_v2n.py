@@ -13,7 +13,7 @@ ACCEPTED = "1b670a9d371ce406a1865aa5c4b91085b4f87fea"
 ASSETS = {"docs/media/" + name for name in (
     "game-hero.gif", "coupling-hero.gif", "game-still.png", "coupling-still.png")}
 ALLOWED = ASSETS | {
-    "README.md", "ledger.yaml", "docs/media/media-provenance.json",
+    "README.md", "docs/readme-v2f.template.md", "ledger.yaml", "docs/media/media-provenance.json",
     "docs/media/history/v2m-provenance.json", "docs/ui-v2n.md",
     "apps/play/test/media.mjs", "apps/play/test/media-gifs.py",
     "apps/play/test/v2m-ui.test.ts", "apps/play/test/walking-a03.ts",
@@ -124,13 +124,14 @@ def test_historical_recorder_modes_and_readme_text_are_preserved():
     new = (ROOT / "apps/play/test/media-gifs.py").read_text()
     marker = "# V2M changes palette encoding only"
     assert new[new.index(marker):] == old[old.index(marker):]
-    old = git("show", ACCEPTED + ":README.md").decode().splitlines()
-    new = (ROOT / "README.md").read_text().splitlines()
-    assert len(old) == len(new)
-    for a, b in zip(old, new):
-        if a != b:
-            assert a.startswith(("![Game v2.9:", "Walking runs at real speed."))
-            assert re.findall(r"\d+(?:\.\d+)?", a) == re.findall(r"\d+(?:\.\d+)?", b)
+    for path in ("README.md", "docs/readme-v2f.template.md"):
+        old = git("show", ACCEPTED + ":" + path).decode().splitlines()
+        new = (ROOT / path).read_text().splitlines()
+        assert len(old) == len(new)
+        for a, b in zip(old, new):
+            if a != b:
+                assert a.startswith(("![Game v2.9:", "Walking runs at real speed."))
+                assert re.findall(r"\d+(?:\.\d+)?", a) == re.findall(r"\d+(?:\.\d+)?", b)
 
 
 def test_local_source_frames_and_stills_share_the_same_capture():

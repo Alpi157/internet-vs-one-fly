@@ -33,6 +33,8 @@ source. This lossless encoding keeps the detailed capture under 8 MB. Provenance
 records source and asset SHA-256 hashes, frame identities, palette samples and
 palette bytes. The previous provenance is retained verbatim under
 `docs/media/history/v2m-provenance.json`; existing history is unchanged.
+The README template has the same alt text and caption update so its generated
+copy remains exact; all other README/template text and every number are retained.
 
 V2M media assertions still check its accepted GIF bytes and historical
 provenance, including semantic color pixel checks and the owner's pinned hash.
