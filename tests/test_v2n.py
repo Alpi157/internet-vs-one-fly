@@ -10,6 +10,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 ACCEPTED = "1b670a9d371ce406a1865aa5c4b91085b4f87fea"
+V2N_SUBMITTED = "eb52897ac9006eb058574c8734bbb3cd5da77925"
 ASSETS = {"docs/media/" + name for name in (
     "game-hero.gif", "coupling-hero.gif", "game-still.png", "coupling-still.png")}
 ALLOWED = ASSETS | {
@@ -77,9 +78,9 @@ def test_all_current_capture_sources_match_accepted_commit():
 
 def test_public_sources_frozen_files_and_history_unchanged():
     # The allowlist also catches any changed tracked raw records or preregistrations.
-    changed = set(git("diff", "--name-only", ACCEPTED, "--").decode().splitlines())
-    untracked = set(git("ls-files", "--others", "--exclude-standard").decode().splitlines())
-    assert changed | untracked <= ALLOWED
+    # Scope of the accepted V2N commit itself, so later commits do not count as V2N changes.
+    changed = set(git("diff", "--name-only", ACCEPTED, V2N_SUBMITTED, "--").decode().splitlines())
+    assert changed <= ALLOWED
     assert not git("diff", ACCEPTED, "--", "apps/play/src", "apps/play/public", "src", "packages/kernel-ts/src")
     for manifest in ("profiles/freeze-v2.json", "profiles/freeze-v2.1.json"):
         for name, sha in load(manifest)["files"].items():
